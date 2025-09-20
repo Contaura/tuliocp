@@ -51,6 +51,71 @@ If you find TulioCP useful and would like to support its development, please con
 - Tulio Control Panel does not support 32 bit operating systems!
 - Tulio Control Panel in combination with OpenVZ 7 or lower might have issues with DNS and/or firewall. If you use a Virtual Private Server we strongly advice you to use something based on KVM or LXC!
 
+## TulioCP APT Repository
+
+TulioCP provides an official APT repository for easy installation and updates. Our packages are automatically built from the latest source code using GitHub Actions and hosted at `https://apt.tuliocp.com/`.
+
+### Available Packages
+
+- **tuliocp** - Main control panel package
+- **tulio-nginx** - Custom Nginx build optimized for TulioCP
+- **tulio-php** - Custom PHP-FPM build with enhanced performance
+- **tulio-web-terminal** - Browser-based terminal interface
+
+### Repository Setup
+
+To manually add the TulioCP APT repository (not needed for standard installation):
+
+```bash
+# Add GPG key
+gpg --no-default-keyring --keyring /usr/share/keyrings/tulio-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5
+
+# Add repository
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://apt.tuliocp.com/ stable main" > /etc/apt/sources.list.d/tuliocp.list
+
+# Update package list
+apt update
+```
+
+### Setting Up Custom Domain (CNAME)
+
+If you want to use `apt.tuliocp.com` as the repository URL, you need to set up a CNAME record:
+
+1. **DNS Configuration**: In your DNS provider (where `tuliocp.com` is managed), add:
+   ```
+   Type: CNAME
+   Name: apt
+   Value: contaura.github.io
+   TTL: 300 (or your preferred value)
+   ```
+
+2. **GitHub Pages Setup**: The repository is automatically deployed to GitHub Pages via our build workflow
+
+3. **Verification**: Test the CNAME with:
+   ```bash
+   curl -I https://apt.tuliocp.com/
+   # Should return HTTP 200 and serve the repository index
+   ```
+
+**Note**: The automated installer script handles repository setup automatically.
+
+### Automated Package Building
+
+TulioCP packages are built automatically using GitHub Actions:
+
+- **Trigger**: Every push to the `main` branch
+- **Build Matrix**: Supports both AMD64 and ARM64 architectures
+- **Build Process**: Uses the `src/tst_autocompile.sh` script with local source
+- **Deployment**: Packages are deployed to GitHub Pages at `apt.tuliocp.com`
+- **Repository Structure**: Debian-compatible APT repository with proper `Packages.gz` and `Release` files
+
+The build workflow:
+1. Checks out the latest source code
+2. Sets up build dependencies (Node.js, build tools, etc.)
+3. Builds all packages (`--all --keepbuild --noinstall ~localsrc`)
+4. Creates APT repository structure
+5. Deploys to GitHub Pages with CNAME support
+
 ## Installing Tulio Control Panel
 
 - **NOTE:** You must install Tulio Control Panel on top of a fresh operating system installation to ensure proper functionality.
