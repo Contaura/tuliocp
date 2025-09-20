@@ -13,7 +13,7 @@ class MediaWikiSetup extends BaseSetup
         'name' => 'MediaWiki',
         'group' => 'cms',
         'version' => '1.43.0',
-        'thumbnail' => 'MediaWiki-2020-logo.svg', //Max size is 300px by 300px
+        'thumbnail' => 'MediaWiki-2020-logo-tulio.svg', //Max size is 300px by 300px
     ];
 
     protected array $config = [

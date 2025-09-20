@@ -1,6 +1,6 @@
 # Quick install app
 
-One of Hestia’s most requested feature is to add support for Softaculous. However, due to the required use of Ioncube in tulio-php and because we are against the use of proprietary software, we have instead developed our own **Quick install app** solution.
+One of Tulio's most requested feature is to add support for Softaculous. However, due to the required use of Ioncube in tulio-php and because we are against the use of proprietary software, we have instead developed our own **Quick install app** solution.
 
 More information can be found in the [tulio-quick-install repo](https://github.com/contaura/tulio-quick-install/blob/main/Example/ExampleSetup.php)
 

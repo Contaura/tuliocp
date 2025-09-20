@@ -17,7 +17,7 @@ server {
 
 	rewrite ^/(.*\.php)(/)(.*)$ /$1?file=/$3 last;
 
-	location = /favicon.ico {
+	location = /favicon-tulio.ico {
 		log_not_found off;
 		access_log off;
 	}

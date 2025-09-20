@@ -1,4 +1,4 @@
-# Install Ioncube on Hestia
+# Install Ioncube on Tulio
 
 By [Jaap Marcus](https://github.com/jaapmarcus/)  
 [Source code](https://github.com/jaapmarcus/ioncube-tulio-installer)

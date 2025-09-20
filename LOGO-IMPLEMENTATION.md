@@ -44,8 +44,8 @@ This implementation includes three new TulioCP logo files designed to replace th
 ### Logo References Updated:
 ```php
 // Before (Hestia)
-<img src="/images/logo.svg" alt="..." width="100" height="120">
-<img src="/images/logo-header.svg" alt="..." width="54" height="29">
+<img src="/images/logo-tulio.svg" alt="..." width="100" height="120">
+<img src="/images/logo-tulio-header.svg" alt="..." width="54" height="29">
 
 // After (TulioCP)  
 <img src="/images/logo-tulio.svg" alt="..." width="100" height="100">
@@ -55,7 +55,7 @@ This implementation includes three new TulioCP logo files designed to replace th
 ### CSS/HTML Icon References:
 ```html
 <!-- Before -->
-<link rel="icon" href="/images/logo.svg" type="image/svg+xml">
+<link rel="icon" href="/images/logo-tulio.svg" type="image/svg+xml">
 
 <!-- After -->
 <link rel="icon" href="/images/logo-tulio.svg" type="image/svg+xml">
@@ -93,8 +93,8 @@ This implementation includes three new TulioCP logo files designed to replace th
 
 ### Old vs New File Mapping:
 ```
-logo.svg           → logo-tulio.svg
-logo-header.svg    → logo-tulio-header.svg
+logo-tulio.svg           → logo-tulio.svg
+logo-tulio-header.svg    → logo-tulio-header.svg
 favicon.png        → favicon-tulio.svg (improved SVG format)
 ```
 

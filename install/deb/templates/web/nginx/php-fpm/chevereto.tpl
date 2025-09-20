@@ -18,7 +18,7 @@ server {
 	client_max_body_size 1G;
 	client_body_buffer_size 1024k;
 
-	location = /favicon.ico {
+	location = /favicon-tulio.ico {
 		log_not_found off;
 		access_log off;
 	}

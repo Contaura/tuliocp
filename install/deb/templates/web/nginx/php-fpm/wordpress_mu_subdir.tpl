@@ -22,7 +22,7 @@ server {
 		rewrite ^/[_0-9a-zA-Z-]+(/.*\.php)$ $1 last;
 	}
 
-	location = /favicon.ico {
+	location = /favicon-tulio.ico {
 		log_not_found off;
 		access_log off;
 	}

@@ -9,7 +9,7 @@ hero:
   text: Open-source web server control panel
   tagline: Fast, reliable, open-source. The control panel you’ve always wanted is just a command away.
   image:
-    src: /logo.svg
+    src: /logo-tulio.svg
     alt: Tulio Logo
   actions:
     - theme: brand
@@ -30,17 +30,17 @@ features:
     linkText: Documentation
   - icon: ❤️
     title: Made with love & pride
-    details: Hestia is open-source software that is built by passionate people from around the world. This means that the code is reviewed by multiple people and that anybody can contribute to it!
+    details: Tulio is open-source software that is built by passionate people from around the world. This means that the code is reviewed by multiple people and that anybody can contribute to it!
     link: /team
     linkText: See the team
   - icon: 🛠️
     title: Extendable & powerful
-    details: Hestia is extendable while being easy to learn. You can build your own themes, web templates, quick install applications and can interact with it using third party software via its API.
+    details: Tulio is extendable while being easy to learn. You can build your own themes, web templates, quick install applications and can interact with it using third party software via its API.
     link: /docs/contributing/development
-    linkText: Help develop Hestia
+    linkText: Help develop Tulio
   - icon: 🤝
     title: Supported by the community
-    details: Hestia has a great support community - join the forum! To keep the project running, we rely on donations, which can be made via PayPal or cryptocurrency.
+    details: Tulio has a great support community - join the forum! To keep the project running, we rely on donations, which can be made via PayPal or cryptocurrency.
     link: /donate
     linkText: Donate
 ---

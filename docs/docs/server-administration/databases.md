@@ -3,7 +3,7 @@
 ## How to setup a remote database server
 
 1. It is assumed you already have your second server up and running.
-2. On your Hestia server run the following command (`mysql` may be replaced by `postgresql`):
+2. On your Tulio server run the following command (`mysql` may be replaced by `postgresql`):
 
 ```bash
 v-add-database-host mysql new-server.com root password
@@ -90,7 +90,7 @@ NOTE: PhpMyAdmin Single Sign On enabled only for individual databases. Primary "
 
 ### Unable to activate phpMyAdmin Single Sign on
 
-Make sure the API is enabled and working properly. Hestia’s PhpMyAdmin Single Sign On function connects over the Hestia API.
+Make sure the API is enabled and working properly. Tulio's PhpMyAdmin Single Sign On function connects over the Tulio API.
 
 ### When clicking the phpMyAdmin Single Sign On button, I am forwarded to the login page of phpMyAdmin
 

@@ -15,8 +15,8 @@ server {
 
 	include %home%/%user%/conf/web/%domain%/nginx.forcessl.conf*;
 
-	location = /favicon.ico {
-		try_files /favicon.ico =204;
+	location = /favicon-tulio.ico {
+		try_files /favicon-tulio.ico =204;
 	}
 
 	location ~ /\.(?!well-known\/) {

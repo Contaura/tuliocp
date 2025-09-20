@@ -15,7 +15,7 @@ server {
 
 	include %home%/%user%/conf/web/%domain%/nginx.forcessl.conf*;
 
-	location = /favicon.ico {
+	location = /favicon-tulio.ico {
 		log_not_found off;
 		access_log off;
 	}

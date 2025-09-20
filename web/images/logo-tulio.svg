@@ -1,49 +1,55 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" style="enable-background:new 0 0 120 120" xml:space="preserve">
   <defs>
-    <!-- Primary Gradient -->
-    <linearGradient id="primaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1E40AF"/>
-      <stop offset="50%" style="stop-color:#3B82F6"/>
-      <stop offset="100%" style="stop-color:#10B981"/>
+    <!-- Primary gradient -->
+    <linearGradient id="primaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb"/>
+      <stop offset="50%" style="stop-color:#3b82f6"/>
+      <stop offset="100%" style="stop-color:#1d4ed8"/>
     </linearGradient>
     
-    <!-- Secondary Gradient -->
-    <linearGradient id="secondaryGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#3B82F6;stop-opacity:0.8"/>
-      <stop offset="100%" style="stop-color:#10B981;stop-opacity:0.9"/>
+    <!-- Secondary gradient -->
+    <linearGradient id="secondaryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4"/>
+      <stop offset="100%" style="stop-color:#0891b2"/>
     </linearGradient>
     
-    <!-- Dark Gradient -->
-    <linearGradient id="darkGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#1F2937"/>
-      <stop offset="100%" style="stop-color:#374151"/>
+    <!-- Accent gradient -->
+    <linearGradient id="accentGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5cf6"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
     </linearGradient>
   </defs>
   
-  <!-- Background Circle -->
-  <circle cx="60" cy="60" r="58" fill="url(#primaryGrad)" stroke="#1F2937" stroke-width="2"/>
+  <!-- Background circle -->
+  <circle cx="60" cy="60" r="58" fill="none" stroke="url(#primaryGradient)" stroke-width="4" opacity="0.1"/>
   
-  <!-- Inner Circle -->
-  <circle cx="60" cy="60" r="45" fill="none" stroke="#ffffff" stroke-width="1" opacity="0.3"/>
+  <!-- Main T shape - representing Tulio -->
+  <rect x="30" y="25" width="60" height="8" rx="4" fill="url(#primaryGradient)"/>
+  <rect x="56" y="25" width="8" height="50" rx="4" fill="url(#primaryGradient)"/>
   
-  <!-- T Letter Shape -->
-  <!-- Horizontal bar of T -->
-  <rect x="35" y="30" width="50" height="8" rx="4" fill="#ffffff"/>
+  <!-- Server/hosting representation - stacked rectangles -->
+  <rect x="20" y="80" width="25" height="6" rx="3" fill="url(#secondaryGradient)" opacity="0.8"/>
+  <rect x="20" y="88" width="25" height="6" rx="3" fill="url(#secondaryGradient)" opacity="0.6"/>
+  <rect x="20" y="96" width="25" height="6" rx="3" fill="url(#secondaryGradient)" opacity="0.4"/>
   
-  <!-- Vertical bar of T -->
-  <rect x="56" y="30" width="8" height="45" rx="4" fill="#ffffff"/>
+  <!-- Control panel representation - grid pattern -->
+  <rect x="75" y="80" width="6" height="6" rx="1" fill="url(#accentGradient)"/>
+  <rect x="84" y="80" width="6" height="6" rx="1" fill="url(#accentGradient)" opacity="0.8"/>
+  <rect x="93" y="80" width="6" height="6" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
   
-  <!-- Modern accent elements -->
-  <!-- Top right accent -->
-  <circle cx="85" cy="35" r="3" fill="url(#secondaryGrad)"/>
-  <circle cx="85" cy="35" r="1.5" fill="#ffffff"/>
+  <rect x="75" y="89" width="6" height="6" rx="1" fill="url(#accentGradient)" opacity="0.8"/>
+  <rect x="84" y="89" width="6" height="6" rx="1" fill="url(#accentGradient)"/>
+  <rect x="93" y="89" width="6" height="6" rx="1" fill="url(#accentGradient)" opacity="0.8"/>
   
-  <!-- Bottom left accent -->
-  <rect x="40" y="82" width="6" height="6" rx="3" fill="url(#secondaryGrad)"/>
+  <rect x="75" y="98" width="6" height="6" rx="1" fill="url(#accentGradient)" opacity="0.6"/>
+  <rect x="84" y="98" width="6" height="6" rx="1" fill="url(#accentGradient)" opacity="0.8"/>
+  <rect x="93" y="98" width="6" height="6" rx="1" fill="url(#accentGradient)"/>
   
-  <!-- Bottom right accent -->
-  <polygon points="75,85 85,85 80,95" fill="url(#secondaryGrad)"/>
+  <!-- Connection lines - representing network/connectivity -->
+  <line x1="45" y1="85" x2="75" y2="85" stroke="url(#primaryGradient)" stroke-width="2" opacity="0.5" stroke-dasharray="3,3"/>
+  <line x1="45" y1="92" x2="75" y2="92" stroke="url(#primaryGradient)" stroke-width="2" opacity="0.3" stroke-dasharray="3,3"/>
   
-  <!-- Subtle shadow effect -->
-  <ellipse cx="60" cy="110" rx="25" ry="3" fill="#1F2937" opacity="0.2"/>
+  <!-- Subtle highlights -->
+  <rect x="56" y="25" width="2" height="50" rx="1" fill="#ffffff" opacity="0.3"/>
+  <rect x="30" y="25" width="60" height="2" rx="1" fill="#ffffff" opacity="0.3"/>
 </svg>

@@ -25,7 +25,7 @@ server {
 
 	include %home%/%user%/conf/web/%domain%/nginx.hsts.conf*;
 
-	location = /favicon.ico {
+	location = /favicon-tulio.ico {
 		log_not_found off;
 		access_log off;
 	}

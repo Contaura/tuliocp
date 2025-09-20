@@ -10,7 +10,7 @@
 <body>
 <table width="100%" border="0" cellspacing="0" cellpadding="0">
 <tr>
-    <td><img src="logo.svg" title="Hestia Control Panel"></td>
+    <td><img src="logo-tulio.svg" title="Tulio Control Panel"></td>
     <td><form name="period" action="" method="get">
     <select name="select" ONCHANGE="change()">
 %select_month%

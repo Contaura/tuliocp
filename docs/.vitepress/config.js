@@ -10,7 +10,7 @@ export default defineConfig({
 	cleanUrls: false,
 
 	head: [
-		['link', { rel: 'icon', sizes: 'any', href: '/favicon.ico' }],
+		['link', { rel: 'icon', sizes: 'any', href: '/favicon-tulio.ico' }],
 		['link', { rel: 'icon', type: 'image/svg+xml', sizes: '16x16', href: '/logo-tulio.svg' }],
 		['link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/apple-touch-icon.png' }],
 		['link', { rel: 'manifest', href: '/site.webmanifest' }],
@@ -24,8 +24,8 @@ export default defineConfig({
 
 		socialLinks: [
 			{ icon: 'github', link: 'https://github.com/contaura/tuliocp' },
-			{ icon: 'twitter', link: 'https://twitter.com/HestiaPanel' },
-			{ icon: 'facebook', link: 'https://www.facebook.com/hestiacp' },
+		{ icon: 'twitter', link: 'https://twitter.com/TulioCP' },
+		{ icon: 'facebook', link: 'https://www.facebook.com/tuliocp' },
 		],
 
 		sidebar: { '/docs/': sidebarDocs() },
@@ -39,7 +39,7 @@ export default defineConfig({
 
 		footer: {
 			message: 'Released under the GPLv3 License.',
-			copyright: 'Copyright © 2019-present Hestia Control Panel',
+		copyright: 'Copyright © 2019-present Tulio Control Panel',
 		},
 
 		algolia: {
@@ -143,11 +143,11 @@ function sidebarDocs() {
 			text: 'Community',
 			collapsed: false,
 			items: [
-				{ text: 'Hestia Nginx Cache', link: '/docs/community/tulio-nginx-cache' },
-				{
-					text: 'Ioncube installer for Hestia',
-					link: '/docs/community/ioncube-tulio-installer',
-				},
+			{ text: 'Tulio Nginx Cache', link: '/docs/community/tulio-nginx-cache' },
+			{
+				text: 'Ioncube installer for Tulio',
+				link: '/docs/community/ioncube-tulio-installer',
+			},
 				{ text: 'Install script generator', link: '/docs/community/install-script-generator' },
 			],
 		},

@@ -38,7 +38,7 @@ To edit the number of backups, please read the [Packages](../user-guide/packages
 
 ## Not enough disk space available to preform the backup
 
-For safety reasons, Hestia takes into account 2x the user’s disk usage when creating a backup. Therefore, before starting a backup, we check how much disk usage a user has left. If you encounter this error, you can do one of the following to solve the issue:
+For safety reasons, Tulio takes into account 2x the user's disk usage when creating a backup. Therefore, before starting a backup, we check how much disk usage a user has left. If you encounter this error, you can do one of the following to solve the issue:
 
 - Reduce the amount of backups saved per user saved.
 - Move the backups to a remote storage.
@@ -119,7 +119,7 @@ And see the file has been uploaded
 rclone delete $HOST:$FOLDER/backuptest.txt
 ```
 
-Once the config has been saved you can setup Hestia with the following command:
+Once the config has been saved you can setup Tulio with the following command:
 
 ```bash
 v-add-backup-host 'rclone' 'remote-name' '' '' 'Bucket or Folder name' ''
@@ -164,7 +164,7 @@ Enable Incremental Backups in the user packages.
 
 ### Using Rclone
 
-Since 1.9 we include Rclone by default in Hestia Installation. Run `rclone config` as the `root` user and then select the option `n`. Follow the instruction on the screen, then save when completed.
+Since 1.9 we include Rclone by default in Tulio Installation. Run `rclone config` as the `root` user and then select the option `n`. Follow the instruction on the screen, then save when completed.
 
 Run the following command:
 

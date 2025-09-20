@@ -115,7 +115,7 @@ You can access the admin by navigating to `https://webmail.domain.tld/?admin_f0e
 
 ## Can I use Cloudflare Proxy with email
 
-No, Cloudflare’s Proxy does not work with email. If you use email hosted on you server, make sure the proxy for the A record `mail.domain.tld` is switched off. Otherwise, you will not be able receive emails. The following records are suggested if you want to use Hestia as your mail server:
+No, Cloudflare's Proxy does not work with email. If you use email hosted on you server, make sure the proxy for the A record `mail.domain.tld` is switched off. Otherwise, you will not be able receive emails. The following records are suggested if you want to use Tulio as your mail server:
 
 - A record with name **mail** pointing to your server IP.
 - A record with name **webmail** pointing to your server IP.
@@ -135,7 +135,7 @@ If this doesn’t work, it’s be possible that your IP address is on one or mor
 
 ## How can I enable ManageSieve?
 
-During Hestia’s installation, use the `--sieve` flag. If Hestia is already installed, there is a an upgrade script provided at the following path: `/usr/local/tulio/install/upgrade/manual/install_sieve.sh`
+During Tulio's installation, use the `--sieve` flag. If Tulio is already installed, there is a an upgrade script provided at the following path: `/usr/local/tulio/install/upgrade/manual/install_sieve.sh`
 
 ## Can I allow access to ManageSieve via an external mail client?
 

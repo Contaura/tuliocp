@@ -45,7 +45,7 @@ server {
 		set $no_cache 1;
 	}
 
-	location = /favicon.ico {
+	location = /favicon-tulio.ico {
 		log_not_found off;
 		access_log off;
 	}

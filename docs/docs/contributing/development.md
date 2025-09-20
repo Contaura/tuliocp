@@ -1,8 +1,8 @@
-# Contributing to Hestia’s development
+# Contributing to Tulio's development
 
-Hestia is an open-source project, and we welcome contributions from the community. Please read the [contributing guidelines](https://github.com/contaura/tuliocp/blob/main/CONTRIBUTING.md) for additional information.
+Tulio is an open-source project, and we welcome contributions from the community. Please read the [contributing guidelines](https://github.com/contaura/tuliocp/blob/main/CONTRIBUTING.md) for additional information.
 
-Hestia is designed to be installed on a web server. To develop Hestia on your local machine, a virtual machine is recommended.
+Tulio is designed to be installed on a web server. To develop Tulio on your local machine, a virtual machine is recommended.
 
 ::: warning
 Development builds are unstable. If you encounter a bug, please [report it via GitHub](https://github.com/contaura/tuliocp/issues/new/choose) or [submit a Pull Request](https://github.com/contaura/tuliocp/pulls).
@@ -10,13 +10,13 @@ Development builds are unstable. If you encounter a bug, please [report it via G
 
 ## Creating a virtual machine for development
 
-These are example instructions for creating a virtual machine running Hestia for development.
+These are example instructions for creating a virtual machine running Tulio for development.
 
 These instructions use [Multipass](https://multipass.run/) to create an Ubuntu VM. Feel free to adapt the commands for any virtualization software you prefer.
 
 1. [Install Multipass](https://multipass.run/install) for your OS
 
-1. [Fork Hestia](https://github.com/contaura/tuliocp/fork) and clone the repository to your local machine
+1. [Fork Tulio](https://github.com/contaura/tuliocp/fork) and clone the repository to your local machine
 
    ```bash
    git clone https://github.com/YourUsername/hestiacp.git ~/projects
@@ -43,14 +43,14 @@ These instructions use [Multipass](https://multipass.run/) to create an Ubuntu V
    sudo apt update && sudo apt install -y jq libjq1
    ```
 
-1. Navigate to `/src` in the VM, then build Hestia packages
+1. Navigate to `/src` in the VM, then build Tulio packages
 
    ```bash
    cd src
    ./hst_autocompile.sh --all --noinstall --keepbuild '~localsrc'
    ```
 
-1. Navigate to `/install` in the VM, then install Hestia with these flags
+1. Navigate to `/install` in the VM, then install Tulio with these flags
 
    _(update the [installation flags](../introduction/getting-started#list-of-installation-options) to your liking, note that login credentials are set here)_
 
@@ -73,13 +73,13 @@ These instructions use [Multipass](https://multipass.run/) to create an Ubuntu V
    multipass list
    ```
 
-1. Visit the VM's IP address in your browser using the default Hestia port and login with `admin`/`Password123`
+1. Visit the VM's IP address in your browser using the default Tulio port and login with `admin`/`Password123`
 
    _(proceed past any SSL errors you see when loading the page)_
 
    e.g. <https://192.168.64.15:8083>
 
-Hestia is now running in a virtual machine. If you'd like to make changes to the source code and test them in your browser, please continue to the next section.
+Tulio is now running in a virtual machine. If you'd like to make changes to the source code and test them in your browser, please continue to the next section.
 
 ::: warning
 Sometimes (with Multipass), the mapping between the source code directory on your local machine to the directory in the VM can be lost with a "failed to obtain exit status for remote process" error. If this happens, simply unmount and remount, e.g.
@@ -91,11 +91,11 @@ multipass mount ~/projects/hestiacp tulio-dev:/home/ubuntu/hestiacp
 
 :::
 
-## Making changes to Hestia
+## Making changes to Tulio
 
-After setting up Hestia in a development VM, you can now make changes to the source code at `~/projects/hestiacp` on your local machine (outside of the VM) using your editor of choice.
+After setting up Tulio in a development VM, you can now make changes to the source code at `~/projects/hestiacp` on your local machine (outside of the VM) using your editor of choice.
 
-Below are some instructions for making a change to Hestia's UI, running the build script and testing the change locally.
+Below are some instructions for making a change to Tulio's UI, running the build script and testing the change locally.
 
 1. On your local machine, make a change to a file that is easy to test
 
@@ -108,7 +108,7 @@ Below are some instructions for making a change to Hestia's UI, running the buil
    cd src
    ```
 
-1. Run the Hestia build script
+1. Run the Tulio build script
 
    ```bash
    ./hst_autocompile.sh --hestia --install '~localsrc'
@@ -119,7 +119,7 @@ Below are some instructions for making a change to Hestia's UI, running the buil
 Please refer to the [contributing guidelines](https://github.com/contaura/tuliocp/blob/main/CONTRIBUTING.md#development-guidelines) for more details on submitting code changes for review.
 
 ::: info
-A backup is created each time the Hestia build script is run. If you run this often it can fill up your VM's disk space.
+A backup is created each time the Tulio build script is run. If you run this often it can fill up your VM's disk space.
 You can delete the backups by running `rm -rf /root/hst_backups` as root user on the VM.
 :::
 
@@ -130,7 +130,7 @@ We currently use [Bats](https://github.com/bats-core/bats-core) to run our autom
 ### Install
 
 ```bash
-# Clone Hestia repo with testing submodules
+# Clone Tulio repo with testing submodules
 git clone --recurse-submodules https://github.com/contaura/tuliocp
 # Or, using an existing local repo with an up-to-date main branch
 git submodule update --init --recursive
@@ -146,6 +146,6 @@ Do not run any testing script on a live server. It might cause issues or downtim
 :::
 
 ```bash
-# Run Hestia tests
+# Run Tulio tests
 test/test.bats
 ```

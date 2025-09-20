@@ -14,7 +14,7 @@ class DokuWikiSetup extends BaseSetup
         'name' => 'DokuWiki',
         'group' => 'wiki',
         'version' => 'latest',
-        'thumbnail' => 'dokuwiki-logo.svg',
+        'thumbnail' => 'dokuwiki-logo-tulio.svg',
     ];
 
     protected array $config = [
