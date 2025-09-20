@@ -1,0 +1,20 @@
+Package: tuliocp
+Source: tuliocp
+Version: 1.10.0~alpha
+Architecture: amd64
+Maintainer: TulioCP <info@tuliocp.com>
+Depends: bash, awk, sed, acl, sysstat, setpriv | util-linux (>= 2.33), zstd, lsb-release, idn2, jq, bubblewrap, at
+Filename: pool/main/tuliocp_1.10.0~alpha_amd64.deb
+Size: 1866720
+MD5sum: 4357e9186ba722a7b3785f0442b36622
+SHA1: a122e2569686af4474a430637b835be3e674c178
+SHA256: da0ad4ca6073941211a25c0ea215a8e2818717a0965a31f5f072cd28cde91a92
+Section: admin
+Priority: optional
+Homepage: https://www.tuliocp.com
+Description: TulioCP Control Panel
+ TulioCP is an open source hosting control panel forked from VestaCP.
+ TulioCP has a clean and focused interface without the clutter.
+ TulioCP has the latest of very innovative technologies.
+ TulioCP provides comprehensive web server management with modern features.
+
