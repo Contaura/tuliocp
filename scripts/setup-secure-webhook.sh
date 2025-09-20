@@ -24,9 +24,9 @@ if [ -z "$WEBHOOK_SECRET" ]; then
     echo ""
 fi
 
-# Copy secure webhook handler
+# Download and install secure webhook handler
 echo "📋 Installing secure webhook handler..."
-cp scripts/secure-webhook-handler.py /opt/tuliocp-build/
+wget -O /opt/tuliocp-build/secure-webhook-handler.py https://raw.githubusercontent.com/Contaura/tuliocp/main/scripts/secure-webhook-handler.py
 chmod +x /opt/tuliocp-build/secure-webhook-handler.py
 
 # Create environment file
