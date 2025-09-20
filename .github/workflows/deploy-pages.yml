@@ -1,9 +1,10 @@
-name: Deploy GitHub Pages
+name: Deploy GitHub Pages (DISABLED - using build-packages.yml instead)
 
-on:
-  push:
-    branches: [ main ]
-  workflow_dispatch:
+# This workflow is disabled because build-packages.yml handles repository deployment
+# on:
+#   push:
+#     branches: [ main ]
+#   workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
