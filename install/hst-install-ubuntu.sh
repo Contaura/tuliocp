@@ -30,6 +30,9 @@ codename="$(lsb_release -s -c)"
 architecture="$(arch)"
 HESTIA_INSTALL_DIR="$HESTIA_ROOT/install/deb"
 HESTIA_COMMON_DIR="$HESTIA_ROOT/install/common"
+# TulioCP directories (using repository paths during installation)
+TULIO_INSTALL_DIR="$(pwd)/install/deb"
+TULIO_COMMON_DIR="$(pwd)/install/common"
 VERBOSE='no'
 
 # Define software versions
@@ -48,7 +51,7 @@ node_v="20"
 # Defining software pack for all distros
 software="acl apache2 apache2.2-common apache2-suexec-custom apache2-utils apparmor-utils at awstats bc bind9 bsdmainutils bsdutils
   clamav-daemon cron curl dnsutils dovecot-imapd dovecot-managesieved dovecot-pop3d dovecot-sieve e2fslibs e2fsprogs
-  exim4 exim4-daemon-heavy expect fail2ban flex ftp git tuliocp
+  exim4 exim4-daemon-heavy expect fail2ban flex ftp git
   idn2 imagemagick ipset jq libapache2-mod-fcgid libapache2-mod-php$fpm_v libapache2-mod-rpaf libonig5 libzip4 lsb-release
   lsof mariadb-client mariadb-common mariadb-server mc mysql-client mysql-common mysql-server nginx nodejs openssh-server
   php$fpm_v php$fpm_v-apcu php$fpm_v-bz2 php$fpm_v-cgi php$fpm_v-cli php$fpm_v-common php$fpm_v-curl php$fpm_v-gd
@@ -149,37 +152,37 @@ set_default_value() {
 
 # Defining function to set default language value
 set_default_lang() {
-        if [ -z "$lang" ]; then
-                eval lang=$1
-        fi
-        lang_list="ar az bg bn bs ca cs da de el en es fa fi fr hr hu id it ja ka ku ko nl no pl pt pt-br ro ru sk sq sr sv th tr uk ur vi zh-cn zh-tw"
-        if ! (echo $lang_list | grep -w $lang > /dev/null 2>&1); then
-                eval lang=$1
-        fi
+	if [ -z "$lang" ]; then
+		eval lang=$1
+	fi
+	lang_list="ar az bg bn bs ca cs da de el en es fa fi fr hr hu id it ja ka ku ko nl no pl pt pt-br ro ru sk sq sr sv th tr uk ur vi zh-cn zh-tw"
+	if ! (echo $lang_list | grep -w $lang > /dev/null 2>&1); then
+		eval lang=$1
+	fi
 }
 
 # Safely prompt for user input even when the installer is executed via a pipe
 prompt_input() {
-        local __prompt="$1"
-        local __var_name="$2"
-        local __read_opts="${3:--r}"
-        local __input
+	local __prompt="$1"
+	local __var_name="$2"
+	local __read_opts="${3:--r}"
+	local __input
 
-        if [ -t 0 ]; then
-                read $__read_opts -p "$__prompt" __input
-        elif [ -r /dev/tty ]; then
-                read $__read_opts -p "$__prompt" __input < /dev/tty
-        else
-                return 1
-        fi
+	if [ -t 0 ]; then
+		read $__read_opts -p "$__prompt" __input
+	elif [ -r /dev/tty ]; then
+		read $__read_opts -p "$__prompt" __input < /dev/tty
+	else
+		return 1
+	fi
 
-        local __status=$?
-        if [ $__status -ne 0 ]; then
-                return $__status
-        fi
+	local __status=$?
+	if [ $__status -ne 0 ]; then
+		return $__status
+	fi
 
-        printf -v "$__var_name" '%s' "$__input"
-        return 0
+	printf -v "$__var_name" '%s' "$__input"
+	return 0
 }
 
 # Define the default backend port
@@ -510,15 +513,15 @@ if [ -n "$conflicts" ] && [ -z "$force" ]; then
 	echo
 	echo '!!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!!'
 	echo
-        if ! prompt_input 'Would you like to remove the conflicting packages? [y/N] ' answer; then
-                check_result 1 "Unable to read user input from terminal."
-        fi
-        if [ "$answer" = 'y' ] || [ "$answer" = 'Y' ]; then
-                apt-get -qq purge $conflicts -y
-                check_result $? 'apt-get remove failed'
-                unset $answer
-        else
-	check_result 1 "TulioCP should be installed on a clean server."
+	if ! prompt_input 'Would you like to remove the conflicting packages? [y/N] ' answer; then
+		check_result 1 "Unable to read user input from terminal."
+	fi
+	if [ "$answer" = 'y' ] || [ "$answer" = 'Y' ]; then
+		apt-get -qq purge $conflicts -y
+		check_result $? 'apt-get remove failed'
+		unset $answer
+	else
+		check_result 1 "TulioCP should be installed on a clean server."
 	fi
 fi
 
@@ -690,82 +693,82 @@ echo -e "\n"
 
 # Asking for confirmation to proceed
 if [ "$interactive" = 'yes' ]; then
-        if ! prompt_input 'Would you like to continue with the installation? [y/N]: ' answer; then
-                echo 'Error: unable to read user input. If you are running non-interactively, re-run the installer with --interactive no and supply the required options.'
-                exit 1
-        fi
-        if [ "$answer" != 'y' ] && [ "$answer" != 'Y' ]; then
-                echo 'Goodbye'
-                exit 1
-        fi
+	if ! prompt_input 'Would you like to continue with the installation? [y/N]: ' answer; then
+		echo 'Error: unable to read user input. If you are running non-interactively, re-run the installer with --interactive no and supply the required options.'
+		exit 1
+	fi
+	if [ "$answer" != 'y' ] && [ "$answer" != 'Y' ]; then
+		echo 'Goodbye'
+		exit 1
+	fi
 fi
 
 # Validate Username / Password / Email / Hostname even when interactive = no
 if [ -z "$username" ]; then
-        while validate_username; do
-                if ! prompt_input 'Please enter administrator username: ' username; then
-                        echo 'Error: unable to read administrator username from terminal input.'
-                        exit 1
-                fi
-        done
+	while validate_username; do
+		if ! prompt_input 'Please enter administrator username: ' username; then
+			echo 'Error: unable to read administrator username from terminal input.'
+			exit 1
+		fi
+	done
 else
-        if validate_username; then
-                exit 1
-        fi
+	if validate_username; then
+		exit 1
+	fi
 fi
 
 # Ask for password
 if [ -z "$vpass" ]; then
-        while validate_password; do
-                if ! prompt_input 'Please enter administrator password: ' vpass; then
-                        echo 'Error: unable to read administrator password from terminal input.'
-                        exit 1
-                fi
-        done
+	while validate_password; do
+		if ! prompt_input 'Please enter administrator password: ' vpass; then
+			echo 'Error: unable to read administrator password from terminal input.'
+			exit 1
+		fi
+	done
 else
-        if validate_password; then
-                echo "Please use a valid password"
-                exit 1
-        fi
+	if validate_password; then
+		echo "Please use a valid password"
+		exit 1
+	fi
 fi
 
 # Asking for contact email
 if [ -z "$email" ]; then
-        while validate_email; do
-                echo -e "\nPlease use a valid emailadress (ex. info@domain.tld)."
-                if ! prompt_input 'Please enter admin email address: ' email; then
-                        echo 'Error: unable to read admin email address from terminal input.'
-                        exit 1
-                fi
-        done
+	while validate_email; do
+		echo -e "\nPlease use a valid emailadress (ex. info@domain.tld)."
+		if ! prompt_input 'Please enter admin email address: ' email; then
+			echo 'Error: unable to read admin email address from terminal input.'
+			exit 1
+		fi
+	done
 else
-        if validate_email; then
-                echo "Please use a valid emailadress (ex. info@domain.tld)."
+	if validate_email; then
+		echo "Please use a valid emailadress (ex. info@domain.tld)."
 		exit 1
 	fi
 fi
 
 # Asking to set FQDN hostname
 if [ -z "$servername" ]; then
-        # Ask and validate FQDN hostname.
-        if ! prompt_input "Please enter FQDN hostname [$(hostname -f)]: " servername; then
-                echo 'Error: unable to read server hostname from terminal input.'
-                exit 1
-        fi
+	# Ask and validate FQDN hostname.
+	if ! prompt_input "Please enter FQDN hostname [$(hostname -f)]: " servername; then
+		echo 'Error: unable to read server hostname from terminal input.'
+		exit 1
+	fi
 
-        # Set hostname if it wasn't set
-        if [ -z "$servername" ]; then
-                servername=$(hostname -f)
+	# Set hostname if it wasn't set
+	if [ -z "$servername" ]; then
+		servername=$(hostname -f)
 	fi
 
 	# Validate Hostname, go to loop if the validation fails.
-        while validate_hostname; do
-                echo -e "\nPlease use a valid hostname according to RFC1178 (ex. hostname.domain.tld)."
-                if ! prompt_input "Please enter FQDN hostname [$(hostname -f)]: " servername; then
-                        echo 'Error: unable to read server hostname from terminal input.'
-                        exit 1
-                fi
-        done
+	while validate_hostname; do
+		echo -e "\nPlease use a valid hostname according to RFC1178 (ex. hostname.domain.tld)."
+		if ! prompt_input "Please enter FQDN hostname [$(hostname -f)]: " servername; then
+			echo 'Error: unable to read server hostname from terminal input.'
+			exit 1
+		fi
+	done
 else
 	# Validate FQDN hostname if it is preset
 	if validate_hostname; then
@@ -1179,16 +1182,20 @@ if [ -n "$withdebs" ] && [ -d "$withdebs" ]; then
 	fi
 fi
 
-# Create TulioCP directory structure and link to Tulio installation
+# Create TulioCP directory structure and copy source files
 echo "[ * ] Setting up TulioCP directory structure..."
 if [ ! -d "$TULIO" ]; then
 	# Create TulioCP base directory
 	mkdir -p "$TULIO"
-	# Link Tulio installation files to TulioCP paths
-	if [ -d "$HESTIA_ROOT" ]; then
-		# Copy Tulio files to TulioCP directory
-		cp -r "$HESTIA_ROOT/"* "$TULIO/"
-		echo "Tulio files copied to TulioCP directory"
+	# Copy source files from repository to TulioCP directory
+	# Note: This assumes the installer is being run from the source directory
+	if [ -d "$(pwd)" ]; then
+		# Copy essential directories
+		cp -r "$(pwd)/bin" "$TULIO/" 2> /dev/null || echo "Warning: bin directory not found"
+		cp -r "$(pwd)/func" "$TULIO/" 2> /dev/null || echo "Warning: func directory not found"
+		cp -r "$(pwd)/web" "$TULIO/" 2> /dev/null || echo "Warning: web directory not found"
+		cp -r "$(pwd)/install" "$TULIO/" 2> /dev/null || echo "Warning: install directory not found"
+		echo "TulioCP files copied to installation directory"
 	fi
 fi
 
@@ -1243,6 +1250,7 @@ systemctl restart ssh
 # Disable AWStats cron
 rm -f /etc/cron.d/awstats
 # Replace AWStats function
+mkdir -p /etc/logrotate.d/httpd-prerotate
 cp -f $TULIO_INSTALL_DIR/logrotate/httpd-prerotate/* /etc/logrotate.d/httpd-prerotate/
 
 # Set directory color
@@ -1555,8 +1563,11 @@ fi
 
 # Generating SSL certificate
 echo "[ * ] Generating default self-signed SSL certificate..."
-$TULIO/bin/v-generate-ssl-cert $(hostname) '' 'US' 'California' \
-	'San Francisco' 'Tulio Control Panel' 'IT' > /tmp/hst.pem
+# Generate SSL certificate directly with OpenSSL since v-generate-ssl-cert doesn't exist yet
+openssl req -x509 -newkey rsa:4096 -keyout /tmp/hst.key -out /tmp/hst.crt \
+	-days 365 -nodes -subj "/C=US/ST=California/L=San Francisco/O=Tulio Control Panel/OU=IT/CN=$(hostname)"
+# Combine certificate and key
+cat /tmp/hst.crt /tmp/hst.key > /tmp/hst.pem
 
 # Parsing certificate file
 crt_end=$(grep -n "END CERTIFICATE-" /tmp/hst.pem | cut -f 1 -d:)
