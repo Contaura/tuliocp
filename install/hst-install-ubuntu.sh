@@ -419,7 +419,7 @@ if [ "x$(id -u)" != 'x0' ]; then
 fi
 
 if [ -d "/usr/local/tulio" ]; then
-	check_result 1 "Hestia install detected. Unable to continue"
+	check_result 1 "TulioCP install detected. Unable to continue"
 fi
 
 type=$(grep "^ID=" /etc/os-release | cut -f 2 -d '=')
@@ -438,7 +438,7 @@ if [ ! -f /etc/apt/apt.conf.d/80-retries ]; then
 fi
 
 # Welcome message
-echo "Welcome to the Hestia Control Panel installer!"
+echo "Welcome to the TulioCP installer!"
 echo
 echo "Please wait, the installer is now checking for missing dependencies..."
 echo
@@ -456,7 +456,7 @@ check_result $? "Package installation failed, check log file for more details."
 
 # Check repository availability
 wget --quiet "https://$RHOST" -O /dev/null
-check_result $? "Unable to connect to the Hestia APT repository"
+check_result $? "Unable to connect to the TulioCP APT repository"
 
 # Check installed packages
 tmpfile=$(mktemp -p /tmp)
@@ -490,7 +490,7 @@ if [ -n "$conflicts" ] && [ -z "$force" ]; then
 		check_result $? 'apt-get remove failed'
 		unset $answer
 	else
-		check_result 1 "Hestia Control Panel should be installed on a clean server."
+	check_result 1 "TulioCP should be installed on a clean server."
 	fi
 fi
 
@@ -574,7 +574,7 @@ install_welcome_message() {
 	echo '               |  _  |  __/\__ \ |_| | (_| | |___|  __/                 '
 	echo '               |_| |_|\___||___/\__|_|\__,_|\____|_|                    '
 	echo "                                                                        "
-	echo "                          Hestia Control Panel                          "
+	echo "                              TulioCP                                   "
 	if [[ "$TULIO_INSTALL_VER" =~ "beta" ]]; then
 		echo "                              BETA RELEASE                          "
 	fi
@@ -588,7 +588,7 @@ install_welcome_message() {
 	echo
 	echo "========================================================================"
 	echo
-	echo "Thank you for downloading Hestia Control Panel! In a few moments,"
+	echo "Thank you for downloading TulioCP! In a few moments,"
 	echo "we will begin installing the following components on your server:"
 	echo
 }
@@ -2414,7 +2414,7 @@ echo -e "\n"
 # Sending notification to admin email
 echo -e "Congratulations!
 
-You have successfully installed Hestia Control Panel on your server.
+You have successfully installed TulioCP on your server.
 
 Ready to get started? Log in using the following credentials:
 
@@ -2425,7 +2425,7 @@ fi
 echo -e -n " 	Username:   $username
 	Password:   $displaypass
 
-Thank you for choosing Hestia Control Panel to power your full stack web server,
+Thank you for choosing TulioCP to power your full stack web server,
 we hope that you enjoy using it as much as we do!
 
 Please feel free to contact us at any time if you have any questions,
@@ -2438,18 +2438,18 @@ GitHub:         https://www.github.com/contaura/tuliocp
 Note: Automatic updates are enabled by default. If you would like to disable them,
 please log in and navigate to Server > Updates to turn them off.
 
-Help support the Hestia Control Panel project by donating via PayPal:
+Help support the TulioCP project by donating via PayPal:
 https://www.tuliocp.com/donate
 
 --
 Sincerely yours,
-The Hestia Control Panel development team
+The TulioCP development team
 
 Made with love & pride by the open-source community around the world.
 " >> $tmpfile
 
 send_mail="$TULIO/web/inc/mail-wrapper.php"
-cat $tmpfile | $send_mail -s "Hestia Control Panel" $email
+cat $tmpfile | $send_mail -s "TulioCP" $email
 
 # Congrats
 echo
@@ -2457,7 +2457,7 @@ cat $tmpfile
 rm -f $tmpfile
 
 # Add welcome message to notification panel
-$TULIO/bin/v-add-user-notification "$username" 'Welcome to Hestia Control Panel!' '<p>You are now ready to begin adding <a href="/add/user/">user accounts</a> and <a href="/add/web/">domains</a>. For help and assistance, <a href="https://tuliocp.com/docs/" target="_blank">view the documentation</a> or <a href="https://forum.tuliocp.com/" target="_blank">visit our forum</a>.</p><p>Please <a href="https://github.com/contaura/tuliocp/issues" target="_blank">report any issues via GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+$TULIO/bin/v-add-user-notification "$username" 'Welcome to TulioCP!' '<p>You are now ready to begin adding <a href="/add/user/">user accounts</a> and <a href="/add/web/">domains</a>. For help and assistance, <a href="https://tuliocp.com/docs/" target="_blank">view the documentation</a> or <a href="https://forum.tuliocp.com/" target="_blank">visit our forum</a>.</p><p>Please <a href="https://github.com/contaura/tuliocp/issues" target="_blank">report any issues via GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The TulioCP development team</p>'
 
 # Clean-up
 # Sort final configuration file
