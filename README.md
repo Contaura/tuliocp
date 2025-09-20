@@ -59,11 +59,18 @@ TulioCP provides an official APT repository for easy installation and updates. O
 
 ### 🎯 Quick Installation
 
-Install TulioCP with a single command:
-
+**Method 1: Direct Installer (Recommended)**
 ```bash
 wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh
 sudo bash hst-install.sh
+```
+
+**Method 2: APT Repository Setup**
+```bash
+# Setup APT repository automatically
+wget -O - https://apt.tuliocp.com/setup.sh | sudo bash
+sudo apt update
+sudo apt install --allow-unauthenticated tuliocp
 ```
 
 ### 📋 Available Packages
@@ -144,11 +151,20 @@ wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install
 sudo bash hst-install.sh
 ```
 
-**Method 2: APT Repository Installation**
+**Method 2: APT Repository (Automated Setup)**
 ```bash
-# Add repository and install
+# Automatic repository setup and install
+wget -O - https://apt.tuliocp.com/setup.sh | sudo bash
+sudo apt update
+sudo apt install --allow-unauthenticated tuliocp
+```
+
+**Method 3: Manual APT Repository Setup**
+```bash
+# Manual repository configuration
 echo "deb https://apt.tuliocp.com stable main" | sudo tee /etc/apt/sources.list.d/tuliocp.list
-sudo apt update && sudo apt install tuliocp
+sudo apt update
+sudo apt install --allow-unauthenticated tuliocp
 ```
 
 ### 🔧 Connection Methods
