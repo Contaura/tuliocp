@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>TulioCP APT Repository</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f8f9fa; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #333; border-bottom: 2px solid #007acc; padding-bottom: 10px; }
+        h2 { color: #555; margin-top: 30px; }
+        .code { background: #f4f4f4; padding: 15px; border-radius: 5px; margin: 15px 0; font-family: monospace; border-left: 4px solid #007acc; overflow-x: auto; }
+        .package { margin: 10px 0; padding: 15px; border-left: 3px solid #007acc; background: #f8f9ff; }
+        .status { padding: 10px; border-radius: 5px; margin: 15px 0; }
+        .warning { background: #fff3cd; border: 1px solid #ffeaa7; color: #856404; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+        pre { margin: 0; white-space: pre-wrap; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 TulioCP APT Repository</h1>
+        <p>Official APT repository for TulioCP Control Panel packages.</p>
+        
+        <div class="info status">
+            <strong>🔄 Repository Status:</strong> Packages are automatically built from source via GitHub Actions and deployed here.
+        </div>
+        
+        <h2>📦 Available Packages</h2>
+        <div class="package">
+            <strong>tuliocp</strong> - Main control panel package with web interface and CLI tools
+        </div>
+        <div class="package">
+            <strong>tulio-nginx</strong> - Custom Nginx build optimized for TulioCP with HTTP/2 and SSL support
+        </div>
+        <div class="package">
+            <strong>tulio-php</strong> - Custom PHP-FPM build with enhanced performance and security features
+        </div>
+        <div class="package">
+            <strong>tulio-web-terminal</strong> - Browser-based terminal interface with xterm.js support
+        </div>
+        
+        <h2>⚙️ Repository Setup</h2>
+        <div class="code">
+            <pre># Add GPG key for package verification
+gpg --no-default-keyring --keyring /usr/share/keyrings/tulio-keyring.gpg \
+    --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5
+
+# Add TulioCP repository
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://apt.tuliocp.com/ stable main" \
+    > /etc/apt/sources.list.d/tuliocp.list
+
+# Update package list
+apt update</pre>
+        </div>
+        
+        <h2>🛠️ Installation</h2>
+        <div class="code">
+            <pre># Install TulioCP (recommended method - uses automated installer)
+wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh
+bash hst-install.sh
+
+# Or install packages individually (advanced users)
+apt install tuliocp tulio-nginx tulio-php</pre>
+        </div>
+        
+        <div class="warning status">
+            <strong>⚠️ Important:</strong> TulioCP should be installed on a clean Ubuntu 22.04/24.04 or Debian 11/12 server for best results.
+        </div>
+        
+        <h2>📚 Documentation</h2>
+        <ul>
+            <li><a href="https://github.com/contaura/tuliocp">🏠 Main Repository</a></li>
+            <li><a href="https://github.com/contaura/tuliocp/blob/main/README.md">📖 Installation Guide</a></li>
+            <li><a href="https://github.com/contaura/tuliocp/issues">🐛 Issue Tracker</a></li>
+            <li><a href="https://github.com/contaura/tuliocp/discussions">💬 Community Discussions</a></li>
+        </ul>
+        
+        <h2>🔄 Automated Building</h2>
+        <p>This repository is automatically updated when changes are pushed to the main branch:</p>
+        <ul>
+            <li>✅ Packages built from latest source code</li>
+            <li>✅ Debian-compatible APT repository structure</li>
+            <li>✅ GPG-signed packages (using Hestia key temporarily)</li>
+            <li>✅ AMD64 architecture support</li>
+        </ul>
+        
+        <hr style="margin: 30px 0; border: 1px solid #eee;">
+        <p style="text-align: center; color: #666; font-size: 0.9em;">
+            <strong>TulioCP</strong> - Lightweight and powerful control panel for the modern web<br>
+            <small>Last updated: <span id="lastUpdated"></span></small>
+        </p>
+    </div>
+    
+    <script>
+        document.getElementById('lastUpdated').textContent = new Date().toISOString().split('T')[0];
+    </script>
+</body>
+</html>
