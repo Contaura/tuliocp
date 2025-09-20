@@ -10,7 +10,7 @@
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -31,9 +31,9 @@ check_tulio_demo_mode
 
 # Add cron job
 cmd="v-update-sys-queue restart"
-check_cron=$(grep "$cmd" "/var/spool/cron/crontabs/hestiaweb" 2> /dev/null)
+check_cron=$(grep "$cmd" "/var/spool/cron/crontabs/tulioweb" 2> /dev/null)
 if [ -z "$check_cron" ] && [ -n "$CRON_SYSTEM" ]; then
-	sed -i -e "\$a*/2 * * * * sudo /usr/local/hestia/bin/v-update-sys-queue restart" "/var/spool/cron/crontabs/hestiaweb"
+	sed -i -e "\$a*/2 * * * * sudo /usr/local/tulio/bin/v-update-sys-queue restart" "/var/spool/cron/crontabs/tulioweb"
 fi
 
 #----------------------------------------------------------#

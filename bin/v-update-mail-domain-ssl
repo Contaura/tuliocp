@@ -22,7 +22,7 @@ restart=$4
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
@@ -60,7 +60,7 @@ is_web_domain_cert_valid
 rm -f $HOMEDIR/$user/conf/web/$domain/ssl/mail.$domain.*
 rm -f $USER_DATA/ssl/mail.$domain.*
 
-# Add certificate to Hestia user configuration data directory
+# Add certificate to Tulio user configuration data directory
 if [ -f "$ssl_dir/$domain.crt" ]; then
 	cp -f $ssl_dir/$domain.crt $USER_DATA/ssl/mail.$domain.crt
 	cp -f $ssl_dir/$domain.key $USER_DATA/ssl/mail.$domain.key

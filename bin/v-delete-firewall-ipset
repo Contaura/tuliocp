@@ -4,7 +4,7 @@
 #
 # example: v-delete-firewall-ipset country-nl
 #
-# This function removes ipset from system and from hestia
+# This function removes ipset from system and from tulio
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -14,7 +14,7 @@ ip_name=${1}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file

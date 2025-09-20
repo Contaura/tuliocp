@@ -23,7 +23,7 @@ iptables="/sbin/iptables"
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source "$HESTIA/func/main.sh"
 # shellcheck source=/usr/local/tulio/func/firewall.sh
@@ -31,10 +31,10 @@ source "$HESTIA/func/firewall.sh"
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
 
-# Get hestia port by reading nginx.conf
-hestiaport=$(sed -ne "/listen/{s/.*listen[^0-9]*\([0-9][0-9]*\)[ \t]*ssl\;/\1/p;q}" "$HESTIA/nginx/conf/nginx.conf")
-if [ -z "$hestiaport" ]; then
-	hestiaport=8083
+# Get tulio port by reading nginx.conf
+tulioport=$(sed -ne "/listen/{s/.*listen[^0-9]*\([0-9][0-9]*\)[ \t]*ssl\;/\1/p;q}" "$HESTIA/nginx/conf/nginx.conf")
+if [ -z "$tulioport" ]; then
+	tulioport=8083
 fi
 
 #----------------------------------------------------------#
@@ -86,7 +86,7 @@ case $chain in
 		protocol=TCP
 		;;
 	HESTIA)
-		port=$hestiaport
+		port=$tulioport
 		protocol=TCP
 		;;
 	RECIDIVE)

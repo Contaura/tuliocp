@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Hestia\WebApp;
+namespace Tulio\WebApp;
 
-use Hestia\WebApp\InstallationTarget\InstallationTarget;
+use Tulio\WebApp\InstallationTarget\InstallationTarget;
 
 interface InstallerInterface
 {

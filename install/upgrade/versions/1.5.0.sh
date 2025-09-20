@@ -60,14 +60,14 @@ if [ -n "$MAIL_SYSTEM" ]; then
 	done
 fi
 
-if [ -L "/var/log/hestia" ]; then
-	echo "[ ! ] Updating log file location: /usr/local/tulio/log/* to /var/log/hestia/..."
-	rm /var/log/hestia
-	mkdir -p /var/log/hestia
-	cp /usr/local/tulio/log/* /var/log/hestia/
+if [ -L "/var/log/tulio" ]; then
+	echo "[ ! ] Updating log file location: /usr/local/tulio/log/* to /var/log/tulio/..."
+	rm /var/log/tulio
+	mkdir -p /var/log/tulio
+	cp /usr/local/tulio/log/* /var/log/tulio/
 	rm -rf /usr/local/tulio/log
-	ln -s /var/log/hestia /usr/local/tulio/log
-	touch /var/log/hestia/auth.log /var/log/hestia/error.log /var/log/hestia/system.log /var/log/hestia/nginx-error.log /var/log/hestia/nginx-access.log
+	ln -s /var/log/tulio /usr/local/tulio/log
+	touch /var/log/tulio/auth.log /var/log/tulio/error.log /var/log/tulio/system.log /var/log/tulio/nginx-error.log /var/log/tulio/nginx-access.log
 fi
 
 if [ -d "/var/log/roundcube" ]; then

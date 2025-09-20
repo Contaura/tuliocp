@@ -4,7 +4,7 @@
 #
 # example: v-update-dns-templates
 #
-# This function for obtaining updated dns templates from Hestia package.
+# This function for obtaining updated dns templates from Tulio package.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -15,7 +15,7 @@ restart=$1
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file

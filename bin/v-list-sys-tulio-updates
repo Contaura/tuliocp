@@ -2,9 +2,9 @@
 # info: list system updates
 # options: [FORMAT]
 #
-# example: v-list-sys-hestia-updates
+# example: v-list-sys-tulio-updates
 #
-# This function checks available updates for hestia packages.
+# This function checks available updates for tulio packages.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -15,7 +15,7 @@ format=${1-shell}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -75,43 +75,43 @@ shell_list() {
 #----------------------------------------------------------#
 
 # Checking official latest version
-hestia_v=$(apt-cache policy hestia | grep Candidate | cut -d ':' -f 2 | xargs)
-nginx_v=$(apt-cache policy hestia-nginx | grep Candidate | cut -d ':' -f 2 | xargs)
-php_v=$(apt-cache policy hestia-php | grep Candidate | cut -d ':' -f 2 | xargs)
+tulio_v=$(apt-cache policy tulio | grep Candidate | cut -d ':' -f 2 | xargs)
+nginx_v=$(apt-cache policy tulio-nginx | grep Candidate | cut -d ':' -f 2 | xargs)
+php_v=$(apt-cache policy tulio-php | grep Candidate | cut -d ':' -f 2 | xargs)
 
-# Checking installed hestia version
-check_installed_deb hestia
+# Checking installed tulio version
+check_installed_deb tulio
 
 UPDATED='yes'
-if [ -n "$hestia_v" ] && [ "$hestia_v" \> "$VERSION" ]; then
+if [ -n "$tulio_v" ] && [ "$tulio_v" \> "$VERSION" ]; then
 	UPDATED='no'
 fi
 
-data="NAME='hestia' VERSION='$VERSION' ARCH='$ARCH'"
-data="$data UPDATED='$UPDATED' DESCR='Hestia core package' TIME='$TIME' DATE='$DATE'"
+data="NAME='tulio' VERSION='$VERSION' ARCH='$ARCH'"
+data="$data UPDATED='$UPDATED' DESCR='Tulio core package' TIME='$TIME' DATE='$DATE'"
 
-# Checking installed hestia-php version
-check_installed_deb hestia-php
+# Checking installed tulio-php version
+check_installed_deb tulio-php
 
 UPDATED='yes'
 if [ -n "$php_v" ] && [ "$php_v" \> "$VERSION" ]; then
 	UPDATED='no'
 fi
 
-data="$data\nNAME='hestia-php' VERSION='$VERSION'"
-data="$data ARCH='$ARCH' UPDATED='$UPDATED' DESCR='Hestia internal php interpreter'"
+data="$data\nNAME='tulio-php' VERSION='$VERSION'"
+data="$data ARCH='$ARCH' UPDATED='$UPDATED' DESCR='Tulio internal php interpreter'"
 data="$data TIME='$TIME' DATE='$DATE'"
 
-# Checking installed hestia-nginx version
-check_installed_deb hestia-nginx
+# Checking installed tulio-nginx version
+check_installed_deb tulio-nginx
 
 UPDATED='yes'
 if [ -n "$nginx_v" ] && [ "$nginx_v" \> "$VERSION" ]; then
 	UPDATED='no'
 fi
 
-data="$data\nNAME='hestia-nginx' VERSION='$VERSION'"
-data="$data ARCH='$ARCH' UPDATED='$UPDATED' DESCR='Hestia internal web server'"
+data="$data\nNAME='tulio-nginx' VERSION='$VERSION'"
+data="$data ARCH='$ARCH' UPDATED='$UPDATED' DESCR='Tulio internal web server'"
 data="$data TIME='$TIME' DATE='$DATE'"
 
 # Listing data

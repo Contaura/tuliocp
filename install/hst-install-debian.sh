@@ -2,7 +2,7 @@
 
 # ======================================================== #
 #
-# Hestia Control Panel Installer for Debian
+# Tulio Control Panel Installer for Debian
 # https://www.tuliocp.com/
 #
 # Currently Supported Versions:
@@ -17,8 +17,8 @@ export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
 RHOST='apt.tuliocp.com'
 VERSION='debian'
-# Using Hestia package paths temporarily until TulioCP packages are available
-HESTIA_ROOT='/usr/local/hestia'
+# Using Tulio package paths temporarily until TulioCP packages are available
+HESTIA_ROOT='/usr/local/tulio'
 TULIO='/usr/local/tulio'
 LOG="/root/hst_install_backups/hst_install-$(date +%d%m%Y%H%M).log"
 memory=$(grep 'MemTotal' /proc/meminfo | tr ' ' '\n' | grep [0-9])
@@ -88,7 +88,7 @@ help() {
   -e, --email             Set admin email
   -u, --username          Set admin user
   -p, --password          Set admin password
-  -D, --with-debs         Path to Hestia debs
+  -D, --with-debs         Path to Tulio debs
   -f, --force             Force installation
   -h, --help              Print this help
 
@@ -314,7 +314,7 @@ while getopts "a:w:v:j:k:m:M:g:d:x:z:Z:c:t:i:b:r:o:q:L:l:y:s:u:e:p:W:D:fh" Optio
 		e) email=$OPTARG ;;         # Admin email
 		u) username=$OPTARG ;;      # Admin username
 		p) vpass=$OPTARG ;;         # Admin password
-		D) withdebs=$OPTARG ;;      # Hestia debs path
+		D) withdebs=$OPTARG ;;      # Tulio debs path
 		f) force='yes' ;;           # Force install
 		h) help ;;                  # Help
 		*) help ;;                  # Print help (default)
@@ -469,12 +469,12 @@ fi
 
 # Check repository availability
 wget --quiet "https://$RHOST" -O /dev/null
-check_result $? "Unable to connect to the Hestia APT repository"
+check_result $? "Unable to connect to the Tulio APT repository"
 
 # Check installed packages
 tmpfile=$(mktemp -p /tmp)
 dpkg --get-selections > $tmpfile
-conflicts_pkg="exim4 mariadb-server apache2 nginx hestia postfix"
+conflicts_pkg="exim4 mariadb-server apache2 nginx tulio postfix"
 
 # Drop postfix from the list if exim should not be installed
 if [ "$exim" = 'no' ]; then
@@ -898,7 +898,7 @@ check_result $? 'apt-get upgrade failed'
 mkdir -p $hst_backups
 cd $hst_backups
 mkdir nginx apache2 php vsftpd proftpd bind exim4 dovecot clamd
-mkdir spamassassin mysql postgresql openssl hestia
+mkdir spamassassin mysql postgresql openssl tulio
 
 # Backup OpenSSL configuration
 cp /etc/ssl/openssl.cnf $hst_backups/openssl > /dev/null 2>&1
@@ -953,8 +953,8 @@ cp -r /etc/mysql/* $hst_backups/mysql > /dev/null 2>&1
 mv -f /root/.my.cnf $hst_backups/mysql > /dev/null 2>&1
 
 # Backup TulioCP
-systemctl stop hestia > /dev/null 2>&1
-cp -r $TULIO/* $hst_backups/hestia > /dev/null 2>&1
+systemctl stop tulio > /dev/null 2>&1
+cp -r $TULIO/* $hst_backups/tulio > /dev/null 2>&1
 apt-get -y purge tuliocp tulio-nginx tulio-php > /dev/null 2>&1
 rm -rf $TULIO > /dev/null 2>&1
 
@@ -1106,11 +1106,11 @@ echo
 echo "========================================================================"
 echo
 
-# Install Hestia packages from local folder
+# Install Tulio packages from local folder
 if [ -n "$withdebs" ] && [ -d "$withdebs" ]; then
 	echo "[ * ] Installing local package files..."
-	echo "    - hestia core package"
-	dpkg -i $withdebs/hestia_*.deb > /dev/null 2>&1
+	echo "    - tulio core package"
+	dpkg -i $withdebs/tulio_*.deb > /dev/null 2>&1
 
 	if [ -z $(ls $withdebs/tulio-php_*.deb 2> /dev/null) ]; then
 		echo "    - tulio-php backend package (from apt)"
@@ -1139,16 +1139,16 @@ if [ -n "$withdebs" ] && [ -d "$withdebs" ]; then
 	fi
 fi
 
-# Create TulioCP directory structure and link to Hestia installation
+# Create TulioCP directory structure and link to Tulio installation
 echo "[ * ] Setting up TulioCP directory structure..."
 if [ ! -d "$TULIO" ]; then
 	# Create TulioCP base directory
 	mkdir -p "$TULIO"
-	# Link Hestia installation files to TulioCP paths
+	# Link Tulio installation files to TulioCP paths
 	if [ -d "$HESTIA_ROOT" ]; then
-		# Copy Hestia files to TulioCP directory
+		# Copy Tulio files to TulioCP directory
 		cp -r "$HESTIA_ROOT/"* "$TULIO/"
-		echo "Hestia files copied to TulioCP directory"
+		echo "Tulio files copied to TulioCP directory"
 	fi
 fi
 
@@ -1168,15 +1168,15 @@ random_password=$(gen_pass '32')
 # do not allow login into tulioweb user
 echo tulioweb:$random_password | sudo chpasswd -e
 
-# Add a general group for normal users created by Hestia
+# Add a general group for normal users created by Tulio
 if [ -z "$(grep ^tulio-users: /etc/group)" ]; then
 	groupadd --system "tulio-users"
 fi
 
 # Create user for php-fpm configs
-/usr/sbin/useradd "hestiamail" -c "$email" --no-create-home
-# Ensures proper permissions for Hestia service interactions.
-/usr/sbin/adduser hestiamail tulio-users
+/usr/sbin/useradd "tuliomail" -c "$email" --no-create-home
+# Ensures proper permissions for Tulio service interactions.
+/usr/sbin/adduser tuliomail tulio-users
 
 # Enable SFTP subsystem for SSH
 sftp_subsys_enabled=$(grep -iE "^#?.*subsystem.+(sftp )?sftp-server" /etc/ssh/sshd_config)
@@ -1239,37 +1239,37 @@ else
 fi
 
 #----------------------------------------------------------#
-#                     Configure Hestia                     #
+#                     Configure Tulio                     #
 #----------------------------------------------------------#
 
-echo "[ * ] Configuring Hestia Control Panel..."
+echo "[ * ] Configuring Tulio Control Panel..."
 # Installing sudo configuration
 mkdir -p /etc/sudoers.d
 cp -f $TULIO_COMMON_DIR/sudo/tulioweb /etc/sudoers.d/
 chmod 440 /etc/sudoers.d/tulioweb
 
-# Add Hestia global config
+# Add Tulio global config
 if [[ ! -e /etc/tuliocp/tulio.conf ]]; then
 	mkdir -p /etc/tuliocp
 	echo -e "# Do not edit this file, will get overwritten on next upgrade, use /etc/tuliocp/local.conf instead\n\nexport TULIO='/usr/local/tulio'\n\n[[ -f /etc/tuliocp/local.conf ]] && source /etc/tuliocp/local.conf" > /etc/tuliocp/tulio.conf
 fi
 
 # Configuring system env
-echo "export TULIO='$TULIO'" > /etc/profile.d/hestia.sh
-echo 'PATH=$PATH:'$TULIO'/bin' >> /etc/profile.d/hestia.sh
-echo 'export PATH' >> /etc/profile.d/hestia.sh
-chmod 755 /etc/profile.d/hestia.sh
-source /etc/profile.d/hestia.sh
+echo "export TULIO='$TULIO'" > /etc/profile.d/tulio.sh
+echo 'PATH=$PATH:'$TULIO'/bin' >> /etc/profile.d/tulio.sh
+echo 'export PATH' >> /etc/profile.d/tulio.sh
+chmod 755 /etc/profile.d/tulio.sh
+source /etc/profile.d/tulio.sh
 
-# Configuring logrotate for Hestia logs
-cp -f $TULIO_INSTALL_DIR/logrotate/hestia /etc/logrotate.d/hestia
+# Configuring logrotate for Tulio logs
+cp -f $TULIO_INSTALL_DIR/logrotate/tulio /etc/logrotate.d/tulio
 
 # Create log path and symbolic link
-rm -f /var/log/hestia
-mkdir -p /var/log/hestia
-ln -s /var/log/hestia $TULIO/log
+rm -f /var/log/tulio
+mkdir -p /var/log/tulio
+ln -s /var/log/tulio $TULIO/log
 
-# Building directory tree and creating some blank files for Hestia
+# Building directory tree and creating some blank files for Tulio
 mkdir -p $TULIO/conf $TULIO/ssl $TULIO/data/ips \
 	$TULIO/data/queue $TULIO/data/users $TULIO/data/firewall \
 	$TULIO/data/sessions
@@ -1279,10 +1279,10 @@ touch $TULIO/data/queue/backup.pipe $TULIO/data/queue/disk.pipe \
 	$TULIO/log/nginx-error.log $TULIO/log/auth.log $TULIO/log/backup.log
 chmod 750 $TULIO/conf $TULIO/data/users $TULIO/data/ips $TULIO/log
 chmod -R 750 $TULIO/data/queue
-chmod 660 /var/log/hestia/*
+chmod 660 /var/log/tulio/*
 chmod 770 $TULIO/data/sessions
 
-# Generating Hestia configuration
+# Generating Tulio configuration
 rm -f $TULIO/conf/tulio.conf > /dev/null 2>&1
 touch $TULIO/conf/tulio.conf
 chmod 660 $TULIO/conf/tulio.conf
@@ -1489,7 +1489,7 @@ fi
 # Generating SSL certificate
 echo "[ * ] Generating default self-signed SSL certificate..."
 $TULIO/bin/v-generate-ssl-cert $(hostname) '' 'US' 'California' \
-	'San Francisco' 'Hestia Control Panel' 'IT' > /tmp/hst.pem
+	'San Francisco' 'Tulio Control Panel' 'IT' > /tmp/hst.pem
 
 crt_end=$(grep -n "END CERTIFICATE-" /tmp/hst.pem | cut -f 1 -d:)
 if [ "$release" = "12" ]; then
@@ -1501,7 +1501,7 @@ else
 fi
 
 # Adding SSL certificate
-echo "[ * ] Adding SSL certificate to Hestia Control Panel..."
+echo "[ * ] Adding SSL certificate to Tulio Control Panel..."
 cd $TULIO/ssl
 sed -n "1,${crt_end}p" /tmp/hst.pem > certificate.crt
 sed -n "$key_start,${key_end}p" /tmp/hst.pem > certificate.key
@@ -1522,7 +1522,7 @@ echo "[ * ] Enabling SSH jail..."
 $TULIO/bin/v-add-sys-ssh-jail > /dev/null 2>&1
 check_result $? "can't enable ssh jail"
 
-# Adding Hestia admin account
+# Adding Tulio admin account
 echo "[ * ] Creating default admin account..."
 $TULIO/bin/v-add-user "$username" "$vpass" "$email" "default" "System Administrator"
 check_result $? "can't create admin user"
@@ -1627,9 +1627,9 @@ if [ "$apache" = 'yes' ]; then
 		a2enmod mpm_itk > /dev/null 2>&1
 	fi
 
-	echo "# Powered by hestia" > /etc/apache2/sites-available/default
-	echo "# Powered by hestia" > /etc/apache2/sites-available/default-ssl
-	echo "# Powered by hestia" > /etc/apache2/ports.conf
+	echo "# Powered by tulio" > /etc/apache2/sites-available/default
+	echo "# Powered by tulio" > /etc/apache2/sites-available/default-ssl
+	echo "# Powered by tulio" > /etc/apache2/ports.conf
 	echo -e "/home\npublic_html/cgi-bin" > /etc/apache2/suexec/www-data
 	touch /var/log/apache2/access.log /var/log/apache2/error.log
 	mkdir -p /var/log/apache2/domains
@@ -1857,7 +1857,7 @@ if [ "$mysql" = 'yes' ] || [ "$mysql8" = 'yes' ]; then
 	# Create temporary folder and change permission
 	mkdir -p /var/lib/phpmyadmin/tmp
 	chmod 770 /var/lib/phpmyadmin/tmp
-	chown -R hestiamail:www-data /usr/share/phpmyadmin/tmp/
+	chown -R tuliomail:www-data /usr/share/phpmyadmin/tmp/
 
 	# Generate blow fish
 	blowfish=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c 32)
@@ -1876,7 +1876,7 @@ if [ "$mysql" = 'yes' ] || [ "$mysql8" = 'yes' ]; then
 	source $TULIO_INSTALL_DIR/phpmyadmin/pma.sh > /dev/null 2>&1
 
 	# Limit access to /etc/phpmyadmin/
-	chown -R root:hestiamail /etc/phpmyadmin/
+	chown -R root:tuliomail /etc/phpmyadmin/
 	chmod 640 /etc/phpmyadmin/config.inc.php
 	chmod 750 /etc/phpmyadmin/conf.d/
 fi
@@ -1912,7 +1912,7 @@ if [ "$postgresql" = 'yes' ]; then
 	$TULIO/bin/v-change-sys-db-alias 'pga' "phppgadmin"
 
 	# Limit access to /etc/phppgadmin/
-	chown -R root:hestiamail /etc/phppgadmin/
+	chown -R root:tuliomail /etc/phppgadmin/
 	chmod 640 /etc/phppgadmin/config.inc.php
 fi
 
@@ -2199,7 +2199,7 @@ if [ "$sieve" = 'yes' ]; then
 		mkdir -p $RC_CONFIG_DIR/plugins/managesieve
 		cp -f $TULIO_COMMON_DIR/roundcube/plugins/config_managesieve.inc.php $RC_CONFIG_DIR/plugins/managesieve/config.inc.php
 		ln -s $RC_CONFIG_DIR/plugins/managesieve/config.inc.php $RC_INSTALL_DIR/plugins/managesieve/config.inc.php
-		chown -R hestiamail:www-data $RC_CONFIG_DIR/
+		chown -R tuliomail:www-data $RC_CONFIG_DIR/
 		chmod 751 -R $RC_CONFIG_DIR
 		chmod 644 $RC_CONFIG_DIR/*.php
 		chmod 644 $RC_CONFIG_DIR/plugins/managesieve/config.inc.php
@@ -2380,10 +2380,10 @@ apt-get -y upgrade >> $LOG &
 BACK_PID=$!
 echo
 
-# Starting Hestia service
-update-rc.d hestia defaults
-systemctl start hestia
-check_result $? "hestia start failed"
+# Starting Tulio service
+update-rc.d tulio defaults
+systemctl start tulio
+check_result $? "tulio start failed"
 chown tulioweb:tulioweb $TULIO/data/sessions
 
 # Create backup folder and set correct permission
@@ -2405,11 +2405,11 @@ syshealth_repair_system_config
 
 # Add /usr/local/tulio/bin/ to path variable
 echo 'if [ "${PATH#*/usr/local/tulio/bin*}" = "$PATH" ]; then
-    . /etc/profile.d/hestia.sh
+    . /etc/profile.d/tulio.sh
 fi' >> /root/.bashrc
 
 #----------------------------------------------------------#
-#                   Hestia Access Info                     #
+#                   Tulio Access Info                     #
 #----------------------------------------------------------#
 
 # Comparing hostname and IP

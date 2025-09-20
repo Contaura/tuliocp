@@ -65,11 +65,11 @@ Add a new remote backup location. Currently SFTP, FTP and Backblaze are supporte
 
 [Source](https://github.com/contaura/tuliocp/blob/release/bin/v-add-cron-tulio-autoupdate)
 
-add cron job for hestia automatic updates
+add cron job for tulio automatic updates
 
 **Options**: `MODE`
 
-This function adds a cronjob for hestia automatic updates
+This function adds a cronjob for tulio automatic updates
 that can be downloaded from apt or git.
 
 ## v-add-cron-job
@@ -739,14 +739,14 @@ v-add-sys-cgroup
 
 **Options**:
 
-Add php dependencies to Hestia
+Add php dependencies to Tulio
 options: [MODE]
 
 ## v-add-sys-filemanager
 
 [Source](https://github.com/contaura/tuliocp/blob/release/bin/v-add-sys-filemanager)
 
-add file manager functionality to Hestia Control Panel
+add file manager functionality to Tulio Control Panel
 
 **Options**: `[MODE]`
 
@@ -1818,7 +1818,7 @@ for domains which have been created.
 
 [Source](https://github.com/contaura/tuliocp/blob/release/bin/v-change-sys-tulio-ssl)
 
-change hestia ssl certificate
+change tulio ssl certificate
 
 **Options**: `SSL_DIR` `[RESTART]`
 
@@ -1828,7 +1828,7 @@ change hestia ssl certificate
 v-change-sys-tulio-ssl /home/new/dir/path yes
 ```
 
-This function changes hestia SSL certificate and the key.
+This function changes tulio SSL certificate and the key.
 
 ## v-change-sys-hostname
 
@@ -1965,7 +1965,7 @@ update web templates
 **Options**: `[RESTART]`
 
 This function for changing the release branch for the
-Hestia Control Panel. This allows the user to switch between
+Tulio Control Panel. This allows the user to switch between
 stable and pre-release builds which will automaticlly update
 based on the appropriate release schedule if auto-update is
 turned on.
@@ -2688,11 +2688,11 @@ This function deletes ftp backup host
 
 [Source](https://github.com/contaura/tuliocp/blob/release/bin/v-delete-cron-tulio-autoupdate)
 
-delete hestia autoupdate cron job
+delete tulio autoupdate cron job
 
 **Options**: –
 
-This function deletes hestia autoupdate cron job.
+This function deletes tulio autoupdate cron job.
 
 ## v-delete-cron-job
 
@@ -2782,7 +2782,7 @@ deletes temp database user
 **Examples**:
 
 ```bash
-v-delete-database-temp-user wordpress hestia_sso_user mysql
+v-delete-database-temp-user wordpress tulio_sso_user mysql
 ```
 
 Revokes "temp user" access to a database and removes the user
@@ -2963,7 +2963,7 @@ delete firewall ipset
 v-delete-firewall-ipset country-nl
 ```
 
-This function removes ipset from system and from hestia
+This function removes ipset from system and from tulio
 
 ## v-delete-firewall-rule
 
@@ -3357,7 +3357,7 @@ This function disables cgroups
 
 [Source](https://github.com/contaura/tuliocp/blob/release/bin/v-delete-sys-filemanager)
 
-remove file manager functionality from Hestia Control Panel
+remove file manager functionality from Tulio Control Panel
 
 **Options**: `[MODE]`
 
@@ -4875,7 +4875,7 @@ This function for obtaining the list of dovecot config parameters.
 
 [Source](https://github.com/contaura/tuliocp/blob/release/bin/v-list-sys-tulio-autoupdate)
 
-list hestia autoupdate settings
+list tulio autoupdate settings
 
 **Options**: `[FORMAT]`
 
@@ -4885,11 +4885,11 @@ This function for obtaining autoupdate settings.
 
 [Source](https://github.com/contaura/tuliocp/blob/release/bin/v-list-sys-tulio-ssl)
 
-list hestia ssl certificate
+list tulio ssl certificate
 
 **Options**: `[FORMAT]`
 
-This function of obtaining hestia ssl files.
+This function of obtaining tulio ssl files.
 
 ## v-list-sys-tulio-updates
 
@@ -4899,7 +4899,7 @@ list system updates
 
 **Options**: `[FORMAT]`
 
-This function checks available updates for hestia packages.
+This function checks available updates for tulio packages.
 
 ## v-list-sys-info
 
@@ -4909,7 +4909,7 @@ list system os
 
 **Options**: `[FORMAT]`
 
-This function checks available updates for hestia packages.
+This function checks available updates for tulio packages.
 
 ## v-list-sys-interfaces
 
@@ -5649,13 +5649,13 @@ Install Quick Install Web App via CLI
 **Examples**:
 
 ```php
-v-quick-install-app install admin domain.com WordPress email="info@hestiacp" password="123456" username="admin" site_name="TulioCP Demo" install_directory="/" language="nl_NL" php_version="8.2" database_create="true"
+v-quick-install-app install admin domain.com WordPress email="info@tuliocp" password="123456" username="admin" site_name="TulioCP Demo" install_directory="/" language="nl_NL" php_version="8.2" database_create="true"
  example: v-quick-install-app app
  example: v-quick-install-app options admin domain.com WordPress
 ```
 
-- The v-quick-install-app install command is used to automate the installation of web applications on a server managed by Hestia Control Panel.
-- The v-quick-install-app app command is used to retrieve a list of web applications that can be quickly installed through the v-quick-install-app install command in the Hestia Control Panel. This command provides a convenient overview of supported applications and their versions, allowing users to choose which application they would like to deploy on their server. The names of the applications are case sensitive.
+- The v-quick-install-app install command is used to automate the installation of web applications on a server managed by Tulio Control Panel.
+- The v-quick-install-app app command is used to retrieve a list of web applications that can be quickly installed through the v-quick-install-app install command in the Tulio Control Panel. This command provides a convenient overview of supported applications and their versions, allowing users to choose which application they would like to deploy on their server. The names of the applications are case sensitive.
 - v-quick-install-app options admin domain.com WordPress list all the options available for the specified web application. This command provides a list of all the required and optional fields that need to be filled in when installing the application. The command also provides the default values for each field, if available.
 
 ## v-rebuild-all
@@ -6243,7 +6243,7 @@ run cli command
 v-run-cli-cmd user composer require package
 ```
 
-This function runs a limited list of cli commands with dropped privileges as the specific hestia user
+This function runs a limited list of cli commands with dropped privileges as the specific tulio user
 
 ## v-schedule-letsencrypt-domain
 
@@ -6355,10 +6355,10 @@ search for available commands
 v-search-command web
 ```
 
-This function searches for available Hestia Control Panel commands
+This function searches for available Tulio Control Panel commands
 and returns results based on the specified criteria.
 Originally developed by Federico Krum
-Ported for use with Hestia Control Panel
+Ported for use with Tulio Control Panel
 
 ## v-search-domain-owner
 
@@ -7088,7 +7088,7 @@ update dns templates
 
 **Options**: `[RESTART]`
 
-This function for obtaining updated dns templates from Hestia package.
+This function for obtaining updated dns templates from Tulio package.
 
 ## v-update-firewall
 
@@ -7114,7 +7114,7 @@ This function creates ipset lists and updates the lists if they are expired or o
 
 [Source](https://github.com/contaura/tuliocp/blob/release/bin/v-update-host-certificate)
 
-update host certificate for hestia
+update host certificate for tulio
 
 **Options**: `USER` `HOSTNAME`
 
@@ -7124,7 +7124,7 @@ update host certificate for hestia
 v-update-host-certificate admin example.com
 ```
 
-This function updates the SSL certificate used for Hestia Control Panel.
+This function updates the SSL certificate used for Tulio Control Panel.
 
 ## v-update-letsencrypt-ssl
 
@@ -7195,7 +7195,7 @@ update mail templates
 
 **Options**: `[RESTART]` `[SKIP]`
 
-This function for obtaining updated webmail templates from Hestia package.
+This function for obtaining updated webmail templates from Tulio package.
 
 ## v-update-sys-defaults
 
@@ -7214,32 +7214,32 @@ example: v-update-sys-defaults user
 
 This function updates the known key/value pair database
 
-## v-update-sys-hestia
+## v-update-sys-tulio
 
-[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-update-sys-hestia)
+[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-update-sys-tulio)
 
-update hestia package/configs
+update tulio package/configs
 
 **Options**: `PACKAGE`
 
 **Examples**:
 
 ```bash
-v-update-sys-hestia tulio-php
+v-update-sys-tulio tulio-php
 ```
 
-This function runs as apt update trigger. It pulls shell script from hestia
-server and runs it. (hestia, tulio-nginx and tulio-php are valid options)
+This function runs as apt update trigger. It pulls shell script from tulio
+server and runs it. (tulio, tulio-nginx and tulio-php are valid options)
 
 ## v-update-sys-tulio-all
 
 [Source](https://github.com/contaura/tuliocp/blob/release/bin/v-update-sys-tulio-all)
 
-update all hestia packages
+update all tulio packages
 
 **Options**: –
 
-This function of updating all hestia packages
+This function of updating all tulio packages
 
 ## v-update-sys-tulio-git
 
@@ -7252,8 +7252,8 @@ Install update from Git repository
 **Examples**:
 
 ```bash
-v-update-sys-tulio-git hestiacp staging/beta install
-# Will download from the hestiacp repository
+v-update-sys-tulio-git tuliocp staging/beta install
+# Will download from the tuliocp repository
 # Pulls code from staging/beta branch
 # install: installs package immediately
 # install-auto: installs package and schedules automatic updates from Git
@@ -7276,7 +7276,7 @@ v-update-sys-ip
 # Intended for internal usage
 ```
 
-This function scans configured IP in the system and register them with Hestia
+This function scans configured IP in the system and register them with Tulio
 internal database. This call is intended for use on vps servers, where IP is
 set by hypervisor.
 
@@ -7660,7 +7660,7 @@ update web templates
 
 **Options**: `[RESTART]` `[SKIP]`
 
-This function for obtaining updated web (Nginx/Apache2/PHP) templates from the Hestia package.
+This function for obtaining updated web (Nginx/Apache2/PHP) templates from the Tulio package.
 
 ## v-update-white-label-logo
 
@@ -7670,4 +7670,4 @@ update white label logo's
 
 **Options**: `[DOWNLOAD]`
 
-Replace Hestia logos with User created logo's
+Replace Tulio logos with User created logo's

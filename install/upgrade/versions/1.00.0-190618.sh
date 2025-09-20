@@ -95,13 +95,13 @@ if [ -d "/etc/roundcube" ]; then
 	chown root:www-data /etc/roundcube/debian-db*
 fi
 
-# Add a general group for normal users created by Hestia
+# Add a general group for normal users created by Tulio
 echo "[ * ] Verifying ACLs and hardening user permissions..."
 if [ -z "$(grep ^tulio-users: /etc/group)" ]; then
 	groupadd --system "tulio-users"
 fi
 
-# Make sure non-admin users belong to correct Hestia group
+# Make sure non-admin users belong to correct Tulio group
 for user in $($BIN/v-list-users plain | cut -f1); do
 	if [ "$user" != "admin" ]; then
 		usermod -a -G "tulio-users" "$user"

@@ -1,5 +1,5 @@
 <?php
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function Tuliocp\quoteshellarg\quoteshellarg;
 
 try {
 	require_once "../inc/vendor/autoload.php";
@@ -38,7 +38,7 @@ function api_error($exit_code, $message, $hst_return, bool $add_log = false, $us
 
 	// Print the message with http_code and exit_code
 	$http_code = $exit_code >= 100 ? $exit_code : exit_code_to_http_code($exit_code);
-	header("Hestia-Exit-Code: $exit_code");
+	header("Tulio-Exit-Code: $exit_code");
 	http_response_code($http_code);
 	if ($hst_return == "code") {
 		echo $exit_code;
@@ -332,7 +332,7 @@ function api_connection(array $request_data) {
 		unset($output);
 	}
 
-	header("Hestia-Exit-Code: $cmd_exit_code");
+	header("Tulio-Exit-Code: $cmd_exit_code");
 
 	if ($hst_return == "code") {
 		echo $cmd_exit_code;

@@ -2,8 +2,8 @@
 # info: Install update from Git repository
 # options: REPOSITORY BRANCH INSTALL
 #
-# example: v-update-sys-hestia-git hestiacp staging/beta install
-#          # Will download from the hestiacp repository
+# example: v-update-sys-tulio-git tuliocp staging/beta install
+#          # Will download from the tuliocp repository
 #          # Pulls code from staging/beta branch
 #          # install: installs package immediately
 #          # install-auto: installs package and schedules automatic updates from Git
@@ -15,7 +15,7 @@
 #----------------------------------------------------------#
 
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -110,10 +110,10 @@ get_branch_file() {
 }
 
 # Set compiling directory
-BUILD_DIR='/tmp/hestiacp-src'
-INSTALL_DIR='/tmp/hestia-src'
+BUILD_DIR='/tmp/tuliocp-src'
+INSTALL_DIR='/tmp/tulio-src'
 SRC_DIR="$(cd "$(dirname "$0")/.." && pwd)"
-ARCHIVE_DIR="/tmp/hestia-src/archive/"
+ARCHIVE_DIR="/tmp/tulio-src/archive/"
 architecture="$(arch)"
 if [ $architecture == 'aarch64' ]; then
 	BUILD_ARCH='arm64'
@@ -135,7 +135,7 @@ if [ -z "$branch" ]; then
 fi
 
 # Set Version for compiling
-BUILD_VER=$(curl -s https://raw.githubusercontent.com/$fork/hestiacp/$branch/src/deb/hestia/control | grep "Version:" | cut -d' ' -f2)
+BUILD_VER=$(curl -s https://raw.githubusercontent.com/$fork/tuliocp/$branch/src/deb/tulio/control | grep "Version:" | cut -d' ' -f2)
 HESTIA_V="${BUILD_VER}_${BUILD_ARCH}"
 
 # Create build directories
@@ -179,7 +179,7 @@ install_build() {
 
 # Set install flags
 if [ -n "$fork" ]; then
-	fork_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/hestiacp/main/src/deb/hestia/control -o /dev/null)
+	fork_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/tuliocp/main/src/deb/tulio/control -o /dev/null)
 	if [ "$fork_check" -ne "200" ]; then
 		echo "ERROR: invalid repository name specified."
 		exit 1
@@ -187,12 +187,12 @@ if [ -n "$fork" ]; then
 		echo "[!] Download code from GitHub repository: $fork"
 	fi
 else
-	fork="hestiacp"
+	fork="tuliocp"
 fi
 
 if [ -n "$branch" ]; then
-	echo https://raw.githubusercontent.com/$fork/hestiacp/$branch/src/deb/hestia/control
-	branch_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/hestiacp/$branch/src/deb/hestia/control -o /dev/null)
+	echo https://raw.githubusercontent.com/$fork/tuliocp/$branch/src/deb/tulio/control
+	branch_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/tuliocp/$branch/src/deb/tulio/control -o /dev/null)
 	if [ $branch_check -ne "200" ]; then
 		echo "ERROR: invalid branch name specified."
 		exit 1
@@ -203,7 +203,7 @@ if [ -n "$branch" ]; then
 else
 	source /usr/local/tulio.conf/tulio.conf
 	branch=$RELEASE_BRANCH
-	branch_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/hestiacp/$branch/src/deb/hestia/control -o /dev/null)
+	branch_check=$(curl -s --head -w %{http_code} https://raw.githubusercontent.com/$fork/tuliocp/$branch/src/deb/tulio/control -o /dev/null)
 	if [ "$branch_check" -ne "200" ]; then
 		echo "ERROR: invalid branch name specified."
 		exit 1
@@ -214,7 +214,7 @@ if [ -z "$branch" ]; then
 	echo "ERROR: No branch detected."
 	exit
 fi
-REPO="$fork/hestiacp"
+REPO="$fork/tuliocp"
 # Forward slashes in branchname are replaced with dashes to match foldername in github archive.
 branch_dash=$(echo "$branch" | sed 's/\//-/g')
 
@@ -245,9 +245,9 @@ GIT_REP='https://raw.githubusercontent.com/'$REPO'/'$branch'/src/deb'
 HESTIA_ARCHIVE_LINK='https://github.com/'$REPO'/archive/'$branch'.tar.gz'
 echo $HESTIA_ARCHIVE_LINK
 
-echo "Building Hestia Control Panel package..."
+echo "Building Tulio Control Panel package..."
 
-BUILD_DIR_HESTIA=$BUILD_DIR/hestia_$HESTIA_V
+BUILD_DIR_HESTIA=$BUILD_DIR/tulio_$HESTIA_V
 
 # Change to build directory
 cd $BUILD_DIR
@@ -263,63 +263,63 @@ if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_HESTIA" ]; then
 fi
 
 cd $BUILD_DIR
-rm -rf $BUILD_DIR/hestiacp-$branch_dash
+rm -rf $BUILD_DIR/tuliocp-$branch_dash
 # Download and unpack source files
 if [ "$use_src_folder" == 'true' ]; then
-	[ "$HESTIA_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
-	cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
+	[ "$HESTIA_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
+	cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
 elif [ -d $SRC_DIR ]; then
 	download_file $HESTIA_ARCHIVE_LINK '-' 'fresh' | tar xz
 fi
 
-mkdir -p $BUILD_DIR_HESTIA/usr/local/hestia
+mkdir -p $BUILD_DIR_HESTIA/usr/local/tulio
 
 # Move needed directories
-cd $BUILD_DIR/hestiacp-$branch_dash
+cd $BUILD_DIR/tuliocp-$branch_dash
 
 npm ci
 npm run build
 
-cp -rf bin func install web $BUILD_DIR_HESTIA/usr/local/hestia/
+cp -rf bin func install web $BUILD_DIR_HESTIA/usr/local/tulio/
 
 # Set permissions
-find $BUILD_DIR_HESTIA/usr/local/hestia/ -type f -exec chmod -x {} \;
+find $BUILD_DIR_HESTIA/usr/local/tulio/ -type f -exec chmod -x {} \;
 
-# Allow send email via /usr/local/hestia/web/inc/mail-wrapper.php via cli
-chmod +x $BUILD_DIR_HESTIA/usr/local/hestia/web/inc/mail-wrapper.php
+# Allow send email via /usr/local/tulio/web/inc/mail-wrapper.php via cli
+chmod +x $BUILD_DIR_HESTIA/usr/local/tulio/web/inc/mail-wrapper.php
 # Allow the executable to be executed
-chmod +x $BUILD_DIR_HESTIA/usr/local/hestia/bin/*
-find $BUILD_DIR_HESTIA/usr/local/hestia/install/ \( -name '*.sh' \) -exec chmod +x {} \;
-chmod -x $BUILD_DIR_HESTIA/usr/local/hestia/install/*.sh
+chmod +x $BUILD_DIR_HESTIA/usr/local/tulio/bin/*
+find $BUILD_DIR_HESTIA/usr/local/tulio/install/ \( -name '*.sh' \) -exec chmod +x {} \;
+chmod -x $BUILD_DIR_HESTIA/usr/local/tulio/install/*.sh
 chown -R root:root $BUILD_DIR_HESTIA
 
 # Get Debian package files
 mkdir -p $BUILD_DIR_HESTIA/DEBIAN
-get_branch_file 'src/deb/hestia/control' "$BUILD_DIR_HESTIA/DEBIAN/control"
+get_branch_file 'src/deb/tulio/control' "$BUILD_DIR_HESTIA/DEBIAN/control"
 if [ "$BUILD_ARCH" != "amd64" ]; then
 	sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_HESTIA/DEBIAN/control"
 fi
-get_branch_file 'src/deb/hestia/copyright' "$BUILD_DIR_HESTIA/DEBIAN/copyright"
-get_branch_file 'src/deb/hestia/preinst' "$BUILD_DIR_HESTIA/DEBIAN/preinst"
-get_branch_file 'src/deb/hestia/postinst' "$BUILD_DIR_HESTIA/DEBIAN/postinst"
+get_branch_file 'src/deb/tulio/copyright' "$BUILD_DIR_HESTIA/DEBIAN/copyright"
+get_branch_file 'src/deb/tulio/preinst' "$BUILD_DIR_HESTIA/DEBIAN/preinst"
+get_branch_file 'src/deb/tulio/postinst' "$BUILD_DIR_HESTIA/DEBIAN/postinst"
 chmod +x $BUILD_DIR_HESTIA/DEBIAN/postinst
 chmod +x $BUILD_DIR_HESTIA/DEBIAN/preinst
 
-echo Building Hestia DEB
+echo Building Tulio DEB
 dpkg-deb -Zxz --build $BUILD_DIR_HESTIA $DEB_DIR
 
 # clear up the source folder
 if [ "$KEEPBUILD" != 'true' ]; then
 	rm -r $BUILD_DIR_HESTIA
-	rm -rf hestiacp-$branch_dash
+	rm -rf tuliocp-$branch_dash
 fi
-cd $BUILD_DIR/hestiacp-$branch_dash
+cd $BUILD_DIR/tuliocp-$branch_dash
 
 # Installation steps
 if [ "$install" = "install" ] || [ "$install" = "yes" ] || [ "$install" = "install-auto" ]; then
 	install_build
 	if [ "$install" = "install-auto" ]; then
-		$BIN/v-add-cron-hestia-autoupdate git
+		$BIN/v-add-cron-tulio-autoupdate git
 	fi
 else
 	warning_message

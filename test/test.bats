@@ -321,49 +321,49 @@ function check_ip_not_banned(){
 }
 
 @test "User: Add new user Failed 1" {
-	run v-add-user 'jäap' $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'jäap' $user $user@tuliocp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 @test "User: Add new user Failed 2" {
-	run v-add-user 'ëaap' $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'ëaap' $user $user@tuliocp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 
 @test "User: Add new user Failed 3" {
-	run v-add-user 'jaaẞ'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'jaaẞ'  $user $user@tuliocp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 
 @test "User: Add new user Failed 4" {
-	run v-add-user '1234'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user '1234'  $user $user@tuliocp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 
 @test "User: Add new user Failed 5" {
-	run v-add-user '1aap'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user '1aap'  $user $user@tuliocp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 
 @test "User: Add new user Failed 6" {
-	run v-add-user 'ib_Buffer'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'ib_Buffer'  $user $user@tuliocp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: The user name'
 }
 
 @test "User: Add new user Failed 7" {
-	run v-add-user 'hello.com'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'hello.com'  $user $user@tuliocp2.com default "Super Test"
 	assert_failure $E_INVALID
 	assert_output --partial 'Error: invalid user format'
 }
 
 
 @test "User: Add new user Success 1" {
-	run v-add-user 'jaap01'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'jaap01'  $user $user@tuliocp2.com default "Super Test"
 	assert_success
 	refute_output
 }
@@ -375,7 +375,7 @@ function check_ip_not_banned(){
 }
 
 @test "User: Add new user Success 2" {
-	run v-add-user 'buffer'  $user $user@hestiacp2.com default "Super Test"
+	run v-add-user 'buffer'  $user $user@tuliocp2.com default "Super Test"
 	assert_success
 	refute_output
 }
@@ -672,10 +672,10 @@ function check_ip_not_banned(){
 
    # Test will fail if systemd (For example Proxmox) is used for setting ip addresses. How ever there is no "decent" way to check if Netplan is used except via the method used in v-add-sys-ip and there for breaking the reason to test this. How ever if the test used in v-add-sys-ip fails it still should check if it exists!
 
-   assert_file_exist /etc/netplan/60-hestia.yaml
+   assert_file_exist /etc/netplan/60-tulio.yaml
 
    # also check if file contains the newly added ip
-   assert_file_contains /etc/netplan/60-hestia.yaml "$ip"
+   assert_file_contains /etc/netplan/60-tulio.yaml "$ip"
 }
 
 @test "Ip: [Debian] Netplan file updated" {
@@ -731,8 +731,8 @@ function check_ip_not_banned(){
 	 fi
 
 	 ip="198.18.0.121"
-	 assert_file_exist /etc/netplan/60-hestia.yaml
-	 assert_file_contains /etc/netplan/60-hestia.yaml "$ip"
+	 assert_file_exist /etc/netplan/60-tulio.yaml
+	 assert_file_contains /etc/netplan/60-tulio.yaml "$ip"
 }
 
 @test "Ip: Delete ip 198.18.0.121" {
@@ -791,8 +791,8 @@ function check_ip_not_banned(){
     assert_success
     refute_output
 
-    echo -e "<?php\necho 'Hestia Test:'.(4*3);" > $HOMEDIR/$user/web/$domain/public_html/php-test.php
-    validate_web_domain $user $domain 'Hestia Test:12' 'php-test.php'
+    echo -e "<?php\necho 'Tulio Test:'.(4*3);" > $HOMEDIR/$user/web/$domain/public_html/php-test.php
+    validate_web_domain $user $domain 'Tulio Test:12' 'php-test.php'
     rm $HOMEDIR/$user/web/$domain/public_html/php-test.php
 }
 
@@ -842,7 +842,7 @@ function check_ip_not_banned(){
     assert_success
     refute_output
 
-	echo -e "<?php\necho 'Hestia Test:'.(4*3);" > $HOMEDIR/$user/web/$domain/public_html/php-test.php
+	echo -e "<?php\necho 'Tulio Test:'.(4*3);" > $HOMEDIR/$user/web/$domain/public_html/php-test.php
     validate_web_domain $user $domain 'This site is currently suspended'
 	validate_web_domain $user $domain 'This site is currently suspended' 'php-test.php'
 	rm $HOMEDIR/$user/web/$domain/public_html/php-test.php
@@ -853,8 +853,8 @@ function check_ip_not_banned(){
     assert_success
     refute_output
 
-    echo -e "<?php\necho 'Hestia Test:'.(4*3);" > $HOMEDIR/$user/web/$domain/public_html/php-test.php
-    validate_web_domain $user $domain 'Hestia Test:12' 'php-test.php'
+    echo -e "<?php\necho 'Tulio Test:'.(4*3);" > $HOMEDIR/$user/web/$domain/public_html/php-test.php
+    validate_web_domain $user $domain 'Tulio Test:12' 'php-test.php'
     rm $HOMEDIR/$user/web/$domain/public_html/php-test.php
 }
 
@@ -881,7 +881,7 @@ function check_ip_not_banned(){
     assert_success
     refute_output
 
-    echo -e "<?php\necho 'Hestia Test:'.(4*3);" > $HOMEDIR/$user/web/$domain/public_html/php-test.php
+    echo -e "<?php\necho 'Tulio Test:'.(4*3);" > $HOMEDIR/$user/web/$domain/public_html/php-test.php
     run validate_headers_domain $user $domain "Miss"
     run validate_headers_domain $user $domain "Hit"
     rm $HOMEDIR/$user/web/$domain/public_html/php-test.php
@@ -1380,11 +1380,11 @@ function check_ip_not_banned(){
 
     assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tuliocp.com."
 
-    run v-change-dns-record $user $domain 50 '@' MX mx.hestia.com
+    run v-change-dns-record $user $domain 50 '@' MX mx.tulio.com
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestia.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tulio.com."
 
     run v-delete-dns-record $user $domain 50
     assert_success
@@ -1399,11 +1399,11 @@ function check_ip_not_banned(){
 
     assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tuliocp.com."
 
-    run v-change-dns-record $user $domain 50 '@' NS mx.hestia.com
+    run v-change-dns-record $user $domain 50 '@' NS mx.tulio.com
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestia.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tulio.com."
 
     run v-delete-dns-record $user $domain 50
     assert_success
@@ -1418,11 +1418,11 @@ function check_ip_not_banned(){
 
     assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tuliocp.com."
 
-    run v-change-dns-record $user $domain 50 '_test.domain' SRV mx.hestia.com
+    run v-change-dns-record $user $domain 50 '_test.domain' SRV mx.tulio.com
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestia.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tulio.com."
 
     run v-delete-dns-record $user $domain 50
     assert_success
@@ -1437,11 +1437,11 @@ function check_ip_not_banned(){
 
     assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tuliocp.com."
 
-    run v-change-dns-record $user $domain 50 'mail' CNAME mx.hestia.com
+    run v-change-dns-record $user $domain 50 'mail' CNAME mx.tulio.com
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestia.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tulio.com."
 
     run v-delete-dns-record $user $domain 50
     assert_success
@@ -1615,37 +1615,37 @@ function check_ip_not_banned(){
 }
 
 @test "MAIL: Add account alias" {
-	run v-add-mail-account-alias $user $domain test hestiacprocks
+	run v-add-mail-account-alias $user $domain test tuliocprocks
 	assert_success
-	assert_file_contains /etc/exim4/domains/$domain/aliases "hestiacprocks@$domain"
+	assert_file_contains /etc/exim4/domains/$domain/aliases "tuliocprocks@$domain"
 	refute_output
 }
 
 @test "MAIL: Add account alias 2" {
-	run v-add-mail-account-alias $user $domain test hestiacprocks2
+	run v-add-mail-account-alias $user $domain test tuliocprocks2
 	assert_success
-	assert_file_contains /etc/exim4/domains/$domain/aliases "hestiacprocks2@$domain"
+	assert_file_contains /etc/exim4/domains/$domain/aliases "tuliocprocks2@$domain"
 	refute_output
 }
 
 @test "MAIL: Add account alias 3" {
-	run v-add-mail-account-alias $user $domain test hestiacp
+	run v-add-mail-account-alias $user $domain test tuliocp
 	assert_success
-	assert_file_contains /etc/exim4/domains/$domain/aliases "hestiacp@$domain"
+	assert_file_contains /etc/exim4/domains/$domain/aliases "tuliocp@$domain"
 	refute_output
 }
 
 @test "MAIL: Add account 3" {
-	run v-add-mail-account $user $domain hestia "$userpass2"
+	run v-add-mail-account $user $domain tulio "$userpass2"
 	assert_success
-	assert_file_contains /etc/exim4/domains/$domain/limits "hestia@$domain"
+	assert_file_contains /etc/exim4/domains/$domain/limits "tulio@$domain"
 	refute_output
 }
 
 @test "MAIL: Add account 4" {
-	run v-add-mail-account $user $domain hestiarocks3 "$userpass2"
+	run v-add-mail-account $user $domain tuliorocks3 "$userpass2"
 	assert_success
-	assert_file_contains /etc/exim4/domains/$domain/limits "hestiarocks3@$domain"
+	assert_file_contains /etc/exim4/domains/$domain/limits "tuliorocks3@$domain"
 	refute_output
 }
 
@@ -1664,7 +1664,7 @@ function check_ip_not_banned(){
 }
 
 @test "MAIL: Add account alias Invalid length" {
-	run v-add-mail-account-alias $user $domain test 'hestiacp-really-rocks-but-i-want-to-have-feature-xyz-and-i-want-it-now'
+	run v-add-mail-account-alias $user $domain test 'tuliocp-really-rocks-but-i-want-to-have-feature-xyz-and-i-want-it-now'
 	assert_failure $E_INVALID
 }
 @test "MAIL: Add account alias Invalid" {
@@ -1680,12 +1680,12 @@ function check_ip_not_banned(){
 	assert_success
 }
 @test "MAIL: Add account alias Invalid 2" {
-	run v-add-mail-account-alias $user $domain test 'hestia@test'
+	run v-add-mail-account-alias $user $domain test 'tulio@test'
 	assert_failure $E_INVALID
 }
 
 @test "MAIL: Add account alias (duplicate)" {
-	run v-add-mail-account-alias $user $domain test hestiacprocks
+	run v-add-mail-account-alias $user $domain test tuliocprocks
 	assert_failure $E_EXISTS
 }
 
@@ -2135,32 +2135,32 @@ echo   "1.2.3.4" >> $TULIO/data/firewall/excludes.conf
 
 @test "Package: Create new Package" {
     cp $TULIO/data/packages/default.pkg /tmp/package
-    run v-add-user-package /tmp/package hestiatest
+    run v-add-user-package /tmp/package tuliotest
     assert_success
     refute_output
 }
 
 @test "Package: Assign user to new Package" {
-    run v-change-user-package  $user hestiatest
+    run v-change-user-package  $user tuliotest
     assert_success
     refute_output
 }
 
 @test "Package: Create new package (Duplicate)" {
     sed -i "s/BANDWIDTH='unlimited'/BANDWIDTH='100'/g" /tmp/package
-    run v-add-user-package /tmp/package hestiatest
+    run v-add-user-package /tmp/package tuliotest
     assert_failure $E_EXISTS
 }
 
 @test "Package: Update new Package" {
     sed -i "s/BANDWIDTH='unlimited'/BANDWIDTH='100'/g" /tmp/package
-    run v-add-user-package /tmp/package hestiatest yes
+    run v-add-user-package /tmp/package tuliotest yes
     assert_success
     refute_output
 }
 
 @test "Package: Update package of user" {
-    run v-change-user-package  $user hestiatest
+    run v-change-user-package  $user tuliotest
     assert_success
     refute_output
     run grep "BANDWIDTH='100'" $TULIO/data/users/$user/user.conf
@@ -2169,24 +2169,24 @@ echo   "1.2.3.4" >> $TULIO/data/firewall/excludes.conf
 }
 
 @test "Package: Copy package Not Exists" {
-  run v-copy-user-package hestiadoesnotexists hestiatest2
+  run v-copy-user-package tuliodoesnotexists tuliotest2
   assert_failure $E_NOTEXIST
 }
 
 @test "Package: Copy package" {
-  run v-copy-user-package hestiatest hestiatest2
+  run v-copy-user-package tuliotest tuliotest2
   assert_success
   refute_output
 }
 
 @test "Package: Copy package Exists" {
-  run v-copy-user-package hestiatest hestiatest2
+  run v-copy-user-package tuliotest tuliotest2
   assert_failure $E_EXISTS
 }
 
 @test "Package: Delete package" {
-    run v-delete-user-package hestiatest
-    run v-delete-user-package hestiatest2
+    run v-delete-user-package tuliotest
+    run v-delete-user-package tuliotest2
     rm /tmp/package
     assert_success
     refute_output

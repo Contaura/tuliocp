@@ -2,7 +2,7 @@
 
 #===========================================================================#
 #                                                                           #
-# Hestia Control Panel - Rebuild Function Library                           #
+# Tulio Control Panel - Rebuild Function Library                           #
 #                                                                           #
 #===========================================================================#
 
@@ -72,7 +72,7 @@ rebuild_user_conf() {
 	/usr/sbin/useradd "$user" -s "$shell" -c "$CONTACT" \
 		-m -d "$HOMEDIR/$user" > /dev/null 2>&1
 
-	# Add a general group for normal users created by Hestia
+	# Add a general group for normal users created by Tulio
 	if [ -z "$(grep "^tulio-users:" /etc/group)" ]; then
 		groupadd --system "tulio-users"
 	fi

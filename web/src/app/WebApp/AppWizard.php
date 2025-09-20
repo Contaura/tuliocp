@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Hestia\WebApp;
+namespace Tulio\WebApp;
 
 use Tulio\System\TulioApp;
-use Hestia\WebApp\InstallationTarget\InstallationTarget;
-use Hestia\WebApp\InstallationTarget\TargetDatabase;
-use Hestia\WebApp\InstallationTarget\TargetDomain;
+use Tulio\WebApp\InstallationTarget\InstallationTarget;
+use Tulio\WebApp\InstallationTarget\TargetDatabase;
+use Tulio\WebApp\InstallationTarget\TargetDomain;
 use RuntimeException;
 
 use function array_filter;

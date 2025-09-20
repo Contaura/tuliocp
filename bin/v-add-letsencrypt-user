@@ -15,7 +15,7 @@ user=$1
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -50,7 +50,7 @@ query_le_v2() {
 	post_data=$post_data'"payload":"'"$payload_"'",'
 	post_data=$post_data'"signature":"'"$signature_"'"}'
 
-	curl --user-agent "HestiaCP" -s -i -d "$post_data" "$1" -H "$content"
+	curl --user-agent "TulioCP" -s -i -d "$post_data" "$1" -H "$content"
 }
 
 #----------------------------------------------------------#
@@ -126,7 +126,7 @@ if [[ "${status:0:2}" -ne "20" ]]; then
 fi
 
 #----------------------------------------------------------#
-#                        Hestia                            #
+#                        Tulio                            #
 #----------------------------------------------------------#
 
 # Adding le.conf

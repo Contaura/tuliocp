@@ -21,7 +21,7 @@ new_user=${5-no}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
@@ -91,7 +91,7 @@ for domain in $domains; do
 
 		# Restoring web.conf
 		if [ -z "$check_config" ]; then
-			parse_object_kv_list $(cat $tmpdir/home/$user/backup/web/$domain/hestia/web.conf)
+			parse_object_kv_list $(cat $tmpdir/home/$user/backup/web/$domain/tulio/web.conf)
 
 			# Deleting conflicting aliases
 			for dom_alias in ${ALIAS//,/ }; do
@@ -147,16 +147,16 @@ for domain in $domains; do
 			# Copying SSL certificates
 			if [ "$SSL" = 'yes' ]; then
 
-				if [ -f "$tmpdir/home/$user/backup/web/$domain/hestia/$domain.crt" ]; then
-					cp -f "$tmpdir/home/$user/backup/web/$domain/hestia/$domain.crt" "$USER_DATA/ssl/"
-					if [ -f "$tmpdir/home/$user/backup/web/$domain/hestia/$domain.ca" ]; then
-						cp -f "$tmpdir/home/$user/backup/web/$domain/hestia/$domain.ca" "$USER_DATA/ssl/"
+				if [ -f "$tmpdir/home/$user/backup/web/$domain/tulio/$domain.crt" ]; then
+					cp -f "$tmpdir/home/$user/backup/web/$domain/tulio/$domain.crt" "$USER_DATA/ssl/"
+					if [ -f "$tmpdir/home/$user/backup/web/$domain/tulio/$domain.ca" ]; then
+						cp -f "$tmpdir/home/$user/backup/web/$domain/tulio/$domain.ca" "$USER_DATA/ssl/"
 					fi
-					if [ -f "$tmpdir/home/$user/backup/web/$domain/hestia/$domain.pem" ]; then
-						cp -f "$tmpdir/home/$user/backup/web/$domain/hestia/$domain.pem" "$USER_DATA/ssl/"
+					if [ -f "$tmpdir/home/$user/backup/web/$domain/tulio/$domain.pem" ]; then
+						cp -f "$tmpdir/home/$user/backup/web/$domain/tulio/$domain.pem" "$USER_DATA/ssl/"
 					fi
-					if [ -f "$tmpdir/home/$user/backup/web/$domain/hestia/$domain.key" ]; then
-						cp -f "$tmpdir/home/$user/backup/web/$domain/hestia/$domain.key" "$USER_DATA/ssl/"
+					if [ -f "$tmpdir/home/$user/backup/web/$domain/tulio/$domain.key" ]; then
+						cp -f "$tmpdir/home/$user/backup/web/$domain/tulio/$domain.key" "$USER_DATA/ssl/"
 					fi
 				fi
 			fi

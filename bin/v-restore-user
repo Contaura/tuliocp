@@ -29,7 +29,7 @@ fi
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/backup.sh
@@ -142,7 +142,7 @@ if [ "$?" -ne 0 ]; then
 fi
 
 # Set default backup source system
-backup_system="hestia"
+backup_system="tulio"
 backup_mode="gzip"
 
 # Check if it is a Vesta backup
@@ -586,7 +586,7 @@ if [ "$mail" != 'no' ] && [ -n "$MAIL_SYSTEM" ]; then
 				mkdir -p $HOMEDIR/$user/conf/mail/$domain/ssl/
 			fi
 
-			# Add certificate to Hestia user configuration data directory
+			# Add certificate to Tulio user configuration data directory
 			if [ -f $tmpdir/mail/$domain/$backup_system/ssl/$domain.crt ]; then
 				cp -f $tmpdir/mail/$domain/$backup_system/ssl/$domain.crt $USER_DATA/ssl/mail.$domain.crt
 				cp -f $tmpdir/mail/$domain/$backup_system/ssl/$domain.key $USER_DATA/ssl/mail.$domain.key
@@ -633,24 +633,24 @@ if [ "$mail" != 'no' ] && [ -n "$MAIL_SYSTEM" ]; then
 			echo "  ssl_key = <$HOMEDIR/$user/conf/mail/$domain/ssl/$domain.key" >> /etc/dovecot/conf.d/domains/$domain.conf
 			echo "}" >> /etc/dovecot/conf.d/domains/$domain.conf
 
-			if [ ! -d /usr/local/hestia/ssl/mail ]; then
-				mkdir /usr/local/hestia/ssl/mail
+			if [ ! -d /usr/local/tulio/ssl/mail ]; then
+				mkdir /usr/local/tulio/ssl/mail
 			fi
 
 			# Add domain SSL configuration to exim4
 			# Cleanup broken symlinks
-			find /usr/local/hestia/ssl/mail -xtype l -delete
+			find /usr/local/tulio/ssl/mail -xtype l -delete
 
-			ln -s -f $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.pem /usr/local/hestia/ssl/mail/mail.$domain.crt
-			ln -s -f $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.key /usr/local/hestia/ssl/mail/mail.$domain.key
+			ln -s -f $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.pem /usr/local/tulio/ssl/mail/mail.$domain.crt
+			ln -s -f $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.key /usr/local/tulio/ssl/mail/mail.$domain.key
 
 			# Set correct permissions on certificates
 			chmod 750 $HOMEDIR/$user/conf/mail/$domain/ssl
 			chown -R $MAIL_USER:mail $HOMEDIR/$user/conf/mail/$domain/ssl
 			chmod 0644 $HOMEDIR/$user/conf/mail/$domain/ssl/*
 			chown -h $user:mail $HOMEDIR/$user/conf/mail/$domain/ssl/*
-			chmod -R 0644 /usr/local/hestia/ssl/mail/*
-			chown -h $user:mail /usr/local/hestia/ssl/mail/*
+			chmod -R 0644 /usr/local/tulio/ssl/mail/*
+			chown -h $user:mail /usr/local/tulio/ssl/mail/*
 		fi
 
 		# Restoring email accounts
@@ -663,7 +663,7 @@ if [ "$mail" != 'no' ] && [ -n "$MAIL_SYSTEM" ]; then
 			mkdir $HOMEDIR/$user/mail/$domain_idn
 		fi
 
-		# Current Hestia store email in the $HOMEDIR/$user/mail/$domain_idn
+		# Current Tulio store email in the $HOMEDIR/$user/mail/$domain_idn
 		chmod u+w "$HOMEDIR/$user/mail/$domain_idn"
 		chown $user:$user "$HOMEDIR/$user/mail/$domain_idn"
 
@@ -820,9 +820,9 @@ if [ "$cron" != 'no' ] && [ -n "$CRON_SYSTEM" ]; then
 		echo -e "$(date "+%F %T") $jobs cron jobs" | tee -a $tmpdir/restore.log
 	fi
 
-	# Replace paths from vesta to hestia
+	# Replace paths from vesta to tulio
 	if [ "$backup_system" == 'vesta' ] && [ "$user" == "$ROOT_USER" ]; then
-		sed -i 's/vesta/hestia/g' $tmpdir/cron/cron.conf
+		sed -i 's/vesta/tulio/g' $tmpdir/cron/cron.conf
 	fi
 
 	# Restoring cron jobs
@@ -908,7 +908,7 @@ mkdir -p $HOMEDIR/$user/tmp
 chmod 700 $HOMEDIR/$user/tmp
 chown -R $user:$user $HOMEDIR/$user/tmp
 
-# Delete Hestia File manager key
+# Delete Tulio File manager key
 rm -f $HOMEDIR/$user/.ssh/hst-filemanager-key
 
 # Sending mail notification

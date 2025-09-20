@@ -20,7 +20,7 @@ source $TULIO/conf/tulio.conf
 # nginx+multiphp,
 # nginx+apache+multiphp,
 # apache+multiphp:
-#   Change Hestia WEB_BACKEND from null to php-fpm
+#   Change Tulio WEB_BACKEND from null to php-fpm
 #   Create backend templates ex: PHP-7_3, PHP-5_6 (in $TULIO/data/templates/web/php-fpm/)
 #   v-update-web-templates
 #   Loop through all web domains

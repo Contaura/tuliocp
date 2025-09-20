@@ -1,10 +1,10 @@
 #!/bin/bash
-# info: list hestia ssl certificate
+# info: list tulio ssl certificate
 # options: [FORMAT]
 #
-# example: v-list-sys-hestia-ssl
+# example: v-list-sys-tulio-ssl
 #
-# This function of obtaining hestia ssl files.
+# This function of obtaining tulio ssl files.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -15,7 +15,7 @@ format=${1-shell}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file

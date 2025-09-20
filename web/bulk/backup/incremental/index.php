@@ -1,5 +1,5 @@
 <?php
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function Tuliocp\quoteshellarg\quoteshellarg;
 
 ob_start();
 include $_SERVER["DOCUMENT_ROOT"] . "/inc/main.php";
@@ -34,7 +34,7 @@ foreach ($backup as $value) {
 	if ($return_var != 0) {
 		$_SESSION["error_msg"] = implode("<br>", $output);
 		if (empty($_SESSION["error_msg"])) {
-			$_SESSION["error_msg"] = _("Error: Hestia did not return any output.");
+			$_SESSION["error_msg"] = _("Error: Tulio did not return any output.");
 		}
 	}
 }

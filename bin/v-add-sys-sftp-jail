@@ -12,7 +12,7 @@
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -34,7 +34,7 @@ check_tulio_demo_mode
 # Checking sshd directives
 config='/etc/ssh/sshd_config'
 sftp_n=$(grep -n "Subsystem.*sftp" $config | grep -v internal | grep -v /usr/lib/sftp-server | grep -v ":#")
-sftp_i=$(grep -n "^# Hestia SFTP Chroot" $config)
+sftp_i=$(grep -n "^# Tulio SFTP Chroot" $config)
 
 # Disabling normal sftp
 if [ -n "$sftp_n" ]; then
@@ -46,7 +46,7 @@ fi
 # Enabling jailed sftp
 if [ -z "$sftp_i" ]; then
 	echo " " >> $config
-	echo "# Hestia SFTP Chroot" >> $config
+	echo "# Tulio SFTP Chroot" >> $config
 	echo "Match User sftp_dummy99" >> $config
 	echo "    ChrootDirectory /srv/jail/%u" >> $config
 	echo "    X11Forwarding no" >> $config
@@ -87,8 +87,8 @@ else
 fi
 
 # Add v-add-sys-sftp-jail to startup
-if [ ! -e "/etc/cron.d/hestia-sftp" ]; then
-	echo "@reboot root sleep 60 && /usr/local/hestia/bin/v-add-sys-sftp-jail > /dev/null" > /etc/cron.d/hestia-sftp
+if [ ! -e "/etc/cron.d/tulio-sftp" ]; then
+	echo "@reboot root sleep 60 && /usr/local/tulio/bin/v-add-sys-sftp-jail > /dev/null" > /etc/cron.d/tulio-sftp
 fi
 
 #----------------------------------------------------------#

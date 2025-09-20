@@ -16,8 +16,8 @@
 			<div class="top-bar">
 				<div class="container top-bar-inner">
 					<div class="top-bar-left">
-						<a href="/" class="top-bar-logo" title="<?= _("Hestia Control Panel") ?>">
-							<img src="/images/logo-tulio-header.svg" alt="<?= _("Hestia Control Panel") ?>" width="54" height="29">
+						<a href="/" class="top-bar-logo" title="<?= _("Tulio Control Panel") ?>">
+							<img src="/images/logo-tulio-header.svg" alt="<?= _("Tulio Control Panel") ?>" width="54" height="29">
 						</a>
 					</div>
 					<div class="top-bar-right">

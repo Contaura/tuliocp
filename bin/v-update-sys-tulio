@@ -1,11 +1,11 @@
 #!/bin/bash
-# info: update hestia package/configs
+# info: update tulio package/configs
 # options: PACKAGE
 #
-# example: v-update-sys-hestia hestia-php
+# example: v-update-sys-tulio tulio-php
 #
-# This function runs as apt update trigger. It pulls shell script from hestia
-# server and runs it. (hestia, hestia-nginx and hestia-php are valid options)
+# This function runs as apt update trigger. It pulls shell script from tulio
+# server and runs it. (tulio, tulio-nginx and tulio-php are valid options)
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -16,7 +16,7 @@ package=$1
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -28,7 +28,7 @@ source_conf "$HESTIA/conf/tulio.conf"
 
 # Checking arg number
 check_args '1' "$#" 'PACKAGE'
-is_tulio_package "hestia hestia-nginx hestia-php" "$package"
+is_tulio_package "tulio tulio-nginx tulio-php" "$package"
 
 # Perform verification if read-only mode is enabled
 check_tulio_demo_mode
@@ -38,10 +38,10 @@ check_tulio_demo_mode
 #----------------------------------------------------------#
 
 # Update repo
-apt-get update -o Dir::Etc::sourcelist="sources.list.d/hestia.list" \
+apt-get update -o Dir::Etc::sourcelist="sources.list.d/tulio.list" \
 	-o Dir::Etc::sourceparts="-" -o APT::Get::List-Cleanup="0" -qq
 
-# Update hestia package
+# Update tulio package
 apt-get install $package -qq > /dev/null 2>&1
 check_result $? "$package update failed" "$E_UPDATE"
 

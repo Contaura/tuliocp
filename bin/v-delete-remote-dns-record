@@ -17,7 +17,7 @@ id=$3
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/remote.sh
@@ -42,7 +42,7 @@ check_tulio_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
-if [ "$DNS_CLUSTER_SYSTEM" != "hestia-zone" ]; then
+if [ "$DNS_CLUSTER_SYSTEM" != "tulio-zone" ]; then
 	# Starting cluster loop
 	IFS=$'\n'
 	for cluster in $(cat $HESTIA/conf/dns-cluster.conf); do

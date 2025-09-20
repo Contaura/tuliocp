@@ -7,9 +7,9 @@ use Filegator\Services\Archiver\ArchiverInterface;
 use Filegator\Services\Service;
 use Filegator\Services\Storage\Filesystem as Storage;
 use Filegator\Services\Tmpfs\TmpfsInterface;
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function Tuliocp\quoteshellarg\quoteshellarg;
 
-class HestiaZipArchiver extends ZipArchiver implements Service, ArchiverInterface {
+class TulioZipArchiver extends ZipArchiver implements Service, ArchiverInterface {
 	protected $container;
 
 	public function __construct(TmpfsInterface $tmpfs, Container $container) {

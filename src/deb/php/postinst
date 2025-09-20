@@ -11,7 +11,7 @@ if [ ! -e "/usr/local/tulio/data/users/" ]; then
 	exit
 fi
 
-# Prevent running and causes issues with outdated hestia version
+# Prevent running and causes issues with outdated tulio version
 if ! id "tulioweb" &> /dev/null; then
 	exit
 fi
@@ -37,9 +37,9 @@ source /usr/local/tulio/func/upgrade.sh
 source /usr/local/tulio.conf/tulio.conf
 source /usr/local/tulio/install/upgrade/upgrade.conf
 
-# Restart hestia service
-if [ -f "/etc/init.d/hestia" ]; then
-	systemctl restart hestia > /dev/null 2>&1
+# Restart tulio service
+if [ -f "/etc/init.d/tulio" ]; then
+	systemctl restart tulio > /dev/null 2>&1
 fi
 
 # Check if preinstall hook exists

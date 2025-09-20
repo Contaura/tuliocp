@@ -77,7 +77,7 @@
             "time": "2023-08-09T14:15:07+00:00"
         },
         {
-            "name": "hestiacp/phpquoteshellarg",
+            "name": "tuliocp/phpquoteshellarg",
             "version": "v1.0.2",
             "source": {
                 "type": "git",
@@ -86,7 +86,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hestiacp/phpquoteshellarg/zipball/7fd1a3a648cdc39a3fe2aab78a1a3a0267f92f49",
+                "url": "https://api.github.com/repos/tuliocp/phpquoteshellarg/zipball/7fd1a3a648cdc39a3fe2aab78a1a3a0267f92f49",
                 "reference": "7fd1a3a648cdc39a3fe2aab78a1a3a0267f92f49",
                 "shasum": ""
             },
@@ -96,7 +96,7 @@
             "type": "library",
             "autoload": {
                 "files": [
-                    "src/Hestiacp/quoteshellarg/quoteshellarg.php"
+                    "src/Tuliocp/quoteshellarg/quoteshellarg.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",

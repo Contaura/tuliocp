@@ -16,7 +16,7 @@ NGINX_CONFIG="$HESTIA/nginx/conf/nginx.conf"
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source "$HESTIA/func/main.sh"
 # load config file
@@ -34,7 +34,7 @@ is_port_valid() {
 	# Check if PORT is already used
 	BUSY_PORT=$(lsof -i:"$PORT")
 	if [ -n "$BUSY_PORT" ] && [ "$PORT" != "$BACKEND_PORT" ]; then
-		echo "Port is already used by Hestia, please set anotherone!"
+		echo "Port is already used by Tulio, please set anotherone!"
 		log_event "$E_INUSE" "$ARGUMENTS"
 		exit "$E_INUSE"
 	fi
@@ -68,10 +68,10 @@ else
 	# Replace port in config files.
 	sed -i "s/\(listen[ \t]*.*[: \t]\)[0-9][0-9]*\([^0-9]*ssl\;$\)/\1$PORT\2/" "$NGINX_CONFIG"
 	if [ -d /etc/roundcube/ ]; then
-		sed -i "/password_hestia_port/c\$rcmail_config['password_hestia_port'] = '$PORT';" /etc/roundcube/plugins/password/config.inc.php
+		sed -i "/password_tulio_port/c\$rcmail_config['password_tulio_port'] = '$PORT';" /etc/roundcube/plugins/password/config.inc.php
 	fi
 	if [ -d /etc/snappymail/ ]; then
-		sed -i "/\"hestia_port\":/c\\\"hestia_host\": $PORT" /etc/snappymail/data/_data_/_default_/configs/plugin-change-password.json
+		sed -i "/\"tulio_port\":/c\\\"tulio_host\": $PORT" /etc/snappymail/data/_data_/_default_/configs/plugin-change-password.json
 	fi
 
 	if [ -f "$HESTIA/data/firewall/rules.conf" ]; then
@@ -87,9 +87,9 @@ else
 		"$BIN/v-restart-service" iptables
 	fi
 
-	# Check if Hestia is running
-	if [[ $(ps -eaf | grep -i hestia | sed '/^$/d' | wc -l) -gt 1 ]]; then
-		"$BIN/v-restart-service" hestia
+	# Check if Tulio is running
+	if [[ $(ps -eaf | grep -i tulio | sed '/^$/d' | wc -l) -gt 1 ]]; then
+		"$BIN/v-restart-service" tulio
 	fi
 fi
 
@@ -98,9 +98,9 @@ fi
 #----------------------------------------------------------#
 
 # Logging
-"$BIN/v-log-action" "system" "Warning" "System" "Hestia Control Panel backend port changed (New Value: $PORT, Old Value: $ORIGINAL_PORT)."
+"$BIN/v-log-action" "system" "Warning" "System" "Tulio Control Panel backend port changed (New Value: $PORT, Old Value: $ORIGINAL_PORT)."
 if [ $LISTEN_ROWS -gt 1 ]; then
-	"$BIN/v-log-action" "system" "Warning" "System" "Hestia Control Panel backend port: Use first of $LISTEN_ROWS listened ports in $NGINX_CONFIG"
+	"$BIN/v-log-action" "system" "Warning" "System" "Tulio Control Panel backend port: Use first of $LISTEN_ROWS listened ports in $NGINX_CONFIG"
 fi
 log_event "$OK" "$ARGUMENTS"
 

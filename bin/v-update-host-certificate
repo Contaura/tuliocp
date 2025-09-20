@@ -1,10 +1,10 @@
 #!/bin/bash
-# info: update host certificate for hestia
+# info: update host certificate for tulio
 # options: USER HOSTNAME
 #
 # example: v-update-host-certificate admin example.com
 #
-# This function updates the SSL certificate used for Hestia Control Panel.
+# This function updates the SSL certificate used for Tulio Control Panel.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -22,7 +22,7 @@ hostname=$2
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
@@ -82,7 +82,7 @@ fi
 # Restart services
 $BIN/v-restart-mail
 $BIN/v-restart-ftp
-$BIN/v-restart-service "hestia"
+$BIN/v-restart-service "tulio"
 
 #----------------------------------------------------------#
 #                       TulioCP                            #

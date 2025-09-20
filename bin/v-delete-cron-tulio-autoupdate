@@ -1,8 +1,8 @@
 #!/bin/bash
-# info: delete hestia autoupdate cron job
+# info: delete tulio autoupdate cron job
 # options: NONE
 #
-# This function deletes hestia autoupdate cron job.
+# This function deletes tulio autoupdate cron job.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -10,7 +10,7 @@
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -29,8 +29,8 @@ check_tulio_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
-sed -i "/v-update-sys-hestia-all/d" "/var/spool/cron/crontabs/hestiaweb"
-sed -i "/v-update-sys-hestia-git/d" "/var/spool/cron/crontabs/hestiaweb"
+sed -i "/v-update-sys-tulio-all/d" "/var/spool/cron/crontabs/tulioweb"
+sed -i "/v-update-sys-tulio-git/d" "/var/spool/cron/crontabs/tulioweb"
 
 #----------------------------------------------------------#
 #                       TulioCP                            #

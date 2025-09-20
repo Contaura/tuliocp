@@ -13,7 +13,7 @@
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
@@ -92,7 +92,7 @@ $BIN/v-add-web-domain-ssl-force "$user" "$domain" > /dev/null 2>&1
 $BIN/v-add-web-domain-ssl-hsts "$user" "$domain" > /dev/null 2>&1
 
 #----------------------------------------------------------#
-#                        Hestia                            #
+#                        Tulio                            #
 #----------------------------------------------------------#
 
 exit

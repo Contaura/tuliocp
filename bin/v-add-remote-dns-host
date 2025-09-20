@@ -33,7 +33,7 @@ DNS_USER=$dns_user
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/remote.sh
@@ -120,14 +120,14 @@ check_result $? "$HOST sync failed" "$E_CONNECT"
 
 # Adding local  dns-cluster cron job
 cmd="v-update-sys-queue dns-cluster"
-check_cron=$(grep "$cmd" "/var/spool/cron/crontabs/hestiaweb" 2> /dev/null)
+check_cron=$(grep "$cmd" "/var/spool/cron/crontabs/tulioweb" 2> /dev/null)
 if [ -z "$check_cron" ] && [ ! -z "$CRON_SYSTEM" ]; then
 	min='*/5'
 	hour='*'
 	day='*'
 	month='*'
 	wday='*'
-	sed -i -e "\$a$min $hour * * * sudo /usr/local/hestia/bin/$cmd" "/var/spool/cron/crontabs/hestiaweb"
+	sed -i -e "\$a$min $hour * * * sudo /usr/local/tulio/bin/$cmd" "/var/spool/cron/crontabs/tulioweb"
 fi
 
 # Logging

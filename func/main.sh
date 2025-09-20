@@ -1382,7 +1382,7 @@ check_access_key_cmd() {
 
 	if [[ "$DEBUG_MODE" = "true" ]]; then
 		new_timestamp
-		echo "[$date:$time] $1 $2" >> /var/log/hestia/api.log
+		echo "[$date:$time] $1 $2" >> /var/log/tulio/api.log
 	fi
 	if [[ -z "$access_key_id" || ! -f "$TULIO/data/access-keys/${access_key_id}" ]]; then
 		check_result "$E_FORBIDEN" "Access key $access_key_id doesn't exist"
@@ -1720,7 +1720,7 @@ get_apis_commands() {
 	cleanup_key_permissions "$allowed_commands"
 }
 
-# Get the position of an argument by name in a hestia command using the command's documentation comment.
+# Get the position of an argument by name in a tulio command using the command's documentation comment.
 #
 # Return:
 # * 0:   It doesn't have the argument;

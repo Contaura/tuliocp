@@ -10,12 +10,12 @@
 # This script is provided without any warranty
 # Run at your own risk
 # Version 0.1
-# This script restore backups from DA to Hestiacp
+# This script restore backups from DA to Tuliocp
 
 # shellcheck source=/usr/local/tulio/func/main.sh
 source "$HESTIA"/func/main.sh
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
 
@@ -29,7 +29,7 @@ if [ ! -e /usr/bin/rsync ] || [ ! -e /usr/bin/file ]; then
 fi
 # Put this to 0 if you want use bash -x to debug it
 debug=1
-hestia_package=default
+tulio_package=default
 letsencrypt_enable=0
 addusertext="IMPORTED"
 tmp_dir='tmp_dir_da_backup'
@@ -156,9 +156,9 @@ if [ -n "$check_sysuser" ] || [ -e "$HESTIA/data/users/$directadmin_user" ]; the
 	check_result "$E_EXISTS" "user $directadmin_user exists"
 fi
 
-echo "Generate random password for $directadmin_user and create Hestiacp Account ..."
+echo "Generate random password for $directadmin_user and create Tuliocp Account ..."
 new_password=$(generate_password)
-"$BIN"/v-add-user "$directadmin_user" "$new_password" "$directadmin_usermail" $hestia_package $addusertext
+"$BIN"/v-add-user "$directadmin_user" "$new_password" "$directadmin_usermail" $tulio_package $addusertext
 if [ "$?" -ne 0 ]; then
 	tput setaf 1
 	echo "Error: Unable to create user"
@@ -223,11 +223,11 @@ function run_da_db() {
 						echo "udb: $db_user"
 						echo "Password: ${md5}"
 
-						echo "DB='$db' DBUSER='$db_user' MD5='$md5' HOST='localhost' TYPE='mysql' CHARSET='UTF8' U_DISK='0' SUSPENDED='no' TIME='$time' DATE='$date'" >> /usr/local/hestia/data/users/"$directadmin_user"/db.conf
+						echo "DB='$db' DBUSER='$db_user' MD5='$md5' HOST='localhost' TYPE='mysql' CHARSET='UTF8' U_DISK='0' SUSPENDED='no' TIME='$time' DATE='$date'" >> /usr/local/tulio/data/users/"$directadmin_user"/db.conf
 					fi
 				done < "backup/${da_db}"
 
-				# Leave Hestia to restore passwords and create users
+				# Leave Tulio to restore passwords and create users
 				tput setaf 2
 				echo "Rebuild database files for $directadmin_user"
 				tput sgr0

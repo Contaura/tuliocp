@@ -23,7 +23,7 @@ ns8=$(echo $9 | sed -e 's/\.*$//g' -e 's/^\.*//g')
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file

@@ -16,7 +16,7 @@ status=$3
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/rebuild.sh
@@ -51,8 +51,8 @@ fi
 # Perform verification if read-only mode is enabled
 check_tulio_demo_mode
 
-if [ "$DNS_CLUSTER_SYSTEM" != 'hestia-zone' ]; then
-	check_result "$E_DISABLED" "DNSSEC is not supported when DNS_CLUSTER_SYSTEM is not set to hestia-zone"
+if [ "$DNS_CLUSTER_SYSTEM" != 'tulio-zone' ]; then
+	check_result "$E_DISABLED" "DNSSEC is not supported when DNS_CLUSTER_SYSTEM is not set to tulio-zone"
 fi
 
 version=$(named -v | awk 'NR==1{print $2}')

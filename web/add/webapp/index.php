@@ -1,5 +1,5 @@
 <?php
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function Tuliocp\quoteshellarg\quoteshellarg;
 
 ob_start();
 $TAB = "WEB";
@@ -38,11 +38,11 @@ unset($output);
 if (!empty($_GET["app"])) {
 	$app = basename($_GET["app"]);
 
-        $hestia = new \Tulio\System\TulioApp();
-	$app_installer_class = "\Hestia\WebApp\Installers\\" . $app . "\\" . $app . "Setup";
+        $tulio = new \Tulio\System\TulioApp();
+	$app_installer_class = "\Tulio\WebApp\Installers\\" . $app . "\\" . $app . "Setup";
 	if (class_exists($app_installer_class)) {
 		try {
-			$app_installer = new $app_installer_class($hestia);
+			$app_installer = new $app_installer_class($tulio);
 			$info = $app_installer->getInfo();
 
 			if (!$info->isInstallable()) {
@@ -51,7 +51,7 @@ if (!empty($_GET["app"])) {
 					$app,
 				);
 			} else {
-				$installer = new \Hestia\WebApp\AppWizard($app_installer, $v_domain, $hestia);
+				$installer = new \Tulio\WebApp\AppWizard($app_installer, $v_domain, $tulio);
 				$GLOBALS["WebappInstaller"] = $installer;
 			}
 		} catch (Exception $e) {
@@ -88,18 +88,18 @@ if (!empty($_POST["ok"]) && !empty($app)) {
 if (!empty($installer)) {
 	render_page($user, $TAB, "setup_webapp");
 } else {
-        $hestia = new \Tulio\System\TulioApp();
+        $tulio = new \Tulio\System\TulioApp();
 	$appInstallers = glob(__DIR__ . "/../../src/app/WebApp/Installers/*/*.php");
 
 	$v_web_apps = [];
 	foreach ($appInstallers as $app) {
 		$pattern = "/Installers\/([a-zA-Z][a-zA-Z0,9].*)\/([a-zA-Z][a-zA-Z0,9].*)Setup\.php/";
-		$class = "\Hestia\WebApp\Installers\%s\%sSetup";
+		$class = "\Tulio\WebApp\Installers\%s\%sSetup";
 
 		if (preg_match($pattern, $app, $matches)) {
 			$app_installer_class = sprintf($class, $matches[1], $matches[1]);
 
-			$v_web_apps[] = (new $app_installer_class($hestia))->getInfo();
+			$v_web_apps[] = (new $app_installer_class($tulio))->getInfo();
 		}
 	}
 

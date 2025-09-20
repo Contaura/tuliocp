@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hestia\WebApp\InstallationTarget;
+namespace Tulio\WebApp\InstallationTarget;
 
 use Tulio\System\Util;
 

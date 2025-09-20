@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Hestia\WebApp\Installers\Joomla;
+namespace Tulio\WebApp\Installers\Joomla;
 
 use Tulio\System\Util;
-use Hestia\WebApp\BaseSetup;
-use Hestia\WebApp\InstallationTarget\InstallationTarget;
+use Tulio\WebApp\BaseSetup;
+use Tulio\WebApp\InstallationTarget\InstallationTarget;
 
 class JoomlaSetup extends BaseSetup
 {

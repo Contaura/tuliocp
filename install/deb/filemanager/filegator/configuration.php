@@ -1,9 +1,9 @@
 <?php
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function Tuliocp\quoteshellarg\quoteshellarg;
 $dist_config = require __DIR__ . "/configuration_sample.php";
 session_start();
 $dist_config["public_path"] = "/fm/";
-$dist_config["frontend_config"]["app_name"] = "File Manager - Hestia Control Panel";
+$dist_config["frontend_config"]["app_name"] = "File Manager - Tulio Control Panel";
 $dist_config["frontend_config"]["logo"] = "../images/logo-tulio.svg";
 $dist_config["frontend_config"]["editable"] = [
 	".txt",
@@ -41,7 +41,7 @@ if (!empty($_SESSION["language"])) {
 } else {
 	$lang = "en";
 }
-// Update list of languages when new language is added on Hestia or Filegator side
+// Update list of languages when new language is added on Tulio or Filegator side
 switch ($lang) {
 	case "es":
 		$dist_config["frontend_config"]["language"] = "spanish";
@@ -219,12 +219,12 @@ $dist_config["services"]["Filegator\Services\Storage\Filesystem"]["config"][
 };
 
 $dist_config["services"]["Filegator\Services\Archiver\ArchiverInterface"] = [
-	"handler" => "\Filegator\Services\Archiver\Adapters\HestiaZipArchiver",
+	"handler" => "\Filegator\Services\Archiver\Adapters\TulioZipArchiver",
 	"config" => [],
 ];
 
 $dist_config["services"]["Filegator\Services\Auth\AuthInterface"] = [
-	"handler" => "\Filegator\Services\Auth\Adapters\HestiaAuth",
+	"handler" => "\Filegator\Services\Auth\Adapters\TulioAuth",
 	"config" => [
 		"permissions" => ["read", "write", "upload", "download", "batchdownload", "zip", "chmod"],
 		"private_repos" => false,

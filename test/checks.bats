@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 if [ "${PATH#*/usr/local/tulio/bin*}" = "$PATH" ]; then
-    . /etc/profile.d/hestia.sh
+    . /etc/profile.d/tulio.sh
 fi
 
 load 'test_helper/bats-support/load'

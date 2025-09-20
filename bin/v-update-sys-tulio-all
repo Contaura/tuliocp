@@ -1,10 +1,10 @@
 #!/bin/bash
-# info: update all hestia packages
+# info: update all tulio packages
 # options: NONE
 #
-# example: v-update-sys-hestia-all
+# example: v-update-sys-tulio-all
 #
-# This function of updating all hestia packages
+# This function of updating all tulio packages
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -12,7 +12,7 @@
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -26,8 +26,8 @@ check_tulio_demo_mode
 #----------------------------------------------------------#
 
 # Starting update loop
-for package in hestia hestia-nginx hestia-php; do
-	$BIN/v-update-sys-hestia "$package"
+for package in tulio tulio-nginx tulio-php; do
+	$BIN/v-update-sys-tulio "$package"
 done
 
 #----------------------------------------------------------#

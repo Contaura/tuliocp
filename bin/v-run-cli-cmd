@@ -4,7 +4,7 @@
 #
 # example: v-run-cli-cmd user composer require package
 #
-# This function runs a limited list of cli commands with dropped privileges as the specific hestia user
+# This function runs a limited list of cli commands with dropped privileges as the specific tulio user
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -15,7 +15,7 @@ clicmd=$2
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file

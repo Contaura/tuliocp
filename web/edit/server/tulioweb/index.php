@@ -1,6 +1,6 @@
 <?php
 
-use function Hestiacp\quoteshellarg\quoteshellarg;
+use function Tuliocp\quoteshellarg\quoteshellarg;
 $TAB = "SERVER";
 
 // Main include

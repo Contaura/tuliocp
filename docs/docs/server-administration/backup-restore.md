@@ -155,7 +155,7 @@ v-add-backup-host 'rclone' 'r2' '' '' 'folder'
 For Blackblaze use
 
 ```bash
-v-add-backup-host 'rclone' 'b2' '' '' 'hestiacp'
+v-add-backup-host 'rclone' 'b2' '' '' 'tuliocp'
 ```
 
 ## Setting up Incremental Backups

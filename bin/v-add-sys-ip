@@ -35,7 +35,7 @@ nat_ip="$7"
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
@@ -93,10 +93,10 @@ if [ -z "$sys_ip_check" ]; then
 	fi
 
 	if [ "$netplan" = "true" ]; then
-		if [ -f "/etc/netplan/60-hestia.yaml" ]; then
+		if [ -f "/etc/netplan/60-tulio.yaml" ]; then
 			sys_ip="        - $ip/$cidr"
 		else
-			sys_ip="# Added by Hestia, please do not edit the file manually!"
+			sys_ip="# Added by Tulio, please do not edit the file manually!"
 			sys_ip="$sys_ip\nnetwork:"
 			sys_ip="$sys_ip\n  version: 2"
 			sys_ip="$sys_ip\n  renderer: networkd"
@@ -106,10 +106,10 @@ if [ -z "$sys_ip_check" ]; then
 			sys_ip="$sys_ip\n        - $ip/$cidr"
 		fi
 		IFS='%'
-		echo -e "$sys_ip" >> /etc/netplan/60-hestia.yaml
+		echo -e "$sys_ip" >> /etc/netplan/60-tulio.yaml
 		unset IFS
 	else
-		sys_ip="\n# Added by Hestia Control Panel"
+		sys_ip="\n# Added by Tulio Control Panel"
 		sys_ip="$sys_ip\nauto $iface"
 		sys_ip="$sys_ip\niface $iface inet static"
 		sys_ip="$sys_ip\naddress $ip"
@@ -121,7 +121,7 @@ fi
 # Generating timestamp
 new_timestamp
 
-# Adding Hestia IP
+# Adding Tulio IP
 echo "OWNER='$user'
 STATUS='$ip_status'
 NAME='$ip_name'
@@ -200,7 +200,7 @@ if [ -n "$PROXY_SYSTEM" ]; then
 fi
 
 # Adapt Port Listing in HESTIA NGINX Backend
-syshealth_adapt_hestia_nginx_listen_ports
+syshealth_adapt_tulio_nginx_listen_ports
 # Also update resolver
 syshealth_adapt_nginx_resolver
 #----------------------------------------------------------#
@@ -211,8 +211,8 @@ syshealth_adapt_nginx_resolver
 increase_user_value "$user" '$IP_OWNED'
 if [ "$user" = $ROOT_USER ]; then
 	if [ "$ip_status" = 'shared' ]; then
-		for hestia_user in $("$BIN/v-list-users" list); do
-			increase_user_value "$hestia_user" '$IP_AVAIL'
+		for tulio_user in $("$BIN/v-list-users" list); do
+			increase_user_value "$tulio_user" '$IP_AVAIL'
 		done
 	else
 		increase_user_value $ROOT_USER '$IP_AVAIL'
@@ -237,10 +237,10 @@ if [ -n "$FIREWALL_SYSTEM" ]; then
 	$BIN/v-update-firewall
 fi
 
-# Restarting hestia service if nginx backend config was changed
-if [ "$NGINX_BCONF_CHANGED" = "yes" -a -f "/etc/init.d/hestia" ]; then
-	systemctl restart hestia > /dev/null 2>&1
-	check_result $? "Hestia backend restart failed" > /dev/null
+# Restarting tulio service if nginx backend config was changed
+if [ "$NGINX_BCONF_CHANGED" = "yes" -a -f "/etc/init.d/tulio" ]; then
+	systemctl restart tulio > /dev/null 2>&1
+	check_result $? "Tulio backend restart failed" > /dev/null
 fi
 
 # Logging

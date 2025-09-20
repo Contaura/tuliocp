@@ -14,7 +14,7 @@ ttl=$2
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -70,7 +70,7 @@ fi
 
 #
 chown ${user}: "${AUTHKEY_FILE}"
-chown "hestiaweb": "${PRVKEY_FILE}"
+chown "tulioweb": "${PRVKEY_FILE}"
 
 #----------------------------------------------------------#
 #                       TulioCP                            #

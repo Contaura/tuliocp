@@ -16,7 +16,7 @@ ip="$1"
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
@@ -70,10 +70,10 @@ if [ -n "$interface" ]; then
 fi
 
 # Deleting startup conf on Debian/Ubuntu
-if [ -f "/etc/netplan/60-hestia.yaml" ]; then
-	sed -i "/$ip\//d" /etc/netplan/60-hestia.yaml
-	if ! grep -q '-' /etc/netplan/60-hestia.yaml; then
-		rm /etc/netplan/60-hestia.yaml
+if [ -f "/etc/netplan/60-tulio.yaml" ]; then
+	sed -i "/$ip\//d" /etc/netplan/60-tulio.yaml
+	if ! grep -q '-' /etc/netplan/60-tulio.yaml; then
+		rm /etc/netplan/60-tulio.yaml
 	fi
 elif [ -e "/etc/network/interfaces" ]; then
 	ip_str="$(grep -n "$ip$" /etc/network/interfaces | cut -f1 -d:)"
@@ -84,7 +84,7 @@ elif [ -e "/etc/network/interfaces" ]; then
 	fi
 fi
 
-# Deleting Hestia IP
+# Deleting Tulio IP
 rm -f $HESTIA/data/ips/$ip
 
 # Deleting web config
@@ -133,8 +133,8 @@ fi
 
 if [ "$OWNER" = "$ROOT_USER" ]; then
 	if [ "$STATUS" = 'shared' ]; then
-		for hestia_user in $("$BIN/v-list-users" list); do
-			decrease_user_value "$hestia_user" '$IP_AVAIL'
+		for tulio_user in $("$BIN/v-list-users" list); do
+			decrease_user_value "$tulio_user" '$IP_AVAIL'
 		done
 	else
 		decrease_user_value "$OWNER" '$IP_AVAIL'

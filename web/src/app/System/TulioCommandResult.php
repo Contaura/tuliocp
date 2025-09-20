@@ -6,7 +6,7 @@ namespace Tulio\System;
 
 use function json_decode;
 
-class HestiaCommandResult
+class TulioCommandResult
 {
     public function __construct(
         public readonly string $command,

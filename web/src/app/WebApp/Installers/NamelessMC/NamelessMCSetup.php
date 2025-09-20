@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Hestia\WebApp\Installers\NamelessMC;
+namespace Tulio\WebApp\Installers\NamelessMC;
 
-use Hestia\WebApp\BaseSetup;
-use Hestia\WebApp\InstallationTarget\InstallationTarget;
+use Tulio\WebApp\BaseSetup;
+use Tulio\WebApp\InstallationTarget\InstallationTarget;
 
 class NamelessMCSetup extends BaseSetup
 {

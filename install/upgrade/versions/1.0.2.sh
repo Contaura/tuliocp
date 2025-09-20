@@ -29,7 +29,7 @@ if [ "$IMAP_SYSTEM" = "dovecot" ]; then
 fi
 
 # Update DNS resolvers in tulio-nginx's configuration
-echo "[ * ] Updating DNS resolvers for Hestia Internal Web Server..."
+echo "[ * ] Updating DNS resolvers for Tulio Internal Web Server..."
 dns_resolver=$(cat /etc/resolv.conf | grep -i '^nameserver' | cut -d ' ' -f2 | tr '\r\n' ' ' | xargs)
 for ip in $dns_resolver; do
 	if [[ $ip =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then

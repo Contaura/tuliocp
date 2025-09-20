@@ -2,7 +2,7 @@
 
 ## 🎨 Logo Files Created
 
-This implementation includes three new TulioCP logo files designed to replace the original Hestia logos:
+This implementation includes three new TulioCP logo files designed to replace the original Tulio logos:
 
 ### 1. Main Logo (`/web/images/logo-tulio.svg`)
 - **Usage**: Login pages, primary brand representation
@@ -43,7 +43,7 @@ This implementation includes three new TulioCP logo files designed to replace th
 
 ### Logo References Updated:
 ```php
-// Before (Hestia)
+// Before (Tulio)
 <img src="/images/logo-tulio.svg" alt="..." width="100" height="120">
 <img src="/images/logo-tulio-header.svg" alt="..." width="54" height="29">
 

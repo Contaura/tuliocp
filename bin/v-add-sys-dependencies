@@ -1,5 +1,5 @@
 #!/bin/bash
-# Add php dependencies to Hestia
+# Add php dependencies to Tulio
 # options: [MODE]
 #
 # This function install PHPMailer and quoteshellarg as via composer
@@ -10,7 +10,7 @@
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -35,9 +35,9 @@ if [ "x$(id -u)" != 'x0' ]; then
 	exit 10
 fi
 
-# Ensure that $HESTIA (/usr/local/hestia/) and other variables are valid.
+# Ensure that $HESTIA (/usr/local/tulio/) and other variables are valid.
 if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/hestia"
+	HESTIA="/usr/local/tulio"
 fi
 
 if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
@@ -49,7 +49,7 @@ fi
 if [ ! -f "$COMPOSER_BIN" ]; then
 	$BIN/v-add-user-composer "$user"
 	if [ $? -ne 0 ]; then
-		$BIN/v-add-user-notification "$ROOT_USER" 'Composer installation failed!' '<p class="u-text-bold">Hestia will not work without Composer.</p><p>Please try running the installer manually from a shell session:<br><code>v-add-sys-dependencies</code></p><p>If this continues, <a href="https://github.com/contaura/tuliocp/issues" target="_blank">open an issue on GitHub</a>.</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Composer installation failed!' '<p class="u-text-bold">Tulio will not work without Composer.</p><p>Please try running the installer manually from a shell session:<br><code>v-add-sys-dependencies</code></p><p>If this continues, <a href="https://github.com/contaura/tuliocp/issues" target="_blank">open an issue on GitHub</a>.</p>'
 		exit 1
 	fi
 fi
@@ -66,7 +66,7 @@ rm --recursive --force ${PM_INSTALL_DIR}/vendor
 mkdir -p ${PM_INSTALL_DIR}/vendor
 chown $user: -R ${PM_INSTALL_DIR}/vendor
 
-openssl_installed=$(/usr/local/hestia/php/bin/php -m | grep openssl)
+openssl_installed=$(/usr/local/tulio/php/bin/php -m | grep openssl)
 if [ -z "$openssl_installed" ]; then
 	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec /usr/bin/php $COMPOSER_BIN --quiet --no-dev install
 else
@@ -78,7 +78,7 @@ if [ $? -ne 0 ]; then
 	echo "ERROR: PHPMailer installation failed!"
 	echo "Please report this to our development team:"
 	echo "https://github.com/contaura/tuliocp/issues"
-	$BIN/v-add-user-notification "$ROOT_USER" 'Hestia PHP dependencies installation failed!' '<p>Please <a href="https://github.com/contaura/tuliocp/issues" target="_blank">open an issue on GitHub</a> to report this to our development team.</p>'
+	$BIN/v-add-user-notification "$ROOT_USER" 'Tulio PHP dependencies installation failed!' '<p>Please <a href="https://github.com/contaura/tuliocp/issues" target="_blank">open an issue on GitHub</a> to report this to our development team.</p>'
 	# Installation failed, clean up files
 	rm --recursive --force ${PM_INSTALL_DIR}/vendor
 	$BIN/v-change-sys-config-value 'USE_SERVER_SMTP' 'n'

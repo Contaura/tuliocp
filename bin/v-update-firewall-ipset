@@ -13,9 +13,9 @@
 refresh=${1:-no}
 
 # Includes
-source /etc/profile.d/hestia.sh
+source /etc/profile.d/tulio.sh
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -41,7 +41,7 @@ for ipset_name in $(search_objects "$ipset_hstobject" 'SUSPENDED' 'no' 'LISTNAME
 
 	if [ "$ipset_au" = 'no' ] || [ "$refresh" = 'load' ]; then
 		# Load existing ip list files in the kernel but don't auto update them
-		# The "load" refresh option is only used by hestia-iptables systemd service
+		# The "load" refresh option is only used by tulio-iptables systemd service
 		$BIN/v-add-firewall-ipset "$ipset_name"
 		continue
 	fi

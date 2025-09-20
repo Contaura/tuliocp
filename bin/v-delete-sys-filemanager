@@ -1,5 +1,5 @@
 #!/bin/bash
-# info: remove file manager functionality from Hestia Control Panel
+# info: remove file manager functionality from Tulio Control Panel
 # options: [MODE]
 #
 # example: v-delete-sys-filemanager
@@ -15,7 +15,7 @@ FORCE=$2
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -33,13 +33,13 @@ if [ "x$(id -u)" != 'x0' ]; then
 	exit 10
 fi
 
-# Ensure that $HESTIA (/usr/local/hestia/) and other variables are valid.
+# Ensure that $HESTIA (/usr/local/tulio/) and other variables are valid.
 if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/hestia"
+	HESTIA="/usr/local/tulio"
 fi
 
 if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
-	echo "Error: Hestia environment vars not present"
+	echo "Error: Tulio environment vars not present"
 	exit 2
 fi
 

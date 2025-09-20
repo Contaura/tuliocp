@@ -1,11 +1,11 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: hestia
+Upstream-Name: tulio
 Source: https://www.tuliocp.com
 
 Files: *
 Copyright: 2018-2025, Tulio Control Panel <info@tuliocp.com>
 License: GPL-3.0+
-Remarks: Hestia Control Panel is an open source hosting control panel
+Remarks: Tulio Control Panel is an open source hosting control panel
 
 License: GPL-3.0+
  This program is free software: you can redistribute it and/or modify

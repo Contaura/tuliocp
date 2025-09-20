@@ -20,8 +20,8 @@ source_conf "$TULIO/conf/tulio.conf"
 ###############################################################
 #             Set new version numbers for packages            #
 ###############################################################
-# Hestia Control Panel
-new_version=$(dpkg -l | awk '$2=="hestia" { print $3 }')
+# Tulio Control Panel
+new_version=$(dpkg -l | awk '$2=="tulio" { print $3 }')
 
 ###############################################################
 #               Begin standard upgrade routines               #

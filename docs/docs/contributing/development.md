@@ -19,7 +19,7 @@ These instructions use [Multipass](https://multipass.run/) to create an Ubuntu V
 1. [Fork Tulio](https://github.com/contaura/tuliocp/fork) and clone the repository to your local machine
 
    ```bash
-   git clone https://github.com/YourUsername/hestiacp.git ~/projects
+   git clone https://github.com/YourUsername/tuliocp.git ~/projects
    ```
 
 1. Create an Ubuntu VM with at least 2GB of memory and 15GB of disk space
@@ -33,7 +33,7 @@ These instructions use [Multipass](https://multipass.run/) to create an Ubuntu V
 1. Mount your cloned repository to the VM's home directory
 
    ```bash
-   multipass mount ~/projects/hestiacp tulio-dev:/home/ubuntu/hestiacp
+   multipass mount ~/projects/tuliocp tulio-dev:/home/ubuntu/tuliocp
    ```
 
 1. SSH into the VM as root, then install some required packages
@@ -56,7 +56,7 @@ These instructions use [Multipass](https://multipass.run/) to create an Ubuntu V
 
    ```bash
    cd ../install
-   bash hst-install-ubuntu.sh --hostname demo.tuliocp.com --email admin@example.com --username admin --password Password123 --with-debs /tmp/hestiacp-src/deb/ --interactive no --force
+   bash hst-install-ubuntu.sh --hostname demo.tuliocp.com --email admin@example.com --username admin --password Password123 --with-debs /tmp/tuliocp-src/deb/ --interactive no --force
    ```
 
 1. Reboot the VM (and exit SSH session)
@@ -86,14 +86,14 @@ Sometimes (with Multipass), the mapping between the source code directory on you
 
 ```bash
 multipass unmount tulio-dev
-multipass mount ~/projects/hestiacp tulio-dev:/home/ubuntu/hestiacp
+multipass mount ~/projects/tuliocp tulio-dev:/home/ubuntu/tuliocp
 ```
 
 :::
 
 ## Making changes to Tulio
 
-After setting up Tulio in a development VM, you can now make changes to the source code at `~/projects/hestiacp` on your local machine (outside of the VM) using your editor of choice.
+After setting up Tulio in a development VM, you can now make changes to the source code at `~/projects/tuliocp` on your local machine (outside of the VM) using your editor of choice.
 
 Below are some instructions for making a change to Tulio's UI, running the build script and testing the change locally.
 
@@ -111,7 +111,7 @@ Below are some instructions for making a change to Tulio's UI, running the build
 1. Run the Tulio build script
 
    ```bash
-   ./hst_autocompile.sh --hestia --install '~localsrc'
+   ./hst_autocompile.sh --tulio --install '~localsrc'
    ```
 
 1. Reload the page in your browser to see the change

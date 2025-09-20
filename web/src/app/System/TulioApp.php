@@ -349,7 +349,7 @@ class TulioApp
         }
     }
 
-    public function runComposer(string $phpVersion, array $arguments): HestiaCommandResult
+    public function runComposer(string $phpVersion, array $arguments): TulioCommandResult
     {
         $this->runUser('v-add-user-composer', ['2', 'yes']);
 
@@ -358,7 +358,7 @@ class TulioApp
         return $this->runPHP($phpVersion, $composerBin, $arguments);
     }
 
-    public function runWp(string $phpVersion, array $arguments): HestiaCommandResult
+    public function runWp(string $phpVersion, array $arguments): TulioCommandResult
     {
         $this->runUser('v-add-user-wp-cli', ['yes']);
 
@@ -371,7 +371,7 @@ class TulioApp
         string $phpVersion,
         string $command,
         array $arguments,
-    ): HestiaCommandResult {
+    ): TulioCommandResult {
         $phpCommand = ['/usr/bin/php' . $phpVersion, $command, ...$arguments];
 
         try {
@@ -386,12 +386,12 @@ class TulioApp
         }
     }
 
-    private function runUser(string $cmd, array $arguments): HestiaCommandResult
+    private function runUser(string $cmd, array $arguments): TulioCommandResult
     {
         return $this->run($cmd, [$this->user(), ...$arguments]);
     }
 
-    private function run(string $cmd, array $arguments): HestiaCommandResult
+    private function run(string $cmd, array $arguments): TulioCommandResult
     {
         $cli_script = realpath(HESTIA_DIR_BIN . $cmd);
 
@@ -410,7 +410,7 @@ class TulioApp
             throw new ProcessFailedException($process);
         }
 
-        return new HestiaCommandResult(
+        return new TulioCommandResult(
             $process->getCommandLine(),
             $process->getExitCode(),
             $process->getOutput(),
