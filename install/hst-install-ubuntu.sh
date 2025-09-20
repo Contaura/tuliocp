@@ -1200,18 +1200,81 @@ if [ ! -d "$TULIO" ]; then
 	
 	if [ -n "$SOURCE_DIR" ]; then
 		echo "Found source files in: $SOURCE_DIR"
-		# Copy essential directories
-		cp -r "$SOURCE_DIR/bin" "$TULIO/" 2>/dev/null || echo "Warning: bin directory copy failed"
-		cp -r "$SOURCE_DIR/func" "$TULIO/" 2>/dev/null || echo "Warning: func directory copy failed"
-		cp -r "$SOURCE_DIR/web" "$TULIO/" 2>/dev/null || echo "Warning: web directory copy failed"
-		cp -r "$SOURCE_DIR/install" "$TULIO/" 2>/dev/null || echo "Warning: install directory copy failed"
+		# Copy essential directories with verification
+		if [ -d "$SOURCE_DIR/bin" ]; then
+			cp -r "$SOURCE_DIR/bin" "$TULIO/" && echo "✓ bin directory copied successfully" || echo "✗ bin directory copy failed"
+		else
+			echo "✗ bin directory not found in source"
+		fi
+		
+		if [ -d "$SOURCE_DIR/func" ]; then
+			cp -r "$SOURCE_DIR/func" "$TULIO/" && echo "✓ func directory copied successfully" || echo "✗ func directory copy failed"
+		else
+			echo "✗ func directory not found in source"
+		fi
+		
+		if [ -d "$SOURCE_DIR/web" ]; then
+			cp -r "$SOURCE_DIR/web" "$TULIO/" && echo "✓ web directory copied successfully" || echo "✗ web directory copy failed"
+		else
+			echo "✗ web directory not found in source"
+		fi
+		
+		if [ -d "$SOURCE_DIR/install" ]; then
+			cp -r "$SOURCE_DIR/install" "$TULIO/" && echo "✓ install directory copied successfully" || echo "✗ install directory copy failed"
+		else
+			echo "✗ install directory not found in source"
+		fi
+		
+		# Verify bin directory was copied and make scripts executable
+		if [ -d "$TULIO/bin" ]; then
+			echo "Setting executable permissions on CLI scripts..."
+			chmod +x $TULIO/bin/* 2>/dev/null
+			echo "✓ TulioCP CLI scripts ready"
+		else
+			echo "✗ Warning: bin directory not available after copy - CLI features will not work"
+		fi
+		
 		echo "TulioCP files copied from source to installation directory"
 	else
-		echo "Warning: Could not locate TulioCP source files"
-		echo "Creating minimal directory structure..."
-		# Create minimal required directories
+		echo "Warning: Could not locate TulioCP source files locally"
+		echo "Attempting to download essential files from repository..."
+		
+		# Create directory structure
 		mkdir -p $TULIO/bin $TULIO/func $TULIO/web $TULIO/install/common $TULIO/install/deb
-		echo "Minimal directory structure created - some features may not work"
+		
+		# Download essential CLI scripts
+		download_essential_scripts() {
+			local base_url="https://raw.githubusercontent.com/contaura/tuliocp/main/bin"
+			local essential_scripts=(
+				"v-add-user"
+				"v-change-user-shell"
+				"v-change-user-role"
+				"v-change-user-language"
+				"v-change-sys-config-value"
+				"v-change-sys-hostname"
+				"v-add-sys-sftp-jail"
+				"v-add-sys-ssh-jail"
+			)
+			
+			local downloaded=0
+			for script in "${essential_scripts[@]}"; do
+				if curl -sSL "$base_url/$script" -o "$TULIO/bin/$script" 2>/dev/null; then
+					chmod +x "$TULIO/bin/$script"
+					downloaded=$((downloaded + 1))
+				fi
+			done
+			
+			echo "Downloaded $downloaded essential CLI scripts"
+		}
+		
+		# Try to download essential scripts
+		if command -v curl >/dev/null 2>&1; then
+			download_essential_scripts
+		else
+			echo "Warning: curl not available, cannot download CLI scripts"
+		fi
+		
+		echo "Basic directory structure created - some features may have limited functionality"
 	fi
 	
 	# Update TULIO_INSTALL_DIR and TULIO_COMMON_DIR to point to installed locations
@@ -1642,7 +1705,12 @@ else
 fi
 
 # Configuring server hostname
-$TULIO/bin/v-change-sys-hostname $servername > /dev/null 2>&1
+if [ -x "$TULIO/bin/v-change-sys-hostname" ]; then
+	$TULIO/bin/v-change-sys-hostname $servername > /dev/null 2>&1
+else
+	echo "Warning: Hostname script not found, setting hostname manually"
+	hostname $servername 2>/dev/null || echo "Warning: Failed to set hostname"
+fi
 
 # Configuring global OpenSSL options
 echo "[ * ] Configuring OpenSSL to improve TLS performance..."
@@ -1694,22 +1762,43 @@ fi
 
 # Enable SFTP jail
 echo "[ * ] Enabling SFTP jail..."
-$TULIO/bin/v-add-sys-sftp-jail > /dev/null 2>&1
-check_result $? "can't enable sftp jail"
+if [ -x "$TULIO/bin/v-add-sys-sftp-jail" ]; then
+	$TULIO/bin/v-add-sys-sftp-jail > /dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		echo "Warning: SFTP jail setup failed, continuing installation..."
+	fi
+else
+	echo "Warning: SFTP jail script not found, skipping SFTP jail setup"
+fi
 
 # Enable SSH jail
 echo "[ * ] Enabling SSH jail..."
-$TULIO/bin/v-add-sys-ssh-jail > /dev/null 2>&1
-check_result $? "can't enable ssh jail"
+if [ -x "$TULIO/bin/v-add-sys-ssh-jail" ]; then
+	$TULIO/bin/v-add-sys-ssh-jail > /dev/null 2>&1
+	if [ $? -ne 0 ]; then
+		echo "Warning: SSH jail setup failed, continuing installation..."
+	fi
+else
+	echo "Warning: SSH jail script not found, skipping SSH jail setup"
+fi
 
 # Adding Tulio admin account
 echo "[ * ] Creating default admin account..."
-$TULIO/bin/v-add-user $username $vpass $email "default" "System Administrator"
-check_result $? "can't create admin user"
-$TULIO/bin/v-change-user-shell $username nologin no
-$TULIO/bin/v-change-user-role $username admin
-$TULIO/bin/v-change-user-language $username $lang
-$TULIO/bin/v-change-sys-config-value 'POLICY_SYSTEM_PROTECTED_ADMIN' 'yes'
+if [ -x "$TULIO/bin/v-add-user" ]; then
+	$TULIO/bin/v-add-user $username $vpass $email "default" "System Administrator"
+	if [ $? -eq 0 ]; then
+		# Configure user settings if user creation succeeded
+		[ -x "$TULIO/bin/v-change-user-shell" ] && $TULIO/bin/v-change-user-shell $username nologin no
+		[ -x "$TULIO/bin/v-change-user-role" ] && $TULIO/bin/v-change-user-role $username admin
+		[ -x "$TULIO/bin/v-change-user-language" ] && $TULIO/bin/v-change-user-language $username $lang
+		[ -x "$TULIO/bin/v-change-sys-config-value" ] && $TULIO/bin/v-change-sys-config-value 'POLICY_SYSTEM_PROTECTED_ADMIN' 'yes'
+	else
+		echo "Warning: Failed to create admin user, manual setup may be required"
+	fi
+else
+	echo "Warning: User management scripts not found, skipping admin user creation"
+	echo "You will need to manually create an admin user after installation"
+fi
 
 #----------------------------------------------------------#
 #                     Configure Nginx                      #
