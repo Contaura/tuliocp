@@ -1,6 +1,7 @@
 #!/bin/bash
 # TulioCP APT Repository Setup Script
 # https://apt.tuliocp.com/setup.sh
+# Updated with intelligent package detection and auto-fallback to direct installer
 
 set -e
 
