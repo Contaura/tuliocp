@@ -81,12 +81,14 @@ To manually add the TulioCP APT repository (not needed for standard installation
 # Add TulioCP repository
 echo "deb https://apt.tuliocp.com stable main" | sudo tee /etc/apt/sources.list.d/tuliocp.list
 
-# Update package lists
+# Update package lists (ignore signature warnings for now)
 sudo apt update
 
-# Install TulioCP
-sudo apt install tuliocp
+# Install TulioCP (temporary: allow unauthenticated until GPG signing is implemented)
+sudo apt install --allow-unauthenticated tuliocp
 ```
+
+**Note**: The repository is currently unsigned. GPG signing will be implemented in a future update.
 
 ### 🏗️ System Requirements
 
