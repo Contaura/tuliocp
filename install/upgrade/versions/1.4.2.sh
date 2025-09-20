@@ -25,5 +25,5 @@ if [ "$WEB_SYSTEM" = "nginx" ] || [ "$PROXY_SYSTEM" = "nginx" ]; then
 	[ -f "${nginx_conf}.dpkg-new" ] && mv -f ${nginx_conf}.dpkg-new ${nginx_conf}.dpkg-dist
 	[ -f "${nginx_conf}.dpkg-old" ] && mv -f ${nginx_conf} ${nginx_conf}.dpkg-dist \
 		&& rm -f ${nginx_conf}.dpkg-old \
-		&& cp -f $HESTIA/install/deb/nginx/nginx.conf /etc/nginx/
+		&& cp -f $TULIO/install/deb/nginx/nginx.conf /etc/nginx/
 fi

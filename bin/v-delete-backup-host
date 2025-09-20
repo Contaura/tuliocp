@@ -14,12 +14,12 @@
 type=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
+# shellcheck source=/etc/hestiacp/tulio.conf
+source /etc/hestiacp/tulio.conf
 # shellcheck source=/usr/local/hestia/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$HESTIA/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -47,13 +47,13 @@ rm -f $HESTIA/conf/$type.backup.conf
 #                       Hestia                             #
 #----------------------------------------------------------#
 
-# Updating hestia.conf
+# Updating tulio.conf
 bckp=$(echo "$BACKUP_SYSTEM" \
 	| sed "s/,/\n/g" \
 	| sed "s/^$type$//" \
 	| sed "/^$/d" \
 	| sed ':a;N;$!ba;s/\n/,/g')
-sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $HESTIA/conf/hestia.conf
+sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $HESTIA/conf/tulio.conf
 
 # Logging
 $BIN/v-log-action "system" "Info" "Backup" "Removed remote backup host (Host: $host, Type: $type)."

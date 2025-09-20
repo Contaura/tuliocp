@@ -26,7 +26,7 @@ if [ -n "$DB_PMA_ALIAS" ]; then
 		rm /etc/apache2/conf.d/phpmyadmin.conf
 		touch /etc/apache2/conf.d/phpmyadmin.inc
 	fi
-	$HESTIA/bin/v-change-sys-db-alias 'pma' "$DB_PMA_ALIAS"
+	$TULIO/bin/v-change-sys-db-alias 'pma' "$DB_PMA_ALIAS"
 fi
 
 if [ -n "$DB_PGA_ALIAS" ]; then
@@ -34,7 +34,7 @@ if [ -n "$DB_PGA_ALIAS" ]; then
 		rm /etc/apache2/conf.d/phppgadmin.conf
 		touch /etc/apache2/conf.d/phppgadmin.inc
 	fi
-	$HESTIA/bin/v-change-sys-db-alias 'pga' "$DB_PGA_ALIAS"
+	$TULIO/bin/v-change-sys-db-alias 'pga' "$DB_PGA_ALIAS"
 
 fi
 
@@ -56,17 +56,17 @@ if [ -n "$MAIL_SYSTEM" ]; then
 
 	# Clean up legacy ip variable
 	for ip in $($BIN/v-list-sys-ips plain | cut -f1); do
-		sed '/^HELO/d' $HESTIA/data/ips/$ip > /dev/null
+		sed '/^HELO/d' $TULIO/data/ips/$ip > /dev/null
 	done
 fi
 
 if [ -L "/var/log/hestia" ]; then
-	echo "[ ! ] Updating log file location: /usr/local/hestia/log/* to /var/log/hestia/..."
+	echo "[ ! ] Updating log file location: /usr/local/tulio/log/* to /var/log/hestia/..."
 	rm /var/log/hestia
 	mkdir -p /var/log/hestia
-	cp /usr/local/hestia/log/* /var/log/hestia/
-	rm -rf /usr/local/hestia/log
-	ln -s /var/log/hestia /usr/local/hestia/log
+	cp /usr/local/tulio/log/* /var/log/hestia/
+	rm -rf /usr/local/tulio/log
+	ln -s /var/log/hestia /usr/local/tulio/log
 	touch /var/log/hestia/auth.log /var/log/hestia/error.log /var/log/hestia/system.log /var/log/hestia/nginx-error.log /var/log/hestia/nginx-access.log
 fi
 

@@ -20,14 +20,14 @@
 # load config because we need to know if proftpd is installed
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
-source $HESTIA/func/ip.sh
+# shellcheck source=/etc/tuliocp/tulio.conf
+source /etc/tuliocp/tulio.conf
+# shellcheck source=/usr/local/tulio/func/main.sh
+source $TULIO/func/main.sh
+# shellcheck source=/usr/local/tulio/func/ip.sh
+source $TULIO/func/ip.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 upgrade_config_set_value 'UPGRADE_UPDATE_WEB_TEMPLATES' 'true'
 upgrade_config_set_value 'UPGRADE_UPDATE_DNS_TEMPLATES' 'true'
@@ -38,15 +38,15 @@ upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 # Make sure to sync install quoteshell arg
 if [ "$FILE_MANAGER" = "true" ]; then
 	echo "[ * ] Force update filemanager..."
-	$HESTIA/bin/v-delete-sys-filemanager quiet
-	$HESTIA/bin/v-add-sys-filemanager quiet
+	$TULIO/bin/v-delete-sys-filemanager quiet
+	$TULIO/bin/v-add-sys-filemanager quiet
 fi
 
-packages=$(ls --sort=time $HESTIA/data/packages | grep .pkg)
+packages=$(ls --sort=time $TULIO/data/packages | grep .pkg)
 echo "[ * ] Update existing packages to support rate limit mail accounts..."
 for package in $packages; do
-	if [ -z "$(grep -e 'RATE_LIMIT' $HESTIA/data/packages/$package)" ]; then
-		echo "RATE_LIMIT='200'" >> $HESTIA/data/packages/$package
+	if [ -z "$(grep -e 'RATE_LIMIT' $TULIO/data/packages/$package)" ]; then
+		echo "RATE_LIMIT='200'" >> $TULIO/data/packages/$package
 	fi
 done
 
@@ -74,7 +74,7 @@ for file in /etc/dovecot/dovecot.conf /etc/clamav/clamd.conf /etc/exim/exim.conf
 	fi
 done
 # Update any custom php templates
-for file in $HESTIA/data/templates/web/php-fpm/*; do
+for file in $TULIO/data/templates/web/php-fpm/*; do
 	echo "[ * ] Update $file legacy /var/run/ to /run/..."
 	sed -i 's|/var/run/|/run/|g' $file
 done
@@ -103,7 +103,7 @@ fi
 if [ -f /etc/logrotate.d/httpd-prerotate/awstats ]; then
 	echo "[ * ] Update Awstats prerotate to Hestia update method..."
 	# Replace awstatst function
-	cp -f $HESTIA_INSTALL_DIR/logrotate/httpd-prerotate/awstats /etc/logrotate.d/httpd-prerotate/
+	cp -f $TULIO_INSTALL_DIR/logrotate/httpd-prerotate/awstats /etc/logrotate.d/httpd-prerotate/
 fi
 
 if [ "$PHPMYADMIN_KEY" != "" ]; then

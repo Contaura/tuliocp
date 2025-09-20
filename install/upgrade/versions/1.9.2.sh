@@ -31,8 +31,8 @@ for user in $($BIN/v-list-sys-users plain); do
 	fi
 done
 
-# Update permissiosn /usr/local/hestia/data/sessions
-chown -R hestiaweb:hestiaweb /usr/local/hestia/data/sessions
+# Update permissiosn /usr/local/tulio/data/sessions
+chown -R hestiaweb:hestiaweb /usr/local/tulio/data/sessions
 
 if [ -n "$DB_PGA_ALIAS" ]; then
 	if [ -n "$DB_PMA_ALIAS" ]; then
@@ -46,5 +46,5 @@ fi
 chown -R hestiaweb /backup/*.tar
 
 # Fix typo in www.conf
-find /etc/php/ /usr/local/hestia/install/deb/php-fpm -type f -name 'www.conf' -print0 | xargs -0 -I {} sed -i 's/\[wwww\]/\[www\]/' {}
-find /etc/php/ /usr/local/hestia/install/deb/php-fpm -type f -name 'dummy.conf' -print0 | xargs -0 -I {} sed -i 's/\[wwww\]/\[www\]/' {}
+find /etc/php/ /usr/local/tulio/install/deb/php-fpm -type f -name 'www.conf' -print0 | xargs -0 -I {} sed -i 's/\[wwww\]/\[www\]/' {}
+find /etc/php/ /usr/local/tulio/install/deb/php-fpm -type f -name 'dummy.conf' -print0 | xargs -0 -I {} sed -i 's/\[wwww\]/\[www\]/' {}

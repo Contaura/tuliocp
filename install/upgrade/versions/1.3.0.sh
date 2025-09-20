@@ -8,7 +8,7 @@
 
 # Add NPM to the default writeable folder list
 echo "[ * ] Updating default writable folders for all users..."
-for user in $($HESTIA/bin/v-list-sys-users plain); do
+for user in $($TULIO/bin/v-list-sys-users plain); do
 	mkdir -p \
 		$HOMEDIR/$user/.npm
 
@@ -27,7 +27,7 @@ if [ "$PROXY_SYSTEM" = "nginx" ]; then
 				-e "s/%proxy_port%/$PROXY_PORT/g" \
 				-e "s/%proxy_ssl_port%/$PROXY_SSL_PORT/g" \
 				> /etc/$PROXY_SYSTEM/conf.d/$IP.conf
-	done < <(ls $HESTIA/data/ips/)
+	done < <(ls $TULIO/data/ips/)
 fi
 
 if [ "$FTP_SYSTEM" == "proftpd" ]; then
@@ -39,8 +39,8 @@ if [ "$FTP_SYSTEM" == "proftpd" ]; then
 		rm /etc/proftpd/tls.conf
 	fi
 
-	cp -f $HESTIA_INSTALL_DIR/proftpd/proftpd.conf /etc/proftpd/
-	cp -f $HESTIA_INSTALL_DIR/proftpd/tls.conf /etc/proftpd/
+	cp -f $TULIO_INSTALL_DIR/proftpd/proftpd.conf /etc/proftpd/
+	cp -f $TULIO_INSTALL_DIR/proftpd/tls.conf /etc/proftpd/
 
 fi
 
@@ -65,12 +65,12 @@ fi
 echo "[ * ] Setting zstd backup compression type as default..."
 $BIN/v-change-sys-config-value "BACKUP_MODE" "zstd"
 
-# Set LOGIN_STYLE variable in hestia.conf
-echo "[ * ] Updating configuration file: hestia.conf..."
+# Set LOGIN_STYLE variable in tulio.conf
+echo "[ * ] Updating configuration file: tulio.conf..."
 $BIN/v-change-sys-config-value "LOGIN_STYLE" "default"
 
 # Remove old lanugage files.
-if [ -e $HESTIA/web/inc/i18n/en.php ]; then
+if [ -e $TULIO/web/inc/i18n/en.php ]; then
 	echo "[ * ] Performing language library clean-up..."
-	rm -fr $HESTIA/web/inc/i18n
+	rm -fr $TULIO/web/inc/i18n
 fi

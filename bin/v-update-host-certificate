@@ -21,14 +21,14 @@ user=$1
 hostname=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
+# shellcheck source=/etc/hestiacp/tulio.conf
+source /etc/hestiacp/tulio.conf
 # shellcheck source=/usr/local/hestia/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/hestia/func/ip.sh
 source $HESTIA/func/ip.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$HESTIA/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -76,7 +76,7 @@ fi
 
 # Add UPDATE_HOSTNAME_SSL if not exist
 if [ -z "$UPDATE_HOSTNAME_SSL" ]; then
-	echo "UPDATE_HOSTNAME_SSL='yes'" >> "$HESTIA/conf/hestia.conf"
+	echo "UPDATE_HOSTNAME_SSL='yes'" >> "$HESTIA/conf/tulio.conf"
 fi
 
 # Restart services

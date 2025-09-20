@@ -1,11 +1,11 @@
 # Contributing to Hestia’s development
 
-Hestia is an open-source project, and we welcome contributions from the community. Please read the [contributing guidelines](https://github.com/hestiacp/hestiacp/blob/main/CONTRIBUTING.md) for additional information.
+Hestia is an open-source project, and we welcome contributions from the community. Please read the [contributing guidelines](https://github.com/tuliocp/tuliocp/blob/main/CONTRIBUTING.md) for additional information.
 
 Hestia is designed to be installed on a web server. To develop Hestia on your local machine, a virtual machine is recommended.
 
 ::: warning
-Development builds are unstable. If you encounter a bug, please [report it via GitHub](https://github.com/hestiacp/hestiacp/issues/new/choose) or [submit a Pull Request](https://github.com/hestiacp/hestiacp/pulls).
+Development builds are unstable. If you encounter a bug, please [report it via GitHub](https://github.com/tuliocp/tuliocp/issues/new/choose) or [submit a Pull Request](https://github.com/tuliocp/tuliocp/pulls).
 :::
 
 ## Creating a virtual machine for development
@@ -16,7 +16,7 @@ These instructions use [Multipass](https://multipass.run/) to create an Ubuntu V
 
 1. [Install Multipass](https://multipass.run/install) for your OS
 
-1. [Fork Hestia](https://github.com/hestiacp/hestiacp/fork) and clone the repository to your local machine
+1. [Fork Hestia](https://github.com/tuliocp/tuliocp/fork) and clone the repository to your local machine
 
    ```bash
    git clone https://github.com/YourUsername/hestiacp.git ~/projects
@@ -116,7 +116,7 @@ Below are some instructions for making a change to Hestia's UI, running the buil
 
 1. Reload the page in your browser to see the change
 
-Please refer to the [contributing guidelines](https://github.com/hestiacp/hestiacp/blob/main/CONTRIBUTING.md#development-guidelines) for more details on submitting code changes for review.
+Please refer to the [contributing guidelines](https://github.com/tuliocp/tuliocp/blob/main/CONTRIBUTING.md#development-guidelines) for more details on submitting code changes for review.
 
 ::: info
 A backup is created each time the Hestia build script is run. If you run this often it can fill up your VM's disk space.
@@ -131,7 +131,7 @@ We currently use [Bats](https://github.com/bats-core/bats-core) to run our autom
 
 ```bash
 # Clone Hestia repo with testing submodules
-git clone --recurse-submodules https://github.com/hestiacp/hestiacp
+git clone --recurse-submodules https://github.com/tuliocp/tuliocp
 # Or, using an existing local repo with an up-to-date main branch
 git submodule update --init --recursive
 

@@ -4,7 +4,7 @@
 #
 # example: v-delete-remote-dns-host example.org
 #
-# This function for deleting the remote dns host from hestia configuration.
+# This function for deleting the remote dns host from tulio.configuration.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -14,14 +14,14 @@
 host=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
+# shellcheck source=/etc/hestiacp/tulio.conf
+source /etc/hestiacp/tulio.conf
 # shellcheck source=/usr/local/hestia/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/hestia/func/remote.sh
 source $HESTIA/func/remote.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$HESTIA/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -49,7 +49,7 @@ sed -i "/HOST='$host' /d" "$HESTIA/conf/dns-cluster.conf"
 check_cluster=$(grep HOST $HESTIA/conf/dns-cluster.conf | wc -l)
 if [ "$check_cluster" -eq '0' ]; then
 	rm -f "$HESTIA/conf/dns-cluster.conf"
-	sed -i "/DNS_CLUSTER=/d" "$HESTIA/conf/hestia.conf"
+	sed -i "/DNS_CLUSTER=/d" "$HESTIA/conf/tulio.conf"
 
 	# Delete cron job
 	cmd="v-update-sys-queue dns-cluster"

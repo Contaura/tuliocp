@@ -14,11 +14,11 @@
 # CONFIG HOST STEPS:
 #   export SHARED_HOST_FOLDER="/home/myuser/projectfiles"
 #   mkdir -p $SHARED_HOST_FOLDER
-#   cd $SHARED_HOST_FOLDER && git clone https://github.com/hestiacp/hestiacp.git && cd hestiacp && git checkout ..branch..
+#   cd $SHARED_HOST_FOLDER && git clone https://github.com/tuliocp/tuliocp.git && cd hestiacp && git checkout ..branch..
 #
 
 /*
-# Nginx reverse proxy config: /etc/nginx/conf.d/lxc-hestia.conf
+# Nginx reverse proxy config: /etc/nginx/conf.d/lxc-tulio.conf
 server {
     listen 80;
     server_name ~(?<lxcname>hst-.+)\.hst\.domain\.tld$;
@@ -259,7 +259,7 @@ function getHestiaVersion($branch) {
 		$control_file = file_get_contents(SHARED_HOST_FOLDER . "/hestiacp/src/deb/hestia/control");
 	} else {
 		$control_file = file_get_contents(
-			"https://raw.githubusercontent.com/hestiacp/hestiacp/${branch}/src/deb/hestia/control",
+			"https://raw.githubusercontent.com/tuliocp/tuliocp/${branch}/src/deb/hestia/control",
 		);
 	}
 
@@ -431,7 +431,7 @@ foreach ($containers as $container) {
 	system(
 		"lxc exec " .
 			$container["lxc_name"] .
-			' -- bash -c "sed -i \'s/session.cookie_secure] = on\$/session.cookie_secure] = off/\' /usr/local/hestia/php/etc/php-fpm.conf"',
+			' -- bash -c "sed -i \'s/session.cookie_secure] = on\$/session.cookie_secure] = off/\' /usr/local/tulio/php/etc/php-fpm.conf"',
 	);
 
 	# get rid off "mesg: ttyname failed: No such device" error
@@ -445,12 +445,12 @@ foreach ($containers as $container) {
 	system(
 		"lxc exec " .
 			$container["lxc_name"] .
-			' -- bash -c "sed -i \'/LE_STAGING/d\' /usr/local/hestia/conf/hestia.conf"',
+			' -- bash -c "sed -i \'/LE_STAGING/d\' /usr/local/tulio/conf/tulio.conf"',
 	);
 	system(
 		"lxc exec " .
 			$container["lxc_name"] .
-			' -- bash -c "echo \'LE_STAGING=\"yes\"\' >> /usr/local/hestia/conf/hestia.conf"',
+			' -- bash -c "echo \'LE_STAGING=\"yes\"\' >> /usr/local/tulio/conf/tulio.conf"',
 	);
 
 	system("lxc exec " . $container["lxc_name"] . ' -- bash -c "service hestia restart"');

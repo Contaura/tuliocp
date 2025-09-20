@@ -9,12 +9,12 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
+# shellcheck source=/etc/hestiacp/tulio.conf
+source /etc/hestiacp/tulio.conf
 # shellcheck source=/usr/local/hestia/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$HESTIA/conf/tulio.conf"
 # upgrade config file
 source "$HESTIA/install/upgrade/upgrade.conf"
 
@@ -136,8 +136,8 @@ if [ "$UPDATE" == "no" ]; then
 	echo "User-agent: *" > $SM_INSTALL_DIR/robots.txt
 	echo "Disallow: /" >> $SM_INSTALL_DIR/robots.txt
 
-	# Updating hestia.conf
-	if [ -z "$(grep WEBMAIL_SYSTEM $HESTIA/conf/hestia.conf)" ]; then
+	# Updating tulio.conf
+	if [ -z "$(grep WEBMAIL_SYSTEM $HESTIA/conf/tulio.conf)" ]; then
 		$BIN/v-change-sys-config-value 'WEBMAIL_SYSTEM' 'snappymail'
 	else
 		if [ -z "$(echo "$WEBMAIL_SYSTEM" | grep -w 'snappymail')" ]; then

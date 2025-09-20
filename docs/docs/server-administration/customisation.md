@@ -56,7 +56,7 @@ For example, to disable demo mode on pre-install:
 
 ```bash /etc/hestiacp/hooks/pre_install.sh
 #!/bin/bash
-sed -i "s|^DEMO_MODE=.*'|DEMO_MODE='no'|g" $HESTIA/conf/hestia.conf
+sed -i "s|^DEMO_MODE=.*'|DEMO_MODE='no'|g" $HESTIA/conf/tulio.conf
 ```
 
 ::: warning

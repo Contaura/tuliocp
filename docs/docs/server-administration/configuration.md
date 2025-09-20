@@ -30,7 +30,7 @@ You can also disable Cloudflare proxy feature.
 ## How to remove unused ethernet ports from RRD?
 
 ```bash
-nano /usr/local/hestia/conf/hestia.conf
+nano /usr/local/tulio.conf/tulio.conf
 ```
 
 Add the following line:

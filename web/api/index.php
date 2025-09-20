@@ -13,8 +13,8 @@ try {
 }
 
 //die("Error: Disabled");
-define("HESTIA_DIR_BIN", "/usr/local/hestia/bin/");
-define("HESTIA_CMD", "/usr/bin/sudo /usr/local/hestia/bin/");
+define("HESTIA_DIR_BIN", "/usr/local/tulio/bin/");
+define("HESTIA_CMD", "/usr/bin/sudo /usr/local/tulio/bin/");
 
 include $_SERVER["DOCUMENT_ROOT"] . "/inc/helpers.php";
 
@@ -150,7 +150,7 @@ function api_legacy(array $request_data) {
 			api_error(E_PASSWORD, "Error: authentication failed", $hst_return);
 		}
 	} else {
-		$key = "/usr/local/hestia/data/keys/" . basename($request_data["hash"]);
+		$key = "/usr/local/tulio/data/keys/" . basename($request_data["hash"]);
 		$v_ip = quoteshellarg(get_real_user_ip());
 		exec(
 			HESTIA_CMD . "v-check-api-key " . quoteshellarg($key) . " " . $v_ip,

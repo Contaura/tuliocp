@@ -4,18 +4,18 @@
 
 <h2 align="center">Lightweight and powerful control panel for the modern web</h2>
 
-<p align="center"><strong>Latest stable release:</strong> Version 1.9.4 | <a href="https://github.com/hestiacp/hestiacp/blob/release/CHANGELOG.md">View Changelog</a></p>
+<p align="center"><strong>Latest stable release:</strong> Version 1.9.4 | <a href="https://github.com/tuliocp/tuliocp/blob/release/CHANGELOG.md">View Changelog</a></p>
 
 <p align="center">
 	<a href="https://www.tuliocp.com/">TulioCP.com</a> |
 	<a href="https://docs.tuliocp.com/">Documentation</a> |
 	<a href="https://forum.tuliocp.com/">Forum</a>
 	<br/><br/>
-	<a href="https://drone.hestiacp.com/hestiacp/hestiacp">
-		<img src="https://drone.hestiacp.com/api/badges/hestiacp/hestiacp/status.svg?ref=refs/heads/main" alt="Drone Status"/>
+	<a href="https://drone.hestiacp.com/tuliocp/tuliocp">
+		<img src="https://drone.hestiacp.com/api/badges/tuliocp/tuliocp/status.svg?ref=refs/heads/main" alt="Drone Status"/>
 	</a>
-	<a href="https://github.com/hestiacp/hestiacp/actions/workflows/lint.yml">
-		<img src="https://github.com/hestiacp/hestiacp/actions/workflows/lint.yml/badge.svg" alt="Lint Status"/>
+	<a href="https://github.com/tuliocp/tuliocp/actions/workflows/lint.yml">
+		<img src="https://github.com/tuliocp/tuliocp/actions/workflows/lint.yml/badge.svg" alt="Lint Status"/>
 	</a>
 	<a href="https://gurubase.io/g/hestia">
 		<img src="https://img.shields.io/badge/Gurubase-Ask%20Hestia%20Guru-006BFF" alt="Gurubase"/>

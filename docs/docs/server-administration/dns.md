@@ -65,7 +65,7 @@ There is no limitation on how to chain DNS servers.
 ### Master -> Slave DNS cluster with the Hestia API
 
 ::: info
-It doesn't work if you try to sync via local network! See [Issue](https://github.com/hestiacp/hestiacp/issues/4295) Make sure to use the public ip addresses
+It doesn't work if you try to sync via local network! See [Issue](https://github.com/tuliocp/tuliocp/issues/4295) Make sure to use the public ip addresses
 :::
 
 Preparing your **Slave** server(s):
@@ -78,7 +78,7 @@ Preparing your **Slave** server(s):
    - Has the role `dns-cluster`
    - You may want to set 'Do not allow user to log in to Control Panel' if they are not a regular user
    - If you have more than one slave, the slave user must be unique
-5. Edit `/usr/local/hestia/conf/hestia.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='hestia-zone'`.
+5. Edit `/usr/local/tulio.conf/tulio.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='hestia-zone'`.
 6. Edit `/etc/bind/named.conf.options`, do the following changes, then restart bind9 with `systemctl restart bind9`:
 
    ```bash
@@ -92,7 +92,7 @@ Preparing your **Slave** server(s):
 
 Preparing your **Master** server:
 
-1. On the **Master** server, open `/usr/local/hestia/conf/hestia.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='hestia-zone'`.
+1. On the **Master** server, open `/usr/local/tulio.conf/tulio.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='hestia-zone'`.
 2. Edit `/etc/bind/named.conf.options`, do the following changes, then restart bind9 with `systemctl restart bind9`.
 
    ```bash
@@ -122,7 +122,7 @@ Preparing your **Master** server:
 
 ### Converting an existing DNS cluster to Master -> Slave
 
-1. On **Master** and **Slave** servers, open `/usr/local/hestia/conf/hestia.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='hestia-zone'`.
+1. On **Master** and **Slave** servers, open `/usr/local/tulio.conf/tulio.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='hestia-zone'`.
 2. On the **Master** server, open `/etc/bind/named.conf.options`, do the following changes, then restart bind9 with `systemctl restart bind9`.
 
    ```bash

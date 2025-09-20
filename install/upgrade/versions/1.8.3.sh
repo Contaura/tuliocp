@@ -24,7 +24,7 @@ upgrade_config_set_value 'UPGRADE_REBUILD_USERS' 'false'
 upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 
 # Add new API key permission
-if [ -f "$HESTIA/data/api/update-dns-records" ]; then
-	rm $HESTIA/data/api/update-dns-records
+if [ -f "$TULIO/data/api/update-dns-records" ]; then
+	rm $TULIO/data/api/update-dns-records
 fi
-cp $HESTIA/install/common/api/update-dns-records $HESTIA/data/api/update-dns-records
+cp $TULIO/install/common/api/update-dns-records $TULIO/data/api/update-dns-records

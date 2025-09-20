@@ -22,7 +22,7 @@ upgrade_config_set_value 'UPGRADE_REBUILD_USERS' 'no'
 upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 
 # Update api key permissions
-if [ -f "$HESTIA/data/api/sync-dns-cluster" ]; then
-	rm $HESTIA/data/api/sync-dns-cluster
-	cp $HESTIA/install/deb/api/sync-dns-cluster $HESTIA/data/api/sync-dns-cluster
+if [ -f "$TULIO/data/api/sync-dns-cluster" ]; then
+	rm $TULIO/data/api/sync-dns-cluster
+	cp $TULIO/install/deb/api/sync-dns-cluster $TULIO/data/api/sync-dns-cluster
 fi

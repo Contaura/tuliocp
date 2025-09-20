@@ -23,7 +23,7 @@ export default defineConfig({
 		nav: nav(),
 
 		socialLinks: [
-			{ icon: 'github', link: 'https://github.com/hestiacp/hestiacp' },
+			{ icon: 'github', link: 'https://github.com/tuliocp/tuliocp' },
 			{ icon: 'twitter', link: 'https://twitter.com/HestiaPanel' },
 			{ icon: 'facebook', link: 'https://www.facebook.com/hestiacp' },
 		],
@@ -33,7 +33,7 @@ export default defineConfig({
 		outline: [2, 3],
 
 		editLink: {
-			pattern: 'https://github.com/hestiacp/hestiacp/edit/main/docs/:path',
+			pattern: 'https://github.com/tuliocp/tuliocp/edit/main/docs/:path',
 			text: 'Edit this page on GitHub',
 		},
 
@@ -65,15 +65,15 @@ function nav() {
 			items: [
 				{
 					text: 'Changelog',
-					link: 'https://github.com/hestiacp/hestiacp/blob/main/CHANGELOG.md',
+					link: 'https://github.com/tuliocp/tuliocp/blob/main/CHANGELOG.md',
 				},
 				{
 					text: 'Contributing',
-					link: 'https://github.com/hestiacp/hestiacp/blob/main/CONTRIBUTING.md',
+					link: 'https://github.com/tuliocp/tuliocp/blob/main/CONTRIBUTING.md',
 				},
 				{
 					text: 'Security policy',
-					link: 'https://github.com/hestiacp/hestiacp/blob/main/SECURITY.md',
+					link: 'https://github.com/tuliocp/tuliocp/blob/main/SECURITY.md',
 				},
 			],
 		},

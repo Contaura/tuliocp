@@ -15,8 +15,8 @@ user=$1
 snapshot=$2
 folder=$3
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
+# shellcheck source=/etc/hestiacp/tulio.conf
+source /etc/hestiacp/tulio.conf
 # shellcheck source=/usr/local/hestia/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/hestia/func/domain.sh
@@ -26,7 +26,7 @@ source $HESTIA/func/db.sh
 # shellcheck source=/usr/local/hestia/func/backup.sh
 source $HESTIA/func/backup.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$HESTIA/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #

@@ -58,7 +58,7 @@ All notable changes to this project will be documented in this file.
 
 - To improve security, we now allow users to rename the default `admin` user.
 - Hestia now runs under a new `hestia-web` user.
-- In initial versions of HestiaCP, we used Jailkit to enabled Jailed SSH. It had major disadvantages, so we have decided it to replace it with [bubblewrap](https://github.com/containers/bubblewrap). Users running Jailed SSH in the past are advised to run the migration script! It can be found in `/usr/local/hestia/install/upgrade/manual/migrate_jailkit_to_bubblewrap.sh`. See [#4698](https://github.com/hestiacp/hestiacp/pull/4698)
+- In initial versions of HestiaCP, we used Jailkit to enabled Jailed SSH. It had major disadvantages, so we have decided it to replace it with [bubblewrap](https://github.com/containers/bubblewrap). Users running Jailed SSH in the past are advised to run the migration script! It can be found in `/usr/local/hestia/install/upgrade/manual/migrate_jailkit_to_bubblewrap.sh`. See [#4698](https://github.com/tuliocp/tuliocp/pull/4698)
 - We are aware that cgroups are currently not working as they should be. They work fine if you login with SSH as the user, but they don't work for PHP-FPM yet.
 - Dropped support for Debian 10 due to EOL.
 
@@ -177,7 +177,7 @@ All notable changes to this project will be documented in this file.
 ### Bug fixes
 
 - Include missed changes
-- Include <https://github.com/hestiacp/hestiacp/blob/main/install/upgrade/manual/secure_php.sh>
+- Include <https://github.com/tuliocp/tuliocp/blob/main/install/upgrade/manual/secure_php.sh>
 
 ## [1.8.9] - Service release
 
@@ -974,7 +974,7 @@ A bug in v-update-sys-hestia caused auto update to be not working. Please run: `
 - Add missing translation conversions in backup list (#2501)
 - Update example in v-add-web-domain-backend (#2500 gingerbeardman)
 - Update example in v-add-letsencrypt-domain (#2442)
-- Fixed an issue in configure-server-smtp.sh by loading /etc/hestiacp/hestia.conf (#2488)
+- Fixed an issue in configure-server-smtp.sh by loading /etc/hestiacp/tulio.conf (#2488)
 - Update Cloudflare ips in nginx.conf (#2542 @clarkchentw)
 - Remove duplicate code in Ubuntu installer (#2542 @clarkchentw)
 - Fixed an issue in Nginx + Apache2 mail "disabled" template. Causing users unable to request an valid ssl certificate (#2550 #2549)
@@ -1433,7 +1433,7 @@ After that run apt update && apt upgrade
 ### Bugfixes
 
 - Updated jQuery and jQuery UI to the latest version due to a vulnerability in jQuery. @dependabot
-- Resolve issue with double ENFORCE_SUBDOMAIN_OWNERSHIP keys in hestia.conf
+- Resolve issue with double ENFORCE_SUBDOMAIN_OWNERSHIP keys in tulio.conf
 - Resolve issue with create new user during install in some cases #2000
 - Fixed an issue with Quick Install apps named Test123 (@PsychotherapistSam)
 - Fix an issue with dovecot 2.3 ssl config (#1432)
@@ -1738,7 +1738,7 @@ apt update && apt upgrade
 
 - Users can now choose to point a domain to a different document root location (similar to domain parking).
 - The software update process will now perform a system health check before proceeding with installation.
-- Administrators now have control over software update notifications through the following settings in `$HESTIA/conf/hestia.conf` and through the Control Panel web interface:
+- Administrators now have control over software update notifications through the following settings in `$HESTIA/conf/tulio.conf` and through the Control Panel web interface:
   - `UPGRADE_SEND_EMAIL` = Sends an email notification to primary admin account's email address
   - `UPGRADE_SEND_EMAIL_LOG` = Sends installation log output to the primary admin account's email address
 - The upgrade process will now save installation logs to the `/root/hst_backups` directory by default for post-install troubleshooting.
@@ -1903,7 +1903,7 @@ apt update && apt upgrade
 - Don't calculate /home folder size in v-list-sys-info.
 - Adjust v-list-sys-services to honor the changed fail2ban service name.
 - Rework busy port validation in v-change-sys-port.
-- Implement a validation function to verify the correct version in hestia.conf prior to installation.
+- Implement a validation function to verify the correct version in tulio.conf prior to installation.
 - Introduced a delay when an incorrect username, password, or 2FA code has been entered repeatedly.
 - Improved "Forgot password" function prevent brute force attacks.
 - Fixed an issue where the backup update counter was not updated properly when v-delete-user-backup was executed.
@@ -1956,7 +1956,7 @@ apt update && apt upgrade
 
 - Added support for custom user interface themes.
 - Introduced official Dark and Flat themes.
-- Added read-only/demo mode - DEMO_MODE must be set to yes in hestia.conf to enable.
+- Added read-only/demo mode - DEMO_MODE must be set to yes in tulio.conf to enable.
 - Added php-imagick module to installer and upgrade scripts.
 - Added recidive filter function to fail2ban.
 - Improved and refactored Multi-PHP functionality.
@@ -2035,7 +2035,7 @@ apt update && apt upgrade
 ### Bugfixes
 
 - Fixed several security issues, thanks to Andrea Cardaci (<https://cardaci.xyz/>)
-- Rework Let's Encrypt ACME staging to use hestia conform standard.
+- Rework Let's Encrypt ACME staging to use tulio.conform standard.
 - Fixed if condition, use nginx for Let's Encrypt ACME request if present.
 
 ## [1.0.4] - 2019-07-09 - Hotfix
@@ -2097,8 +2097,8 @@ apt update && apt upgrade
 
 -
 
-[1.0.4]: https://github.com/hestiacp/hestiacp/releases/tag/1.0.4
-[1.0.3]: https://github.com/hestiacp/hestiacp/releases/tag/1.0.3
-[1.0.1]: https://github.com/hestiacp/hestiacp/releases/tag/1.0.1
-[1.0.0-190618]: https://github.com/hestiacp/hestiacp/releases/tag/1.0.0-190618
-[0.9.8-28]: https://github.com/hestiacp/hestiacp/releases/tag/0.9.8-28
+[1.0.4]: https://github.com/tuliocp/tuliocp/releases/tag/1.0.4
+[1.0.3]: https://github.com/tuliocp/tuliocp/releases/tag/1.0.3
+[1.0.1]: https://github.com/tuliocp/tuliocp/releases/tag/1.0.1
+[1.0.0-190618]: https://github.com/tuliocp/tuliocp/releases/tag/1.0.0-190618
+[0.9.8-28]: https://github.com/tuliocp/tuliocp/releases/tag/0.9.8-28

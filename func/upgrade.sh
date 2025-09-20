@@ -7,19 +7,19 @@
 #===========================================================================#
 
 # Import system health check and repair library
-# shellcheck source=/usr/local/hestia/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+# shellcheck source=/usr/local/tulio/func/syshealth.sh
+source $TULIO/func/syshealth.sh
 
 #####################################################################
 #######                Functions & Initialization             #######
 #####################################################################
 
 add_upgrade_message() {
-	if [ -f "$HESTIA_BACKUP/message.log" ]; then
-		echo -e $1 >> $HESTIA_BACKUP/message.log
-		echo -e "\n\n" >> $HESTIA_BACKUP/message.log
+	if [ -f "$TULIO_BACKUP/message.log" ]; then
+		echo -e $1 >> $TULIO_BACKUP/message.log
+		echo -e "\n\n" >> $TULIO_BACKUP/message.log
 	else
-		echo -e $1 > $HESTIA_BACKUP/message.log
+		echo -e $1 > $TULIO_BACKUP/message.log
 	fi
 }
 
@@ -36,7 +36,7 @@ upgrade_health_check() {
 
 	echo "============================================================================="
 	echo "[ ! ] Performing system health check before proceeding with installation...  "
-	# Perform basic health check against hestia.conf to ensure that
+	# Perform basic health check against tulio.conf to ensure that
 	# system variables exist and are set to expected defaults.
 
 	if [ -z "$VERSION" ]; then
@@ -80,7 +80,7 @@ upgrade_welcome_message() {
 	echo "Default configuration files and templates may be modified or replaced        "
 	echo "during the upgrade process. You may restore these files from:                "
 	echo ""
-	echo "Backup directory: $HESTIA_BACKUP/"
+	echo "Backup directory: $TULIO_BACKUP/"
 	echo "Installation log: $LOG"
 }
 
@@ -119,10 +119,10 @@ upgrade_complete_message() {
 	echo
 	echo "Upgrade complete! If you encounter any issues or find a bug,                 "
 	echo "please take a moment to report it to us on GitHub at the URL below:          "
-	echo "https://github.com/hestiacp/hestiacp/issues                                  "
+	echo "https://github.com/tuliocp/tuliocp/issues                                  "
 	echo
 	echo "Read the release notes to learn about new fixes and features:                "
-	echo "https://github.com/hestiacp/hestiacp/blob/release/CHANGELOG.md               "
+	echo "https://github.com/tuliocp/tuliocp/blob/release/CHANGELOG.md               "
 	echo
 	echo "We hope that you enjoy using this version of Hestia Control Panel,           "
 	echo "have a wonderful day!                                                        "
@@ -133,7 +133,7 @@ upgrade_complete_message() {
 	echo "Web:      https://www.hestiacp.com/                                          "
 	echo "Docs:     https://docs.hestiacp.com/										   "
 	echo "Forum:    https://forum.hestiacp.com/                                        "
-	echo "GitHub:   https://github.com/hestiacp/hestiacp/                              "
+	echo "GitHub:   https://github.com/tuliocp/tuliocp/                              "
 	echo
 	echo "Help support the Hestia Control Panel project by donating via PayPal:        "
 	echo "https://www.hestiacp.com/donate                                              "
@@ -149,7 +149,7 @@ upgrade_complete_message_log() {
 	echo "============================================================================="
 	echo "UPGRADE COMPLETE.                                                            "
 	echo "Please report any issues on GitHub:                                          "
-	echo "https://github.com/hestiacp/hestiacp/issues                                  "
+	echo "https://github.com/tuliocp/tuliocp/issues                                  "
 	echo "============================================================================="
 	echo
 	$BIN/v-log-action "system" "Info" "Updates" "Update installed (Version: $new_version)."
@@ -167,12 +167,12 @@ upgrade_get_version() {
 }
 
 upgrade_set_version() {
-	# Set new version number in hestia.conf
+	# Set new version number in tulio.conf
 	$BIN/v-change-sys-config-value "VERSION" "$@"
 }
 
 upgrade_set_branch() {
-	# Set branch in hestia.conf
+	# Set branch in tulio.conf
 	DISPLAY_VER=$(echo "$1" | sed "s|~alpha||g" | sed "s|~beta||g")
 	if [ "$DISPLAY_VER" = "$1" ]; then
 		$BIN/v-change-sys-config-value "RELEASE_BRANCH" "release"
@@ -187,13 +187,13 @@ upgrade_send_notification_to_panel() {
 	# Add notification to panel if variable is set to true or is not set
 	if [[ "$new_version" =~ "alpha" ]]; then
 		# Send notifications for development releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Development snapshot installed' '<p><span class="u-text-bold">Version:</span> '$new_version'<br><span class="u-text-bold">Code Branch:</span> '$RELEASE_BRANCH'</p><p>Please report any bugs by <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">opening an issue on GitHub</a>, and feel free to share your feedback on our <a href="https://forum.hestiacp.com" target="_blank">discussion forum</a>.</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Development snapshot installed' '<p><span class="u-text-bold">Version:</span> '$new_version'<br><span class="u-text-bold">Code Branch:</span> '$RELEASE_BRANCH'</p><p>Please report any bugs by <a href="https://github.com/tuliocp/tuliocp/issues" target="_blank">opening an issue on GitHub</a>, and feel free to share your feedback on our <a href="https://forum.hestiacp.com" target="_blank">discussion forum</a>.</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
 	elif [[ "$new_version" =~ "beta" ]]; then
 		# Send feedback notification for beta releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Thank you for testing Hestia Control Panel '$new_version'.' '<p>Please share your feedback with our development team through our <a href="https://forum.hestiacp.com" target="_blank">discussion forum</a>.</p><p>Found a bug? <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">Open an issue on GitHub</a>!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Thank you for testing Hestia Control Panel '$new_version'.' '<p>Please share your feedback with our development team through our <a href="https://forum.hestiacp.com" target="_blank">discussion forum</a>.</p><p>Found a bug? <a href="https://github.com/tuliocp/tuliocp/issues" target="_blank">Open an issue on GitHub</a>!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
 	else
 		# Send normal upgrade complete notification for stable releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Upgrade complete' '<p>Hestia Control Panel has been updated to <span class="u-text-bold">v'$new_version'</span>.</p><p><a href="https://github.com/hestiacp/hestiacp/blob/release/CHANGELOG.md" target="_blank">View release notes</a></p><p>Please report any bugs by <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">opening an issue on GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Upgrade complete' '<p>Hestia Control Panel has been updated to <span class="u-text-bold">v'$new_version'</span>.</p><p><a href="https://github.com/tuliocp/tuliocp/blob/release/CHANGELOG.md" target="_blank">View release notes</a></p><p>Please report any bugs by <a href="https://github.com/tuliocp/tuliocp/issues" target="_blank">opening an issue on GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
 	fi
 }
 
@@ -205,7 +205,7 @@ upgrade_send_notification_to_email() {
 	if [ "$UPGRADE_SEND_EMAIL" = "true" ]; then
 		# Retrieve admin email address, sendmail path, and message temp file path
 		admin_email=$($BIN/v-list-user "$ROOT_USER" json | grep "CONTACT" | cut -d'"' -f4)
-		send_mail="$HESTIA/web/inc/mail-wrapper.php"
+		send_mail="$TULIO/web/inc/mail-wrapper.php"
 		message_tmp_file="/tmp/hestia-upgrade-complete.txt"
 
 		# Create temporary file
@@ -217,21 +217,21 @@ upgrade_send_notification_to_email() {
 		echo "" >> $message_tmp_file
 
 		# Check for additional upgrade notes from update scripts.
-		if [[ -f "$HESTIA_BACKUP/message.log" ]]; then
+		if [[ -f "$TULIO_BACKUP/message.log" ]]; then
 			echo "===================================================" >> $message_tmp_file
 			echo "The upgrade script has generated additional notifications, which must be heeded urgently:" >> $message_tmp_file
 			echo "" >> $message_tmp_file
-			cat $HESTIA_BACKUP/message.log >> $message_tmp_file
+			cat $TULIO_BACKUP/message.log >> $message_tmp_file
 			echo "" >> $message_tmp_file
 			echo "===================================================" >> $message_tmp_file
 			echo "" >> $message_tmp_file
 		fi
 
-		echo "What's new: https://github.com/hestiacp/hestiacp/blob/$RELEASE_BRANCH/CHANGELOG.md" >> $message_tmp_file
+		echo "What's new: https://github.com/tuliocp/tuliocp/blob/$RELEASE_BRANCH/CHANGELOG.md" >> $message_tmp_file
 		echo >> $message_tmp_file
 		echo "What to do if you run into issues:" >> $message_tmp_file
 		echo "- Check our forums for possible solutions: https://forum.hestiacp.com" >> $message_tmp_file
-		echo "- File an issue report on GitHub: https://github.com/hestiacp/hestiacp/issues" >> $message_tmp_file
+		echo "- File an issue report on GitHub: https://github.com/tuliocp/tuliocp/issues" >> $message_tmp_file
 		echo "" >> $message_tmp_file
 		echo "Help support the Hestia Control Panel project by donating via PayPal: https://www.hestiacp.com/donate" >> $message_tmp_file
 		echo "===================================================" >> $message_tmp_file
@@ -247,100 +247,100 @@ upgrade_send_notification_to_email() {
 upgrade_send_log_to_email() {
 	if [ "$UPGRADE_SEND_EMAIL_LOG" = "true" ]; then
 		admin_email=$($BIN/v-list-user $ROOT_USER json | grep "CONTACT" | cut -d'"' -f4)
-		send_mail="$HESTIA/web/inc/mail-wrapper.php"
+		send_mail="$TULIO/web/inc/mail-wrapper.php"
 		cat $LOG | $send_mail -s "Update Installation Log - v${new_version}" $admin_email
 	fi
 }
 
 upgrade_config_set_value() {
-	if [ -f "$HESTIA_BACKUP/upgrade.conf" ]; then
+	if [ -f "$TULIO_BACKUP/upgrade.conf" ]; then
 		if [ "$2" = "true" ]; then
-			sed -i "s/$1='false'/$1='true'/g" $HESTIA_BACKUP/upgrade.conf
+			sed -i "s/$1='false'/$1='true'/g" $TULIO_BACKUP/upgrade.conf
 		fi
 	fi
 }
 
 prepare_upgrade_config() {
-	mkdir -p $HESTIA_BACKUP
-	touch $HESTIA_BACKUP/upgrade.conf
+	mkdir -p $TULIO_BACKUP
+	touch $TULIO_BACKUP/upgrade.conf
 	while IFS='= ' read -r lhs rhs; do
 		if [[ ! $lhs =~ ^\ *# && -n $lhs ]]; then
 			rhs="${rhs%%\#*}"  # Del in line right comments
 			rhs="${rhs%%*( )}" # Del trailing spaces
 			rhs="${rhs%\'*}"   # Del opening string quotes
 			rhs="${rhs#\'*}"   # Del closing string quotes
-			echo "$lhs='$rhs'" >> $HESTIA_BACKUP/upgrade.conf
+			echo "$lhs='$rhs'" >> $TULIO_BACKUP/upgrade.conf
 		fi
-	done < "$HESTIA/install/upgrade/upgrade.conf"
+	done < "$TULIO/install/upgrade/upgrade.conf"
 }
 
 upgrade_init_backup() {
 	# Ensure that backup directories are created
 	# Hestia Control Panel configuration files
-	mkdir -p $HESTIA_BACKUP/conf/hestia/
+	mkdir -p $TULIO_BACKUP/conf/hestia/
 
 	# OpenSSL configuration files
-	mkdir -p $HESTIA_BACKUP/conf/openssl/
+	mkdir -p $TULIO_BACKUP/conf/openssl/
 
 	# Hosting Packages
-	mkdir -p $HESTIA_BACKUP/packages/
+	mkdir -p $TULIO_BACKUP/packages/
 
 	# Domain template files
-	mkdir -p $HESTIA_BACKUP/templates/
+	mkdir -p $TULIO_BACKUP/templates/
 
 	# System services (apache2, nginx, bind9, vsftpd, etc).
 	if [ -n "$WEB_SYSTEM" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/$WEB_SYSTEM/
+		mkdir -p $TULIO_BACKUP/conf/$WEB_SYSTEM/
 	fi
 	if [ -n "$IMAP_SYSTEM" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/$IMAP_SYSTEM/
+		mkdir -p $TULIO_BACKUP/conf/$IMAP_SYSTEM/
 	fi
 	if [ -n "$MAIL_SYSTEM" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/$MAIL_SYSTEM/
+		mkdir -p $TULIO_BACKUP/conf/$MAIL_SYSTEM/
 	fi
 	if [ -n "$DNS_SYSTEM" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/$DNS_SYSTEM/
+		mkdir -p $TULIO_BACKUP/conf/$DNS_SYSTEM/
 	fi
 	if [ -n "$PROXY_SYSTEM" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/$PROXY_SYSTEM/
+		mkdir -p $TULIO_BACKUP/conf/$PROXY_SYSTEM/
 	fi
 	if [ -n "$DB_SYSTEM" ]; then
 		if [[ "$DB_SYSTEM" =~ "mysql" ]]; then
-			mkdir -p $HESTIA_BACKUP/conf/mysql/
+			mkdir -p $TULIO_BACKUP/conf/mysql/
 		fi
 		if [[ "$DB_SYSTEM" =~ "pgsql" ]]; then
-			mkdir -p $HESTIA_BACKUP/conf/pgsql/
+			mkdir -p $TULIO_BACKUP/conf/pgsql/
 		fi
 	fi
 	if [ -n "$FTP_SYSTEM" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/$FTP_SYSTEM/
+		mkdir -p $TULIO_BACKUP/conf/$FTP_SYSTEM/
 	fi
 	if [ -n "$FIREWALL_SYSTEM" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/$FIREWALL_SYSTEM/
+		mkdir -p $TULIO_BACKUP/conf/$FIREWALL_SYSTEM/
 	fi
 	if [ -n "$FIREWALL_EXTENSION" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/$FIREWALL_EXTENSION/
+		mkdir -p $TULIO_BACKUP/conf/$FIREWALL_EXTENSION/
 	fi
 	if [ -e "/etc/ssh/sshd_config" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/ssh/
+		mkdir -p $TULIO_BACKUP/conf/ssh/
 	fi
 	if [ -d "/etc/roundcube/" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/roundcube/
+		mkdir -p $TULIO_BACKUP/conf/roundcube/
 	fi
 	if [ -d "/etc/snappymail/" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/snappymail/
+		mkdir -p $TULIO_BACKUP/conf/snappymail/
 	fi
 	if [ -d "/etc/phpmyadmin/" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/phpmyadmin/
+		mkdir -p $TULIO_BACKUP/conf/phpmyadmin/
 	fi
 	if [ -d "/etc/phppgadmin/" ]; then
-		mkdir -p $HESTIA_BACKUP/conf/phppgadmin/
+		mkdir -p $TULIO_BACKUP/conf/phppgadmin/
 	fi
 }
 
 upgrade_init_logging() {
 	# Set log file path
-	LOG="$HESTIA_BACKUP/hst-upgrade-$(date +%d%m%Y%H%M).log"
+	LOG="$TULIO_BACKUP/hst-upgrade-$(date +%d%m%Y%H%M).log"
 
 	# Create log file
 	touch $LOG
@@ -350,10 +350,10 @@ upgrade_init_logging() {
 
 	# Add warnings for pre-release builds
 	if [[ "$new_version" =~ "alpha" ]]; then
-		$BIN/v-log-action "system" "Warning" "Updates" "Development build for testing purposes only. Report bugs at https://github.com/hestiacp/hestiacp/issues/."
+		$BIN/v-log-action "system" "Warning" "Updates" "Development build for testing purposes only. Report bugs at https://github.com/tuliocp/tuliocp/issues/."
 	fi
 	if [[ "$new_version" =~ "beta" ]]; then
-		$BIN/v-log-action "system" "Warning" "Updates" "Beta release. Please report bugs at https://github.com/hestiacp/hestiacp/issues/."
+		$BIN/v-log-action "system" "Warning" "Updates" "Beta release. Please report bugs at https://github.com/tuliocp/tuliocp/issues/."
 	fi
 }
 
@@ -363,12 +363,12 @@ upgrade_start_backup() {
 	if [ "$DEBUG_MODE" = "true" ]; then
 		echo "      - Packages"
 	fi
-	cp -fr $HESTIA/data/packages/* $HESTIA_BACKUP/packages/
+	cp -fr $TULIO/data/packages/* $TULIO_BACKUP/packages/
 
 	if [ "$DEBUG_MODE" = "true" ]; then
 		echo "      - Templates"
 	fi
-	cp -fr $HESTIA/data/templates/* $HESTIA_BACKUP/templates/
+	cp -fr $TULIO/data/templates/* $TULIO_BACKUP/templates/
 
 	if [ "$DEBUG_MODE" = "true" ]; then
 		echo "      - Configuration files:"
@@ -378,45 +378,45 @@ upgrade_start_backup() {
 	if [ "$DEBUG_MODE" = "true" ]; then
 		echo "      ---- hestia"
 	fi
-	cp -fr $HESTIA/conf/* $HESTIA_BACKUP/conf/hestia/
+	cp -fr $TULIO/conf/* $TULIO_BACKUP/conf/hestia/
 
 	# OpenSSL configuration files
 	if [ "$DEBUG_MODE" = "true" ]; then
 		echo "      ---- openssl"
 	fi
-	cp -f /etc/ssl/*.cnf $HESTIA_BACKUP/conf/openssl/
+	cp -f /etc/ssl/*.cnf $TULIO_BACKUP/conf/openssl/
 
 	# System service configuration files (apache2, nginx, bind9, vsftpd, etc).
 	if [ -n "$WEB_SYSTEM" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- $WEB_SYSTEM"
 		fi
-		cp -fr /etc/$WEB_SYSTEM/* $HESTIA_BACKUP/conf/$WEB_SYSTEM/
+		cp -fr /etc/$WEB_SYSTEM/* $TULIO_BACKUP/conf/$WEB_SYSTEM/
 	fi
 	if [ -n "$PROXY_SYSTEM" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- $PROXY_SYSTEM"
 		fi
-		cp -fr /etc/$PROXY_SYSTEM/* $HESTIA_BACKUP/conf/$PROXY_SYSTEM/
+		cp -fr /etc/$PROXY_SYSTEM/* $TULIO_BACKUP/conf/$PROXY_SYSTEM/
 	fi
 	if [ -n "$IMAP_SYSTEM" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- $IMAP_SYSTEM"
 		fi
-		cp -fr /etc/$IMAP_SYSTEM/* $HESTIA_BACKUP/conf/$IMAP_SYSTEM/
+		cp -fr /etc/$IMAP_SYSTEM/* $TULIO_BACKUP/conf/$IMAP_SYSTEM/
 	fi
 	if [ -n "$MAIL_SYSTEM" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- $MAIL_SYSTEM"
 		fi
-		cp -fr /etc/$MAIL_SYSTEM/* $HESTIA_BACKUP/conf/$MAIL_SYSTEM/
+		cp -fr /etc/$MAIL_SYSTEM/* $TULIO_BACKUP/conf/$MAIL_SYSTEM/
 	fi
 	if [ -n "$DNS_SYSTEM" ]; then
 		if [ "$DNS_SYSTEM" = "bind9" ]; then
 			if [ "$DEBUG_MODE" = "true" ]; then
 				echo "      ---- $DNS_SYSTEM"
 			fi
-			cp -fr /etc/bind/* $HESTIA_BACKUP/conf/$DNS_SYSTEM/
+			cp -fr /etc/bind/* $TULIO_BACKUP/conf/$DNS_SYSTEM/
 		fi
 	fi
 	if [ -n "$DB_SYSTEM" ]; then
@@ -424,14 +424,14 @@ upgrade_start_backup() {
 			if [ "$DEBUG_MODE" = "true" ]; then
 				echo "      ---- mysql"
 			fi
-			cp -fr /etc/mysql/* $HESTIA_BACKUP/conf/mysql/
+			cp -fr /etc/mysql/* $TULIO_BACKUP/conf/mysql/
 		fi
 		if [[ "$DB_SYSTEM" =~ "pgsql" ]]; then
 			if [ "$DEBUG_MODE" = "true" ]; then
 				echo "      ---- pgsql"
 			fi
 			# config for postgresql is stored in /etc/postgresql/version/main/
-			cp -fr /etc/postgresql/* $HESTIA_BACKUP/conf/pgsql/
+			cp -fr /etc/postgresql/* $TULIO_BACKUP/conf/pgsql/
 		fi
 	fi
 	if [ -n "$FTP_SYSTEM" ]; then
@@ -439,60 +439,60 @@ upgrade_start_backup() {
 			echo "      ---- $FTP_SYSTEM"
 		fi
 		if [ "$FTP_SYSTEM" = "vsftpd" ]; then
-			cp -f /etc/$FTP_SYSTEM.conf $HESTIA_BACKUP/conf/$FTP_SYSTEM/
+			cp -f /etc/$FTP_SYSTEM.conf $TULIO_BACKUP/conf/$FTP_SYSTEM/
 		fi
 		if [ "$FTP_SYSTEM" = "proftpd" ]; then
-			cp -f /etc/proftpd/proftpd.conf $HESTIA_BACKUP/conf/$FTP_SYSTEM/
+			cp -f /etc/proftpd/proftpd.conf $TULIO_BACKUP/conf/$FTP_SYSTEM/
 		fi
 	fi
 	if [ -n "$FIREWALL_SYSTEM" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- $FIREWALL_SYSTEM"
 		fi
-		[ -e "/etc/sysconfig/iptables" ] && cp -f /etc/sysconfig/iptables $HESTIA_BACKUP/conf/$FIREWALL_SYSTEM/
-		[ -e "/etc/iptables.rules" ] && cp -f /etc/iptables.rules $HESTIA_BACKUP/conf/$FIREWALL_SYSTEM/
+		[ -e "/etc/sysconfig/iptables" ] && cp -f /etc/sysconfig/iptables $TULIO_BACKUP/conf/$FIREWALL_SYSTEM/
+		[ -e "/etc/iptables.rules" ] && cp -f /etc/iptables.rules $TULIO_BACKUP/conf/$FIREWALL_SYSTEM/
 	fi
 	if [ -n "$FIREWALL_EXTENSION" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- $FIREWALL_EXTENSION"
 		fi
-		cp -f /etc/$FIREWALL_EXTENSION/*.conf $HESTIA_BACKUP/conf/$FIREWALL_EXTENSION/
-		cp -f /etc/$FIREWALL_EXTENSION/*.local $HESTIA_BACKUP/conf/$FIREWALL_EXTENSION/
+		cp -f /etc/$FIREWALL_EXTENSION/*.conf $TULIO_BACKUP/conf/$FIREWALL_EXTENSION/
+		cp -f /etc/$FIREWALL_EXTENSION/*.local $TULIO_BACKUP/conf/$FIREWALL_EXTENSION/
 	fi
 	if [ -e "/etc/ssh/sshd_config" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- sshd"
 		fi
-		cp -fr /etc/ssh/* $HESTIA_BACKUP/conf/ssh/
+		cp -fr /etc/ssh/* $TULIO_BACKUP/conf/ssh/
 	fi
 	if [ -d "/etc/roundcube" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- Roundcube"
 		fi
-		cp -fr /etc/roundcube/* $HESTIA_BACKUP/conf/roundcube
+		cp -fr /etc/roundcube/* $TULIO_BACKUP/conf/roundcube
 	fi
 	if [ -d "/etc/snappymail" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- SnappyMail"
 		fi
-		cp -fr /etc/snappymail/* $HESTIA_BACKUP/conf/snappymail
+		cp -fr /etc/snappymail/* $TULIO_BACKUP/conf/snappymail
 	fi
 	if [ -d "/etc/phpmyadmin" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- phpMyAdmin"
 		fi
-		cp -fr /etc/phpmyadmin/* $HESTIA_BACKUP/conf/phpmyadmin
+		cp -fr /etc/phpmyadmin/* $TULIO_BACKUP/conf/phpmyadmin
 	fi
 	if [ -d "/etc/phppgadmin" ]; then
 		if [ "$DEBUG_MODE" = "true" ]; then
 			echo "      ---- phppgadmin"
 		fi
-		cp -fr /etc/phppgadmin/* $HESTIA_BACKUP/conf/phppgadmin
+		cp -fr /etc/phppgadmin/* $TULIO_BACKUP/conf/phppgadmin
 	fi
 }
 
 upgrade_refresh_config() {
-	source_conf "/usr/local/hestia/conf/hestia.conf"
+	source_conf "/usr/local/tulio/conf/tulio.conf"
 }
 
 upgrade_start_routine() {
@@ -503,10 +503,10 @@ upgrade_start_routine() {
 	VERSION=$(echo "$VERSION" | sed "s/~\([a-zA-Z0-9].*\)//g")
 
 	# Get list of all available version steps and create array
-	upgrade_steps=$(ls -v $HESTIA/install/upgrade/versions/*.sh)
+	upgrade_steps=$(ls -v $TULIO/install/upgrade/versions/*.sh)
 	for script in $upgrade_steps; do
 		declare -a available_versions
-		available_versions+=($(echo $script | sed "s|/usr/local/hestia/install/upgrade/versions/||g" | sed "s|.sh||g"))
+		available_versions+=($(echo $script | sed "s|/usr/local/tulio/install/upgrade/versions/||g" | sed "s|.sh||g"))
 	done
 
 	# Define variables for accessing supported versions
@@ -520,7 +520,7 @@ upgrade_start_routine() {
 		for version_step in "${available_versions[@]}"; do
 			if [ $(check_version $VERSION) -lt $(check_version "$version_step") ]; then
 				upgrade_step_message
-				source $HESTIA/install/upgrade/versions/$version_step.sh
+				source $TULIO/install/upgrade/versions/$version_step.sh
 			fi
 		done
 		upgrade_set_version "$VERSION"
@@ -530,8 +530,8 @@ upgrade_start_routine() {
 		echo "[ ! ] The latest version of Hestia Control Panel is already installed."
 		echo "      Verifying configuration..."
 		echo ""
-		if [ -e "$HESTIA/install/upgrade/versions/$VERSION.sh" ]; then
-			source $HESTIA/install/upgrade/versions/$VERSION.sh
+		if [ -e "$TULIO/install/upgrade/versions/$VERSION.sh" ]; then
+			source $TULIO/install/upgrade/versions/$VERSION.sh
 		fi
 		VERSION="$new_version"
 		upgrade_set_version "$VERSION"
@@ -602,7 +602,7 @@ upgrade_phppgadmin() {
 			tar xzf phppgadmin-v$pga_v.tar.gz -C /usr/share/phppgadmin/
 
 			if ! version_ge "$pga_release" "7.14.0"; then
-				cp -f $HESTIA_INSTALL_DIR/pga/config.inc.php /etc/phppgadmin/
+				cp -f $TULIO_INSTALL_DIR/pga/config.inc.php /etc/phppgadmin/
 			fi
 			if [ ! -L /usr/share/phppgadmin/conf/config.inc.php ]; then
 				ln -s /etc/phppgadmin/config.inc.php /usr/share/phppgadmin/conf
@@ -672,10 +672,10 @@ upgrade_phpmyadmin() {
 }
 
 upgrade_filemanager() {
-	FILE_MANAGER_CHECK=$(cat $HESTIA/conf/hestia.conf | grep "FILE_MANAGER='false'")
+	FILE_MANAGER_CHECK=$(cat $TULIO/conf/tulio.conf | grep "FILE_MANAGER='false'")
 	if [ -z "$FILE_MANAGER_CHECK" ]; then
-		if [ -f "$HESTIA/web/fm/version" ]; then
-			fm_version=$(cat $HESTIA/web/fm/version)
+		if [ -f "$TULIO/web/fm/version" ]; then
+			fm_version=$(cat $TULIO/web/fm/version)
 		else
 			fm_version="1.0.0"
 		fi
@@ -688,13 +688,13 @@ upgrade_filemanager() {
 			echo "[ * ] File Manager is up to date ($fm_v)..."
 
 			if [ "$UPGRADE_UPDATE_FILEMANAGER_CONFIG" = "true" ]; then
-				if [ -e "$HESTIA/web/fm/configuration.php" ]; then
+				if [ -e "$TULIO/web/fm/configuration.php" ]; then
 					echo "[ ! ] Updating File Manager configuration..."
 					# Update configuration.php
-					cp -f $HESTIA_INSTALL_DIR/filemanager/filegator/configuration.php $HESTIA/web/fm/configuration.php
+					cp -f $TULIO_INSTALL_DIR/filemanager/filegator/configuration.php $TULIO/web/fm/configuration.php
 
 					# Path to the file manager configuration file where the change will be made.
-					config_file="$HESTIA/web/fm/configuration.php"
+					config_file="$TULIO/web/fm/configuration.php"
 					app_name="File Manager - $APP_NAME"
 
 					# Sed replaces only the value after "File Manager -"
@@ -712,7 +712,7 @@ upgrade_roundcube() {
 	if [ -n "$(echo "$WEBMAIL_SYSTEM" | grep -w 'roundcube')" ]; then
 		if [ -d "/usr/share/roundcube" ]; then
 			echo "[ ! ] Roundcube: Updates are currently managed using the apt package manager"
-			echo "      To upgrade to the latest version of Roundcube directly from upstream, from please run the command migrate_roundcube.sh located in: /usr/local/hestia/install/upgrade/manual/"
+			echo "      To upgrade to the latest version of Roundcube directly from upstream, from please run the command migrate_roundcube.sh located in: /usr/local/tulio/install/upgrade/manual/"
 		else
 			rc_version=$(cat /var/lib/roundcube/index.php | grep -o -E '[0-9].[0-9].[0-9]+' | head -1)
 			if ! version_ge "$rc_version" "$rc_v"; then

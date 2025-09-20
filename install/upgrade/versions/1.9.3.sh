@@ -29,8 +29,8 @@ if [ ! -f /etc/apparmor.d/abi/4.0 ]; then
 fi
 
 if [ -x /usr/sbin/jailbash ]; then
-	$HESTIA/bin/v-delete-sys-ssh-jail
-	$HESTIA/bin/v-add-sys-ssh-jail
+	$TULIO/bin/v-delete-sys-ssh-jail
+	$TULIO/bin/v-add-sys-ssh-jail
 fi
 
 # Fix sftp not starting in /home/[user]

@@ -9,12 +9,12 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
+# shellcheck source=/etc/hestiacp/tulio.conf
+source /etc/hestiacp/tulio.conf
 # shellcheck source=/usr/local/hestia/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$HESTIA/conf/tulio.conf"
 # upgrade config file
 source "$HESTIA/install/upgrade/upgrade.conf"
 
@@ -74,7 +74,7 @@ else
 	mysql -e "DROP DATABASE snappymail" 2>&1
 	mysql -e "DROP USER snappymail@localhost"
 fi
-# Updating hestia.conf
+# Updating tulio.conf
 if [ -z "$(echo "$WEBMAIL_SYSTEM" | grep -w 'snappymail')" ]; then
 	# remove snappymail from webmail list and make sure the string doesn't start with a comma
 	$BIN/v-change-sys-config-value 'WEBMAIL_SYSTEM' "$(echo "$WEBMAIL_SYSTEM" | sed "s/snappymail//g" | sed 's/^,//g')"

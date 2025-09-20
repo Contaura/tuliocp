@@ -7,5 +7,5 @@
 #######################################################################################
 
 if [ -n "$DB_PGA_ALIAS" ]; then
-	$HESTIA/bin/v-change-sys-db-alias 'pga' "$DB_PGA_ALIAS"
+	$TULIO/bin/v-change-sys-db-alias 'pga' "$DB_PGA_ALIAS"
 fi

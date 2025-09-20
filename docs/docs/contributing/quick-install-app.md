@@ -64,7 +64,7 @@ Enables you to set app requirements and web server templates. For example, some 
 There are multiple ways to install and configure the web app after it is has been downloaded.
 
 - Manipulation of config files.
-- Run commands. For example, use `drush` to install [Drupal](https://github.com/hestiacp/hestiacp/blob/88598deb49cec6a39be4682beb8e9b8720d59c7b/web/src/app/WebApp/Installers/Drupal/DrupalSetup.php#L56-L65).
+- Run commands. For example, use `drush` to install [Drupal](https://github.com/tuliocp/tuliocp/blob/88598deb49cec6a39be4682beb8e9b8720d59c7b/web/src/app/WebApp/Installers/Drupal/DrupalSetup.php#L56-L65).
 - Using curl to provide configure the app over HTTP.
 
 ::: warning
@@ -73,4 +73,4 @@ To prevent any issues, make that all commands are executed as the user, instead 
 
 ## Sharing
 
-Once you are done, you can [submit a Pull Request](https://github.com/hestiacp/hestiacp/pulls) and we will review the code. If it meets our standards, we will include in the next release.
+Once you are done, you can [submit a Pull Request](https://github.com/tuliocp/tuliocp/pulls) and we will review the code. If it meets our standards, we will include in the next release.

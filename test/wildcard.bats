@@ -16,7 +16,7 @@ function random() {
 function setup() {
     source /tmp/wildcard.sh
     source $HESTIA/func/main.sh
-    source $HESTIA/conf/hestia.conf
+    source $HESTIA/conf/tulio.conf
     source $HESTIA/func/ip.sh
 }
 

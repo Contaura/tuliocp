@@ -8,14 +8,14 @@ fi
 #                Initialize functions/variables               #
 ###############################################################
 
-source /etc/hestiacp/hestia.conf
+source /etc/hestiacp/tulio.conf
 
 # Load upgrade functions and variables
 # shellcheck source=/usr/local/hestia/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/hestia/func/upgrade.sh
 source $HESTIA/func/upgrade.sh
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$HESTIA/conf/tulio.conf"
 
 ###############################################################
 #             Set new version numbers for packages            #
@@ -101,7 +101,7 @@ upgrade_b2_tool | tee -a $LOG
 # update whitelabel logo's
 update_whitelabel_logo | tee -a $LOG
 
-# Set new version number in hestia.conf
+# Set new version number in tulio.conf
 upgrade_set_version $new_version
 upgrade_set_branch $new_version
 
@@ -114,7 +114,7 @@ upgrade_restart_services | tee -a $LOG
 upgrade_complete_message_log >> $LOG
 upgrade_complete_message
 
-# If setting variables are set to true in hestia.conf, send notifications and email output.
+# If setting variables are set to true in tulio.conf, send notifications and email output.
 upgrade_send_notification_to_panel
 upgrade_send_notification_to_email
 upgrade_send_log_to_email

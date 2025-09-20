@@ -43,7 +43,7 @@ is_backend_template_valid() {
 
 # Web domain existence check
 is_web_domain_new() {
-	web=$(grep -F -H "DOMAIN='$1'" $HESTIA/data/users/*/web.conf)
+	web=$(grep -F -H "DOMAIN='$1'" $TULIO/data/users/*/web.conf)
 	if [ -n "$web" ]; then
 		if [ "$type" == 'web' ]; then
 			check_result "$E_EXISTS" "Web domain $1 exists"
@@ -57,7 +57,7 @@ is_web_domain_new() {
 
 # Web alias existence check
 is_web_alias_new() {
-	grep -wH "$1" $HESTIA/data/users/*/web.conf | while read -r line; do
+	grep -wH "$1" $TULIO/data/users/*/web.conf | while read -r line; do
 		user=$(echo $line | cut -f 7 -d /)
 		string=$(echo $line | cut -f 2- -d ':')
 		parse_object_kv_list $string
@@ -222,8 +222,8 @@ prepare_web_domain_values() {
 	fi
 
 	if [ "$SUSPENDED" = 'yes' ]; then
-		docroot="$HESTIA/data/templates/web/suspend"
-		sdocroot="$HESTIA/data/templates/web/suspend"
+		docroot="$TULIO/data/templates/web/suspend"
+		sdocroot="$TULIO/data/templates/web/suspend"
 		if [ "$PROXY_SYSTEM" == "nginx" ]; then
 			PROXY="suspended"
 		else
@@ -396,7 +396,7 @@ del_web_config() {
 		rm -f $legacyconf
 
 		# Remove old global includes file
-		rm -f /etc/$1/conf.d/hestia.conf
+		rm -f /etc/$1/conf.d/tulio.conf
 	fi
 
 	# Remove domain configuration files and clean up symbolic links
@@ -473,7 +473,7 @@ is_dns_template_valid() {
 
 # DNS domain existence check
 is_dns_domain_new() {
-	dns=$(ls $HESTIA/data/users/*/dns/$1.conf 2> /dev/null)
+	dns=$(ls $TULIO/data/users/*/dns/$1.conf 2> /dev/null)
 	if [ -n "$dns" ]; then
 		if [ "$2" == 'dns' ]; then
 			check_result "$E_EXISTS" "DNS domain $1 exists"
@@ -660,7 +660,7 @@ is_dns_nameserver_valid() {
 
 # Mail domain existence check
 is_mail_domain_new() {
-	mail=$(ls $HESTIA/data/users/*/mail/$1.conf 2> /dev/null)
+	mail=$(ls $TULIO/data/users/*/mail/$1.conf 2> /dev/null)
 	if [ -n "$mail" ]; then
 		if [ "$2" == 'mail' ]; then
 			check_result $E_EXISTS "Mail domain $1 exists"
@@ -673,12 +673,12 @@ is_mail_domain_new() {
 	mail_sub=$(echo "$1" | cut -f 1 -d .)
 	mail_nosub=$(echo "$1" | cut -f 1 -d . --complement)
 	for mail_reserved in $(echo "mail $WEBMAIL_ALIAS"); do
-		if [ -n "$(ls $HESTIA/data/users/*/mail/$mail_reserved.$1.conf 2> /dev/null)" ]; then
+		if [ -n "$(ls $TULIO/data/users/*/mail/$mail_reserved.$1.conf 2> /dev/null)" ]; then
 			if [ "$2" == 'mail' ]; then
 				check_result "$E_EXISTS" "Required subdomain \"$mail_reserved.$1\" already exists"
 			fi
 		fi
-		if [ -n "$(ls $HESTIA/data/users/*/mail/$mail_nosub.conf 2> /dev/null)" ] && [ "$mail_sub" = "$mail_reserved" ]; then
+		if [ -n "$(ls $TULIO/data/users/*/mail/$mail_nosub.conf 2> /dev/null)" ] && [ "$mail_sub" = "$mail_reserved" ]; then
 			if [ "$2" == 'mail' ]; then
 				check_result "$E_INVALID" "The subdomain \"$mail_sub.\" is reserved by \"$mail_nosub\""
 			fi
@@ -710,8 +710,8 @@ add_mail_ssl_config() {
 		mkdir -p $HOMEDIR/$user/conf/mail/$domain/ssl/
 	fi
 
-	if [ ! -d "$HESTIA/ssl/mail" ]; then
-		mkdir -p $HESTIA/ssl/mail
+	if [ ! -d "$TULIO/ssl/mail" ]; then
+		mkdir -p $TULIO/ssl/mail
 	fi
 
 	if [ ! -d /etc/dovecot/conf.d/domains ]; then
@@ -758,8 +758,8 @@ add_mail_ssl_config() {
 		echo "}" >> /etc/dovecot/conf.d/domains/$domain.conf
 
 		# Add domain SSL configuration to exim4
-		ln -s $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.pem $HESTIA/ssl/mail/$domain.crt
-		ln -s $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.key $HESTIA/ssl/mail/$domain.key
+		ln -s $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.pem $TULIO/ssl/mail/$domain.crt
+		ln -s $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.key $TULIO/ssl/mail/$domain.key
 	fi
 
 	# Add domain SSL configuration to dovecot
@@ -770,16 +770,16 @@ add_mail_ssl_config() {
 	echo "}" >> /etc/dovecot/conf.d/domains/$domain.conf
 
 	# Add domain SSL configuration to exim4
-	ln -s $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.pem $HESTIA/ssl/mail/mail.$domain.crt
-	ln -s $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.key $HESTIA/ssl/mail/mail.$domain.key
+	ln -s $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.pem $TULIO/ssl/mail/mail.$domain.crt
+	ln -s $HOMEDIR/$user/conf/mail/$domain/ssl/$domain.key $TULIO/ssl/mail/mail.$domain.key
 
 	# Set correct permissions on certificates
 	chmod 0750 $HOMEDIR/$user/conf/mail/$domain/ssl
 	chown -R $MAIL_USER:mail $HOMEDIR/$user/conf/mail/$domain/ssl
 	chmod 0644 $HOMEDIR/$user/conf/mail/$domain/ssl/*
 	chown -h $user:mail $HOMEDIR/$user/conf/mail/$domain/ssl/*
-	chmod -R 0644 $HESTIA/ssl/mail/*
-	chown -h $user:mail $HESTIA/ssl/mail/*
+	chmod -R 0644 $TULIO/ssl/mail/*
+	chown -h $user:mail $TULIO/ssl/mail/*
 }
 
 # Delete SSL support for mail domain
@@ -802,9 +802,9 @@ del_mail_ssl_config() {
 	# Remove SSL certificates
 	rm -f $HOMEDIR/$user/conf/mail/$domain/ssl/*
 	if [ -n "$mail_cert_match" ]; then
-		rm -f $HESTIA/ssl/mail/$domain.crt $HESTIA/ssl/mail/$domain.key
+		rm -f $TULIO/ssl/mail/$domain.crt $TULIO/ssl/mail/$domain.key
 	fi
-	rm -f $HESTIA/ssl/mail/mail.$domain.crt $HESTIA/ssl/mail/mail.$domain.key
+	rm -f $TULIO/ssl/mail/mail.$domain.crt $TULIO/ssl/mail/mail.$domain.key
 }
 
 # Delete generated certificates from user configuration data directory
@@ -970,25 +970,25 @@ get_domain_values() {
 #----------------------------------------------------------#
 
 is_valid_extension() {
-	if [ ! -e "$HESTIA/data/extensions/public_suffix_list.dat" ]; then
-		mkdir $HESTIA/data/extensions/
-		chmod 750 $HESTIA/data/extensions/
-		/usr/bin/wget --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache --quiet -O $HESTIA/data/extensions/public_suffix_list.dat https://raw.githubusercontent.com/publicsuffix/list/master/public_suffix_list.dat
+	if [ ! -e "$TULIO/data/extensions/public_suffix_list.dat" ]; then
+		mkdir $TULIO/data/extensions/
+		chmod 750 $TULIO/data/extensions/
+		/usr/bin/wget --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache --quiet -O $TULIO/data/extensions/public_suffix_list.dat https://raw.githubusercontent.com/publicsuffix/list/master/public_suffix_list.dat
 	fi
 	test_domain=$(idn2 -d "$1")
 	extension=$(/bin/echo "${test_domain}" | /usr/bin/rev | /usr/bin/cut -d "." --output-delimiter="." -f 1 | /usr/bin/rev)
-	exten=$(grep "^$extension\$" $HESTIA/data/extensions/public_suffix_list.dat)
+	exten=$(grep "^$extension\$" $TULIO/data/extensions/public_suffix_list.dat)
 }
 
 is_valid_2_part_extension() {
-	if [ ! -e "$HESTIA/data/extensions/public_suffix_list.dat" ]; then
-		mkdir $HESTIA/data/extensions/
-		chmod 750 $HESTIA/data/extensions/
-		/usr/bin/wget --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache --quiet -O $HESTIA/data/extensions/public_suffix_list.dat https://raw.githubusercontent.com/publicsuffix/list/master/public_suffix_list.dat
+	if [ ! -e "$TULIO/data/extensions/public_suffix_list.dat" ]; then
+		mkdir $TULIO/data/extensions/
+		chmod 750 $TULIO/data/extensions/
+		/usr/bin/wget --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache --quiet -O $TULIO/data/extensions/public_suffix_list.dat https://raw.githubusercontent.com/publicsuffix/list/master/public_suffix_list.dat
 	fi
 	test_domain=$(idn2 -d "$1")
 	extension=$(/bin/echo "${test_domain}" | /usr/bin/rev | /usr/bin/cut -d "." --output-delimiter="." -f 1-2 | /usr/bin/rev)
-	exten=$(grep "^$extension\$" $HESTIA/data/extensions/public_suffix_list.dat)
+	exten=$(grep "^$extension\$" $TULIO/data/extensions/public_suffix_list.dat)
 }
 
 get_base_domain() {
@@ -1012,7 +1012,7 @@ is_base_domain_owner() {
 	for object in ${1//,/ }; do
 		if [ "$object" != "none" ]; then
 			get_base_domain $object
-			web=$(grep -F -H -h "DOMAIN='$basedomain'" $HESTIA/data/users/*/web.conf)
+			web=$(grep -F -H -h "DOMAIN='$basedomain'" $TULIO/data/users/*/web.conf)
 			if [ "$ENFORCE_SUBDOMAIN_OWNERSHIP" = "yes" ]; then
 				if [ -n "$web" ]; then
 					parse_object_kv_list "$web"

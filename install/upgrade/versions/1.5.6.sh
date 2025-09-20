@@ -23,5 +23,5 @@ upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 
 echo "[ * ] Refresh Hostname SSL..."
 hostname=$(hostname)
-user=$($HESTIA/bin/v-search-domain-owner "$hostname")
-$HESTIA/bin/v-update-host-certificate "$user" "$hostname"
+user=$($TULIO/bin/v-search-domain-owner "$hostname")
+$TULIO/bin/v-update-host-certificate "$user" "$hostname"

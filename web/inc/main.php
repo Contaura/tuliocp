@@ -17,12 +17,12 @@ try {
 	exit(1);
 }
 
-define("HESTIA_DIR_BIN", "/usr/local/hestia/bin/");
-define("HESTIA_CMD", "/usr/bin/sudo /usr/local/hestia/bin/");
+define("HESTIA_DIR_BIN", "/usr/local/tulio/bin/");
+define("HESTIA_CMD", "/usr/bin/sudo /usr/local/tulio/bin/");
 define("DEFAULT_PHP_VERSION", "php-" . exec('php -r "echo substr(phpversion(),0,3);"'));
 
 // Load Hestia Config directly
-load_hestia_config();
+load_tulio.config();
 require_once dirname(__FILE__) . "/prevent_csrf.php";
 require_once dirname(__FILE__) . "/helpers.php";
 $root_directory = dirname(__FILE__) . "/../../";
@@ -542,7 +542,7 @@ function is_it_mysql_or_mariadb() {
 	return $mysqltype;
 }
 
-function load_hestia_config() {
+function load_tulio.config() {
 	// Check system configuration
 	exec(HESTIA_CMD . "v-list-sys-config json", $output, $return_var);
 	$data = json_decode(implode("", $output), true);

@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Includes
-# shellcheck source=/usr/local/hestia/conf/hestia.conf
-source $HESTIA/conf/hestia.conf
+# shellcheck source=/usr/local/tulio/conf/tulio.conf
+source $TULIO/conf/tulio.conf
 
 # Variables and arguments
-HESTIA="/usr/local/hestia"
+HESTIA="/usr/local/tulio"
 script=$1
 log=$2
 scroll=$3

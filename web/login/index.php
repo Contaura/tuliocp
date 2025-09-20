@@ -433,7 +433,7 @@ if (
 	unset($_POST);
 }
 // Check system configuration
-load_hestia_config();
+load_tulio.config();
 
 // Detect language
 if (empty($_SESSION["language"])) {

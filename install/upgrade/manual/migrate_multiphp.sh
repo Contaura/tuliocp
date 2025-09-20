@@ -5,10 +5,10 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/usr/local/hestia/func/main.sh
-source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/conf/hestia.conf
-source $HESTIA/conf/hestia.conf
+# shellcheck source=/usr/local/tulio/func/main.sh
+source $TULIO/func/main.sh
+# shellcheck source=/usr/local/tulio/conf/tulio.conf
+source $TULIO/conf/tulio.conf
 
 #
 # Migrate legacy multiphp to full php-fpm backend
@@ -21,7 +21,7 @@ source $HESTIA/conf/hestia.conf
 # nginx+apache+multiphp,
 # apache+multiphp:
 #   Change Hestia WEB_BACKEND from null to php-fpm
-#   Create backend templates ex: PHP-7_3, PHP-5_6 (in $HESTIA/data/templates/web/php-fpm/)
+#   Create backend templates ex: PHP-7_3, PHP-5_6 (in $TULIO/data/templates/web/php-fpm/)
 #   v-update-web-templates
 #   Loop through all web domains
 #   If official multiphp tpl is used ex: PHP-72, then change backend tpl and set app web template to default
@@ -44,12 +44,12 @@ echo "Found $num_php_versions php versions"
 if [ "$num_php_versions" -gt 1 ] && [ -z "$WEB_BACKEND" ]; then
 	# Legacy multiphp
 
-	sed -i "/^WEB_BACKEND=/d" $HESTIA/conf/hestia.conf
-	echo "WEB_BACKEND='php-fpm'" >> $HESTIA/conf/hestia.conf
+	sed -i "/^WEB_BACKEND=/d" $TULIO/conf/tulio.conf
+	echo "WEB_BACKEND='php-fpm'" >> $TULIO/conf/tulio.conf
 
 	for php_ver in $(v-list-sys-php); do
 		[ ! -d "/etc/php/$php_ver/fpm/pool.d/" ] && continue
-		cp -f "$HESTIA_INSTALL_DIR/php-fpm/multiphp.tpl" ${WEBTPL}/php-fpm/PHP-${php_ver/\./_}.tpl
+		cp -f "$TULIO_INSTALL_DIR/php-fpm/multiphp.tpl" ${WEBTPL}/php-fpm/PHP-${php_ver/\./_}.tpl
 	done
 
 	if [ ! -z "$WEB_SYSTEM" ]; then
@@ -59,7 +59,7 @@ if [ "$num_php_versions" -gt 1 ] && [ -z "$WEB_BACKEND" ]; then
 	# Migrate domains
 	for user in $($BIN/v-list-sys-users plain); do
 		# Define user data and get suspended status
-		USER_DATA=$HESTIA/data/users/$user
+		USER_DATA=$TULIO/data/users/$user
 		SUSPENDED=$(get_user_value '$SUSPENDED')
 
 		# Check if user is suspended

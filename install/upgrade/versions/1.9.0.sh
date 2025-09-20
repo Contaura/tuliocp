@@ -35,7 +35,7 @@ if [ -z "$(grep ^hestiaweb: /etc/passwd)" ]; then
 	/usr/sbin/useradd "hestiaweb" -c "$email" --no-create-home
 	# do not allow login into hestiaweb user
 	echo hestiaweb:$random_password | sudo chpasswd -e
-	cp $HESTIA_COMMON_DIR/sudo/hestiaweb /etc/sudoers.d/
+	cp $TULIO_COMMON_DIR/sudo/hestiaweb /etc/sudoers.d/
 	# Keep enabled for now
 	# Remove sudo permissions admin user
 	# rm /etc/sudoers.d/admin/
@@ -53,26 +53,26 @@ if [ ! -f "/var/spool/cron/crontabs/hestiaweb" ]; then
 					>> /var/spool/cron/crontabs/hestiaweb
 			$BIN/v-delete-cron-job admin "$JOB"
 		fi
-	done < $HESTIA/data/users/admin/cron.conf
+	done < $TULIO/data/users/admin/cron.conf
 	# Update permissions
 	chmod 600 /var/spool/cron/crontabs/hestiaweb
 	chown hestiaweb:hestiaweb /var/spool/cron/crontabs/hestiaweb
 
 fi
 
-chown hestiaweb:hestiaweb /usr/local/hestia/data/sessions
+chown hestiaweb:hestiaweb /usr/local/tulio/data/sessions
 
-packages=$(ls --sort=time $HESTIA/data/packages | grep .pkg)
+packages=$(ls --sort=time $TULIO/data/packages | grep .pkg)
 # Update Hestia Packages
 for package in $packages; do
-	if [ -z "$(grep -e 'BACKUPS_INCREMENTAL' $HESTIA/data/packages/$package)" ]; then
-		echo "BACKUPS_INCREMENTAL='no'" >> $HESTIA/data/packages/$package
+	if [ -z "$(grep -e 'BACKUPS_INCREMENTAL' $TULIO/data/packages/$package)" ]; then
+		echo "BACKUPS_INCREMENTAL='no'" >> $TULIO/data/packages/$package
 	fi
 
 	# Add additional key-value pairs if they don't exist
 	for key in DISK_QUOTA CPU_QUOTA CPU_QUOTA_PERIOD MEMORY_LIMIT SWAP_LIMIT; do
-		if [ -z "$(grep -e "$key" $HESTIA/data/packages/$package)" ]; then
-			echo "$key='unlimited'" >> $HESTIA/data/packages/$package
+		if [ -z "$(grep -e "$key" $TULIO/data/packages/$package)" ]; then
+			echo "$key='unlimited'" >> $TULIO/data/packages/$package
 		fi
 	done
 done
@@ -97,7 +97,7 @@ php_versions=$($BIN/v-list-sys-php plain)
 # Substitute php-fpm service name formats
 for version in $php_versions; do
 	if [ -f "/etc/php/$version/fpm/pool.d/www.conf" ]; then
-		cp -f $HESTIA_INSTALL_DIR/php-fpm/www.conf "/etc/php/$version/fpm/pool.d/www.conf"
+		cp -f $TULIO_INSTALL_DIR/php-fpm/www.conf "/etc/php/$version/fpm/pool.d/www.conf"
 	fi
 done
 

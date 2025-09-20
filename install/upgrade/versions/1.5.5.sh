@@ -23,7 +23,7 @@ upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 
 # Update php-fpm.conf
 for version in $($BIN/v-list-sys-php plain); do
-	cp -f $HESTIA_INSTALL_DIR/php-fpm/php-fpm.conf /etc/php/$version/fpm/
+	cp -f $TULIO_INSTALL_DIR/php-fpm/php-fpm.conf /etc/php/$version/fpm/
 	sed -i "s/fpm_v/$version/g" /etc/php/$version/fpm/php-fpm.conf
 done
 
@@ -97,7 +97,7 @@ if [ ! -f "/usr/share/keyrings/nginx-keyring.gpg" ]; then
 
 fi
 
-if [ ! -f "$HESTIA/data/packages/system.pkg" ]; then
+if [ ! -f "$TULIO/data/packages/system.pkg" ]; then
 	echo "[ * ] Install default system package."
-	cp -f $HESTIA/install/deb/packages/system.pkg $HESTIA/data/packages/system.pkg
+	cp -f $TULIO/install/deb/packages/system.pkg $TULIO/data/packages/system.pkg
 fi

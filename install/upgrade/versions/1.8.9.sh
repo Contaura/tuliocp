@@ -26,12 +26,12 @@ upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 # Modify existing POLICY_USER directives (POLICY_USER_CHANGE_THEME, POLICY_USER_EDIT_WEB_TEMPLATES
 # and POLICY_USER_VIEW_LOGS) that are using value 'true' instead of the correct value 'yes'
 
-hestia_conf="$HESTIA/conf/hestia.conf"
-hestia_defaults_conf="$HESTIA/conf/defaults/hestia.conf"
+tulio.conf="$TULIO/conf/tulio.conf"
+hestia_defaults_conf="$TULIO/conf/defaults/tulio.conf"
 
 if [ -f /etc/nginx/nginx.conf ]; then
 	echo "[ * ] Mitigate HTTP/2 Rapid Reset Attack via Nginx CVE CVE-2023-44487"
-	sed -i -E 's/(.*keepalive_requests\s{1,})10000;/\11000;/' /etc/nginx/nginx.conf /usr/local/hestia/nginx/conf/nginx.conf
+	sed -i -E 's/(.*keepalive_requests\s{1,})10000;/\11000;/' /etc/nginx/nginx.conf /usr/local/tulio/nginx/conf/nginx.conf
 fi
 
 # Fix security issue wit FPM pools
@@ -44,7 +44,7 @@ if [ -z "$(grep ^hestiamail: /etc/passwd)" ]; then
 	php_versions=$($BIN/v-list-sys-php plain)
 	# Substitute php-fpm service name formats
 	for version in $php_versions; do
-		cp -f $HESTIA_INSTALL_DIR/php-fpm/dummy.conf /etc/php/$version/fpm/pool.d/
+		cp -f $TULIO_INSTALL_DIR/php-fpm/dummy.conf /etc/php/$version/fpm/pool.d/
 		sed -i "s/%backend_version%/$version/g" /etc/php/$version/fpm/pool.d/dummy.conf
 	done
 fi

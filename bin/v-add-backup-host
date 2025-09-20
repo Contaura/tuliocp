@@ -25,14 +25,14 @@ port=$6
 arch=$(arch)
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
+# shellcheck source=/etc/hestiacp/tulio.conf
+source /etc/hestiacp/tulio.conf
 # shellcheck source=/usr/local/hestia/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/hestia/func/backup.sh
 source $HESTIA/func/backup.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$HESTIA/conf/tulio.conf"
 # Fetch current verison B2 CLI tool
 source_conf "$HESTIA/install/upgrade/upgrade.conf"
 
@@ -224,16 +224,16 @@ fi
 #                       Hestia                             #
 #----------------------------------------------------------#
 
-# Update hestia.conf
-if [ -z "$(grep BACKUP_SYSTEM $HESTIA/conf/hestia.conf)" ]; then
-	echo "BACKUP_SYSTEM='$type'" >> $HESTIA/conf/hestia.conf
+# Update tulio.conf
+if [ -z "$(grep BACKUP_SYSTEM $HESTIA/conf/tulio.conf)" ]; then
+	echo "BACKUP_SYSTEM='$type'" >> $HESTIA/conf/tulio.conf
 else
 	bckp=$(echo "$BACKUP_SYSTEM,$type" \
 		| sed "s/,/\n/g" \
 		| sort -r -u \
 		| sed "/^$/d" \
 		| sed ':a;N;$!ba;s/\n/,/g')
-	sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $HESTIA/conf/hestia.conf
+	sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $HESTIA/conf/tulio.conf
 fi
 
 # Logging

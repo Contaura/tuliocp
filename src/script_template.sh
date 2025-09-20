@@ -13,7 +13,7 @@
 
 # Argument definition
 
-# Includes - Call any necessary libraries from $HESTIA/func/
+# Includes - Call any necessary libraries from $TULIO/func/
 #            Remember to add shellcheck headers!
 
 #----------------------------------------------------------#

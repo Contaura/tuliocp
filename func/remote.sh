@@ -114,8 +114,8 @@ send_scp_file() {
 }
 
 is_dnshost_new() {
-	if [ -e "$HESTIA/conf/dns-cluster.conf" ]; then
-		check_host=$(grep "HOST='$host'" $HESTIA/conf/dns-cluster.conf)
+	if [ -e "$TULIO/conf/dns-cluster.conf" ]; then
+		check_host=$(grep "HOST='$host'" $TULIO/conf/dns-cluster.conf)
 		if [ -n "$check_host" ]; then
 			check_result $E_EXISTS "remote dns host $host exists"
 		fi
@@ -135,7 +135,7 @@ remote_dns_health_check() {
 	IFS=$'\n'
 
 	# Starting health-check
-	for str in $(grep "SUSPENDED='no'" $HESTIA/conf/dns-cluster.conf); do
+	for str in $(grep "SUSPENDED='no'" $TULIO/conf/dns-cluster.conf); do
 
 		# Reset user, password and hash vars
 		clear_dns_cluster_settings

@@ -48,7 +48,7 @@ fi
 # Load upgrade functions and variables
 source /usr/local/hestia/func/main.sh
 source /usr/local/hestia/func/upgrade.sh
-source /usr/local/hestia/conf/hestia.conf
+source /usr/local/tulio.conf/tulio.conf
 source /usr/local/hestia/install/upgrade/upgrade.conf
 
 # Reset backend port

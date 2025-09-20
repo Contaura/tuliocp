@@ -31,7 +31,7 @@ function setup() {
 
     source /tmp/hestia-test-env.sh
     source $HESTIA/func/main.sh
-    source $HESTIA/conf/hestia.conf
+    source $HESTIA/conf/tulio.conf
     source $HESTIA/func/ip.sh
 }
 

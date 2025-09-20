@@ -16,12 +16,12 @@
 branch=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/hestia.conf
-source /etc/hestiacp/hestia.conf
+# shellcheck source=/etc/hestiacp/tulio.conf
+source /etc/hestiacp/tulio.conf
 # shellcheck source=/usr/local/hestia/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/hestia.conf"
+source_conf "$HESTIA/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -56,10 +56,10 @@ else
 	fi
 
 	# Remove old branch variable
-	sed -i "/RELEASE_BRANCH/d" $HESTIA/conf/hestia.conf
+	sed -i "/RELEASE_BRANCH/d" $HESTIA/conf/tulio.conf
 
 	# Set new branch variable
-	echo "RELEASE_BRANCH='$branch'" >> $HESTIA/conf/hestia.conf
+	echo "RELEASE_BRANCH='$branch'" >> $HESTIA/conf/tulio.conf
 	echo "Updated system to update from Git using branch: $branch"
 fi
 

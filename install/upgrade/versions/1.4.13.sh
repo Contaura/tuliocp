@@ -20,12 +20,12 @@ servername=$(hostname -f)
 if [[ $(echo "$servername" | grep -o "\." | wc -l) -lt 2 ]] || [[ $servername =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
 	echo "[ * ] Hostname does not follow  RFC1178 standard Please check email send regarding the update!"
 	add_upgrade_message "We've noticed that you're using a invalid hostname. Please have a look at the RFC1178 standard (https://datatracker.ietf.org/doc/html/rfc1178) and use a valid one (ex. hostname.domain.tld). You can change the hostname using v-change-sys-hostname and also add a ssl certificate using v-add-letsencypt-host (proper dns A record mandatory). You'll find more informations in our documentation: https://hestiacp.com/docs/server-administration/ssl-certificates.html#how-to-setup-let-s-encrypt-for-the-control-panel"
-	$HESTIA/bin/v-add-user-notification admin "Invalid Hostname detected" "Warning: We've noticed that you're using a invalid hostname. Please have a look at the <a href=\"https://datatracker.ietf.org/doc/html/rfc1178\" target=\"_blank\">RFC1178 standard</a> and use a valid one (ex. hostname.domain.tld). You can change the hostname using v-change-sys-hostname and also add a ssl certificate using v-add-letsencypt-host (proper dns A record mandatory). You'll find more informations in our <a href=\"https://hestiacp.com/docs/server-administration/ssl-certificates.html#how-to-setup-let-s-encrypt-for-the-control-panel\" target=\"_blank\">documentation</a>."
+	$TULIO/bin/v-add-user-notification admin "Invalid Hostname detected" "Warning: We've noticed that you're using a invalid hostname. Please have a look at the <a href=\"https://datatracker.ietf.org/doc/html/rfc1178\" target=\"_blank\">RFC1178 standard</a> and use a valid one (ex. hostname.domain.tld). You can change the hostname using v-change-sys-hostname and also add a ssl certificate using v-add-letsencypt-host (proper dns A record mandatory). You'll find more informations in our <a href=\"https://hestiacp.com/docs/server-administration/ssl-certificates.html#how-to-setup-let-s-encrypt-for-the-control-panel\" target=\"_blank\">documentation</a>."
 fi
 
-# Empty $HESTIA/ssl/mail/ due to bug in #2066
-if [ -e "$HESTIA/ssl/mail/" ]; then
-	rm -fr $HESTIA/ssl/mail/*
+# Empty $TULIO/ssl/mail/ due to bug in #2066
+if [ -e "$TULIO/ssl/mail/" ]; then
+	rm -fr $TULIO/ssl/mail/*
 fi
 
 # Reset PMA SSO
@@ -43,9 +43,9 @@ if [ "$FIREWALL_SYSTEM" = "iptables" ]; then
 fi
 
 # Remove old files/folders from previous versions of Hestia Control Panel
-if [ -d "$HESTIA/web/edit/file/" ]; then
-	rm -fr $HESTIA/web/edit/file/
+if [ -d "$TULIO/web/edit/file/" ]; then
+	rm -fr $TULIO/web/edit/file/
 fi
-if [ -d "$HESTIA/web/edit/server/theme/" ]; then
-	rm -fr $HESTIA/web/edit/server/theme/
+if [ -d "$TULIO/web/edit/server/theme/" ]; then
+	rm -fr $TULIO/web/edit/server/theme/
 fi

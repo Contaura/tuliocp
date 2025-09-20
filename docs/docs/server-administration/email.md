@@ -205,7 +205,7 @@ Create: $HESTIA/data/extensions/add-mail-domain.sh and $HESTIA/data/extensions/v
 
 ### Proxmox mail server
 
-See: [Github](https://github.com/hestiacp/hestiacp/pull/4365)
+See: [Github](https://github.com/tuliocp/tuliocp/pull/4365)
 
 ```bash
 # v-add-mail-domain

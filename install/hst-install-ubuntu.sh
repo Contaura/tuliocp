@@ -17,7 +17,7 @@ export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
 RHOST='apt.hestiacp.com'
 VERSION='ubuntu'
-HESTIA='/usr/local/hestia'
+HESTIA='/usr/local/tulio'
 LOG="/root/hst_install_backups/hst_install-$(date +%d%m%Y%H%M).log"
 memory=$(grep 'MemTotal' /proc/meminfo | tr ' ' '\n' | grep [0-9])
 hst_backups="/root/hst_install_backups/$(date +%d%m%Y%H%M)"
@@ -26,8 +26,8 @@ os='ubuntu'
 release="$(lsb_release -s -r)"
 codename="$(lsb_release -s -c)"
 architecture="$(arch)"
-HESTIA_INSTALL_DIR="$HESTIA/install/deb"
-HESTIA_COMMON_DIR="$HESTIA/install/common"
+HESTIA_INSTALL_DIR="$TULIO/install/deb"
+HESTIA_COMMON_DIR="$TULIO/install/common"
 VERBOSE='no'
 
 # Define software versions
@@ -163,25 +163,25 @@ set_default_port() {
 	fi
 }
 
-# Write configuration KEY/VALUE pair to $HESTIA/conf/hestia.conf
+# Write configuration KEY/VALUE pair to $TULIO/conf/tulio.conf
 write_config_value() {
 	local key="$1"
 	local value="$2"
-	echo "$key='$value'" >> $HESTIA/conf/hestia.conf
+	echo "$key='$value'" >> $TULIO/conf/tulio.conf
 }
 
 # Sort configuration file values
-# Write final copy to $HESTIA/conf/hestia.conf for active usage
-# Duplicate file to $HESTIA/conf/defaults/hestia.conf to restore known good installation values
+# Write final copy to $TULIO/conf/tulio.conf for active usage
+# Duplicate file to $TULIO/conf/defaults/tulio.conf to restore known good installation values
 sort_config_file() {
-	sort $HESTIA/conf/hestia.conf -o /tmp/updconf
-	mv $HESTIA/conf/hestia.conf $HESTIA/conf/hestia.conf.bak
-	mv /tmp/updconf $HESTIA/conf/hestia.conf
-	rm -f $HESTIA/conf/hestia.conf.bak
-	if [ ! -d "$HESTIA/conf/defaults/" ]; then
-		mkdir -p "$HESTIA/conf/defaults/"
+	sort $TULIO/conf/tulio.conf -o /tmp/updconf
+	mv $TULIO/conf/tulio.conf $TULIO/conf/tulio.conf.bak
+	mv /tmp/updconf $TULIO/conf/tulio.conf
+	rm -f $TULIO/conf/tulio.conf.bak
+	if [ ! -d "$TULIO/conf/defaults/" ]; then
+		mkdir -p "$TULIO/conf/defaults/"
 	fi
-	cp $HESTIA/conf/hestia.conf $HESTIA/conf/defaults/hestia.conf
+	cp $TULIO/conf/tulio.conf $TULIO/conf/defaults/tulio.conf
 }
 
 # todo add check for usernames that are blocked
@@ -418,13 +418,13 @@ if [ "x$(id -u)" != 'x0' ]; then
 	check_result 1 "Script can be run executed only by root"
 fi
 
-if [ -d "/usr/local/hestia" ]; then
+if [ -d "/usr/local/tulio" ]; then
 	check_result 1 "Hestia install detected. Unable to continue"
 fi
 
 type=$(grep "^ID=" /etc/os-release | cut -f 2 -d '=')
 if [ "$type" = "debian" ]; then
-	check_result 1 "You are running the wrong installer for Debian. Please run hst-install.sh or hst-install-debian.sh instead."
+	check_result 1 "You are running the wrong installer for Debian. Please run tst-install.sh or hst-install-debian.sh instead."
 elif [ "$type" != "ubuntu" ]; then
 	check_result 1 "You are running an unsupported OS."
 fi
@@ -523,19 +523,19 @@ fi
 
 # Validate whether installation script matches release version before continuing with install
 if [ -z "$withdebs" ] || [ ! -d "$withdebs" ]; then
-	release_branch_ver=$(curl -s https://raw.githubusercontent.com/hestiacp/hestiacp/release/src/deb/hestia/control | grep "Version:" | awk '{print $2}')
-	if [ "$HESTIA_INSTALL_VER" != "$release_branch_ver" ]; then
+	release_branch_ver=$(curl -s https://raw.githubusercontent.com/tuliocp/tuliocp/release/src/deb/hestia/control | grep "Version:" | awk '{print $2}')
+	if [ "$TULIO_INSTALL_VER" != "$release_branch_ver" ]; then
 		echo
 		echo -e "\e[91mInstallation aborted\e[0m"
 		echo "===================================================================="
 		echo -e "\e[33mERROR: Install script version does not match package version!\e[0m"
 		echo -e "\e[33mPlease download the installer from the release branch in order to continue:\e[0m"
 		echo ""
-		echo -e "\e[33mhttps://raw.githubusercontent.com/hestiacp/hestiacp/release/install/hst-install.sh\e[0m"
+		echo -e "\e[33mhttps://raw.githubusercontent.com/tuliocp/tuliocp/release/install/tst-install.sh\e[0m"
 		echo ""
 		echo -e "\e[33mTo test pre-release versions, build the .deb packages and re-run the installer:\e[0m"
 		echo -e "  \e[33m./hst_autocompile.sh \e[1m--hestia branchname no\e[21m\e[0m"
-		echo -e "  \e[33m./hst-install.sh .. \e[1m--with-debs /tmp/hestiacp-src/debs\e[21m\e[0m"
+		echo -e "  \e[33m./tst-install.sh .. \e[1m--with-debs /tmp/hestiacp-src/debs\e[21m\e[0m"
 		echo ""
 		check_result 1 "Installation aborted"
 	fi
@@ -555,7 +555,7 @@ case $architecture in
 		echo -e "\e[33mERROR: $architecture is currently not supported!\e[0m"
 		echo -e "\e[33mPlease verify the achitecture used is currenlty supported\e[0m"
 		echo ""
-		echo -e "\e[33mhttps://github.com/hestiacp/hestiacp/blob/main/README.md\e[0m"
+		echo -e "\e[33mhttps://github.com/tuliocp/tuliocp/blob/main/README.md\e[0m"
 		echo ""
 		check_result 1 "Installation aborted"
 		;;
@@ -566,7 +566,7 @@ esac
 #----------------------------------------------------------#
 
 install_welcome_message() {
-	DISPLAY_VER=$(echo $HESTIA_INSTALL_VER | sed "s|~alpha||g" | sed "s|~beta||g")
+	DISPLAY_VER=$(echo $TULIO_INSTALL_VER | sed "s|~alpha||g" | sed "s|~beta||g")
 	echo
 	echo '                _   _           _   _        ____ ____                  '
 	echo '               | | | | ___  ___| |_(_) __ _ / ___|  _ \                 '
@@ -575,10 +575,10 @@ install_welcome_message() {
 	echo '               |_| |_|\___||___/\__|_|\__,_|\____|_|                    '
 	echo "                                                                        "
 	echo "                          Hestia Control Panel                          "
-	if [[ "$HESTIA_INSTALL_VER" =~ "beta" ]]; then
+	if [[ "$TULIO_INSTALL_VER" =~ "beta" ]]; then
 		echo "                              BETA RELEASE                          "
 	fi
-	if [[ "$HESTIA_INSTALL_VER" =~ "alpha" ]]; then
+	if [[ "$TULIO_INSTALL_VER" =~ "alpha" ]]; then
 		echo "                          DEVELOPMENT SNAPSHOT                      "
 		echo "                    NOT INTENDED FOR PRODUCTION USE                 "
 		echo "                          USE AT YOUR OWN RISK                      "
@@ -945,9 +945,9 @@ mv -f /root/.my.cnf $hst_backups/mysql > /dev/null 2>&1
 
 # Backup Hestia
 systemctl stop hestia > /dev/null 2>&1
-cp -r $HESTIA/* $hst_backups/hestia > /dev/null 2>&1
+cp -r $TULIO/* $hst_backups/hestia > /dev/null 2>&1
 apt-get -y purge hestia hestia-nginx hestia-php > /dev/null 2>&1
-rm -rf $HESTIA > /dev/null 2>&1
+rm -rf $TULIO > /dev/null 2>&1
 
 #----------------------------------------------------------#
 #                     Package Includes                     #
@@ -1202,7 +1202,7 @@ systemctl restart ssh
 # Disable AWStats cron
 rm -f /etc/cron.d/awstats
 # Replace AWStats function
-cp -f $HESTIA_INSTALL_DIR/logrotate/httpd-prerotate/* /etc/logrotate.d/httpd-prerotate/
+cp -f $TULIO_INSTALL_DIR/logrotate/httpd-prerotate/* /etc/logrotate.d/httpd-prerotate/
 
 # Set directory color
 if [ -z "$(grep 'LS_COLORS="$LS_COLORS:di=00;33"' /etc/profile)" ]; then
@@ -1275,49 +1275,49 @@ fi
 echo "[ * ] Configuring Hestia Control Panel..."
 # Installing sudo configuration
 mkdir -p /etc/sudoers.d
-cp -f $HESTIA_COMMON_DIR/sudo/hestiaweb /etc/sudoers.d/
+cp -f $TULIO_COMMON_DIR/sudo/hestiaweb /etc/sudoers.d/
 chmod 440 /etc/sudoers.d/hestiaweb
 
 # Add Hestia global config
-if [[ ! -e /etc/hestiacp/hestia.conf ]]; then
-	mkdir -p /etc/hestiacp
-	echo -e "# Do not edit this file, will get overwritten on next upgrade, use /etc/hestiacp/local.conf instead\n\nexport HESTIA='/usr/local/hestia'\n\n[[ -f /etc/hestiacp/local.conf ]] && source /etc/hestiacp/local.conf" > /etc/hestiacp/hestia.conf
+if [[ ! -e /etc/tuliocp/tulio.conf ]]; then
+	mkdir -p /etc/tuliocp
+	echo -e "# Do not edit this file, will get overwritten on next upgrade, use /etc/tuliocp/local.conf instead\n\nexport HESTIA='/usr/local/tulio'\n\n[[ -f /etc/tuliocp/local.conf ]] && source /etc/tuliocp/local.conf" > /etc/tuliocp/tulio.conf
 fi
 
 # Configuring system env
-echo "export HESTIA='$HESTIA'" > /etc/profile.d/hestia.sh
-echo 'PATH=$PATH:'$HESTIA'/bin' >> /etc/profile.d/hestia.sh
+echo "export HESTIA='$TULIO'" > /etc/profile.d/hestia.sh
+echo 'PATH=$PATH:'$TULIO'/bin' >> /etc/profile.d/hestia.sh
 echo 'export PATH' >> /etc/profile.d/hestia.sh
 chmod 755 /etc/profile.d/hestia.sh
 source /etc/profile.d/hestia.sh
 
 # Configuring logrotate for Hestia logs
-cp -f $HESTIA_INSTALL_DIR/logrotate/hestia /etc/logrotate.d/hestia
+cp -f $TULIO_INSTALL_DIR/logrotate/hestia /etc/logrotate.d/hestia
 
 # Create log path and symbolic link
 rm -f /var/log/hestia
 mkdir -p /var/log/hestia
-ln -s /var/log/hestia $HESTIA/log
+ln -s /var/log/hestia $TULIO/log
 
 # Building directory tree and creating some blank files for Hestia
-mkdir -p $HESTIA/conf $HESTIA/ssl $HESTIA/data/ips \
-	$HESTIA/data/queue $HESTIA/data/users $HESTIA/data/firewall \
-	$HESTIA/data/sessions
-touch $HESTIA/data/queue/backup.pipe $HESTIA/data/queue/disk.pipe \
-	$HESTIA/data/queue/webstats.pipe $HESTIA/data/queue/restart.pipe \
-	$HESTIA/data/queue/traffic.pipe $HESTIA/data/queue/daily.pipe $HESTIA/log/system.log \
-	$HESTIA/log/nginx-error.log $HESTIA/log/auth.log $HESTIA/log/backup.log
-chmod 750 $HESTIA/conf $HESTIA/data/users $HESTIA/data/ips $HESTIA/log
-chmod -R 750 $HESTIA/data/queue
+mkdir -p $TULIO/conf $TULIO/ssl $TULIO/data/ips \
+	$TULIO/data/queue $TULIO/data/users $TULIO/data/firewall \
+	$TULIO/data/sessions
+touch $TULIO/data/queue/backup.pipe $TULIO/data/queue/disk.pipe \
+	$TULIO/data/queue/webstats.pipe $TULIO/data/queue/restart.pipe \
+	$TULIO/data/queue/traffic.pipe $TULIO/data/queue/daily.pipe $TULIO/log/system.log \
+	$TULIO/log/nginx-error.log $TULIO/log/auth.log $TULIO/log/backup.log
+chmod 750 $TULIO/conf $TULIO/data/users $TULIO/data/ips $TULIO/log
+chmod -R 750 $TULIO/data/queue
 chmod 660 /var/log/hestia/*
-chmod 770 $HESTIA/data/sessions
+chmod 770 $TULIO/data/sessions
 
 # Generating Hestia configuration
-rm -f $HESTIA/conf/hestia.conf > /dev/null 2>&1
-touch $HESTIA/conf/hestia.conf
-chmod 660 $HESTIA/conf/hestia.conf
+rm -f $TULIO/conf/tulio.conf > /dev/null 2>&1
+touch $TULIO/conf/tulio.conf
+chmod 660 $TULIO/conf/tulio.conf
 
-# Write default port value to hestia.conf
+# Write default port value to tulio.conf
 # If a custom port is specified it will be set at the end of the installation process
 write_config_value "BACKEND_PORT" "8083"
 
@@ -1446,55 +1446,55 @@ write_config_value "UPGRADE_SEND_EMAIL_LOG" "false"
 write_config_value "ROOT_USER" "$username"
 
 # Installing hosting packages
-cp -rf $HESTIA_COMMON_DIR/packages $HESTIA/data/
+cp -rf $TULIO_COMMON_DIR/packages $TULIO/data/
 
 # Update nameservers in hosting package
 IFS='.' read -r -a domain_elements <<< "$servername"
 if [ -n "${domain_elements[-2]}" ] && [ -n "${domain_elements[-1]}" ]; then
 	serverdomain="${domain_elements[-2]}.${domain_elements[-1]}"
-	sed -i s/"domain.tld"/"$serverdomain"/g $HESTIA/data/packages/*.pkg
+	sed -i s/"domain.tld"/"$serverdomain"/g $TULIO/data/packages/*.pkg
 fi
 
 # Installing templates
-cp -rf $HESTIA_INSTALL_DIR/templates $HESTIA/data/
-cp -rf $HESTIA_COMMON_DIR/templates/web/ $HESTIA/data/templates
-cp -rf $HESTIA_COMMON_DIR/templates/dns/ $HESTIA/data/templates
+cp -rf $TULIO_INSTALL_DIR/templates $TULIO/data/
+cp -rf $TULIO_COMMON_DIR/templates/web/ $TULIO/data/templates
+cp -rf $TULIO_COMMON_DIR/templates/dns/ $TULIO/data/templates
 
 mkdir -p /var/www/html
 mkdir -p /var/www/document_errors
 
 # Install default success page
-cp -rf $HESTIA_COMMON_DIR/templates/web/unassigned/index.html /var/www/html/
-cp -rf $HESTIA_COMMON_DIR/templates/web/skel/document_errors/* /var/www/document_errors/
+cp -rf $TULIO_COMMON_DIR/templates/web/unassigned/index.html /var/www/html/
+cp -rf $TULIO_COMMON_DIR/templates/web/skel/document_errors/* /var/www/document_errors/
 
 # Installing firewall rules
-cp -rf $HESTIA_COMMON_DIR/firewall $HESTIA/data/
-rm -f $HESTIA/data/firewall/ipset/blacklist.sh $HESTIA/data/firewall/ipset/blacklist.ipv6.sh
+cp -rf $TULIO_COMMON_DIR/firewall $TULIO/data/
+rm -f $TULIO/data/firewall/ipset/blacklist.sh $TULIO/data/firewall/ipset/blacklist.ipv6.sh
 
 # Delete rules for services that are not installed
 if [ "$vsftpd" = "no" ] && [ "$proftpd" = "no" ]; then
 	# Remove FTP
-	sed -i "/COMMENT='FTP'/d" $HESTIA/data/firewall/rules.conf
+	sed -i "/COMMENT='FTP'/d" $TULIO/data/firewall/rules.conf
 fi
 if [ "$exim" = "no" ]; then
 	# Remove SMTP
-	sed -i "/COMMENT='SMTP'/d" $HESTIA/data/firewall/rules.conf
+	sed -i "/COMMENT='SMTP'/d" $TULIO/data/firewall/rules.conf
 fi
 if [ "$dovecot" = "no" ]; then
 	# Remove IMAP / Dovecot
-	sed -i "/COMMENT='IMAP'/d" $HESTIA/data/firewall/rules.conf
-	sed -i "/COMMENT='POP3'/d" $HESTIA/data/firewall/rules.conf
+	sed -i "/COMMENT='IMAP'/d" $TULIO/data/firewall/rules.conf
+	sed -i "/COMMENT='POP3'/d" $TULIO/data/firewall/rules.conf
 fi
 if [ "$named" = "no" ]; then
 	# Remove IMAP / Dovecot
-	sed -i "/COMMENT='DNS'/d" $HESTIA/data/firewall/rules.conf
+	sed -i "/COMMENT='DNS'/d" $TULIO/data/firewall/rules.conf
 fi
 
 # Installing API
-cp -rf $HESTIA_COMMON_DIR/api $HESTIA/data/
+cp -rf $TULIO_COMMON_DIR/api $TULIO/data/
 
 # Configuring server hostname
-$HESTIA/bin/v-change-sys-hostname $servername > /dev/null 2>&1
+$TULIO/bin/v-change-sys-hostname $servername > /dev/null 2>&1
 
 # Configuring global OpenSSL options
 echo "[ * ] Configuring OpenSSL to improve TLS performance..."
@@ -1514,7 +1514,7 @@ fi
 
 # Generating SSL certificate
 echo "[ * ] Generating default self-signed SSL certificate..."
-$HESTIA/bin/v-generate-ssl-cert $(hostname) '' 'US' 'California' \
+$TULIO/bin/v-generate-ssl-cert $(hostname) '' 'US' 'California' \
 	'San Francisco' 'Hestia Control Panel' 'IT' > /tmp/hst.pem
 
 # Parsing certificate file
@@ -1524,34 +1524,34 @@ key_end=$(grep -n "END RSA" /tmp/hst.pem | cut -f 1 -d:)
 
 # Adding SSL certificate
 echo "[ * ] Adding SSL certificate to Hestia Control Panel..."
-cd $HESTIA/ssl
+cd $TULIO/ssl
 sed -n "1,${crt_end}p" /tmp/hst.pem > certificate.crt
 sed -n "$key_start,${key_end}p" /tmp/hst.pem > certificate.key
-chown root:mail $HESTIA/ssl/*
-chmod 660 $HESTIA/ssl/*
+chown root:mail $TULIO/ssl/*
+chmod 660 $TULIO/ssl/*
 rm /tmp/hst.pem
 
 # Install dhparam.pem
-cp -f $HESTIA_INSTALL_DIR/ssl/dhparam.pem /etc/ssl
+cp -f $TULIO_INSTALL_DIR/ssl/dhparam.pem /etc/ssl
 
 # Enable SFTP jail
 echo "[ * ] Enabling SFTP jail..."
-$HESTIA/bin/v-add-sys-sftp-jail > /dev/null 2>&1
+$TULIO/bin/v-add-sys-sftp-jail > /dev/null 2>&1
 check_result $? "can't enable sftp jail"
 
 # Enable SSH jail
 echo "[ * ] Enabling SSH jail..."
-$HESTIA/bin/v-add-sys-ssh-jail > /dev/null 2>&1
+$TULIO/bin/v-add-sys-ssh-jail > /dev/null 2>&1
 check_result $? "can't enable ssh jail"
 
 # Adding Hestia admin account
 echo "[ * ] Creating default admin account..."
-$HESTIA/bin/v-add-user $username $vpass $email "default" "System Administrator"
+$TULIO/bin/v-add-user $username $vpass $email "default" "System Administrator"
 check_result $? "can't create admin user"
-$HESTIA/bin/v-change-user-shell $username nologin no
-$HESTIA/bin/v-change-user-role $username admin
-$HESTIA/bin/v-change-user-language $username $lang
-$HESTIA/bin/v-change-sys-config-value 'POLICY_SYSTEM_PROTECTED_ADMIN' 'yes'
+$TULIO/bin/v-change-user-shell $username nologin no
+$TULIO/bin/v-change-user-role $username admin
+$TULIO/bin/v-change-user-language $username $lang
+$TULIO/bin/v-change-sys-config-value 'POLICY_SYSTEM_PROTECTED_ADMIN' 'yes'
 
 #----------------------------------------------------------#
 #                     Configure Nginx                      #
@@ -1559,15 +1559,15 @@ $HESTIA/bin/v-change-sys-config-value 'POLICY_SYSTEM_PROTECTED_ADMIN' 'yes'
 
 echo "[ * ] Configuring NGINX..."
 rm -f /etc/nginx/conf.d/*.conf
-cp -f $HESTIA_INSTALL_DIR/nginx/nginx.conf /etc/nginx/
-cp -f $HESTIA_INSTALL_DIR/nginx/status.conf /etc/nginx/conf.d/
-cp -f $HESTIA_INSTALL_DIR/nginx/0rtt-anti-replay.conf /etc/nginx/conf.d/
-cp -f $HESTIA_INSTALL_DIR/nginx/agents.conf /etc/nginx/conf.d/
+cp -f $TULIO_INSTALL_DIR/nginx/nginx.conf /etc/nginx/
+cp -f $TULIO_INSTALL_DIR/nginx/status.conf /etc/nginx/conf.d/
+cp -f $TULIO_INSTALL_DIR/nginx/0rtt-anti-replay.conf /etc/nginx/conf.d/
+cp -f $TULIO_INSTALL_DIR/nginx/agents.conf /etc/nginx/conf.d/
 # Copy over cloudflare.inc incase in the next step there are connection issues with CF
-cp -f $HESTIA_INSTALL_DIR/nginx/cloudflare.inc /etc/nginx/conf.d/
-cp -f $HESTIA_INSTALL_DIR/nginx/phpmyadmin.inc /etc/nginx/conf.d/
-cp -f $HESTIA_INSTALL_DIR/nginx/phppgadmin.inc /etc/nginx/conf.d/
-cp -f $HESTIA_INSTALL_DIR/logrotate/nginx /etc/logrotate.d/
+cp -f $TULIO_INSTALL_DIR/nginx/cloudflare.inc /etc/nginx/conf.d/
+cp -f $TULIO_INSTALL_DIR/nginx/phpmyadmin.inc /etc/nginx/conf.d/
+cp -f $TULIO_INSTALL_DIR/nginx/phppgadmin.inc /etc/nginx/conf.d/
+cp -f $TULIO_INSTALL_DIR/logrotate/nginx /etc/logrotate.d/
 mkdir -p /etc/nginx/conf.d/domains
 mkdir -p /etc/nginx/conf.d/main
 mkdir -p /etc/nginx/modules-enabled
@@ -1624,10 +1624,10 @@ if [ "$apache" = 'yes' ]; then
 	mkdir -p /etc/apache2/conf.d/domains
 
 	# Copy configuration files
-	cp -f $HESTIA_INSTALL_DIR/apache2/apache2.conf /etc/apache2/
-	cp -f $HESTIA_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/hestia-status.conf
+	cp -f $TULIO_INSTALL_DIR/apache2/apache2.conf /etc/apache2/
+	cp -f $TULIO_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/hestia-status.conf
 	cp -f /etc/apache2/mods-available/status.load /etc/apache2/mods-available/hestia-status.load
-	cp -f $HESTIA_INSTALL_DIR/logrotate/apache2 /etc/logrotate.d/
+	cp -f $TULIO_INSTALL_DIR/logrotate/apache2 /etc/logrotate.d/
 
 	# Enable needed modules
 	a2enmod rewrite > /dev/null 2>&1
@@ -1644,7 +1644,7 @@ if [ "$apache" = 'yes' ]; then
 		a2dismod php$fpm_v > /dev/null 2>&1
 		a2dismod mpm_prefork > /dev/null 2>&1
 		a2enmod mpm_event > /dev/null 2>&1
-		cp -f $HESTIA_INSTALL_DIR/apache2/hestia-event.conf /etc/apache2/conf.d/
+		cp -f $TULIO_INSTALL_DIR/apache2/hestia-event.conf /etc/apache2/conf.d/
 	else
 		a2enmod ruid2 > /dev/null 2>&1
 	fi
@@ -1678,16 +1678,16 @@ if [ "$phpfpm" = "yes" ]; then
 	if [ "$multiphp" = 'yes' ]; then
 		for v in "${multiphp_v[@]}"; do
 			echo "[ * ] Installing PHP $v..."
-			$HESTIA/bin/v-add-web-php "$v" > /dev/null 2>&1
+			$TULIO/bin/v-add-web-php "$v" > /dev/null 2>&1
 		done
 	else
 		echo "[ * ] Installing PHP $fpm_v..."
-		$HESTIA/bin/v-add-web-php "$fpm_v" > /dev/null 2>&1
+		$TULIO/bin/v-add-web-php "$fpm_v" > /dev/null 2>&1
 	fi
 
 	echo "[ * ] Configuring PHP-FPM $fpm_v..."
 	# Create www.conf for webmail and php(*)admin
-	cp -f $HESTIA_INSTALL_DIR/php-fpm/www.conf /etc/php/$fpm_v/fpm/pool.d/www.conf
+	cp -f $TULIO_INSTALL_DIR/php-fpm/www.conf /etc/php/$fpm_v/fpm/pool.d/www.conf
 	update-rc.d php$fpm_v-fpm defaults > /dev/null 2>&1
 	systemctl start php$fpm_v-fpm >> $LOG
 	check_result $? "php-fpm start failed"
@@ -1712,7 +1712,7 @@ done
 # Cleanup php session files not changed in the last 7 days (60*24*7 minutes)
 echo '#!/bin/sh' > /etc/cron.daily/php-session-cleanup
 echo "find -O3 /home/*/tmp/ -ignore_readdir_race -depth -mindepth 1 -name 'sess_*' -type f -cmin '+10080' -delete > /dev/null 2>&1" >> /etc/cron.daily/php-session-cleanup
-echo "find -O3 $HESTIA/data/sessions/ -ignore_readdir_race -depth -mindepth 1 -name 'sess_*' -type f -cmin '+10080' -delete > /dev/null 2>&1" >> /etc/cron.daily/php-session-cleanup
+echo "find -O3 $TULIO/data/sessions/ -ignore_readdir_race -depth -mindepth 1 -name 'sess_*' -type f -cmin '+10080' -delete > /dev/null 2>&1" >> /etc/cron.daily/php-session-cleanup
 chmod 755 /etc/cron.daily/php-session-cleanup
 
 #----------------------------------------------------------#
@@ -1721,7 +1721,7 @@ chmod 755 /etc/cron.daily/php-session-cleanup
 
 if [ "$vsftpd" = 'yes' ]; then
 	echo "[ * ] Configuring Vsftpd server..."
-	cp -f $HESTIA_INSTALL_DIR/vsftpd/vsftpd.conf /etc/
+	cp -f $TULIO_INSTALL_DIR/vsftpd/vsftpd.conf /etc/
 	touch /var/log/vsftpd.log
 	chown root:adm /var/log/vsftpd.log
 	chmod 640 /var/log/vsftpd.log
@@ -1743,8 +1743,8 @@ fi
 if [ "$proftpd" = 'yes' ]; then
 	echo "[ * ] Configuring ProFTPD server..."
 	echo "127.0.0.1 $servername" >> /etc/hosts
-	cp -f $HESTIA_INSTALL_DIR/proftpd/proftpd.conf /etc/proftpd/
-	cp -f $HESTIA_INSTALL_DIR/proftpd/tls.conf /etc/proftpd/
+	cp -f $TULIO_INSTALL_DIR/proftpd/proftpd.conf /etc/proftpd/
+	cp -f $TULIO_INSTALL_DIR/proftpd/tls.conf /etc/proftpd/
 
 	update-rc.d proftpd defaults > /dev/null 2>&1
 	systemctl start proftpd >> $LOG
@@ -1779,7 +1779,7 @@ if [ "$mysql" = 'yes' ] || [ "$mysql8" = 'yes' ]; then
 	# Remove symbolic link
 	rm -f /etc/mysql/my.cnf
 	# Configuring MariaDB
-	cp -f $HESTIA_INSTALL_DIR/mysql/$mycnf /etc/mysql/my.cnf
+	cp -f $TULIO_INSTALL_DIR/mysql/$mycnf /etc/mysql/my.cnf
 
 	# Switch MariaDB inclusions to the MySQL
 	if [ "$mysql_type" = 'MySQL' ]; then
@@ -1836,8 +1836,8 @@ fi
 #----------------------------------------------------------#
 
 # Source upgrade.conf with phpmyadmin versions
-# shellcheck source=/usr/local/hestia/install/upgrade/upgrade.conf
-source $HESTIA/install/upgrade/upgrade.conf
+# shellcheck source=/usr/local/tulio/install/upgrade/upgrade.conf
+source $TULIO/install/upgrade/upgrade.conf
 
 if [ "$mysql" = 'yes' ] || [ "$mysql8" = 'yes' ]; then
 	# Display upgrade information
@@ -1864,7 +1864,7 @@ if [ "$mysql" = 'yes' ] || [ "$mysql8" = 'yes' ]; then
 	cp -rf phpMyAdmin-$pma_v-all-languages/* /usr/share/phpmyadmin
 
 	# Create copy of config file
-	cp -f $HESTIA_INSTALL_DIR/phpmyadmin/config.inc.php /etc/phpmyadmin/
+	cp -f $TULIO_INSTALL_DIR/phpmyadmin/config.inc.php /etc/phpmyadmin/
 
 	# Set config and log directory
 	sed -i "s|'configFile' => ROOT_PATH . 'config.inc.php',|'configFile' => '/etc/phpmyadmin/config.inc.php',|g" /usr/share/phpmyadmin/libraries/vendor_config.php
@@ -1883,12 +1883,12 @@ if [ "$mysql" = 'yes' ] || [ "$mysql8" = 'yes' ]; then
 	rm -f phpMyAdmin-$pma_v-all-languages.tar.gz
 
 	write_config_value "DB_PMA_ALIAS" "phpmyadmin"
-	$HESTIA/bin/v-change-sys-db-alias 'pma' "phpmyadmin"
+	$TULIO/bin/v-change-sys-db-alias 'pma' "phpmyadmin"
 
 	# Special thanks to Pavel Galkin (https://skurudo.ru)
 	# https://github.com/skurudo/phpmyadmin-fixer
-	# shellcheck source=/usr/local/hestia/install/deb/phpmyadmin/pma.sh
-	source $HESTIA_INSTALL_DIR/phpmyadmin/pma.sh > /dev/null 2>&1
+	# shellcheck source=/usr/local/tulio/install/deb/phpmyadmin/pma.sh
+	source $TULIO_INSTALL_DIR/phpmyadmin/pma.sh > /dev/null 2>&1
 
 	# Limit access to /etc/phpmyadmin/
 	chown -R root:hestiamail /etc/phpmyadmin/
@@ -1903,7 +1903,7 @@ fi
 if [ "$postgresql" = 'yes' ]; then
 	echo "[ * ] Configuring PostgreSQL database server..."
 	ppass=$(gen_pass)
-	cp -f $HESTIA_INSTALL_DIR/postgresql/pg_hba.conf /etc/postgresql/*/main/
+	cp -f $TULIO_INSTALL_DIR/postgresql/pg_hba.conf /etc/postgresql/*/main/
 	systemctl restart postgresql
 	sudo -iu postgres psql -c "ALTER USER postgres WITH PASSWORD '$ppass'" > /dev/null 2>&1
 
@@ -1913,18 +1913,18 @@ if [ "$postgresql" = 'yes' ]; then
 	wget --retry-connrefused --quiet https://github.com/hestiacp/phppgadmin/releases/download/v$pga_v/phppgadmin-v$pga_v.tar.gz
 	tar xzf phppgadmin-v$pga_v.tar.gz -C /usr/share/phppgadmin/
 
-	cp -f $HESTIA_INSTALL_DIR/pga/config.inc.php /etc/phppgadmin/
+	cp -f $TULIO_INSTALL_DIR/pga/config.inc.php /etc/phppgadmin/
 
 	ln -s /etc/phppgadmin/config.inc.php /usr/share/phppgadmin/conf/
 
 	# Configuring phpPgAdmin
 	if [ "$apache" = 'yes' ]; then
-		cp -f $HESTIA_INSTALL_DIR/pga/phppgadmin.conf /etc/apache2/conf.d/phppgadmin.inc
+		cp -f $TULIO_INSTALL_DIR/pga/phppgadmin.conf /etc/apache2/conf.d/phppgadmin.inc
 	fi
 
 	rm phppgadmin-v$pga_v.tar.gz
 	write_config_value "DB_PGA_ALIAS" "phppgadmin"
-	$HESTIA/bin/v-change-sys-db-alias 'pga' "phppgadmin"
+	$TULIO/bin/v-change-sys-db-alias 'pga' "phppgadmin"
 
 	# Limit access to /etc/phppgadmin/
 	chown -R root:hestiamail /etc/phppgadmin/
@@ -1937,8 +1937,8 @@ fi
 
 if [ "$named" = 'yes' ]; then
 	echo "[ * ] Configuring Bind DNS server..."
-	cp -f $HESTIA_INSTALL_DIR/bind/named.conf /etc/bind/
-	cp -f $HESTIA_INSTALL_DIR/bind/named.conf.options /etc/bind/
+	cp -f $TULIO_INSTALL_DIR/bind/named.conf /etc/bind/
+	cp -f $TULIO_INSTALL_DIR/bind/named.conf.options /etc/bind/
 	chown root:bind /etc/bind/named.conf
 	chown root:bind /etc/bind/named.conf.options
 	chown bind:bind /var/cache/bind
@@ -1973,14 +1973,14 @@ if [ "$exim" = 'yes' ]; then
 	# if Exim version > 4.9.4 or greater!
 	if ! version_ge "4.94" "$exim_version"; then
 		# Ubuntu 22.04 (Jammy) uses Exim 4.95 instead but config works with Exim4.94
-		cp -f $HESTIA_INSTALL_DIR/exim/exim4.conf.4.95.template /etc/exim4/exim4.conf.template
+		cp -f $TULIO_INSTALL_DIR/exim/exim4.conf.4.95.template /etc/exim4/exim4.conf.template
 	else
-		cp -f $HESTIA_INSTALL_DIR/exim/exim4.conf.template /etc/exim4/
+		cp -f $TULIO_INSTALL_DIR/exim/exim4.conf.template /etc/exim4/
 	fi
-	cp -f $HESTIA_INSTALL_DIR/exim/dnsbl.conf /etc/exim4/
-	cp -f $HESTIA_INSTALL_DIR/exim/spam-blocks.conf /etc/exim4/
-	cp -f $HESTIA_INSTALL_DIR/exim/limit.conf /etc/exim4/
-	cp -f $HESTIA_INSTALL_DIR/exim/system.filter /etc/exim4/
+	cp -f $TULIO_INSTALL_DIR/exim/dnsbl.conf /etc/exim4/
+	cp -f $TULIO_INSTALL_DIR/exim/spam-blocks.conf /etc/exim4/
+	cp -f $TULIO_INSTALL_DIR/exim/limit.conf /etc/exim4/
+	cp -f $TULIO_INSTALL_DIR/exim/system.filter /etc/exim4/
 	touch /etc/exim4/white-blocks.conf
 
 	if [ "$spamd" = 'yes' ]; then
@@ -2018,8 +2018,8 @@ fi
 if [ "$dovecot" = 'yes' ]; then
 	echo "[ * ] Configuring Dovecot POP/IMAP mail server..."
 	gpasswd -a dovecot mail > /dev/null 2>&1
-	cp -rf $HESTIA_COMMON_DIR/dovecot /etc/
-	cp -f $HESTIA_INSTALL_DIR/logrotate/dovecot /etc/logrotate.d/
+	cp -rf $TULIO_COMMON_DIR/dovecot /etc/
+	cp -f $TULIO_INSTALL_DIR/logrotate/dovecot /etc/logrotate.d/
 	rm -f /etc/dovecot/conf.d/15-mailboxes.conf
 	chown -R root:root /etc/dovecot*
 	touch /var/log/dovecot.log
@@ -2047,7 +2047,7 @@ fi
 if [ "$clamd" = 'yes' ]; then
 	gpasswd -a clamav mail > /dev/null 2>&1
 	gpasswd -a clamav Debian-exim > /dev/null 2>&1
-	cp -f $HESTIA_INSTALL_DIR/clamav/clamd.conf /etc/clamav/
+	cp -f $TULIO_INSTALL_DIR/clamav/clamd.conf /etc/clamav/
 	update-rc.d clamav-daemon defaults
 	echo -ne "[ * ] Installing ClamAV anti-virus definitions... "
 	/usr/bin/freshclam >> $LOG > /dev/null 2>&1
@@ -2091,7 +2091,7 @@ fi
 
 if [ "$fail2ban" = 'yes' ]; then
 	echo "[ * ] Configuring fail2ban access monitor..."
-	cp -rf $HESTIA_INSTALL_DIR/fail2ban /etc/
+	cp -rf $TULIO_INSTALL_DIR/fail2ban /etc/
 	if [ "$dovecot" = 'no' ]; then
 		fline=$(cat /etc/fail2ban/jail.local | grep -n dovecot-iptables -A 2)
 		fline=$(echo "$fline" | grep enabled | tail -n1 | cut -f 1 -d -)
@@ -2124,12 +2124,12 @@ fi
 
 # Configuring MariaDB/MySQL host
 if [ "$mysql" = 'yes' ] || [ "$mysql8" = 'yes' ]; then
-	$HESTIA/bin/v-add-database-host mysql localhost root $mpass
+	$TULIO/bin/v-add-database-host mysql localhost root $mpass
 fi
 
 # Configuring PostgreSQL host
 if [ "$postgresql" = 'yes' ]; then
-	$HESTIA/bin/v-add-database-host pgsql localhost postgres $ppass
+	$TULIO/bin/v-add-database-host pgsql localhost postgres $ppass
 fi
 
 #----------------------------------------------------------#
@@ -2139,7 +2139,7 @@ fi
 # Min requirements Dovecot + Exim + Mysql
 if ([ "$mysql" == 'yes' ] || [ "$mysql8" == 'yes' ]) && [ "$dovecot" == "yes" ]; then
 	echo "[ * ] Installing Roundcube..."
-	$HESTIA/bin/v-add-sys-roundcube
+	$TULIO/bin/v-add-sys-roundcube
 	write_config_value "WEBMAIL_ALIAS" "webmail"
 else
 	write_config_value "WEBMAIL_ALIAS" ""
@@ -2170,7 +2170,7 @@ if [ "$sieve" = 'yes' ]; then
 	sed -i "s/mail_plugins = quota imap_quota/mail_plugins = quota imap_quota imap_sieve/g" /etc/dovecot/conf.d/20-imap.conf
 
 	# Replace dovecot-sieve config files
-	cp -f $HESTIA_COMMON_DIR/dovecot/sieve/* /etc/dovecot/conf.d
+	cp -f $TULIO_COMMON_DIR/dovecot/sieve/* /etc/dovecot/conf.d
 
 	# Dovecot default file install
 	echo -e "require [\"fileinto\"];\n# rule:[SPAM]\nif header :contains \"X-Spam-Flag\" \"YES\" {\n    fileinto \"INBOX.Spam\";\n}\n" > /etc/dovecot/sieve/default
@@ -2187,7 +2187,7 @@ if [ "$sieve" = 'yes' ]; then
 	if [ -d "/var/lib/roundcube" ]; then
 		# Modify Roundcube config
 		mkdir -p $RC_CONFIG_DIR/plugins/managesieve
-		cp -f $HESTIA_COMMON_DIR/roundcube/plugins/config_managesieve.inc.php $RC_CONFIG_DIR/plugins/managesieve/config.inc.php
+		cp -f $TULIO_COMMON_DIR/roundcube/plugins/config_managesieve.inc.php $RC_CONFIG_DIR/plugins/managesieve/config.inc.php
 		ln -s $RC_CONFIG_DIR/plugins/managesieve/config.inc.php $RC_INSTALL_DIR/plugins/managesieve/config.inc.php
 		chown -R hestiamail:www-data $RC_CONFIG_DIR/
 		chmod 751 -R $RC_CONFIG_DIR
@@ -2215,7 +2215,7 @@ else
 	write_config_value "API" "no"
 	write_config_value "API_SYSTEM" "0"
 	write_config_value "API_ALLOWED_IP" ""
-	$HESTIA/bin/v-change-sys-api disable
+	$TULIO/bin/v-change-sys-api disable
 fi
 
 #----------------------------------------------------------#
@@ -2223,7 +2223,7 @@ fi
 #----------------------------------------------------------#
 
 echo "[ * ] Configuring File Manager..."
-$HESTIA/bin/v-add-sys-filemanager quiet
+$TULIO/bin/v-add-sys-filemanager quiet
 
 #----------------------------------------------------------#
 #              Configure Web terminal                      #
@@ -2244,7 +2244,7 @@ fi
 #----------------------------------------------------------#
 
 echo "[ * ] Configuring PHP dependencies..."
-$HESTIA/bin/v-add-sys-dependencies quiet
+$TULIO/bin/v-add-sys-dependencies quiet
 
 echo "[ * ] Installing Rclone & Update Restic ..."
 curl -s https://rclone.org/install.sh | bash > /dev/null 2>&1
@@ -2256,7 +2256,7 @@ restic self-update > /dev/null 2>&1
 
 # Configuring system IPs
 echo "[ * ] Configuring System IP..."
-$HESTIA/bin/v-update-sys-ip > /dev/null 2>&1
+$TULIO/bin/v-update-sys-ip > /dev/null 2>&1
 
 # Get primary IP
 default_nic="$(ip -d -j route show | jq -r '.[] | if .dst == "default" then .dev else empty end')"
@@ -2269,7 +2269,7 @@ local_ip="$primary_ipv4"
 
 # Configuring firewall
 if [ "$iptables" = 'yes' ]; then
-	$HESTIA/bin/v-update-firewall
+	$TULIO/bin/v-update-firewall
 fi
 
 # Get public IP
@@ -2290,13 +2290,13 @@ if [ -n "$pub_ipv4" ] && [ "$pub_ipv4" != "$ip" ]; then
 	check_pve=$(uname -r | grep pve)
 	if [ ! -z "$check_pve" ]; then
 		echo 'hostname=$(hostname --fqdn)' >> /etc/rc.local
-		echo ""$HESTIA/bin/v-change-sys-hostname" "'"$hostname"'"" >> /etc/rc.local
+		echo ""$TULIO/bin/v-change-sys-hostname" "'"$hostname"'"" >> /etc/rc.local
 	fi
-	echo "$HESTIA/bin/v-update-sys-ip" >> /etc/rc.local
+	echo "$TULIO/bin/v-update-sys-ip" >> /etc/rc.local
 	echo "exit 0" >> /etc/rc.local
 	chmod +x /etc/rc.local
 	systemctl enable rc-local > /dev/null 2>&1
-	$HESTIA/bin/v-change-sys-ip-nat "$ip" "$pub_ipv4" > /dev/null 2>&1
+	$TULIO/bin/v-change-sys-ip-nat "$ip" "$pub_ipv4" > /dev/null 2>&1
 	ip="$pub_ipv4"
 fi
 
@@ -2321,7 +2321,7 @@ if [ "$apache" = 'yes' ] && [ "$nginx" = 'yes' ]; then
 fi
 
 # Adding default domain
-$HESTIA/bin/v-add-web-domain "$username" "$servername" "$ip"
+$TULIO/bin/v-add-web-domain "$username" "$servername" "$ip"
 check_result $? "can't create $servername domain"
 
 # Adding cron jobs
@@ -2331,37 +2331,37 @@ min=$(gen_pass '012345' '2')
 hour=$(gen_pass '1234567' '1')
 echo "MAILTO=\"\"" > /var/spool/cron/crontabs/hestiaweb
 echo "CONTENT_TYPE=\"text/plain; charset=utf-8\"" >> /var/spool/cron/crontabs/hestiaweb
-echo "*/2 * * * * sudo /usr/local/hestia/bin/v-update-sys-queue restart" >> /var/spool/cron/crontabs/hestiaweb
-echo "10 00 * * * sudo /usr/local/hestia/bin/v-update-sys-queue daily" >> /var/spool/cron/crontabs/hestiaweb
-echo "15 02 * * * sudo /usr/local/hestia/bin/v-update-sys-queue disk" >> /var/spool/cron/crontabs/hestiaweb
-echo "10 00 * * * sudo /usr/local/hestia/bin/v-update-sys-queue traffic" >> /var/spool/cron/crontabs/hestiaweb
-echo "30 03 * * * sudo /usr/local/hestia/bin/v-update-sys-queue webstats" >> /var/spool/cron/crontabs/hestiaweb
-echo "*/5 * * * * sudo /usr/local/hestia/bin/v-update-sys-queue backup" >> /var/spool/cron/crontabs/hestiaweb
-echo "10 05 * * * sudo /usr/local/hestia/bin/v-backup-users" >> /var/spool/cron/crontabs/hestiaweb
-echo "20 00 * * * sudo /usr/local/hestia/bin/v-update-user-stats" >> /var/spool/cron/crontabs/hestiaweb
-echo "*/5 * * * * sudo /usr/local/hestia/bin/v-update-sys-rrd" >> /var/spool/cron/crontabs/hestiaweb
-echo "$min $hour * * * sudo /usr/local/hestia/bin/v-update-letsencrypt-ssl" >> /var/spool/cron/crontabs/hestiaweb
-echo "41 4 * * * sudo /usr/local/hestia/bin/v-update-sys-hestia-all" >> /var/spool/cron/crontabs/hestiaweb
+echo "*/2 * * * * sudo /usr/local/tulio/bin/v-update-sys-queue restart" >> /var/spool/cron/crontabs/hestiaweb
+echo "10 00 * * * sudo /usr/local/tulio/bin/v-update-sys-queue daily" >> /var/spool/cron/crontabs/hestiaweb
+echo "15 02 * * * sudo /usr/local/tulio/bin/v-update-sys-queue disk" >> /var/spool/cron/crontabs/hestiaweb
+echo "10 00 * * * sudo /usr/local/tulio/bin/v-update-sys-queue traffic" >> /var/spool/cron/crontabs/hestiaweb
+echo "30 03 * * * sudo /usr/local/tulio/bin/v-update-sys-queue webstats" >> /var/spool/cron/crontabs/hestiaweb
+echo "*/5 * * * * sudo /usr/local/tulio/bin/v-update-sys-queue backup" >> /var/spool/cron/crontabs/hestiaweb
+echo "10 05 * * * sudo /usr/local/tulio/bin/v-backup-users" >> /var/spool/cron/crontabs/hestiaweb
+echo "20 00 * * * sudo /usr/local/tulio/bin/v-update-user-stats" >> /var/spool/cron/crontabs/hestiaweb
+echo "*/5 * * * * sudo /usr/local/tulio/bin/v-update-sys-rrd" >> /var/spool/cron/crontabs/hestiaweb
+echo "$min $hour * * * sudo /usr/local/tulio/bin/v-update-letsencrypt-ssl" >> /var/spool/cron/crontabs/hestiaweb
+echo "41 4 * * * sudo /usr/local/tulio/bin/v-update-sys-hestia-all" >> /var/spool/cron/crontabs/hestiaweb
 
 chmod 600 /var/spool/cron/crontabs/hestiaweb
 chown hestiaweb:hestiaweb /var/spool/cron/crontabs/hestiaweb
 
 # Enable automatic updates
-$HESTIA/bin/v-add-cron-hestia-autoupdate apt
+$TULIO/bin/v-add-cron-hestia-autoupdate apt
 
 # Building initial rrd images
-$HESTIA/bin/v-update-sys-rrd
+$TULIO/bin/v-update-sys-rrd
 
 # Enabling file system quota
 if [ "$quota" = 'yes' ]; then
-	$HESTIA/bin/v-add-sys-quota
+	$TULIO/bin/v-add-sys-quota
 fi
 
 # Set backend port
-$HESTIA/bin/v-change-sys-port $port > /dev/null 2>&1
+$TULIO/bin/v-change-sys-port $port > /dev/null 2>&1
 
 # Create default configuration files
-$HESTIA/bin/v-update-sys-defaults
+$TULIO/bin/v-update-sys-defaults
 
 # Update remaining packages since repositories have changed
 echo -ne "[ * ] Installing remaining software updates..."
@@ -2374,26 +2374,26 @@ echo
 update-rc.d hestia defaults
 systemctl start hestia
 check_result $? "hestia start failed"
-chown hestiaweb:hestiaweb $HESTIA/data/sessions
+chown hestiaweb:hestiaweb $TULIO/data/sessions
 
 # Create backup folder and set correct permission
 mkdir -p /backup/
 chmod 755 /backup/
 
 # Create cronjob to generate ssl
-echo "@reboot root sleep 10 && rm /etc/cron.d/hestia-ssl && PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:' && /usr/local/hestia/bin/v-add-letsencrypt-host" > /etc/cron.d/hestia-ssl
+echo "@reboot root sleep 10 && rm /etc/cron.d/hestia-ssl && PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:' && /usr/local/tulio/bin/v-add-letsencrypt-host" > /etc/cron.d/hestia-ssl
 
 #----------------------------------------------------------#
-#              Set hestia.conf default values              #
+#              Set tulio.conf default values              #
 #----------------------------------------------------------#
 
 echo "[ * ] Updating configuration files..."
-BIN="$HESTIA/bin"
-source $HESTIA/func/syshealth.sh
+BIN="$TULIO/bin"
+source $TULIO/func/syshealth.sh
 syshealth_repair_system_config
 
-# Add /usr/local/hestia/bin/ to path variable
-echo 'if [ "${PATH#*/usr/local/hestia/bin*}" = "$PATH" ]; then
+# Add /usr/local/tulio/bin/ to path variable
+echo 'if [ "${PATH#*/usr/local/tulio/bin*}" = "$PATH" ]; then
     . /etc/profile.d/hestia.sh
 fi' >> /root/.bashrc
 
@@ -2433,7 +2433,7 @@ or if you encounter any bugs or problems:
 
 Documentation:  https://docs.hestiacp.com/
 Forum:          https://forum.hestiacp.com/
-GitHub:         https://www.github.com/hestiacp/hestiacp
+GitHub:         https://www.github.com/tuliocp/tuliocp
 
 Note: Automatic updates are enabled by default. If you would like to disable them,
 please log in and navigate to Server > Updates to turn them off.
@@ -2448,7 +2448,7 @@ The Hestia Control Panel development team
 Made with love & pride by the open-source community around the world.
 " >> $tmpfile
 
-send_mail="$HESTIA/web/inc/mail-wrapper.php"
+send_mail="$TULIO/web/inc/mail-wrapper.php"
 cat $tmpfile | $send_mail -s "Hestia Control Panel" $email
 
 # Congrats
@@ -2457,7 +2457,7 @@ cat $tmpfile
 rm -f $tmpfile
 
 # Add welcome message to notification panel
-$HESTIA/bin/v-add-user-notification "$username" 'Welcome to Hestia Control Panel!' '<p>You are now ready to begin adding <a href="/add/user/">user accounts</a> and <a href="/add/web/">domains</a>. For help and assistance, <a href="https://hestiacp.com/docs/" target="_blank">view the documentation</a> or <a href="https://forum.hestiacp.com/" target="_blank">visit our forum</a>.</p><p>Please <a href="https://github.com/hestiacp/hestiacp/issues" target="_blank">report any issues via GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+$TULIO/bin/v-add-user-notification "$username" 'Welcome to Hestia Control Panel!' '<p>You are now ready to begin adding <a href="/add/user/">user accounts</a> and <a href="/add/web/">domains</a>. For help and assistance, <a href="https://hestiacp.com/docs/" target="_blank">view the documentation</a> or <a href="https://forum.hestiacp.com/" target="_blank">visit our forum</a>.</p><p>Please <a href="https://github.com/tuliocp/tuliocp/issues" target="_blank">report any issues via GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
 
 # Clean-up
 # Sort final configuration file

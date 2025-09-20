@@ -31,7 +31,7 @@ if [ ! -z "$IMAP_SYSTEM" ]; then
 	echo "[ * ] Hardening security of Roundcube webmail..."
 	$BIN/v-update-mail-templates > /dev/null 2>&1
 	if [ -e /etc/nginx/conf.d/webmail.inc ]; then
-		cp -f /etc/nginx/conf.d/webmail.inc $HESTIA_BACKUP/conf/
+		cp -f /etc/nginx/conf.d/webmail.inc $TULIO_BACKUP/conf/
 		sed -i "s/config|temp|logs/README.md|config|temp|logs|bin|SQL|INSTALL|LICENSE|CHANGELOG|UPGRADING/g" /etc/nginx/conf.d/webmail.inc
 	fi
 fi
@@ -52,8 +52,8 @@ if [ -e "/etc/clamav/clamd.conf" ]; then
 fi
 
 # Remove errornous history.log file created by certain builds due to bug in v-restart-system
-if [ -e $HESTIA/data/users/history.log ]; then
-	rm -f $HESTIA/data/users/history.log
+if [ -e $TULIO/data/users/history.log ]; then
+	rm -f $TULIO/data/users/history.log
 fi
 
 # Use exim4 server hostname instead of mail domain and remove hardcoded mail prefix
@@ -80,13 +80,13 @@ fi
 # Fix sftp jail cronjob
 if [ -e "/etc/cron.d/hestia-sftp" ]; then
 	if ! cat /etc/cron.d/hestia-sftp | grep -q 'root'; then
-		echo "@reboot root /usr/local/hestia/bin/v-add-sys-sftp-jail" > /etc/cron.d/hestia-sftp
+		echo "@reboot root /usr/local/tulio/bin/v-add-sys-sftp-jail" > /etc/cron.d/hestia-sftp
 	fi
 fi
 
 # Create default writeable folders for all users
 echo "[ * ] Updating default writable folders for all users..."
-for user in $($HESTIA/bin/v-list-sys-users plain); do
+for user in $($TULIO/bin/v-list-sys-users plain); do
 	mkdir -p \
 		$HOMEDIR/$user/.cache \
 		$HOMEDIR/$user/.config \
@@ -106,19 +106,19 @@ done
 if fail2ban-client status sshd > /dev/null 2>&1; then
 	fail2ban-client stop sshd > /dev/null 2>&1
 	if [ -f /etc/fail2ban/jail.d/defaults-debian.conf ]; then
-		mkdir -p $HESTIA_BACKUP/conf/fail2ban/jail.d
-		mv /etc/fail2ban/jail.d/defaults-debian.conf $HESTIA_BACKUP/conf/fail2ban/jail.d/
+		mkdir -p $TULIO_BACKUP/conf/fail2ban/jail.d
+		mv /etc/fail2ban/jail.d/defaults-debian.conf $TULIO_BACKUP/conf/fail2ban/jail.d/
 	fi
 fi
 
 # Update Office 365/Microsoft 365 DNS template
-if [ -e "$HESTIA/data/templates/dns/office365.tpl" ]; then
+if [ -e "$TULIO/data/templates/dns/office365.tpl" ]; then
 	echo "[ * ] Updating DNS template for Office 365..."
-	cp -f $HESTIA/install/deb/templates/dns/office365.tpl $HESTIA/data/templates/dns/office365.tpl
+	cp -f $TULIO/install/deb/templates/dns/office365.tpl $TULIO/data/templates/dns/office365.tpl
 fi
 
 # Ensure that backup compression level is correctly set
-GZIP_LVL_CHECK=$(cat $HESTIA/conf/hestia.conf | grep BACKUP_GZIP)
+GZIP_LVL_CHECK=$(cat $TULIO/conf/tulio.conf | grep BACKUP_GZIP)
 if [ -z "$GZIP_LVL_CHECK" ]; then
 	echo "[ * ] Updating backup compression level variable..."
 	$BIN/v-change-sys-config-value "BACKUP_GZIP" '9'
@@ -182,10 +182,10 @@ if [ -e "/etc/logrotate/apache2" ]; then
 fi
 
 # Repair messed up user log permissions from the logrotate bug. Ignoring errors
-for user in $($HESTIA/bin/v-list-users plain | cut -f1); do
-	for domain in $($HESTIA/bin/v-list-web-domains $user plain | cut -f1); do
+for user in $($TULIO/bin/v-list-users plain | cut -f1); do
+	for domain in $($TULIO/bin/v-list-web-domains $user plain | cut -f1); do
 		chown root:$user /var/log/$WEB_SYSTEM/domains/$domain.* > /dev/null 2>&1
-		for sub_domain in $($HESTIA/bin/v-list-web-domain $user $domain plain | cut -f7 | tr ',' '\n'); do
+		for sub_domain in $($TULIO/bin/v-list-web-domain $user $domain plain | cut -f7 | tr ',' '\n'); do
 			chown root:$user /var/log/$WEB_SYSTEM/domains/$sub_domain.* > /dev/null 2>&1
 		done
 	done
@@ -197,13 +197,13 @@ chown root:root /var/log/$WEB_SYSTEM/domains/$WEBMAIL_ALIAS* > /dev/null 2>&1
 if [ "$IMAP_SYSTEM" = "dovecot" ]; then
 	echo "[ * ] Enabling IMAP quota information reporting..."
 	if [ -e /etc/dovecot/conf.d/20-pop3.conf ]; then
-		cp -f $HESTIA/install/deb/dovecot/conf.d/20-pop3.conf /etc/dovecot/conf.d/20-pop3.conf
+		cp -f $TULIO/install/deb/dovecot/conf.d/20-pop3.conf /etc/dovecot/conf.d/20-pop3.conf
 	fi
 	if [ -e /etc/dovecot/conf.d/20-imap.conf ]; then
-		cp -f $HESTIA/install/deb/dovecot/conf.d/20-imap.conf /etc/dovecot/conf.d/20-imap.conf
+		cp -f $TULIO/install/deb/dovecot/conf.d/20-imap.conf /etc/dovecot/conf.d/20-imap.conf
 	fi
 	if [ -e /etc/dovecot/conf.d/90-quota.conf ]; then
-		cp -f $HESTIA/install/deb/dovecot/conf.d/90-quota.conf /etc/dovecot/conf.d/90-quota.conf
+		cp -f $TULIO/install/deb/dovecot/conf.d/90-quota.conf /etc/dovecot/conf.d/90-quota.conf
 	fi
 fi
 
@@ -211,8 +211,8 @@ fi
 num_php_versions=$(ls -d /etc/php/*/fpm/pool.d 2> /dev/null | wc -l)
 if [ "$num_php_versions" -gt 1 ] && [ -z "$WEB_BACKEND" ]; then
 	echo "[ * ] Enabling modular Multi-PHP backend..."
-	cp -rf $HESTIA/data/templates/web $HESTIA_BACKUP/templates/web
-	bash $HESTIA/install/upgrade/manual/migrate_multiphp.sh > /dev/null 2>&1
+	cp -rf $TULIO/data/templates/web $TULIO_BACKUP/templates/web
+	bash $TULIO/install/upgrade/manual/migrate_multiphp.sh > /dev/null 2>&1
 fi
 
 # Disable global subfolder alias for webmail in favor of subdomain
