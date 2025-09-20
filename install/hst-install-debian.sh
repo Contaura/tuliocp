@@ -846,11 +846,11 @@ if [ "$mysql8" = 'yes' ]; then
 	done
 fi
 
-# Installing TulioCP repo
+# Installing TulioCP repo (temporarily unsigned)
 echo "[ * ] TulioCP Control Panel"
-echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://$RHOST/ stable main" > $apt/tuliocp.list
-# For now we'll use the Hestia GPG key - this should be updated when we have our own signed packages
-gpg --no-default-keyring --keyring /usr/share/keyrings/tulio-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5 > /dev/null 2>&1
+echo "deb [arch=$ARCH trusted=yes] https://$RHOST/ stable main" > $apt/tuliocp.list
+# Note: Repository is temporarily unsigned while packages are being built
+# TODO: Add GPG signing when we have proper signed packages
 
 # Installing Node.js repo
 if [ "$webterminal" = 'yes' ]; then
