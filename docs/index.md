@@ -1,16 +1,16 @@
 ---
 layout: home
 
-title: Hestia Control Panel
+title: Tulio Control Panel
 titleTemplate: Open-source web server control panel.
 
 hero:
-  name: Hestia Control Panel
+  name: Tulio Control Panel
   text: Open-source web server control panel
   tagline: Fast, reliable, open-source. The control panel you’ve always wanted is just a command away.
   image:
     src: /logo.svg
-    alt: Hestia Logo
+    alt: Tulio Logo
   actions:
     - theme: brand
       text: Get started
@@ -25,7 +25,7 @@ hero:
 features:
   - icon: 🚀
     title: Fast & easy to learn
-    details: Hestia is made with ease of use in mind. Creating a user or a website is as easy as clicking a button and filling out a couple of fields, while advanced features are easily accessible.
+    details: TulioCP is made with ease of use in mind. Creating a user or a website is as easy as clicking a button and filling out a couple of fields, while advanced features are easily accessible.
     link: /docs/introduction/getting-started
     linkText: Documentation
   - icon: ❤️
