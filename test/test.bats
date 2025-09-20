@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
-if [ "${PATH#*/usr/local/hestia/bin*}" = "$PATH" ]; then
-    . /etc/profile.d/hestia.sh
+if [ "${PATH#*/usr/local/tulio/bin*}" = "$PATH" ]; then
+    . /etc/profile.d/tulio.sh
 fi
 
 load 'test_helper/bats-support/load'
@@ -16,27 +16,27 @@ function random() {
 function setup() {
     # echo "# Setup_file" > &3
     if [ $BATS_TEST_NUMBER = 1 ]; then
-        echo 'user=test-5285' > /tmp/hestia-test-env.sh
-        echo 'user2=test-5286' >> /tmp/hestia-test-env.sh
-        echo 'userbk=testbk-5285' >> /tmp/hestia-test-env.sh
-        echo 'userpass1=test-5285' >> /tmp/hestia-test-env.sh
-        echo 'userpass2=t3st-p4ssw0rd' >> /tmp/hestia-test-env.sh
-        echo 'HESTIA=/usr/local/hestia' >> /tmp/hestia-test-env.sh
-        echo 'domain=test-5285.hestiacp.com' >> /tmp/hestia-test-env.sh
-        echo 'domainuk=test-5285.hestiacp.com.uk' >> /tmp/hestia-test-env.sh
-        echo 'rootdomain=testhestiacp.com' >> /tmp/hestia-test-env.sh
-        echo 'subdomain=cdn.testhestiacp.com' >> /tmp/hestia-test-env.sh
-        echo 'database=test-5285_database' >> /tmp/hestia-test-env.sh
-        echo 'dbuser=test-5285_dbuser' >> /tmp/hestia-test-env.sh
-        echo 'pguser=test5290' >> /tmp/hestia-test-env.sh
-        echo 'pgdatabase=test5290_database' >> /tmp/hestia-test-env.sh
-        echo 'pgdbuser=test5290_dbuser' >> /tmp/hestia-test-env.sh
+        echo 'user=test-5285' > /tmp/tulio-test-env.sh
+        echo 'user2=test-5286' >> /tmp/tulio-test-env.sh
+        echo 'userbk=testbk-5285' >> /tmp/tulio-test-env.sh
+        echo 'userpass1=test-5285' >> /tmp/tulio-test-env.sh
+        echo 'userpass2=t3st-p4ssw0rd' >> /tmp/tulio-test-env.sh
+        echo 'TULIO=/usr/local/tulio' >> /tmp/tulio-test-env.sh
+        echo 'domain=test-5285.tuliocp.com' >> /tmp/tulio-test-env.sh
+        echo 'domainuk=test-5285.tuliocp.com.uk' >> /tmp/tulio-test-env.sh
+        echo 'rootdomain=testtuliocp.com' >> /tmp/tulio-test-env.sh
+        echo 'subdomain=cdn.testtuliocp.com' >> /tmp/tulio-test-env.sh
+        echo 'database=test-5285_database' >> /tmp/tulio-test-env.sh
+        echo 'dbuser=test-5285_dbuser' >> /tmp/tulio-test-env.sh
+        echo 'pguser=test5290' >> /tmp/tulio-test-env.sh
+        echo 'pgdatabase=test5290_database' >> /tmp/tulio-test-env.sh
+        echo 'pgdbuser=test5290_dbuser' >> /tmp/tulio-test-env.sh
     fi
 
-    source /tmp/hestia-test-env.sh
-    source $HESTIA/func/main.sh
-    source $HESTIA/conf/hestia.conf
-    source $HESTIA/func/ip.sh
+    source /tmp/tulio-test-env.sh
+    source $TULIO/func/main.sh
+    source $TULIO/conf/tulio.conf
+    source $TULIO/func/ip.sh
 }
 
 function validate_web_domain() {
@@ -49,12 +49,12 @@ function validate_web_domain() {
     refute [ -z "$domain" ]
     refute [ -z "$webproof" ]
 
-    source $HESTIA/func/ip.sh
+    source $TULIO/func/ip.sh
 
     run v-list-web-domain $user $domain
     assert_success
 
-    USER_DATA=$HESTIA/data/users/$user
+    USER_DATA=$TULIO/data/users/$user
     local domain_ip=$(get_object_value 'web' 'DOMAIN' "$domain" '$IP')
     SSL=$(get_object_value 'web' 'DOMAIN' "$domain" '$SSL')
     domain_ip=$(get_real_ip "$domain_ip")
@@ -95,12 +95,12 @@ function validate_headers_domain() {
   refute [ -z "$domain" ]
   refute [ -z "$webproof" ]
 
-  source $HESTIA/func/ip.sh
+  source $TULIO/func/ip.sh
 
   run v-list-web-domain $user $domain
   assert_success
 
-  USER_DATA=$HESTIA/data/users/$user
+  USER_DATA=$TULIO/data/users/$user
   local domain_ip=$(get_object_value 'web' 'DOMAIN' "$domain" '$IP')
   SSL=$(get_object_value 'web' 'DOMAIN' "$domain" '$SSL')
   domain_ip=$(get_real_ip "$domain_ip")
@@ -146,9 +146,9 @@ function validate_webmail_domain() {
     refute [ -z "$domain" ]
     refute [ -z "$webproof" ]
 
-    source $HESTIA/func/ip.sh
+    source $TULIO/func/ip.sh
 
-    USER_DATA=$HESTIA/data/users/$user
+    USER_DATA=$TULIO/data/users/$user
     local domain_ip=$(get_object_value 'web' 'DOMAIN' "$domain" '$IP')
     SSL=$(get_object_value 'mail' 'DOMAIN' "$domain" '$SSL')
     domain_ip=$(get_real_ip "$domain_ip")

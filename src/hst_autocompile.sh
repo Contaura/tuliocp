@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # set -e
-# Autocompile Script for HestiaCP package Files.
+# Autocompile Script for TulioCP package Files.
 # For building from local source folder use "~localsrc" keyword as hesia branch name,
 #   and the script will not try to download the arhive from github, since '~' char is
 #   not accepted in branch name.
-# Compile but dont install -> ./hst_autocompile.sh --hestia --noinstall --keepbuild '~localsrc'
-# Compile and install -> ./hst_autocompile.sh --hestia --install '~localsrc'
+# Compile but dont install -> ./tst_autocompile.sh --tulio --noinstall --keepbuild '~localsrc'
+# Compile and install -> ./tst_autocompile.sh --tulio --install '~localsrc'
 
 # Clear previous screen output
 clear
@@ -108,9 +108,9 @@ usage() {
 }
 
 # Set compiling directory
-REPO='hestiacp/hestiacp'
-BUILD_DIR='/tmp/hestiacp-src'
-INSTALL_DIR='/usr/local/hestia'
+REPO='tuliocp/tuliocp'
+BUILD_DIR='/tmp/tuliocp-src'
+INSTALL_DIR='/usr/local/tulio'
 SRC_DIR="$(cd "$(dirname "$0")/.." && pwd)"
 ARCHIVE_DIR="$SRC_DIR/src/archive/"
 architecture="$(arch)"

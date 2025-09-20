@@ -2,7 +2,7 @@
 
 #===========================================================================#
 #                                                                           #
-# Hestia Control Panel - Core Function Library                              #
+# Tulio Control Panel - Core Function Library
 #                                                                           #
 #===========================================================================#
 
@@ -21,11 +21,11 @@ source_conf() {
 
 if [ -z "$user" ]; then
 	if [ -z "$ROOT_USER" ]; then
-		if [ -z "$HESTIA" ]; then
-			# shellcheck source=/etc/hestiacp/hestia.conf
-			source /etc/hestiacp/hestia.conf
+		if [ -z "$TULIO" ]; then
+			# shellcheck source=/etc/tuliocp/tulio.conf
+			source /etc/tuliocp/tulio.conf
 		fi
-		source_conf "$HESTIA/conf/hestia.conf" # load config file
+		source_conf "$TULIO/conf/tulio.conf" # load config file
 	fi
 	user="$ROOT_USER"
 fi
@@ -37,20 +37,20 @@ BACKUP_GZIP=9
 BACKUP_DISK_LIMIT=95
 BACKUP_LA_LIMIT=$(grep -c '^processor' /proc/cpuinfo)
 RRD_STEP=300
-BIN=$HESTIA/bin
-HESTIA_INSTALL_DIR="$HESTIA/install/deb"
-HESTIA_COMMON_DIR="$HESTIA/install/common"
-HESTIA_BACKUP="/root/hst_backups/$(date +%d%m%Y%H%M)"
-HESTIA_PHP="$HESTIA/php/bin/php"
-USER_DATA=$HESTIA/data/users/$user
-WEBTPL=$HESTIA/data/templates/web
-MAILTPL=$HESTIA/data/templates/mail
-DNSTPL=$HESTIA/data/templates/dns
-RRD=$HESTIA/web/rrd
-SENDMAIL="$HESTIA/web/inc/mail-wrapper.php"
-HESTIA_GIT_REPO="https://raw.githubusercontent.com/hestiacp/hestiacp"
-HESTIA_THEMES="$HESTIA/web/css/themes"
-HESTIA_THEMES_CUSTOM="$HESTIA/web/css/themes/custom"
+BIN=$TULIO/bin
+TULIO_INSTALL_DIR="$TULIO/install/deb"
+TULIO_COMMON_DIR="$TULIO/install/common"
+TULIO_BACKUP="/root/tst_backups/$(date +%d%m%Y%H%M)"
+TULIO_PHP="$TULIO/php/bin/php"
+USER_DATA=$TULIO/data/users/$user
+WEBTPL=$TULIO/data/templates/web
+MAILTPL=$TULIO/data/templates/mail
+DNSTPL=$TULIO/data/templates/dns
+RRD=$TULIO/web/rrd
+SENDMAIL="$TULIO/web/inc/mail-wrapper.php"
+TULIO_GIT_REPO="https://raw.githubusercontent.com/tuliocp/tuliocp"
+TULIO_THEMES="$TULIO/web/css/themes"
+TULIO_THEMES_CUSTOM="$TULIO/web/css/themes/custom"
 SCRIPT="$(basename $0)"
 CHECK_RESULT_CALLBACK=""
 
@@ -121,9 +121,9 @@ log_event() {
 		LOG_TIME="$date $time $(basename $0)"
 	fi
 	if [ "$1" -eq 0 ]; then
-		echo "$LOG_TIME $2" >> $HESTIA/log/system.log
+		echo "$LOG_TIME $2" >> $TULIO/log/system.log
 	else
-		echo "$LOG_TIME $2 [Error $1]" >> $HESTIA/log/error.log
+		echo "$LOG_TIME $2 [Error $1]" >> $TULIO/log/error.log
 	fi
 }
 
@@ -144,12 +144,12 @@ log_history() {
 
 	# Log system events to system log file
 	if [ "$log_user" = "system" ]; then
-		log=$HESTIA/log/activity.log
+		log=$TULIO/log/activity.log
 	else
 		if ! $BIN/v-list-user "$log_user" > /dev/null; then
 			return $E_NOTEXIST
 		fi
-		log=$HESTIA/data/users/$log_user/history.log
+		log=$TULIO/data/users/$log_user/history.log
 	fi
 	touch $log
 

@@ -4,7 +4,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-HestiaCP is an open-source Linux web server control panel built as a fork of VestaCP. It's a comprehensive hosting control panel that provides web, mail, DNS, and database management capabilities with a modern web interface and extensive CLI toolkit.
+TulioCP is an open-source Linux web server control panel built as a fork of VestaCP. It's a comprehensive hosting control panel that provides web, mail, DNS, and database management capabilities with a modern web interface and extensive CLI toolkit.
 
 ### Key Features
 - Apache2 and NGINX with PHP-FPM support (PHP 5.6-8.4)
@@ -54,7 +54,7 @@ npm run lint-staged
 
 ### Testing
 ```bash
-# Run BATS test suite (requires HestiaCP installation)
+# Run BATS test suite (requires TulioCP installation)
 ./test/test.bats              # Main comprehensive test suite
 ./test/api.bats              # API functionality tests
 ./test/checks.bats           # System checks and validation
@@ -123,9 +123,9 @@ npm run lint-staged
 
 **Modular Function Libraries**: Common functionality is centralized in `/func/` libraries that are sourced by CLI commands, promoting code reuse and maintainability.
 
-**Configuration-Based**: System configuration stored in `/etc/hestiacp/hestia.conf` with user-specific data in `/usr/local/hestia/data/users/`.
+**Configuration-Based**: System configuration stored in `/etc/tuliocp/tulio.conf` with user-specific data in `/usr/local/tulio/data/users/`.
 
-**Template System**: Web server configurations use templates in `/usr/local/hestia/data/templates/` for Apache, Nginx, DNS, and mail server configurations.
+**Template System**: Web server configurations use templates in `/usr/local/tulio/data/templates/` for Apache, Nginx, DNS, and mail server configurations.
 
 ## Frontend Build System
 
@@ -179,10 +179,10 @@ Always create feature branches from `main` using the naming convention:
 
 ## Development Environment Setup
 
-HestiaCP development requires understanding both the control panel codebase and the underlying system it manages. For full functionality testing:
+TulioCP development requires understanding both the control panel codebase and the underlying system it manages. For full functionality testing:
 
 1. **Local Development**: Use the Node.js build system for frontend asset development
-2. **System Testing**: Requires a Linux environment (Debian/Ubuntu) with HestiaCP installed
+2. **System Testing**: Requires a Linux environment (Debian/Ubuntu) with TulioCP installed
 3. **Container Testing**: Use LXD build scripts for isolated testing environments
 
 The codebase follows a traditional server administration tool architecture with extensive shell scripting, making it essential to understand both modern web development practices and system administration concepts.
