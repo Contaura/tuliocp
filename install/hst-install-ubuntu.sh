@@ -149,13 +149,37 @@ set_default_value() {
 
 # Defining function to set default language value
 set_default_lang() {
-	if [ -z "$lang" ]; then
-		eval lang=$1
-	fi
-	lang_list="ar az bg bn bs ca cs da de el en es fa fi fr hr hu id it ja ka ku ko nl no pl pt pt-br ro ru sk sq sr sv th tr uk ur vi zh-cn zh-tw"
-	if ! (echo $lang_list | grep -w $lang > /dev/null 2>&1); then
-		eval lang=$1
-	fi
+        if [ -z "$lang" ]; then
+                eval lang=$1
+        fi
+        lang_list="ar az bg bn bs ca cs da de el en es fa fi fr hr hu id it ja ka ku ko nl no pl pt pt-br ro ru sk sq sr sv th tr uk ur vi zh-cn zh-tw"
+        if ! (echo $lang_list | grep -w $lang > /dev/null 2>&1); then
+                eval lang=$1
+        fi
+}
+
+# Safely prompt for user input even when the installer is executed via a pipe
+prompt_input() {
+        local __prompt="$1"
+        local __var_name="$2"
+        local __read_opts="${3:--r}"
+        local __input
+
+        if [ -t 0 ]; then
+                read $__read_opts -p "$__prompt" __input
+        elif [ -r /dev/tty ]; then
+                read $__read_opts -p "$__prompt" __input < /dev/tty
+        else
+                return 1
+        fi
+
+        local __status=$?
+        if [ $__status -ne 0 ]; then
+                return $__status
+        fi
+
+        printf -v "$__var_name" '%s' "$__input"
+        return 0
 }
 
 # Define the default backend port
@@ -486,12 +510,14 @@ if [ -n "$conflicts" ] && [ -z "$force" ]; then
 	echo
 	echo '!!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!!'
 	echo
-	read -p 'Would you like to remove the conflicting packages? [y/N] ' answer
-	if [ "$answer" = 'y' ] || [ "$answer" = 'Y' ]; then
-		apt-get -qq purge $conflicts -y
-		check_result $? 'apt-get remove failed'
-		unset $answer
-	else
+        if ! prompt_input 'Would you like to remove the conflicting packages? [y/N] ' answer; then
+                check_result 1 "Unable to read user input from terminal."
+        fi
+        if [ "$answer" = 'y' ] || [ "$answer" = 'Y' ]; then
+                apt-get -qq purge $conflicts -y
+                check_result $? 'apt-get remove failed'
+                unset $answer
+        else
 	check_result 1 "TulioCP should be installed on a clean server."
 	fi
 fi
@@ -664,64 +690,82 @@ echo -e "\n"
 
 # Asking for confirmation to proceed
 if [ "$interactive" = 'yes' ]; then
-	read -p 'Would you like to continue with the installation? [y/N]: ' answer
-	if [ "$answer" != 'y' ] && [ "$answer" != 'Y' ]; then
-		echo 'Goodbye'
-		exit 1
-	fi
+        if ! prompt_input 'Would you like to continue with the installation? [y/N]: ' answer; then
+                echo 'Error: unable to read user input. If you are running non-interactively, re-run the installer with --interactive no and supply the required options.'
+                exit 1
+        fi
+        if [ "$answer" != 'y' ] && [ "$answer" != 'Y' ]; then
+                echo 'Goodbye'
+                exit 1
+        fi
 fi
 
 # Validate Username / Password / Email / Hostname even when interactive = no
 if [ -z "$username" ]; then
-	while validate_username; do
-		read -p 'Please enter administrator username: ' username
-	done
+        while validate_username; do
+                if ! prompt_input 'Please enter administrator username: ' username; then
+                        echo 'Error: unable to read administrator username from terminal input.'
+                        exit 1
+                fi
+        done
 else
-	if validate_username; then
-		exit 1
-	fi
+        if validate_username; then
+                exit 1
+        fi
 fi
 
 # Ask for password
 if [ -z "$vpass" ]; then
-	while validate_password; do
-		read -p 'Please enter administrator password: ' vpass
-	done
+        while validate_password; do
+                if ! prompt_input 'Please enter administrator password: ' vpass; then
+                        echo 'Error: unable to read administrator password from terminal input.'
+                        exit 1
+                fi
+        done
 else
-	if validate_password; then
-		echo "Please use a valid password"
-		exit 1
-	fi
+        if validate_password; then
+                echo "Please use a valid password"
+                exit 1
+        fi
 fi
 
 # Asking for contact email
 if [ -z "$email" ]; then
-	while validate_email; do
-		echo -e "\nPlease use a valid emailadress (ex. info@domain.tld)."
-		read -p 'Please enter admin email address: ' email
-	done
+        while validate_email; do
+                echo -e "\nPlease use a valid emailadress (ex. info@domain.tld)."
+                if ! prompt_input 'Please enter admin email address: ' email; then
+                        echo 'Error: unable to read admin email address from terminal input.'
+                        exit 1
+                fi
+        done
 else
-	if validate_email; then
-		echo "Please use a valid emailadress (ex. info@domain.tld)."
+        if validate_email; then
+                echo "Please use a valid emailadress (ex. info@domain.tld)."
 		exit 1
 	fi
 fi
 
 # Asking to set FQDN hostname
 if [ -z "$servername" ]; then
-	# Ask and validate FQDN hostname.
-	read -p "Please enter FQDN hostname [$(hostname -f)]: " servername
+        # Ask and validate FQDN hostname.
+        if ! prompt_input "Please enter FQDN hostname [$(hostname -f)]: " servername; then
+                echo 'Error: unable to read server hostname from terminal input.'
+                exit 1
+        fi
 
-	# Set hostname if it wasn't set
-	if [ -z "$servername" ]; then
-		servername=$(hostname -f)
+        # Set hostname if it wasn't set
+        if [ -z "$servername" ]; then
+                servername=$(hostname -f)
 	fi
 
 	# Validate Hostname, go to loop if the validation fails.
-	while validate_hostname; do
-		echo -e "\nPlease use a valid hostname according to RFC1178 (ex. hostname.domain.tld)."
-		read -p "Please enter FQDN hostname [$(hostname -f)]: " servername
-	done
+        while validate_hostname; do
+                echo -e "\nPlease use a valid hostname according to RFC1178 (ex. hostname.domain.tld)."
+                if ! prompt_input "Please enter FQDN hostname [$(hostname -f)]: " servername; then
+                        echo 'Error: unable to read server hostname from terminal input.'
+                        exit 1
+                fi
+        done
 else
 	# Validate FQDN hostname if it is preset
 	if validate_hostname; then
