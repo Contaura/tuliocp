@@ -5018,7 +5018,7 @@ msgstr ""
 msgid "BACKUP"
 msgstr ""
 
-#: ../../web/src/app/System/HestiaApp.php:218
+#: ../../web/src/app/System/TulioApp.php:218
 msgid "Unable to add database!"
 msgstr ""
 

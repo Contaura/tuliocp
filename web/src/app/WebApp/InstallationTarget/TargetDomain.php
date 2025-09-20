@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hestia\WebApp\InstallationTarget;
 
-use Hestia\System\Util;
+use Tulio\System\Util;
 
 class TargetDomain
 {

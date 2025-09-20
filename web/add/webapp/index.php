@@ -38,7 +38,7 @@ unset($output);
 if (!empty($_GET["app"])) {
 	$app = basename($_GET["app"]);
 
-	$hestia = new \Hestia\System\HestiaApp();
+        $hestia = new \Tulio\System\TulioApp();
 	$app_installer_class = "\Hestia\WebApp\Installers\\" . $app . "\\" . $app . "Setup";
 	if (class_exists($app_installer_class)) {
 		try {
@@ -88,7 +88,7 @@ if (!empty($_POST["ok"]) && !empty($app)) {
 if (!empty($installer)) {
 	render_page($user, $TAB, "setup_webapp");
 } else {
-	$hestia = new \Hestia\System\HestiaApp();
+        $hestia = new \Tulio\System\TulioApp();
 	$appInstallers = glob(__DIR__ . "/../../src/app/WebApp/Installers/*/*.php");
 
 	$v_web_apps = [];

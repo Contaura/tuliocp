@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hestia\WebApp;
 
-use Hestia\System\HestiaApp;
+use Tulio\System\TulioApp;
 use Hestia\WebApp\InstallationTarget\InstallationTarget;
 use Hestia\WebApp\InstallationTarget\TargetDatabase;
 use Hestia\WebApp\InstallationTarget\TargetDomain;
@@ -23,7 +23,7 @@ class AppWizard
     public function __construct(
         private readonly InstallerInterface $installer,
         private readonly string $domain,
-        private readonly HestiaApp $appcontext,
+        private readonly TulioApp $appcontext,
     ) {
         if (!$appcontext->userOwnsDomain($domain)) {
             throw new RuntimeException('User does not have access to domain [$domain]');
