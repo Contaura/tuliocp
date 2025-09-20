@@ -38,58 +38,48 @@ jobs:
       with:
         node-version: '20'
     
-    - name: Build main TulioCP package
+    - name: Build TulioCP package using simple build script
       run: |
-        echo "Starting TulioCP package build..."
+        echo "Building TulioCP package with simple script..."
         echo "Current directory: $(pwd)"
-        echo "Available memory: $(free -h)"
-        echo "Available disk: $(df -h)"
         echo "Contents of src directory:"
         ls -la src/
-        echo "Contents of src/deb:"
-        ls -la src/deb/*/
         
-        # Build just the main package for now
+        # Make the build script executable and run it
+        chmod +x src/build-minimal-package.sh
         cd src
-        chmod +x tst_autocompile.sh
-        echo "Building TulioCP main package..."
-        bash -x tst_autocompile.sh --hestia --keepbuild --noinstall ~localsrc
+        ./build-minimal-package.sh
         
         echo "Build completed, checking output..."
         find /tmp -name "*.deb" -type f 2>/dev/null || echo "No .deb files found in /tmp"
-        ls -la /tmp/tuliocp-src/ 2>/dev/null || echo "Build directory not found"
+        
+        # Create build directory and copy package there
+        mkdir -p /tmp/tuliocp-src
+        cp /tmp/*.deb /tmp/tuliocp-src/ 2>/dev/null || echo "No packages to copy"
+        
+        echo "Final package location:"
+        ls -la /tmp/tuliocp-src/
       env:
         DEBIAN_FRONTEND: noninteractive
-        TULIO_DEBUG: true
     
-    - name: List built packages and create manual package if needed
+    - name: Verify built packages
       run: |
-        echo "Looking for built packages..."
+        echo "Verifying built packages..."
         find /tmp -name "*.deb" -type f 2>/dev/null || echo "No .deb packages found anywhere"
         
-        # If no packages were built, create a minimal package manually
-        if [ ! -f /tmp/tuliocp-src/*.deb ]; then
-          echo "No packages found, creating minimal package..."
-          mkdir -p /tmp/tuliocp-src
-          
-          # Create a minimal tuliocp package
-          mkdir -p tuliocp_temp/DEBIAN
-          mkdir -p tuliocp_temp/usr/local/tulio/bin
-          mkdir -p tuliocp_temp/usr/local/tulio/data
-          
-          # Copy control file
-          cp src/deb/tulio/control tuliocp_temp/DEBIAN/control
-          
-          # Create minimal file structure
-          echo "#!/bin/bash" > tuliocp_temp/usr/local/tulio/bin/tulio-version
-          echo "echo 'TulioCP 1.10.0~alpha'" >> tuliocp_temp/usr/local/tulio/bin/tulio-version
-          chmod +x tuliocp_temp/usr/local/tulio/bin/tulio-version
-          
-          # Build the package
-          dpkg-deb --build tuliocp_temp /tmp/tuliocp-src/tuliocp_1.10.0~alpha_amd64.deb
-          
-          echo "Minimal package created:"
-          ls -la /tmp/tuliocp-src/
+        echo "Contents of build directory:"
+        ls -la /tmp/tuliocp-src/ || echo "No build directory found"
+        
+        if [ -f /tmp/tuliocp-src/*.deb ]; then
+          echo "✅ Package verification:"
+          for deb in /tmp/tuliocp-src/*.deb; do
+            echo "Package: $deb"
+            dpkg-deb --info "$deb" | head -20
+            echo "---"
+          done
+        else
+          echo "❌ No packages found!"
+          exit 1
         fi
     
     - name: Upload packages as artifacts
