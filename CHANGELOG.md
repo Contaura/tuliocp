@@ -58,7 +58,7 @@ All notable changes to this project will be documented in this file.
 
 - To improve security, we now allow users to rename the default `admin` user.
 - Hestia now runs under a new `hestia-web` user.
-- In initial versions of HestiaCP, we used Jailkit to enabled Jailed SSH. It had major disadvantages, so we have decided it to replace it with [bubblewrap](https://github.com/containers/bubblewrap). Users running Jailed SSH in the past are advised to run the migration script! It can be found in `/usr/local/hestia/install/upgrade/manual/migrate_jailkit_to_bubblewrap.sh`. See [#4698](https://github.com/contaura/tuliocp/pull/4698)
+- In initial versions of TulioCP, we used Jailkit to enabled Jailed SSH. It had major disadvantages, so we have decided it to replace it with [bubblewrap](https://github.com/containers/bubblewrap). Users running Jailed SSH in the past are advised to run the migration script! It can be found in `/usr/local/tulio/install/upgrade/manual/migrate_jailkit_to_bubblewrap.sh`. See [#4698](https://github.com/contaura/tuliocp/pull/4698)
 - We are aware that cgroups are currently not working as they should be. They work fine if you login with SSH as the user, but they don't work for PHP-FPM yet.
 - Dropped support for Debian 10 due to EOL.
 
@@ -1515,7 +1515,7 @@ After that run apt update && apt upgrade
 - Fixed an issue where the "Saved confirmation" was not set due to a redirect #1879
 - Increased minimal memory requirements for ClamD / ClamAV. #1840
 - Restore of backup did not rebuild the "Forced SSL" and "HSTS" config on new account #1862
-- Keep changes made by /install/upgrade/manual/install_awstats_geopip.sh on update HestiaCP (via Discord)
+- Keep changes made by /install/upgrade/manual/install_awstats_geopip.sh on update TulioCP (via Discord)
 - Refactor/improve PHP and HTML code @s0t (#1860)
 - Fixed XSS vulnerability in login page and a few other locations @briansemrau / @numanturle
 - Delete old session after session_regenerate_id() @briansemrau
@@ -1563,7 +1563,7 @@ apt update && apt upgrade
 - **NOTE:** Ubuntu 16.04 (Xenial) is no longer supported as it has reached EOL (end-of-life) status.
 - **NOTE:** Apache in "standalone" mode is no longer actively supported and has been removed from installer options. Nginx (Proxy) + Apache2 will remain supported.
 - **NOTE:** Custom "quick installer apps" will not work anymore due to changes in how we handle quick installer apps. Minimal changes to the Quick installer apps are required! Please check <https://github.com/contaura/tuliocp-quick-install> for how to migrate!
-- **NOTE:** Manual upgrade scripts are available to update Roundcube, Rainloop and PHPmyadmin to the last version they can be found in /usr/local/hestia/install/upgrade/manual/
+- **NOTE:** Manual upgrade scripts are available to update Roundcube, Rainloop and PHPmyadmin to the last version they can be found in /usr/local/tulio/install/upgrade/manual/
 
 ### Features
 

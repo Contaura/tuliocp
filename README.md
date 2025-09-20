@@ -1,6 +1,6 @@
 <h1 align="center"><a href="https://www.tuliocp.com/">Tulio Control Panel</a></h1>
 
-![HestiaCP Web Interface screenshot](https://storage.tuliocp.com/hestiascreen.png)
+![TulioCP Web Interface screenshot](https://storage.tuliocp.com/hestiascreen.png)
 
 <h2 align="center">Lightweight and powerful control panel for the modern web</h2>
 
@@ -17,8 +17,8 @@
 	<a href="https://github.com/contaura/tuliocp/actions/workflows/lint.yml">
 		<img src="https://github.com/contaura/tuliocp/actions/workflows/lint.yml/badge.svg" alt="Lint Status"/>
 	</a>
-	<a href="https://gurubase.io/g/hestia">
-		<img src="https://img.shields.io/badge/Gurubase-Ask%20Hestia%20Guru-006BFF" alt="Gurubase"/>
+	<a href="https://gurubase.io/g/tuliocp">
+		<img src="https://img.shields.io/badge/Gurubase-Ask%20TulioCP%20Guru-006BFF" alt="Gurubase"/>
 	</a>
 </p>
 
