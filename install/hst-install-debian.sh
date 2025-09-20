@@ -15,7 +15,7 @@
 #----------------------------------------------------------#
 export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
-RHOST='apt.hestiacp.com'
+RHOST='apt.tuliocp.com'
 VERSION='debian'
 # Using Hestia package paths temporarily until TulioCP packages are available
 HESTIA_ROOT='/usr/local/hestia'
@@ -48,7 +48,7 @@ node_v="20"
 # Defining software pack for all distros
 software="acl apache2 apache2-suexec-custom apache2-utils at awstats bc bind9 bsdmainutils bsdutils
   clamav-daemon cron curl dnsutils dovecot-imapd dovecot-managesieved dovecot-pop3d dovecot-sieve e2fslibs e2fsprogs
-  exim4 exim4-daemon-heavy expect fail2ban flex ftp git hestia
+  exim4 exim4-daemon-heavy expect fail2ban flex ftp git tuliocp
   idn2 imagemagick ipset jq libapache2-mod-fcgid libapache2-mod-php$fpm_v libapache2-mpm-itk libmail-dkim-perl lsb-release
   lsof mariadb-client mariadb-common mariadb-server mc mysql-client mysql-common mysql-server net-tools nginx nodejs openssh-server
   php$fpm_v php$fpm_v-apcu php$fpm_v-bz2 php$fpm_v-cgi php$fpm_v-cli php$fpm_v-common php$fpm_v-curl php$fpm_v-gd
@@ -846,9 +846,10 @@ if [ "$mysql8" = 'yes' ]; then
 	done
 fi
 
-# Installing Hestia repo
-echo "[ * ] Hestia Control Panel"
-echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://$RHOST/ $codename main" > $apt/hestia.list
+# Installing TulioCP repo
+echo "[ * ] TulioCP Control Panel"
+echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://$RHOST/ stable main" > $apt/tuliocp.list
+# For now we'll use the Hestia GPG key - this should be updated when we have our own signed packages
 gpg --no-default-keyring --keyring /usr/share/keyrings/tulio-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5 > /dev/null 2>&1
 
 # Installing Node.js repo
@@ -951,10 +952,10 @@ mv /var/lib/mysql $hst_backups/mysql/mysql_datadir > /dev/null 2>&1
 cp -r /etc/mysql/* $hst_backups/mysql > /dev/null 2>&1
 mv -f /root/.my.cnf $hst_backups/mysql > /dev/null 2>&1
 
-# Backup Hestia
+# Backup TulioCP
 systemctl stop hestia > /dev/null 2>&1
 cp -r $TULIO/* $hst_backups/hestia > /dev/null 2>&1
-apt-get -y purge hestia tulio-nginx tulio-php > /dev/null 2>&1
+apt-get -y purge tuliocp tulio-nginx tulio-php > /dev/null 2>&1
 rm -rf $TULIO > /dev/null 2>&1
 
 #----------------------------------------------------------#
@@ -1065,7 +1066,7 @@ if [ -d "$withdebs" ]; then
 	software=$(echo "$software" | sed -e "s/tulio-nginx//")
 	software=$(echo "$software" | sed -e "s/tulio-php//")
 	software=$(echo "$software" | sed -e "s/tulio-web-terminal//")
-	software=$(echo "$software" | sed -e "s/hestia=${HESTIA_INSTALL_VER}//")
+	software=$(echo "$software" | sed -e "s/tuliocp=${HESTIA_INSTALL_VER}//")
 fi
 
 #----------------------------------------------------------#
