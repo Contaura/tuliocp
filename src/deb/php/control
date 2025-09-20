@@ -6,10 +6,10 @@ Section: admin
 Maintainer: TulioCP <info@tuliocp.com>
 Homepage: https://www.tuliocp.com
 Architecture: amd64
-Depends: hestia, libzip4, unzip, libonig5 | libonig4 | libonig2
-Conflct: libzip5
-Description: hestia php-fpm
- hestia is an open source hosting control panel.
- hestia has a clean and focused interface without the clutter.
- hestia has the latest of very innovative technologies.
- hestia is an open source hosting control panel with innovative technologies.
+Depends: tuliocp, libzip4, unzip, libonig5 | libonig4 | libonig2
+Conflicts: libzip5
+Description: TulioCP PHP-FPM Backend
+ Custom PHP-FPM build optimized for TulioCP control panel.
+ Provides high-performance PHP processing with enhanced security.
+ Supports multiple PHP versions and modern web development features.
+ Essential backend component for TulioCP PHP web applications.

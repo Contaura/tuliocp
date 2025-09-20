@@ -1,5 +1,5 @@
-Source: hestia
-Package: hestia
+Source: tuliocp
+Package: tuliocp
 Priority: optional
 Version: 1.10.0~alpha
 Section: admin
@@ -7,8 +7,8 @@ Maintainer: TulioCP <info@tuliocp.com>
 Homepage: https://www.tuliocp.com
 Architecture: amd64
 Depends: bash, awk, sed, acl, sysstat, setpriv | util-linux (>= 2.33), zstd, lsb-release, idn2, jq, bubblewrap, at
-Description: hestia
- hestia is an open source hosting control panel.
- hestia has a clean and focused interface without the clutter.
- hestia has the latest of very innovative technologies.
- hestia is an open source hosting control panel with innovative technologies.
+Description: TulioCP Control Panel
+ TulioCP is an open source hosting control panel forked from VestaCP.
+ TulioCP has a clean and focused interface without the clutter.
+ TulioCP has the latest of very innovative technologies.
+ TulioCP provides comprehensive web server management with modern features.

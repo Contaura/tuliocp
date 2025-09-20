@@ -6,9 +6,9 @@ Section: admin
 Maintainer: TulioCP <info@tuliocp.com>
 Homepage: https://www.tuliocp.com
 Architecture: amd64
-Depends: hestia
-Description: hestia Nginx
- hestia is an open source hosting control panel.
- hestia has a clean and focused interface without the clutter.
- hestia has the latest of very innovative technologies.
- hestia is an open source hosting control panel with innovative technologies.
+Depends: tuliocp
+Description: TulioCP Nginx Backend
+ Custom Nginx build optimized for TulioCP control panel.
+ Provides high-performance web server functionality with SSL/TLS support.
+ Includes HTTP/2 and security optimizations for modern web hosting.
+ Essential backend component for TulioCP web server management.
