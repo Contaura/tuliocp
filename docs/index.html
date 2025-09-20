@@ -39,17 +39,18 @@
         </div>
         
         <h2>⚙️ Repository Setup</h2>
+        <div class="warning status">
+            <strong>⚠️ Note:</strong> Repository is temporarily unsigned while we build proper package signing infrastructure.
+        </div>
         <div class="code">
-            <pre># Add GPG key for package verification
-gpg --no-default-keyring --keyring /usr/share/keyrings/tulio-keyring.gpg \
-    --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5
-
-# Add TulioCP repository
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://apt.tuliocp.com/ stable main" \
-    > /etc/apt/sources.list.d/tuliocp.list
+            <pre># Add TulioCP repository (unsigned - temporarily trusted)
+echo "deb [arch=amd64 trusted=yes] https://apt.tuliocp.com/ stable main" > /etc/apt/sources.list.d/tuliocp.list
 
 # Update package list
-apt update</pre>
+apt update
+
+# Verify repository is working
+apt-cache search tuliocp</pre>
         </div>
         
         <h2>🛠️ Installation</h2>
@@ -79,7 +80,7 @@ apt install tuliocp tulio-nginx tulio-php</pre>
         <ul>
             <li>✅ Packages built from latest source code</li>
             <li>✅ Debian-compatible APT repository structure</li>
-            <li>✅ GPG-signed packages (using Hestia key temporarily)</li>
+            <li>⚠️ Unsigned packages (GPG signing coming soon)</li>
             <li>✅ AMD64 architecture support</li>
         </ul>
         
