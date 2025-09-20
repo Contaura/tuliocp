@@ -1,6 +1,6 @@
 <h1 align="center"><a href="https://www.tuliocp.com/">Tulio Control Panel</a></h1>
 
-![TulioCP Web Interface screenshot](https://storage.tuliocp.com/hestiascreen.png)
+![TulioCP Web Interface screenshot](https://storage.tuliocp.com/tuliocp-screenshot.png)
 
 <h2 align="center">Lightweight and powerful control panel for the modern web</h2>
 
@@ -28,11 +28,10 @@ Tulio Control Panel is designed to provide administrators an easy to use web and
 
 ## Donate
 
-[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ST87LQH2CHGLA)<br /><br />
-Bitcoin : bc1q48jt5wg5jaj8g9zy7c3j03cv57j2m2u5anlutu<br>
-Ethereum : 0xfF3Dd2c889bd0Ff73d8085B84A314FC7c88e5D51<br>
-Binance: bnb1l4ywvw5ejfmsgjdcx8jn5lxj7zsun8ktfu7rh8<br>
-Smart Chain: 0xfF3Dd2c889bd0Ff73d8085B84A314FC7c88e5D51<br>
+If you find TulioCP useful and would like to support its development, please consider making a donation. Your contributions help us maintain and improve the project.
+
+- [Donate via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ST87LQH2CHGLA)
+- Cryptocurrency donations are also accepted - please check our website for current addresses
 
 ## Features and Services
 
@@ -100,7 +99,7 @@ You may specify a number of various flags during installation to only install th
 bash hst-install.sh -h
 ```
 
-Alternatively, You can use <https://tuliocp.com/install.html> which allows you to easily generate the installation command via GUI.
+Alternatively, You can use <https://www.tuliocp.com/install.html> which allows you to easily generate the installation command via GUI.
 
 ## How to upgrade an existing installation
 
