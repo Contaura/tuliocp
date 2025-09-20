@@ -1,4 +1,4 @@
-<h1 align="center"><a href="https://www.tuliocp.com/">Tulio Control Panel</a></h1>
+<h1 align="center">Tulio Control Panel</h1>
 
 <p align="center">
   <img src="web/images/logo-tulio.svg" alt="TulioCP Logo" width="120" height="120">
@@ -6,17 +6,30 @@
 
 <h2 align="center">Lightweight and powerful control panel for the modern web</h2>
 
+<p align="center">
+  <a href="https://github.com/contaura/tuliocp/releases/latest">
+    <img src="https://img.shields.io/github/release/contaura/tuliocp.svg" alt="Latest Release"/>
+  </a>
+  <a href="https://github.com/contaura/tuliocp/blob/main/LICENSE">
+    <img src="https://img.shields.io/badge/license-GPL%20v3-blue.svg" alt="License"/>
+  </a>
+  <a href="https://github.com/contaura/tuliocp/stargazers">
+    <img src="https://img.shields.io/github/stars/contaura/tuliocp.svg" alt="Stars"/>
+  </a>
+</p>
 
 ## **Welcome!**
 
 Tulio Control Panel is designed to provide administrators an easy to use web and command line interface, enabling them to quickly deploy and manage web domains, mail accounts, DNS zones, and databases from one central dashboard without the hassle of manually deploying and configuring individual components or services.
 
-## Donate
+## Support the Project
 
-If you find TulioCP useful and would like to support its development, please consider making a donation. Your contributions help us maintain and improve the project.
+If you find TulioCP useful and would like to support its development, please consider:
 
-- [Donate via PayPal](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ST87LQH2CHGLA)
-- Cryptocurrency donations are also accepted - please check our website for current addresses
+- ⭐ Starring this repository on GitHub
+- 🐛 Reporting bugs and issues
+- 📝 Contributing to documentation
+- 💻 Submitting pull requests
 
 ## Features and Services
 
@@ -84,8 +97,6 @@ You may specify a number of various flags during installation to only install th
 bash hst-install.sh -h
 ```
 
-Alternatively, You can use <https://www.tuliocp.com/install.html> which allows you to easily generate the installation command via GUI.
-
 ## How to upgrade an existing installation
 
 Automatic Updates are enabled by default on new installations of Tulio Control Panel and can be managed from **Server Settings > Updates**. To manually check for and install available updates, use the apt package manager:
@@ -95,16 +106,31 @@ apt-get update
 apt-get upgrade
 ```
 
+## Documentation
+
+For detailed installation guides, configuration instructions, and troubleshooting:
+
+- 📚 [Installation Guide](#installing-tulio-control-panel) - See above for quick start
+- 🔧 [Configuration Reference](docs/) - Detailed setup and configuration guides  
+- 🐛 [Troubleshooting](docs/troubleshooting.md) - Common issues and solutions
+- 🚀 [Quick Start Examples](#custom-installation) - Command line installation options
+
+## Community & Support
+
+- 💬 [GitHub Discussions](https://github.com/contaura/tuliocp/discussions) - General questions and community help
+- 🐛 [Issue Tracker](https://github.com/contaura/tuliocp/issues) - Bug reports and feature requests
+- 📖 [Wiki](https://github.com/contaura/tuliocp/wiki) - Community documentation
+
 ## Issues & Support Requests
 
-- If you encounter a general problem while using Tulio Control Panel and need help, please [visit our forum](https://forum.tuliocp.com/) to search for potential solutions or post a new thread where community members can assist.
+- If you encounter a general problem while using Tulio Control Panel and need help, please search existing issues or start a discussion on GitHub.
 - Bugs and other reproducible issues should be filed via GitHub by [creating a new issue report](https://github.com/contaura/tuliocp/issues) so that our developers can investigate further. Please note that requests for support will be redirected to our forum.
 
-**IMPORTANT: We _cannot_ provide support for requests that do not describe the troubleshooting steps that have already been performed, or for third-party applications not related to Tulio Control Panel (such as WordPress). Please make sure that you include as much information as possible in your forum posts or issue reports!**
+**IMPORTANT: We _cannot_ provide support for requests that do not describe the troubleshooting steps that have already been performed, or for third-party applications not related to Tulio Control Panel (such as WordPress). Please make sure that you include as much information as possible in your issue reports!**
 
 ## Contributions
 
-If you would like to contribute to the project, please [read our Contribution Guidelines](https://github.com/contaura/tuliocp/blob/release/CONTRIBUTING.md) for a brief overview of our development process and standards.
+If you would like to contribute to the project, please [read our Contribution Guidelines](https://github.com/contaura/tuliocp/blob/main/CONTRIBUTING.md) for a brief overview of our development process and standards.
 
 ## Copyright
 
@@ -122,4 +148,4 @@ If you would like to contribute to the project, please [read our Contribution Gu
 
 ## License
 
-Tulio Control Panel is licensed under [GPL v3](https://github.com/contaura/tuliocp/blob/release/LICENSE) license.<br>
+Tulio Control Panel is licensed under [GPL v3](https://github.com/contaura/tuliocp/blob/main/LICENSE) license.
