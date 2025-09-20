@@ -115,16 +115,16 @@ jobs:
         gzip -9 -c dists/stable/main/binary-amd64/Packages > dists/stable/main/binary-amd64/Packages.gz
         
         # Create Release file
-        cat > dists/stable/Release << 'RELEASE_EOF'
-Origin: TulioCP
-Label: TulioCP APT Repository
-Suite: stable
-Codename: stable
-Components: main
-Architectures: amd64
-Date: $(date -u +"%a, %d %b %Y %H:%M:%S %Z")
-Description: TulioCP Control Panel packages
-RELEASE_EOF
+        {
+          echo "Origin: TulioCP"
+          echo "Label: TulioCP APT Repository"
+          echo "Suite: stable"
+          echo "Codename: stable"
+          echo "Components: main"
+          echo "Architectures: amd64"
+          echo "Date: $(date -u +"%a, %d %b %Y %H:%M:%S %Z")"
+          echo "Description: TulioCP Control Panel packages"
+        } > dists/stable/Release
         
         # For now, we'll create an unsigned repository
         # TODO: Add proper GPG signing when we have our own key
@@ -136,11 +136,7 @@ RELEASE_EOF
           echo "Using existing repository index page"
         else
           echo "Warning: apt-repo/index.html not found, creating basic page"
-          cat > index.html << 'HTML_EOF'
-<!DOCTYPE html>
-<html><head><title>TulioCP APT Repository</title></head>
-<body><h1>TulioCP APT Repository</h1><p>Repository updated at $(date -u)</p></body></html>
-HTML_EOF
+          echo '<!DOCTYPE html><html><head><title>TulioCP APT Repository</title></head><body><h1>TulioCP APT Repository</h1><p>Repository updated at '"$(date -u)"'</p></body></html>' > index.html
         fi
     
     - name: Deploy to GitHub Pages
