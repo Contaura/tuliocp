@@ -26,12 +26,12 @@ upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 # Modify existing POLICY_USER directives (POLICY_USER_CHANGE_THEME, POLICY_USER_EDIT_WEB_TEMPLATES
 # and POLICY_USER_VIEW_LOGS) that are using value 'true' instead of the correct value 'yes'
 
-tulio.conf="$TULIO/conf/tulio.conf"
+tulio_conf="$TULIO/conf/tulio.conf"
 tuliocp_defaults_conf="$TULIO/conf/defaults/tulio.conf"
 
 for i in POLICY_USER_CHANGE_THEME POLICY_USER_EDIT_WEB_TEMPLATES POLICY_USER_VIEW_LOGS; do
-	if [[ -f "$tulio.conf" ]]; then
-		if grep "$i" "$tulio.conf" | grep -q 'true'; then
+	if [[ -f "$tulio_conf" ]]; then
+		if grep "$i" "$tulio_conf" | grep -q 'true'; then
 			if "$BIN/v-change-sys-config-value" "$i" 'yes'; then
 				echo "[ * ] Success: ${i} value changed from true to yes in tulio.conf"
 			else

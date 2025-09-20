@@ -82,12 +82,12 @@ apt update
 If you want to use `apt.tuliocp.com` as the repository URL, you need to set up a CNAME record:
 
 1. **DNS Configuration**: In your DNS provider (where `tuliocp.com` is managed), add:
-   ```
+```bash
    Type: CNAME
    Name: apt
    Value: contaura.github.io
    TTL: 300 (or your preferred value)
-   ```
+```
 
 2. **GitHub Pages Setup**: The repository is automatically deployed to GitHub Pages via our build workflow
 
@@ -214,4 +214,6 @@ If you would like to contribute to the project, please [read our Contribution Gu
 ## License
 
 Tulio Control Panel is licensed under [GPL v3](https://github.com/contaura/tuliocp/blob/main/LICENSE) license.
-# Test trigger for build fixes
+
+## Test trigger for build fixes
+

@@ -542,7 +542,7 @@ function is_it_mysql_or_mariadb() {
 	return $mysqltype;
 }
 
-function load_tulio.config() {
+function load_tulio_config() {
 	// Check system configuration
 	exec(HESTIA_CMD . "v-list-sys-config json", $output, $return_var);
 	$data = json_decode(implode("", $output), true);

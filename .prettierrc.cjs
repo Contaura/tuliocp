@@ -1,10 +1,27 @@
+// Helper function to safely load plugins
+function tryLoadPlugins(plugins) {
+	const availablePlugins = [];
+	for (const plugin of plugins) {
+		try {
+			require.resolve(plugin);
+			availablePlugins.push(plugin);
+		} catch (e) {
+			console.warn(`Prettier plugin ${plugin} not available, skipping`);
+		}
+	}
+	return availablePlugins;
+}
+
 module.exports = {
-	// Plugins
+	// Plugins - conditionally load only if available
 	plugins: [
-		'@prettier/plugin-php',
-		'prettier-plugin-nginx',
-		'prettier-plugin-sh',
-		'prettier-plugin-sql',
+		// Core plugins that should be available
+		...tryLoadPlugins([
+			'@prettier/plugin-php',
+			'prettier-plugin-nginx',
+			'prettier-plugin-sh',
+			'prettier-plugin-sql',
+		])
 	],
 	// PHP Settings
 	phpVersion: '8.2',
