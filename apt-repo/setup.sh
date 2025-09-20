@@ -94,13 +94,33 @@ apt-get update > /dev/null 2>&1 || {
 echo ""
 echo -e "${GREEN}✅ TulioCP APT repository setup complete!${NC}"
 echo ""
-echo -e "${BLUE}📋 Next steps:${NC}"
-echo -e "   ${GREEN}1.${NC} Install TulioCP:"
-echo -e "      ${YELLOW}sudo apt install --allow-unauthenticated tuliocp${NC}"
-echo ""
-echo -e "   ${GREEN}2.${NC} Or install with the main installer:"
-echo -e "      ${YELLOW}wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh${NC}"
-echo -e "      ${YELLOW}sudo bash hst-install.sh${NC}"
+# Check if tuliocp package is available
+echo -e "${BLUE}🔍 Checking package availability...${NC}"
+if apt-cache show tuliocp > /dev/null 2>&1; then
+    echo -e "${GREEN}✅ TulioCP package is available in repository${NC}"
+    echo ""
+    echo -e "${BLUE}📋 Install TulioCP:${NC}"
+    echo -e "   ${YELLOW}sudo apt install --allow-unauthenticated tuliocp${NC}"
+else
+    echo -e "${YELLOW}⚠️  TulioCP package not yet available in repository${NC}"
+    echo -e "${BLUE}🔄 Automatically using direct installer instead...${NC}"
+    echo ""
+    
+    # Download and run the installer directly
+    echo -e "${BLUE}📥 Downloading TulioCP installer...${NC}"
+    if curl -sSL https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh -o /tmp/hst-install.sh; then
+        echo -e "${GREEN}✅ Installer downloaded successfully${NC}"
+        echo -e "${BLUE}🚀 Running TulioCP installer...${NC}"
+        echo ""
+        bash /tmp/hst-install.sh
+        exit 0
+    else
+        echo -e "${RED}❌ Failed to download installer${NC}"
+        echo -e "${YELLOW}📋 Manual installation steps:${NC}"
+        echo -e "   ${YELLOW}wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh${NC}"
+        echo -e "   ${YELLOW}sudo bash hst-install.sh${NC}"
+    fi
+fi
 echo ""
 echo -e "${BLUE}ℹ️  Repository Information:${NC}"
 echo -e "   • Repository: https://apt.tuliocp.com/"
