@@ -26,8 +26,22 @@ fi
 
 # Download and install secure webhook handler
 echo "📋 Installing secure webhook handler..."
-wget -O /opt/tuliocp-build/secure-webhook-handler.py https://raw.githubusercontent.com/Contaura/tuliocp/main/scripts/secure-webhook-handler.py
+if command -v curl >/dev/null 2>&1; then
+    curl -s -o /opt/tuliocp-build/secure-webhook-handler.py https://raw.githubusercontent.com/Contaura/tuliocp/main/scripts/secure-webhook-handler.py
+elif command -v wget >/dev/null 2>&1; then
+    wget -O /opt/tuliocp-build/secure-webhook-handler.py https://raw.githubusercontent.com/Contaura/tuliocp/main/scripts/secure-webhook-handler.py
+else
+    echo "❌ Neither curl nor wget found. Please install one of them."
+    exit 1
+fi
+
+if [ ! -f "/opt/tuliocp-build/secure-webhook-handler.py" ]; then
+    echo "❌ Failed to download secure webhook handler"
+    exit 1
+fi
+
 chmod +x /opt/tuliocp-build/secure-webhook-handler.py
+echo "✅ Secure webhook handler downloaded successfully"
 
 # Create environment file
 echo "📝 Creating environment configuration..."
