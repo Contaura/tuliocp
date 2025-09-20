@@ -583,7 +583,7 @@ All notable changes to this project will be documented in this file.
 - Added support for folder wildcards in backup exclusions (#2338 @youradds)
 - Added Nginx template for Mautic (#3192 3188 @youradds)
 - Added alias for composer (#3070)
-- Updated PhpPgAdmin and with support for PostgreSQL 15 (<https://github.com/hestiacp/phppgadmin>)
+- Updated PhpPgAdmin and with support for PostgreSQL 15 (<https://github.com/contaura/tuliocp-phppgadmin>)
 - Upgrade MariaDB to 10.11 (#3305)
 - Add Quick installer for Flarum (#3342 and #3298 @Steveorevo)
 - Enable UTF8MB4 on default for Mysql (#3337 #1882)
@@ -1137,7 +1137,7 @@ After that run apt update && apt upgrade
 
 - Improve default php-fpm.conf files. (#2318, #2343)
 - Notify user when a suspended user tries to login (#2310, #2345)
-- Allow setting default web install templates for Quick install (#2344) (<https://github.com/hestiacp/hestia-quick-install>)
+- Allow setting default web install templates for Quick install (#2344) (<https://github.com/contaura/tuliocp-quick-install>)
 - Improve security how apt keys are downloaded #2299 (<https://blog.cloudflare.com/dont-use-apt-key/>)
 - Allow users to set system php version in Web GUI (#2357)
 - Added a link to the firewall in list services (#2371) @fra81
@@ -1562,7 +1562,7 @@ apt update && apt upgrade
 
 - **NOTE:** Ubuntu 16.04 (Xenial) is no longer supported as it has reached EOL (end-of-life) status.
 - **NOTE:** Apache in "standalone" mode is no longer actively supported and has been removed from installer options. Nginx (Proxy) + Apache2 will remain supported.
-- **NOTE:** Custom "quick installer apps" will not work anymore due to changes in how we handle quick installer apps. Minimal changes to the Quick installer apps are required! Please check <https://github.com/hestiacp/hestia-quick-install> for how to migrate!
+- **NOTE:** Custom "quick installer apps" will not work anymore due to changes in how we handle quick installer apps. Minimal changes to the Quick installer apps are required! Please check <https://github.com/contaura/tuliocp-quick-install> for how to migrate!
 - **NOTE:** Manual upgrade scripts are available to update Roundcube, Rainloop and PHPmyadmin to the last version they can be found in /usr/local/hestia/install/upgrade/manual/
 
 ### Features

@@ -38,7 +38,7 @@ We have three primary or "evergreen" branches, which exist throughout our produc
 
 ### Creating a new branch and submitting pull requests
 
-The first step is to create a fork of the `tuliocp/tuliocp` repository under your GitHub account so that you may submit pull requests and patches.
+The first step is to create a fork of the `contaura/tuliocp` repository under your GitHub account so that you may submit pull requests and patches.
 
 Once you've created your fork, clone the repository to your computer and make sure that you've checked out the `main` branch. **Always** create a new topic branch for your work.
 

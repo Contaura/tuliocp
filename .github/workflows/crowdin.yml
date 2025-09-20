@@ -13,10 +13,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v5
-        if: github.repository == 'tuliocp/tuliocp'
+        if: github.repository == 'contaura/tuliocp'
       - name: crowdin action
         uses: crowdin/github-action@v2
-        if: github.repository == 'tuliocp/tuliocp'
+        if: github.repository == 'contaura/tuliocp'
         with:
           upload_sources: true
           upload_translations: false

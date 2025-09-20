@@ -598,7 +598,7 @@ upgrade_phppgadmin() {
 			echo "[ * ] Upgrading phppgadmin to version $pga_v..."
 			[ -d /usr/share/phppgadmin ] || mkdir -p /usr/share/phppgadmin
 			# Download latest phpMyAdmin release
-			wget --retry-connrefused --quiet https://github.com/hestiacp/phppgadmin/releases/download/v$pga_v/phppgadmin-v$pga_v.tar.gz
+			wget --retry-connrefused --quiet https://github.com/contaura/phppgadmin/releases/download/v$pga_v/phppgadmin-v$pga_v.tar.gz
 			tar xzf phppgadmin-v$pga_v.tar.gz -C /usr/share/phppgadmin/
 
 			if ! version_ge "$pga_release" "7.14.0"; then

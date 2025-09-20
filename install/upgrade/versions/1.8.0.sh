@@ -131,17 +131,17 @@ if [ "$WEB_SYSTEM" = "nginx" ] || [ "$PROXY_SYSTEM" = "nginx" ]; then
 		sed 's|https://www.cloudflare.com/||;/^[ \t]\+resolver .\+;$/d;/^[ \t]\+# Cache settings$/d;/^[ \t]\+# Proxy cache$/d' /etc/nginx/nginx.conf | sed ':l;N;$!bl;s/[ \n\t]*//g' > "$nginx_conf_local"
 
 		# For installations before v1.6.8 (from commit 9b544be to commit b2ad154)
-		curl -fsLm5 --retry 2 https://raw.githubusercontent.com/tuliocp/tuliocp/b2ad1549a21655837056e4b7883970d51a4b324f/install/deb/nginx/nginx.conf \
+		curl -fsLm5 --retry 2 https://raw.githubusercontent.com/contaura/tuliocp/b2ad1549a21655837056e4b7883970d51a4b324f/install/deb/nginx/nginx.conf \
 			| sed 's/fastcgi_buffers                 4 256k;/fastcgi_buffers                 8 256k;/g;s|/var/run/|/run/|g;/set_real_ip_from/d;/real_ip_header/d;s|# Cloudflare https://www.cloudflare.com/ips|# Cloudflare https://www.cloudflare.com/ips\n    include /etc/nginx/conf.d/cloudflare.inc;|g' \
 			| sed 's|https://www.cloudflare.com/||;/^[ \t]\+resolver .\+;$/d;/^[ \t]\+# Cache settings$/d;/^[ \t]\+# Proxy cache$/d' | sed ':l;N;$!bl;s/[ \n\t]*//g' > "$nginx_conf_commit"-b2ad154
 
 		# For installations after v1.6.8 but before v1.7.0 (from commit b2ad154 to commit 015b20a)
-		curl -fsLm5 --retry 2 https://raw.githubusercontent.com/tuliocp/tuliocp/015b20ae1ffb82faaf58b41a5dc9ad1b078b785f/install/deb/nginx/nginx.conf \
+		curl -fsLm5 --retry 2 https://raw.githubusercontent.com/contaura/tuliocp/015b20ae1ffb82faaf58b41a5dc9ad1b078b785f/install/deb/nginx/nginx.conf \
 			| sed 's|/var/run/|/run/|g;/set_real_ip_from/d;/real_ip_header/d;s|# Cloudflare https://www.cloudflare.com/ips|# Cloudflare https://www.cloudflare.com/ips\n    include /etc/nginx/conf.d/cloudflare.inc;|g' \
 			| sed 's|https://www.cloudflare.com/||;/^[ \t]\+resolver .\+;$/d;/^[ \t]\+# Cache settings$/d;/^[ \t]\+# Proxy cache$/d' | sed ':l;N;$!bl;s/[ \n\t]*//g' > "$nginx_conf_commit"-015b20a
 
 		# For installations after v1.7.0 (commit 555f892)
-		curl -fsLm5 --retry 2 https://raw.githubusercontent.com/tuliocp/tuliocp/555f89243e54e02458586ae4f7999458cc9d33e9/install/deb/nginx/nginx.conf \
+		curl -fsLm5 --retry 2 https://raw.githubusercontent.com/contaura/tuliocp/555f89243e54e02458586ae4f7999458cc9d33e9/install/deb/nginx/nginx.conf \
 			| sed 's|https://www.cloudflare.com/||;/^[ \t]\+resolver .\+;$/d;/^[ \t]\+# Cache settings$/d;/^[ \t]\+# Proxy cache$/d' | sed ':l;N;$!bl;s/[ \n\t]*//g' > "$nginx_conf_commit"-555f892
 
 		for commit in b2ad154 015b20a 555f892; do

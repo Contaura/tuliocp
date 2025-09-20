@@ -108,7 +108,7 @@ usage() {
 }
 
 # Set compiling directory
-REPO='tuliocp/tuliocp'
+REPO='contaura/tuliocp'
 BUILD_DIR='/tmp/tuliocp-src'
 INSTALL_DIR='/usr/local/tulio'
 SRC_DIR="$(cd "$(dirname "$0")/.." && pwd)"

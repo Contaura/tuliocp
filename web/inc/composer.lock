@@ -11,7 +11,7 @@
             "version": "v1.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/hestiacp/phpquoteshellarg.git",
+                "url": "https://github.com/contaura/phpquoteshellarg.git",
                 "reference": "3499670c48aed5f04f2656e9cd06d6e2709e8e08"
             },
             "dist": {
@@ -34,13 +34,13 @@
                 "Unlicense"
             ],
             "description": "Improved escape shell arguments for support of special charactars",
-            "homepage": "https://github.com/hestiacp",
+            "homepage": "https://github.com/contaura",
             "keywords": [
                 "escapeshellarg",
                 "quoteshellarg"
             ],
             "support": {
-                "source": "https://github.com/hestiacp/phpquoteshellarg/tree/v1.1.0"
+                "source": "https://github.com/contaura/phpquoteshellarg/tree/v1.1.0"
             },
             "time": "2024-09-20T12:11:02+00:00"
         },
