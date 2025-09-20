@@ -51,124 +51,165 @@ If you find TulioCP useful and would like to support its development, please con
 - Tulio Control Panel does not support 32 bit operating systems!
 - Tulio Control Panel in combination with OpenVZ 7 or lower might have issues with DNS and/or firewall. If you use a Virtual Private Server we strongly advice you to use something based on KVM or LXC!
 
-## TulioCP APT Repository
+## 📦 TulioCP APT Repository
 
-TulioCP provides an official APT repository for easy installation and updates. Our packages are automatically built from the latest source code using GitHub Actions and hosted at `https://apt.tuliocp.com/`.
+**Live Repository**: https://apt.tuliocp.com/
 
-### Available Packages
+TulioCP provides an official APT repository for easy installation and updates. Our packages are automatically built from the latest source code and deployed to GitHub Pages.
 
-- **tuliocp** - Main control panel package
-- **tulio-nginx** - Custom Nginx build optimized for TulioCP
-- **tulio-php** - Custom PHP-FPM build with enhanced performance
-- **tulio-web-terminal** - Browser-based terminal interface
+### 🎯 Quick Installation
 
-### Repository Setup
+Install TulioCP with a single command:
+
+```bash
+wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh
+sudo bash hst-install.sh
+```
+
+### 📋 Available Packages
+
+- **tuliocp** - Main control panel package (1.8MB) - **Available Now**
+- **tulio-nginx** - Custom Nginx build optimized for TulioCP - *Coming Soon*
+- **tulio-php** - Custom PHP-FPM build with enhanced performance - *Coming Soon*
+- **tulio-web-terminal** - Browser-based terminal interface - *Coming Soon*
+
+### 🔧 Manual Repository Setup
 
 To manually add the TulioCP APT repository (not needed for standard installation):
 
 ```bash
-# Add GPG key
-gpg --no-default-keyring --keyring /usr/share/keyrings/tulio-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5
+# Add TulioCP repository
+echo "deb https://apt.tuliocp.com stable main" | sudo tee /etc/apt/sources.list.d/tuliocp.list
 
-# Add repository
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://apt.tuliocp.com/ stable main" > /etc/apt/sources.list.d/tuliocp.list
+# Update package lists
+sudo apt update
 
-# Update package list
-apt update
+# Install TulioCP
+sudo apt install tuliocp
 ```
 
-### Setting Up Custom Domain (CNAME)
+### 🏗️ System Requirements
 
-If you want to use `apt.tuliocp.com` as the repository URL, you need to set up a CNAME record:
+- **Operating Systems**: Debian 10/11/12, Ubuntu 20.04/22.04/24.04 LTS
+- **Architecture**: amd64 (x86_64) - *arm64 coming soon*
+- **Memory**: Minimum 1GB RAM (2GB+ recommended)
+- **Storage**: 10GB+ available disk space
+- **Network**: Internet connection for package installation
+- **Access**: Root or sudo privileges required
 
-1. **DNS Configuration**: In your DNS provider (where `tuliocp.com` is managed), add:
+### 🚀 Automated Build & Deployment System
+
+**Repository URL**: https://apt.tuliocp.com/  
+**Build Status**: ✅ Fully Operational
+
+Our automated build system provides:
+
+#### 📦 **Package Building**
+- **Trigger**: Every push to `main` branch
+- **Build Server**: Self-hosted runner with TulioCP dependencies
+- **Process**: Automated DEB package compilation
+- **Output**: Production-ready `tuliocp_1.10.0~alpha_amd64.deb` packages
+
+#### 🔒 **Secure Deployment**
+- **Webhook**: HTTPS webhook handler (port 8443)
+- **Authentication**: GitHub token-based secure deployment
+- **Target**: GitHub Pages with custom domain
+- **Structure**: Full Debian APT repository format
+
+#### 🌐 **Live Repository Features**
+- **Custom Domain**: https://apt.tuliocp.com (via CNAME to contaura.github.io)
+- **Modern Interface**: Professional repository page with copy-to-clipboard commands
+- **Package Metadata**: Complete `Packages.gz` and `Release` files
+- **Automatic Updates**: New commits automatically trigger rebuilds
+
+## 🚀 Installing TulioCP
+
+**⚠️ Important**: Install TulioCP on a fresh operating system for optimal functionality.
+
+### 🔑 Prerequisites
+
+- **Server Access**: Root or sudo privileges
+- **Fresh OS**: Clean Debian/Ubuntu installation recommended
+- **Network**: Stable internet connection
+- **Basic Knowledge**: Understanding of Linux server administration
+
+### 🚀 Quick Installation
+
+**Method 1: Direct Installation (Recommended)**
 ```bash
-   Type: CNAME
-   Name: apt
-   Value: contaura.github.io
-   TTL: 300 (or your preferred value)
+# Download and run installer
+wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh
+sudo bash hst-install.sh
 ```
 
-2. **GitHub Pages Setup**: The repository is automatically deployed to GitHub Pages via our build workflow
+**Method 2: APT Repository Installation**
+```bash
+# Add repository and install
+echo "deb https://apt.tuliocp.com stable main" | sudo tee /etc/apt/sources.list.d/tuliocp.list
+sudo apt update && sudo apt install tuliocp
+```
 
-3. **Verification**: Test the CNAME with:
-   ```bash
-   curl -I https://apt.tuliocp.com/
-   # Should return HTTP 200 and serve the repository index
-   ```
+### 🔧 Connection Methods
 
-**Note**: The automated installer script handles repository setup automatically.
+**Local Console:**
+```bash
+sudo bash hst-install.sh
+```
 
-### Automated Package Building
-
-TulioCP packages are built automatically using GitHub Actions:
-
-- **Trigger**: Every push to the `main` branch
-- **Build Matrix**: Supports both AMD64 and ARM64 architectures
-- **Build Process**: Uses the `src/tst_autocompile.sh` script with local source
-- **Deployment**: Packages are deployed to GitHub Pages at `apt.tuliocp.com`
-- **Repository Structure**: Debian-compatible APT repository with proper `Packages.gz` and `Release` files
-
-The build workflow:
-1. Checks out the latest source code
-2. Sets up build dependencies (Node.js, build tools, etc.)
-3. Builds all packages (`--all --keepbuild --noinstall ~localsrc`)
-4. Creates APT repository structure
-5. Deploys to GitHub Pages with CNAME support
-
-## Installing Tulio Control Panel
-
-- **NOTE:** You must install Tulio Control Panel on top of a fresh operating system installation to ensure proper functionality.
-
-While we have taken every effort to make the installation process and the control panel interface as friendly as possible (even for new users), it is assumed that you will have some prior knowledge and understanding in the basics how to set up a Linux server before continuing.
-
-### Step 1: Log in
-
-To start the installation, you will need to be logged in as **root** or a user with super-user privileges. You can perform the installation either directly from the command line console or remotely via SSH:
-
+**Remote SSH:**
 ```bash
 ssh root@your.server
-```
-
-### Step 2: Download
-
-Download the installation script for the latest release:
-
-```bash
 wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh
-```
-
-If the download fails due to an SSL validation error, please be sure you've installed the ca-certificate package on your system - you can do this with the following command:
-
-```bash
-apt-get update && apt-get install ca-certificates
-```
-
-### Step 3: Run
-
-To begin the installation process, simply run the script and follow the on-screen prompts:
-
-```bash
 bash hst-install.sh
 ```
 
-You will receive a welcome email at the address specified during installation (if applicable) and on-screen instructions after the installation is completed to log in and access your server.
+**SSL Certificate Issues:**
+```bash
+# If download fails due to SSL validation
+sudo apt update && sudo apt install ca-certificates
+```
 
-### Custom installation
+### ✨ Post-Installation
 
-You may specify a number of various flags during installation to only install the features in which you need. To view a list of available options, run:
+- Welcome email sent to specified address (if configured)
+- On-screen login instructions provided
+- Web interface accessible via server IP/domain
+- Default admin credentials displayed in terminal
+
+### 🔧 Custom Installation Options
+
+View available installation flags and options:
 
 ```bash
 bash hst-install.sh -h
 ```
 
-## How to upgrade an existing installation
+Common options:
+- `--interactive` - Interactive installation with prompts
+- `--force` - Skip compatibility checks
+- `--hostname` - Set custom hostname
+- `--email` - Set admin email address
 
-Automatic Updates are enabled by default on new installations of Tulio Control Panel and can be managed from **Server Settings > Updates**. To manually check for and install available updates, use the apt package manager:
+## 🔄 Upgrading TulioCP
 
+### 🤖 Automatic Updates
+
+- **Default**: Enabled on new installations
+- **Management**: Server Settings → Updates
+- **Schedule**: Configurable update intervals
+
+### 🔧 Manual Updates
+
+**Via APT (Recommended):**
 ```bash
-apt-get update
-apt-get upgrade
+# Update package lists and upgrade TulioCP
+sudo apt update && sudo apt upgrade tuliocp
+```
+
+**Traditional Method:**
+```bash
+# System-wide updates (includes TulioCP)
+sudo apt update && sudo apt upgrade
 ```
 
 ## Documentation
@@ -214,6 +255,4 @@ If you would like to contribute to the project, please [read our Contribution Gu
 ## License
 
 Tulio Control Panel is licensed under [GPL v3](https://github.com/contaura/tuliocp/blob/main/LICENSE) license.
-
-## Test trigger for build fixes
 
