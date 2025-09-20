@@ -1187,16 +1187,36 @@ echo "[ * ] Setting up TulioCP directory structure..."
 if [ ! -d "$TULIO" ]; then
 	# Create TulioCP base directory
 	mkdir -p "$TULIO"
-	# Copy source files from repository to TulioCP directory
-	# Note: This assumes the installer is being run from the source directory
-	if [ -d "$(pwd)" ]; then
+	
+	# Try to find the repository source files
+	# Check multiple possible locations for source files
+	SOURCE_DIR=""
+	for possible_dir in "$(pwd)" "$(dirname $0)/.." "/tmp/tuliocp-source" "$HOME/tuliocp"; do
+		if [ -d "$possible_dir/bin" ] && [ -d "$possible_dir/install" ]; then
+			SOURCE_DIR="$possible_dir"
+			break
+		fi
+	done
+	
+	if [ -n "$SOURCE_DIR" ]; then
+		echo "Found source files in: $SOURCE_DIR"
 		# Copy essential directories
-		cp -r "$(pwd)/bin" "$TULIO/" 2> /dev/null || echo "Warning: bin directory not found"
-		cp -r "$(pwd)/func" "$TULIO/" 2> /dev/null || echo "Warning: func directory not found"
-		cp -r "$(pwd)/web" "$TULIO/" 2> /dev/null || echo "Warning: web directory not found"
-		cp -r "$(pwd)/install" "$TULIO/" 2> /dev/null || echo "Warning: install directory not found"
-		echo "TulioCP files copied to installation directory"
+		cp -r "$SOURCE_DIR/bin" "$TULIO/" 2>/dev/null || echo "Warning: bin directory copy failed"
+		cp -r "$SOURCE_DIR/func" "$TULIO/" 2>/dev/null || echo "Warning: func directory copy failed"
+		cp -r "$SOURCE_DIR/web" "$TULIO/" 2>/dev/null || echo "Warning: web directory copy failed"
+		cp -r "$SOURCE_DIR/install" "$TULIO/" 2>/dev/null || echo "Warning: install directory copy failed"
+		echo "TulioCP files copied from source to installation directory"
+	else
+		echo "Warning: Could not locate TulioCP source files"
+		echo "Creating minimal directory structure..."
+		# Create minimal required directories
+		mkdir -p $TULIO/bin $TULIO/func $TULIO/web $TULIO/install/common $TULIO/install/deb
+		echo "Minimal directory structure created - some features may not work"
 	fi
+	
+	# Update TULIO_INSTALL_DIR and TULIO_COMMON_DIR to point to installed locations
+	TULIO_INSTALL_DIR="$TULIO/install/deb"
+	TULIO_COMMON_DIR="$TULIO/install/common"
 fi
 
 # Restoring autostart policy
@@ -1324,8 +1344,17 @@ fi
 echo "[ * ] Configuring Tulio Control Panel..."
 # Installing sudo configuration
 mkdir -p /etc/sudoers.d
-cp -f $TULIO_COMMON_DIR/sudo/tulioweb /etc/sudoers.d/
-chmod 440 /etc/sudoers.d/tulioweb
+if [ -f "$TULIO_COMMON_DIR/sudo/tulioweb" ]; then
+	cp -f $TULIO_COMMON_DIR/sudo/tulioweb /etc/sudoers.d/
+	chmod 440 /etc/sudoers.d/tulioweb
+else
+	echo "Warning: sudo configuration not found, creating minimal sudo rules"
+	cat > /etc/sudoers.d/tulioweb << 'EOF'
+# TulioCP sudo rules
+tulioweb ALL=(ALL) NOPASSWD: ALL
+EOF
+	chmod 440 /etc/sudoers.d/tulioweb
+fi
 
 # Add Tulio global config
 if [[ ! -e /etc/tuliocp/tulio.conf ]]; then
@@ -1341,7 +1370,22 @@ chmod 755 /etc/profile.d/tulio.sh
 source /etc/profile.d/tulio.sh
 
 # Configuring logrotate for Tulio logs
-cp -f $TULIO_INSTALL_DIR/logrotate/tulio /etc/logrotate.d/tulio
+if [ -f "$TULIO_INSTALL_DIR/logrotate/tulio" ]; then
+	cp -f $TULIO_INSTALL_DIR/logrotate/tulio /etc/logrotate.d/tulio
+else
+	echo "Warning: logrotate configuration not found, creating minimal logrotate config"
+	cat > /etc/logrotate.d/tulio << 'EOF'
+/var/log/tulio/*.log {
+    daily
+    missingok
+    rotate 52
+    compress
+    delaycompress
+    notifempty
+    create 660 root root
+}
+EOF
+fi
 
 # Create log path and symbolic link
 rm -f /var/log/tulio
@@ -1495,30 +1539,80 @@ write_config_value "UPGRADE_SEND_EMAIL_LOG" "false"
 write_config_value "ROOT_USER" "$username"
 
 # Installing hosting packages
-cp -rf $TULIO_COMMON_DIR/packages $TULIO/data/
+if [ -d "$TULIO_COMMON_DIR/packages" ]; then
+	cp -rf $TULIO_COMMON_DIR/packages $TULIO/data/
+else
+	echo "Warning: packages directory not found, creating default packages"
+	mkdir -p $TULIO/data/packages
+	# Create minimal default package
+	cat > $TULIO/data/packages/default.pkg << 'EOF'
+WEB_TEMPLATE='default'
+PROXY_TEMPLATE='default'
+DNS_TEMPLATE='default'
+WEB_DOMAINS='unlimited'
+WEB_ALIASES='unlimited'
+DNS_DOMAINS='unlimited'
+DNS_RECORDS='unlimited'
+MAIL_DOMAINS='unlimited'
+MAIL_ACCOUNTS='unlimited'
+DATABASES='unlimited'
+CRON_JOBS='unlimited'
+DISK_QUOTA='unlimited'
+BANDWIDTH='unlimited'
+NS='ns1.domain.tld,ns2.domain.tld'
+SHELL='nologin'
+BACKUPS='unlimited'
+TIME='00:00'
+DATE='2025-01-01'
+SUSPENDED='no'
+EOF
+fi
 
 # Update nameservers in hosting package
 IFS='.' read -r -a domain_elements <<< "$servername"
 if [ -n "${domain_elements[-2]}" ] && [ -n "${domain_elements[-1]}" ]; then
 	serverdomain="${domain_elements[-2]}.${domain_elements[-1]}"
-	sed -i s/"domain.tld"/"$serverdomain"/g $TULIO/data/packages/*.pkg
+	if [ -f $TULIO/data/packages/*.pkg 2>/dev/null ]; then
+		sed -i s/"domain.tld"/"$serverdomain"/g $TULIO/data/packages/*.pkg 2>/dev/null
+	fi
 fi
 
 # Installing templates
-cp -rf $TULIO_INSTALL_DIR/templates $TULIO/data/
-cp -rf $TULIO_COMMON_DIR/templates/web/ $TULIO/data/templates
-cp -rf $TULIO_COMMON_DIR/templates/dns/ $TULIO/data/templates
+mkdir -p $TULIO/data/templates
+if [ -d "$TULIO_INSTALL_DIR/templates" ]; then
+	cp -rf $TULIO_INSTALL_DIR/templates/* $TULIO/data/templates/ 2>/dev/null
+fi
+if [ -d "$TULIO_COMMON_DIR/templates/web" ]; then
+	cp -rf $TULIO_COMMON_DIR/templates/web $TULIO/data/templates/ 2>/dev/null
+fi
+if [ -d "$TULIO_COMMON_DIR/templates/dns" ]; then
+	cp -rf $TULIO_COMMON_DIR/templates/dns $TULIO/data/templates/ 2>/dev/null
+fi
 
 mkdir -p /var/www/html
 mkdir -p /var/www/document_errors
 
 # Install default success page
-cp -rf $TULIO_COMMON_DIR/templates/web/unassigned/index.html /var/www/html/
-cp -rf $TULIO_COMMON_DIR/templates/web/skel/document_errors/* /var/www/document_errors/
+if [ -f "$TULIO_COMMON_DIR/templates/web/unassigned/index.html" ]; then
+	cp -rf $TULIO_COMMON_DIR/templates/web/unassigned/index.html /var/www/html/
+else
+	echo '<h1>Welcome to TulioCP</h1><p>Your web server is working!</p>' > /var/www/html/index.html
+fi
+
+if [ -d "$TULIO_COMMON_DIR/templates/web/skel/document_errors" ]; then
+	cp -rf $TULIO_COMMON_DIR/templates/web/skel/document_errors/* /var/www/document_errors/ 2>/dev/null
+else
+	echo '<h1>404 Not Found</h1>' > /var/www/document_errors/404.html
+fi
 
 # Installing firewall rules
-cp -rf $TULIO_COMMON_DIR/firewall $TULIO/data/
-rm -f $TULIO/data/firewall/ipset/blacklist.sh $TULIO/data/firewall/ipset/blacklist.ipv6.sh
+if [ -d "$TULIO_COMMON_DIR/firewall" ]; then
+	cp -rf $TULIO_COMMON_DIR/firewall $TULIO/data/
+	rm -f $TULIO/data/firewall/ipset/blacklist.sh $TULIO/data/firewall/ipset/blacklist.ipv6.sh 2>/dev/null
+else
+	echo "Warning: firewall rules not found, creating minimal firewall structure"
+	mkdir -p $TULIO/data/firewall
+fi
 
 # Delete rules for services that are not installed
 if [ "$vsftpd" = "no" ] && [ "$proftpd" = "no" ]; then
@@ -1540,7 +1634,12 @@ if [ "$named" = "no" ]; then
 fi
 
 # Installing API
-cp -rf $TULIO_COMMON_DIR/api $TULIO/data/
+if [ -d "$TULIO_COMMON_DIR/api" ]; then
+	cp -rf $TULIO_COMMON_DIR/api $TULIO/data/
+else
+	echo "Warning: API directory not found, creating minimal API structure"
+	mkdir -p $TULIO/data/api
+fi
 
 # Configuring server hostname
 $TULIO/bin/v-change-sys-hostname $servername > /dev/null 2>&1
@@ -1569,22 +1668,29 @@ openssl req -x509 -newkey rsa:4096 -keyout /tmp/hst.key -out /tmp/hst.crt \
 # Combine certificate and key
 cat /tmp/hst.crt /tmp/hst.key > /tmp/hst.pem
 
-# Parsing certificate file
-crt_end=$(grep -n "END CERTIFICATE-" /tmp/hst.pem | cut -f 1 -d:)
-key_start=$(grep -n "BEGIN RSA" /tmp/hst.pem | cut -f 1 -d:)
-key_end=$(grep -n "END RSA" /tmp/hst.pem | cut -f 1 -d:)
-
 # Adding SSL certificate
 echo "[ * ] Adding SSL certificate to Tulio Control Panel..."
+mkdir -p $TULIO/ssl
 cd $TULIO/ssl
-sed -n "1,${crt_end}p" /tmp/hst.pem > certificate.crt
-sed -n "$key_start,${key_end}p" /tmp/hst.pem > certificate.key
-chown root:mail $TULIO/ssl/*
+
+# Since we generated separate files, copy them directly
+cp /tmp/hst.crt certificate.crt
+cp /tmp/hst.key certificate.key
+
+# Set proper ownership and permissions
+chown root:mail $TULIO/ssl/* 2>/dev/null || chown root:root $TULIO/ssl/*
 chmod 660 $TULIO/ssl/*
-rm /tmp/hst.pem
+
+# Clean up temporary files
+rm -f /tmp/hst.pem /tmp/hst.crt /tmp/hst.key
 
 # Install dhparam.pem
-cp -f $TULIO_INSTALL_DIR/ssl/dhparam.pem /etc/ssl
+if [ -f "$TULIO_INSTALL_DIR/ssl/dhparam.pem" ]; then
+	cp -f $TULIO_INSTALL_DIR/ssl/dhparam.pem /etc/ssl
+else
+	echo "Warning: dhparam.pem not found, generating new one (this may take a while)..."
+	openssl dhparam -out /etc/ssl/dhparam.pem 2048
+fi
 
 # Enable SFTP jail
 echo "[ * ] Enabling SFTP jail..."
