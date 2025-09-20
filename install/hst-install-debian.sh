@@ -46,7 +46,7 @@ node_v="20"
 # Defining software pack for all distros
 software="acl apache2 apache2-suexec-custom apache2-utils at awstats bc bind9 bsdmainutils bsdutils
   clamav-daemon cron curl dnsutils dovecot-imapd dovecot-managesieved dovecot-pop3d dovecot-sieve e2fslibs e2fsprogs
-  exim4 exim4-daemon-heavy expect fail2ban flex ftp git hestia=${HESTIA_INSTALL_VER} tulio-nginx tulio-php tulio-web-terminal
+  exim4 exim4-daemon-heavy expect fail2ban flex ftp git hestia
   idn2 imagemagick ipset jq libapache2-mod-fcgid libapache2-mod-php$fpm_v libapache2-mpm-itk libmail-dkim-perl lsb-release
   lsof mariadb-client mariadb-common mariadb-server mc mysql-client mysql-common mysql-server net-tools nginx nodejs openssh-server
   php$fpm_v php$fpm_v-apcu php$fpm_v-bz2 php$fpm_v-cgi php$fpm_v-cli php$fpm_v-common php$fpm_v-curl php$fpm_v-gd
@@ -532,25 +532,8 @@ if [ -d /etc/netplan ] && [ -z "$force" ]; then
 	fi
 fi
 
-# Validate whether installation script matches release version before continuing with install
-if [ -z "$withdebs" ] || [ ! -d "$withdebs" ]; then
-	release_branch_ver=$(curl -s https://raw.githubusercontent.com/contaura/tuliocp/main/src/deb/tulio/control | grep "Version:" | awk '{print $2}')
-	if [ "$HESTIA_INSTALL_VER" != "$release_branch_ver" ]; then
-		echo
-		echo -e "\e[91mInstallation aborted\e[0m"
-		echo "===================================================================="
-		echo -e "\e[33mERROR: Install script version does not match package version!\e[0m"
-		echo -e "\e[33mPlease download the installer from the release branch in order to continue:\e[0m"
-		echo ""
-		echo -e "\e[33mhttps://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh\e[0m"
-		echo ""
-		echo -e "\e[33mTo test pre-release versions, build the .deb packages and re-run the installer:\e[0m"
-		echo -e "  \e[33m./hst_autocompile.sh \e[1m--hestia branchname no\e[21m\e[0m"
-		echo -e "  \e[33m./tst-install.sh .. \e[1m--with-debs /tmp/hestiacp-src/debs\e[21m\e[0m"
-		echo ""
-		check_result 1 "Installation aborted"
-	fi
-fi
+# Version check disabled temporarily - will be re-enabled when TulioCP packages are available
+# TODO: Re-enable version check once TulioCP APT repository is set up
 
 case $architecture in
 	x86_64)
