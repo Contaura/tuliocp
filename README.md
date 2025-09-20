@@ -1,5 +1,9 @@
 <h1 align="center"><a href="https://www.tuliocp.com/">Tulio Control Panel</a></h1>
 
+<p align="center">
+  <img src="web/images/logo-tulio.svg" alt="TulioCP Logo" width="120" height="120">
+</p>
+
 ![TulioCP Web Interface screenshot](https://storage.tuliocp.com/tuliocp-screenshot.png)
 
 <h2 align="center">Lightweight and powerful control panel for the modern web</h2>
