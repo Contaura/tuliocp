@@ -14,15 +14,15 @@
 user=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/db.sh
+# shellcheck source=/usr/local/tulio/func/db.sh
 source $HESTIA/func/db.sh
-# shellcheck source=/usr/local/hestia/func/rebuild.sh
+# shellcheck source=/usr/local/tulio/func/rebuild.sh
 source $HESTIA/func/rebuild.sh
-# shellcheck source=/usr/local/hestia/func/syshealth.sh
+# shellcheck source=/usr/local/tulio/func/syshealth.sh
 source $HESTIA/func/syshealth.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -37,7 +37,7 @@ is_system_enabled "$DB_SYSTEM" 'DB_SYSTEM'
 is_object_valid 'user' 'USER' "$user"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -72,7 +72,7 @@ update_user_value "$user" '$U_DATABASES' "$U_DATABASES"
 update_user_value "$user" '$U_DISK_DB' "$U_DISK_DB"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

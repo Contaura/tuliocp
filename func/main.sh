@@ -1542,7 +1542,7 @@ download_file() {
 	fi
 }
 
-check_hestia_demo_mode() {
+check_tulio_demo_mode() {
 	demo_mode=$(grep DEMO_MODE /usr/local/tulio/conf/tulio.conf | cut -d '=' -f2 | sed "s|'||g")
 	if [ -n "$demo_mode" ] && [ "$demo_mode" = "yes" ]; then
 		echo "ERROR: Unable to perform operation due to security restrictions that are in place."
@@ -1582,7 +1582,7 @@ multiphp_default_version() {
 	echo "$sys_phpversion"
 }
 
-is_hestia_package() {
+is_tulio_package() {
 	check=false
 	for pkg in $1; do
 		if [ "$pkg" == "$2" ]; then
@@ -1590,14 +1590,14 @@ is_hestia_package() {
 		fi
 	done
 	if [ "$check" != "true" ]; then
-		check_result $E_INVALID "$2 package is not controlled by hestiacp"
+		check_result $E_INVALID "$2 package is not controlled by tuliocp"
 	fi
 }
 
 # Run arbitrary cli commands with dropped privileges
 # Note: setpriv --init-groups is not available on debian9 (util-linux 2.29.2)
 # Input:
-#     - $user : Vaild hestia user
+#     - $user : Valid tulio user
 user_exec() {
 	is_object_valid 'user' 'USER' "$user"
 

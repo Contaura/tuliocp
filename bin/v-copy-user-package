@@ -16,9 +16,9 @@ package=$1
 new_package=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio.conf/tulio.conf
 source $HESTIA/conf/tulio.conf
@@ -26,7 +26,7 @@ source $HESTIA/conf/tulio.conf
 source_conf "$HESTIA/conf/tulio.conf"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -59,7 +59,7 @@ else
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 $BIN/v-log-action "system" "Info" "System" "Package copied (Package: $package, New Package: $new_package)."

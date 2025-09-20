@@ -15,9 +15,9 @@ user=$1
 domain=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -40,7 +40,7 @@ is_object_unsuspended 'mail' 'DOMAIN' "$domain"
 rm -f /etc/exim4/domains/${domain}/smtp_relay.conf
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Adding smtp relay values in config

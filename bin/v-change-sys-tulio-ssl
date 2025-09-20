@@ -16,11 +16,11 @@ ssl_dir=$1
 restart=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
+# shellcheck source=/usr/local/tulio/func/domain.sh
 source $HESTIA/func/domain.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -33,7 +33,7 @@ check_args '1' "$#" 'SSL_DIR [RESTART]'
 is_format_valid 'ssl_dir restart'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -61,7 +61,7 @@ cp -f $ssl_dir/certificate.crt $HESTIA/ssl/certificate.crt
 cp -f $ssl_dir/certificate.key $HESTIA/ssl/certificate.key
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Restarting web server

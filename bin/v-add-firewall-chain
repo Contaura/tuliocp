@@ -22,11 +22,11 @@ protocol=$(echo "$protocol" | tr '[:lower:]' '[:upper:]')
 iptables="/sbin/iptables"
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source "$HESTIA/func/main.sh"
-# shellcheck source=/usr/local/hestia/func/firewall.sh
+# shellcheck source=/usr/local/tulio/func/firewall.sh
 source "$HESTIA/func/firewall.sh"
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -46,7 +46,7 @@ is_format_valid 'chain' 'port_ext' 'protocol'
 is_system_enabled "$FIREWALL_SYSTEM" 'FIREWALL_SYSTEM'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -122,7 +122,7 @@ fi
 [ -f "$chains" ] && chmod 660 "$chains"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

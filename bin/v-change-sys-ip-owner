@@ -14,11 +14,11 @@
 ip="$1"
 user="$2"
 
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
+# shellcheck source=/usr/local/tulio/func/ip.sh
 source $HESTIA/func/ip.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -38,7 +38,7 @@ is_ip_key_empty '$U_SYS_USERS'
 ip_status="$(get_ip_value '$STATUS')"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -84,7 +84,7 @@ if [ "$user" != "$ROOT_USER" ] && [ "$ip_status" = 'shared' ]; then
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

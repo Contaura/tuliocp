@@ -18,9 +18,9 @@ comment=$3
 format=${4-shell}
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -47,7 +47,7 @@ access_key_id="$(keygen)"
 secret_access_key="$(keygen 40 yes)"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 # Remove whitespace and bin path from permissions
 permissions="$(cleanup_key_permissions "$permissions")"
@@ -96,7 +96,7 @@ chmod 640 "$HESTIA/data/access-keys/${access_key_id}"
 $BIN/v-list-access-key "$access_key_id" "$format"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

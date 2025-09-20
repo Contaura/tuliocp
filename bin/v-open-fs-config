@@ -10,7 +10,7 @@
 #                Variables & Functions                     #
 #----------------------------------------------------------#
 
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
 src_file=$1
 

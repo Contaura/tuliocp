@@ -15,11 +15,11 @@ user=$1
 backup=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/backup.sh
+# shellcheck source=/usr/local/tulio/func/backup.sh
 source $HESTIA/func/backup.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -35,7 +35,7 @@ is_object_valid 'user' 'USER' "$user"
 is_object_valid 'backup' 'BACKUP' "$2"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -68,7 +68,7 @@ fi
 sed -i "/BACKUP='$2' /d" "$USER_DATA/backup.conf"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Update counter

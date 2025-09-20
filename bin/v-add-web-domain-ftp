@@ -20,11 +20,11 @@ HIDE=4
 ftp_path=$5
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
+# shellcheck source=/usr/local/tulio/func/domain.sh
 source $HESTIA/func/domain.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -54,7 +54,7 @@ fi
 is_password_valid
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -113,7 +113,7 @@ ftp_md5=$(awk -v user=$ftp_user -F : 'user == $1 {print $2}' /etc/shadow)
 $BIN/v-add-user-sftp-jail "$ftp_user"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Transforming absolute path to relative

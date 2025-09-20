@@ -13,9 +13,9 @@
 mode=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -32,7 +32,7 @@ if [ -n "$check_cron_apt" ] || [ -n "$check_cron_git" ]; then
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -65,7 +65,7 @@ fi
 sed -i -e "\$a$min $hour * * * sudo /usr/local/hestia/bin/$command" "/var/spool/cron/crontabs/hestiaweb"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 # Restarting cron
 $BIN/v-restart-cron

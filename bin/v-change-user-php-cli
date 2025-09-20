@@ -16,9 +16,9 @@ user=$1
 version=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -35,7 +35,7 @@ is_object_valid 'user' 'USER' "$user"
 is_object_unsuspended 'user' 'USER' "$user"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 # Reading user values
 source $USER_DATA/user.conf
@@ -73,7 +73,7 @@ echo "alias php='env php$version'" >> $FILE
 update_user_value "$user" '$PHPCLI' "$version"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 $BIN/v-log-action "system" "Info" "Users" "Default PHP CLI version changed (User: $user, Version: $version)."

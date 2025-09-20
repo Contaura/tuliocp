@@ -28,21 +28,21 @@ if [ -z "$BACKUP" ]; then
 fi
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/backup.sh
+# shellcheck source=/usr/local/tulio/func/backup.sh
 source $HESTIA/func/backup.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
+# shellcheck source=/usr/local/tulio/func/domain.sh
 source $HESTIA/func/domain.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
+# shellcheck source=/usr/local/tulio/func/ip.sh
 source $HESTIA/func/ip.sh
-# shellcheck source=/usr/local/hestia/func/db.sh
+# shellcheck source=/usr/local/tulio/func/db.sh
 source $HESTIA/func/db.sh
-# shellcheck source=/usr/local/hestia/func/rebuild.sh
+# shellcheck source=/usr/local/tulio/func/rebuild.sh
 source $HESTIA/func/rebuild.sh
-# shellcheck source=/usr/local/hestia/func/syshealth.sh
+# shellcheck source=/usr/local/tulio/func/syshealth.sh
 source $HESTIA/func/syshealth.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -925,7 +925,7 @@ rm -rf $tmpdir
 sed -i "/v-restore-user $user /d" $HESTIA/data/queue/backup.pipe
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Update user counters

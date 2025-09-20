@@ -23,9 +23,9 @@ yearly=$6
 arch=$(arch)
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -52,7 +52,7 @@ is_negative_one_or_int $monthly 'Monthly snapshots'
 is_negative_one_or_int $yearly 'Yearly snapshots'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -92,7 +92,7 @@ echo "KEEP_YEARLY='$yearly'" >> /usr/local/tulio.conf/restic.conf
 $BIN/v-change-sys-config-value 'BACKUP_INCREMENTAL' 'yes'
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

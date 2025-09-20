@@ -14,11 +14,11 @@ package=$2
 rewrite=$3
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
+# shellcheck source=/usr/local/tulio/func/domain.sh
 source $HESTIA/func/domain.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -116,7 +116,7 @@ fi
 is_package_consistent
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -158,7 +158,7 @@ DATE='$date'
 chmod 644 "$HESTIA/data/packages/$package.pkg"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

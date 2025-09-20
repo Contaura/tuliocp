@@ -14,9 +14,9 @@
 rule=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -32,7 +32,7 @@ is_object_valid '../../../data/firewall/rules' 'RULE' "$rule"
 is_object_suspended '../../../data/firewall/rules' 'RULE' "$rule"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -45,7 +45,7 @@ update_object_value '../../../data/firewall/rules' 'RULE' "$rule" '$SUSPENDED' "
 $BIN/v-update-firewall
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

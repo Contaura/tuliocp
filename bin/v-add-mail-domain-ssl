@@ -31,13 +31,13 @@ fi
 domain_idn=$(idn2 --quiet "$domain")
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
+# shellcheck source=/usr/local/tulio/func/domain.sh
 source $HESTIA/func/domain.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
+# shellcheck source=/usr/local/tulio/func/ip.sh
 source $HESTIA/func/ip.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -66,7 +66,7 @@ fi
 is_web_domain_cert_valid
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 if [ -n "$restart" ]; then
 	is_format_valid "$restart"
@@ -127,7 +127,7 @@ increase_user_value "$user" '$U_MAIL_SSL'
 update_object_value 'mail' 'DOMAIN' "$domain" '$SSL' "yes"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Restarting mail server

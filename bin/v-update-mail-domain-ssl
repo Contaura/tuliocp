@@ -21,13 +21,13 @@ ssl_dir=$3
 restart=$4
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/domain.sh
+# shellcheck source=/usr/local/tulio/func/domain.sh
 source $HESTIA/func/domain.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
+# shellcheck source=/usr/local/tulio/func/ip.sh
 source $HESTIA/func/ip.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -83,7 +83,7 @@ if [ -e "$USER_DATA/ssl/mail.$domain.ca" ]; then
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Restarting mail server

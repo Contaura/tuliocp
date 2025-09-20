@@ -25,11 +25,11 @@ port=$6
 arch=$(arch)
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/backup.sh
+# shellcheck source=/usr/local/tulio/func/backup.sh
 source $HESTIA/func/backup.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -75,7 +75,7 @@ if [ "$type" != 'local' ]; then
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -221,7 +221,7 @@ elif [ $type == "rclone" ]; then
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Update tulio.conf

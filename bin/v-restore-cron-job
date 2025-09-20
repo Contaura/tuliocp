@@ -18,15 +18,15 @@ cronjob=$3
 notify=$4
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -43,7 +43,7 @@ is_format_valid 'user' 'backup'
 $BIN/v-restore-user "$user" "$backup" 'no' 'no' 'no' 'no' "$cronjob" 'no' "$notify"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 log_event "$OK" "$ARGUMENTS"

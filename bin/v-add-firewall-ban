@@ -18,11 +18,11 @@ chain=$(echo $2 | tr '[:lower:]' '[:upper:]')
 iptables="/sbin/iptables"
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/firewall.sh
+# shellcheck source=/usr/local/tulio/func/firewall.sh
 source $HESTIA/func/firewall.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -36,7 +36,7 @@ is_format_valid 'ipv4_cidr' 'chain'
 is_system_enabled "$FIREWALL_SYSTEM" 'FIREWALL_SYSTEM'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -81,7 +81,7 @@ $iptables -I fail2ban-$chain 1 -s $ipv4_cidr \
 chmod 660 $conf
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

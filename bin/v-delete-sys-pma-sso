@@ -13,9 +13,9 @@
 MODE=$1
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -28,7 +28,7 @@ PMA_CONFIG="/etc/phpmyadmin"
 #----------------------------------------------------------#
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 if [ "x$(id -u)" != 'x0' ]; then
 	echo "Error: Script can be run executed only by root"
@@ -64,7 +64,7 @@ sed -i "/hestia-sso.inc.php/d" $PMA_CONFIG/config.inc.php
 $BIN/v-change-sys-config-value 'PHPMYADMIN_KEY' ""
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 if [ "$MODE" != "quiet" ]; then

@@ -17,9 +17,9 @@ autoupdate=${4:-yes}
 refresh=${5:-no}
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -35,7 +35,7 @@ is_boolean_format_valid "$refresh" 'Refresh IP list (yes/no)'
 is_system_enabled "$FIREWALL_SYSTEM" 'FIREWALL_SYSTEM'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 # Define variables for ipset configuration
 ipset_hstobject='../../../data/firewall/ipset'
@@ -184,7 +184,7 @@ if ! grep --silent --no-messages "v-update-firewall-ipset" $HESTIA/data/queue/da
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

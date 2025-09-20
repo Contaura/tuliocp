@@ -32,11 +32,11 @@ dns_user=${6-dns-cluster}
 DNS_USER=$dns_user
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/remote.sh
+# shellcheck source=/usr/local/tulio/func/remote.sh
 source $HESTIA/func/remote.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -65,7 +65,7 @@ is_dnshost_new
 is_dnshost_alive
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -115,7 +115,7 @@ $BIN/v-sync-dns-cluster
 check_result $? "$HOST sync failed" "$E_CONNECT"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Adding local  dns-cluster cron job

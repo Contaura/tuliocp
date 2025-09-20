@@ -21,11 +21,11 @@ user=$1
 hostname=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/ip.sh
+# shellcheck source=/usr/local/tulio/func/ip.sh
 source $HESTIA/func/ip.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -50,7 +50,7 @@ if [ ! -f "/home/$user/conf/web/$hostname/ssl/$hostname.pem" ]; then
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -85,7 +85,7 @@ $BIN/v-restart-ftp
 $BIN/v-restart-service "hestia"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

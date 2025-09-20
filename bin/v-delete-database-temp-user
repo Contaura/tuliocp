@@ -19,11 +19,11 @@ type=${4-mysql}
 host=$5
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/db.sh
+# shellcheck source=/usr/local/tulio/func/db.sh
 source $HESTIA/func/db.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -47,7 +47,7 @@ if [[ $dbuser != *"hestia_sso"* ]]; then
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -59,7 +59,7 @@ get_database_values
 delete_mysql_database_temp_user
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Logging

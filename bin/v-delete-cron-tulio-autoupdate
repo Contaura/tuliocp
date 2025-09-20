@@ -9,9 +9,9 @@
 #----------------------------------------------------------#
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -23,7 +23,7 @@ source_conf "$HESTIA/conf/tulio.conf"
 is_system_enabled "$CRON_SYSTEM" 'CRON_SYSTEM'
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -33,7 +33,7 @@ sed -i "/v-update-sys-hestia-all/d" "/var/spool/cron/crontabs/hestiaweb"
 sed -i "/v-update-sys-hestia-git/d" "/var/spool/cron/crontabs/hestiaweb"
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Restarting crond

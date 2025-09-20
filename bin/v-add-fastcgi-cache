@@ -19,9 +19,9 @@ duration=${3-2m}
 restart=${4-no}
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -48,7 +48,7 @@ if [[ "$duration" =~ ^[0].*[s|m|d]$ ]]; then
 fi
 
 # Perform verification if read-only mode is enabled
-check_hestia_demo_mode
+check_tulio_demo_mode
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -95,7 +95,7 @@ mkdir -p /var/cache/nginx/micro/$domain
 chown www-data:root /var/cache/nginx/micro/$domain
 chmod 640 /var/cache/nginx/micro/$domain
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 if [ -z "$FASTCGI_CACHE" ]; then

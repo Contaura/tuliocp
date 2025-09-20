@@ -15,11 +15,11 @@ user=$1
 database=$2
 
 # Includes
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
-# shellcheck source=/usr/local/hestia/func/db.sh
+# shellcheck source=/usr/local/tulio/func/db.sh
 source $HESTIA/func/db.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
@@ -48,7 +48,7 @@ case $TYPE in
 esac
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 # Updating disk usage

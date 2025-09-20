@@ -12,9 +12,9 @@
 # Version 0.1
 # This script restore backups from DA to Hestiacp
 
-# shellcheck source=/usr/local/hestia/func/main.sh
+# shellcheck source=/usr/local/tulio/func/main.sh
 source "$HESTIA"/func/main.sh
-# shellcheck source=/etc/hestiacp/tulio.conf
+# shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/hestiacp/tulio.conf
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
