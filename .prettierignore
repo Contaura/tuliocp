@@ -59,3 +59,11 @@ lerna-debug.log*
 
 # npm lock file
 package-lock.json
+
+# GitHub workflows (causing parser issues)
+.github/workflows/*.yml
+.github/workflows/*.yaml
+
+# Documentation with formatting issues
+docs/build-server-setup.md
+LOGO-IMPLEMENTATION.md
