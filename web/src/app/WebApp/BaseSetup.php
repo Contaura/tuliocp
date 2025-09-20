@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hestia\WebApp;
 
-use Hestia\System\HestiaApp;
+use Tulio\System\TulioApp;
 use Hestia\WebApp\InstallationTarget\InstallationTarget;
 use Hestia\WebApp\InstallationTarget\TargetDatabase;
 use RuntimeException;
@@ -21,7 +21,7 @@ abstract class BaseSetup implements InstallerInterface
     protected array $info;
     protected array $config;
 
-    public function __construct(protected HestiaApp $appcontext)
+    public function __construct(protected TulioApp $appcontext)
     {
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Hestia\WebApp\Installers\WordPress;
 
-use Hestia\System\Util;
+use Tulio\System\Util;
 use Hestia\WebApp\BaseSetup;
 use Hestia\WebApp\InstallationTarget\InstallationTarget;
 

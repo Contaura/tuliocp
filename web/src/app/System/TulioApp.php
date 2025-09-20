@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Hestia\System;
+namespace Tulio\System;
 
 use Exception;
 use RuntimeException;
@@ -25,7 +25,7 @@ use function unlink;
 use function var_dump;
 use const DIRECTORY_SEPARATOR;
 
-class HestiaApp
+class TulioApp
 {
     public function addDirectory(string $path): void
     {
