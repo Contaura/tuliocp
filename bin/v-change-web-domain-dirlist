@@ -18,6 +18,8 @@ mode=$3
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
+: "${TULIO:=/usr/local/tulio}"
+: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
