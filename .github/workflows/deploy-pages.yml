@@ -37,6 +37,9 @@ jobs:
           # Copy our index page to the root
           cp docs/index.html apt-repo/
           
+          # Copy setup.sh script to the root (so it's accessible at apt.tuliocp.com/setup.sh)
+          cp apt-repo/setup.sh apt-repo/
+          
           # Create minimal Packages file (empty for now)
           touch apt-repo/dists/stable/main/binary-amd64/Packages
           gzip -c apt-repo/dists/stable/main/binary-amd64/Packages > apt-repo/dists/stable/main/binary-amd64/Packages.gz
