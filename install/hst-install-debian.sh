@@ -30,6 +30,8 @@ codename="$(cat /etc/os-release | grep VERSION= | cut -f 2 -d \( | cut -f 1 -d \
 architecture="$(arch)"
 HESTIA_INSTALL_DIR="$HESTIA_ROOT/install/deb"
 HESTIA_COMMON_DIR="$HESTIA_ROOT/install/common"
+TULIO_INSTALL_DIR="$HESTIA_INSTALL_DIR"
+TULIO_COMMON_DIR="$HESTIA_COMMON_DIR"
 VERBOSE='no'
 
 # Define software versions

@@ -54,6 +54,12 @@ SENDMAIL="$TULIO/web/inc/mail-wrapper.php"
 TULIO_GIT_REPO="https://raw.githubusercontent.com/contaura/tuliocp"
 TULIO_THEMES="$TULIO/web/css/themes"
 TULIO_THEMES_CUSTOM="$TULIO/web/css/themes/custom"
+# Provide legacy Hestia variables for backwards compatibility
+: "${HESTIA_INSTALL_DIR:=$TULIO_INSTALL_DIR}"
+: "${HESTIA_COMMON_DIR:=$TULIO_COMMON_DIR}"
+: "${HESTIA_PHP:=$TULIO_PHP}"
+: "${HESTIA_THEMES:=$TULIO_THEMES}"
+: "${HESTIA_THEMES_CUSTOM:=$TULIO_THEMES_CUSTOM}"
 SCRIPT="$(basename $0)"
 CHECK_RESULT_CALLBACK=""
 
