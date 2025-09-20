@@ -65,7 +65,26 @@ check_tulio_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
-openssl_installed=$(/usr/local/tulio/php/bin/php -m | grep openssl)
+system_php=$(command -v php 2>/dev/null || true)
+if [ -z "$system_php" ] && [ -x "/usr/bin/php" ]; then
+        system_php="/usr/bin/php"
+fi
+
+php_binary="$HESTIA_PHP"
+if [ -z "$php_binary" ] || [ ! -x "$php_binary" ]; then
+        php_binary="$system_php"
+fi
+
+if [ -z "$php_binary" ] || [ ! -x "$php_binary" ]; then
+        echo "ERROR: Unable to locate a PHP binary required for the File Manager installation."
+        exit 1
+fi
+
+openssl_installed=$("$php_binary" -m 2>/dev/null | grep openssl || true)
+
+if [ -z "$system_php" ] || [ ! -x "$system_php" ]; then
+        system_php="$php_binary"
+fi
 
 rm --recursive --force "$FM_INSTALL_DIR"
 mkdir -p "$FM_INSTALL_DIR"
@@ -83,9 +102,9 @@ cp --recursive --force ${HESTIA_INSTALL_DIR}/filemanager/filegator/* "${FM_INSTA
 chown $user: -R "${FM_INSTALL_DIR}"
 
 if [ -z "$openssl_installed" ]; then
-	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec /usr/bin/php $COMPOSER_BIN --quiet --no-dev install
+        COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec "$system_php" "$COMPOSER_BIN" --quiet --no-dev install
 else
-	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec /usr/local/tulio/php/bin/php $COMPOSER_BIN --quiet --no-dev install
+        COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec "$php_binary" "$COMPOSER_BIN" --quiet --no-dev install
 fi
 
 # Check if installation was successful, if not abort script and throw error message notification and clean-up
