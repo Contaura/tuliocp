@@ -71,7 +71,7 @@ npm run lint-staged
 ### Building Packages
 ```bash
 # Build DEB packages (requires Debian/Ubuntu environment)
-./src/hst_autocompile.sh --hestia --debug --cross --noinstall --keepbuild
+./src/hst_autocompile.sh --tuliocp --debug --cross --noinstall --keepbuild
 
 # Generate CLI documentation
 ./src/hst_generate_clidocs.sh

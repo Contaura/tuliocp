@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.4.13
+# TulioCP Control Panel upgrade script for target version 1.4.13
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -30,7 +30,7 @@ fi
 
 # Reset PMA SSO
 if [ "$PHPMYADMIN_KEY" != "" ]; then
-	echo "[ * ] Updating hestia-sso for phpMyAdmin..."
+	echo "[ * ] Updating tuliocp-sso for phpMyAdmin..."
 	$BIN/v-delete-sys-pma-sso
 	$BIN/v-add-sys-pma-sso
 fi
@@ -42,7 +42,7 @@ if [ "$FIREWALL_SYSTEM" = "iptables" ]; then
 	$BIN/v-add-sys-firewall
 fi
 
-# Remove old files/folders from previous versions of Hestia Control Panel
+# Remove old files/folders from previous versions of TulioCP Control Panel
 if [ -d "$TULIO/web/edit/file/" ]; then
 	rm -fr $TULIO/web/edit/file/
 fi

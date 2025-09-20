@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.7.0
+# TulioCP Control Panel upgrade script for target version 1.7.0
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -107,7 +107,7 @@ if [ -f /etc/logrotate.d/httpd-prerotate/awstats ]; then
 fi
 
 if [ "$PHPMYADMIN_KEY" != "" ]; then
-	echo "[ * ] Refresh hestia-sso for PMA..."
+	echo "[ * ] Refresh tuliocp-sso for PMA..."
 	$BIN/v-delete-sys-pma-sso quiet
 	$BIN/v-add-sys-pma-sso quiet
 fi

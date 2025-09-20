@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.8.8
+# TulioCP Control Panel upgrade script for target version 1.8.8
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -27,7 +27,7 @@ upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'false'
 # and POLICY_USER_VIEW_LOGS) that are using value 'true' instead of the correct value 'yes'
 
 tulio.conf="$TULIO/conf/tulio.conf"
-hestia_defaults_conf="$TULIO/conf/defaults/tulio.conf"
+tuliocp_defaults_conf="$TULIO/conf/defaults/tulio.conf"
 
 if [ -f /etc/nginx/nginx.conf ]; then
 	echo "[ * ] Mitigate HTTP/2 Rapid Reset Attack via Nginx CVE CVE-2023-44487"
@@ -35,11 +35,11 @@ if [ -f /etc/nginx/nginx.conf ]; then
 fi
 
 # Fix security issue wit FPM pools
-if [ -z "$(grep ^hestiamail: /etc/passwd)" ]; then
+if [ -z "$(grep ^tuliomail: /etc/passwd)" ]; then
 	echo "[ * ] Limit permissions www.conf and dummy.conf"
-	/usr/sbin/useradd "hestiamail" -c "$email" --no-create-home
+	/usr/sbin/useradd "tuliomail" -c "$email" --no-create-home
 
-	sed -i "s/user = www-data/user = hestiamail/g" /etc/php/*/fpm/pool.d/www.conf
+	sed -i "s/user = www-data/user = tuliomail/g" /etc/php/*/fpm/pool.d/www.conf
 
 	php_versions=$($BIN/v-list-sys-php plain)
 	# Substitute php-fpm service name formats

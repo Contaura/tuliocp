@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.1.0
+# TulioCP Control Panel upgrade script for target version 1.1.0
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -22,7 +22,7 @@ fi
 # Implement recidive jail for fail2ban
 if [ ! -z "$FIREWALL_EXTENSION" ]; then
 	if ! cat /etc/fail2ban/jail.local | grep -q "\[recidive\]"; then
-		echo -e "\n\n[recidive]\nenabled  = true\nfilter   = recidive\naction   = hestia[name=HESTIA]\nlogpath  = /var/log/fail2ban.log\nmaxretry = 3\nfindtime = 86400\nbantime  = 864000" >> /etc/fail2ban/jail.local
+		echo -e "\n\n[recidive]\nenabled  = true\nfilter   = recidive\naction   = tuliocp[name=HESTIA]\nlogpath  = /var/log/fail2ban.log\nmaxretry = 3\nfindtime = 86400\nbantime  = 864000" >> /etc/fail2ban/jail.local
 	fi
 fi
 
@@ -78,9 +78,9 @@ if [ -d /home/admin ]; then
 fi
 
 # Fix sftp jail cronjob
-if [ -e "/etc/cron.d/hestia-sftp" ]; then
-	if ! cat /etc/cron.d/hestia-sftp | grep -q 'root'; then
-		echo "@reboot root /usr/local/tulio/bin/v-add-sys-sftp-jail" > /etc/cron.d/hestia-sftp
+if [ -e "/etc/cron.d/tuliocp-sftp" ]; then
+	if ! cat /etc/cron.d/tuliocp-sftp | grep -q 'root'; then
+		echo "@reboot root /usr/local/tulio/bin/v-add-sys-sftp-jail" > /etc/cron.d/tuliocp-sftp
 	fi
 fi
 

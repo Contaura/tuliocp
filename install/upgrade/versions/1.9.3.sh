@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.9.3
+# TulioCP Control Panel upgrade script for target version 1.9.3
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -37,14 +37,14 @@ fi
 sed -i -E "s/ForceCommand internal-sftp -d \/home$/ForceCommand internal-sftp -d \/home\/%u/g" /etc/ssh/sshd_config
 
 # Check if file exists
-if [ -f "/etc/cron.d/hestiaweb" ]; then
+if [ -f "/etc/cron.d/tulioweb" ]; then
 	# Just remove it
-	rm -f /etc/cron.d/hestiaweb
+	rm -f /etc/cron.d/tulioweb
 	# Check if not duplicate
-	if [ -z "$(grep $BIN/v-update-letsencrypt "/var/spool/cron/crontabs/hestiaweb")" ]; then
+	if [ -z "$(grep $BIN/v-update-letsencrypt "/var/spool/cron/crontabs/tulioweb")" ]; then
 		min=$(generate_password '012345' '2')
 		hour=$(generate_password '1234567' '1')
-		sed -i -e "\$a*/5 * * * * sudo $BIN/v-update-letsencrypt" "/var/spool/cron/crontabs/hestiaweb"
+		sed -i -e "\$a*/5 * * * * sudo $BIN/v-update-letsencrypt" "/var/spool/cron/crontabs/tulioweb"
 	fi
 fi
 

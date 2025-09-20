@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.9.0
+# TulioCP Control Panel upgrade script for target version 1.9.0
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -27,40 +27,40 @@ upgrade_config_set_value 'UPGRADE_UPDATE_FILEMANAGER_CONFIG' 'true'
 $BIN/v-delete-sys-sftp-jail
 $BIN/v-add-sys-sftp-jail
 
-# Check if hestiaweb exists
-if [ -z "$(grep ^hestiaweb: /etc/passwd)" ]; then
+# Check if tulioweb exists
+if [ -z "$(grep ^tulioweb: /etc/passwd)" ]; then
 	# Generate a random password
 	random_password=$(generate_password '32')
-	# Create the new hestiaweb user
-	/usr/sbin/useradd "hestiaweb" -c "$email" --no-create-home
-	# do not allow login into hestiaweb user
-	echo hestiaweb:$random_password | sudo chpasswd -e
-	cp $TULIO_COMMON_DIR/sudo/hestiaweb /etc/sudoers.d/
+	# Create the new tulioweb user
+	/usr/sbin/useradd "tulioweb" -c "$email" --no-create-home
+	# do not allow login into tulioweb user
+	echo tulioweb:$random_password | sudo chpasswd -e
+	cp $TULIO_COMMON_DIR/sudo/tulioweb /etc/sudoers.d/
 	# Keep enabled for now
 	# Remove sudo permissions admin user
 	# rm /etc/sudoers.d/admin/
 fi
 
 # Check if cronjobs have been migrated
-if [ ! -f "/var/spool/cron/crontabs/hestiaweb" ]; then
-	echo "MAILTO=\"\"" > /var/spool/cron/crontabs/hestiaweb
-	echo "CONTENT_TYPE=\"text/plain; charset=utf-8\"" >> /var/spool/cron/crontabs/hestiaweb
+if [ ! -f "/var/spool/cron/crontabs/tulioweb" ]; then
+	echo "MAILTO=\"\"" > /var/spool/cron/crontabs/tulioweb
+	echo "CONTENT_TYPE=\"text/plain; charset=utf-8\"" >> /var/spool/cron/crontabs/tulioweb
 	while read line; do
 		parse_object_kv_list "$line"
 		if [ -n "$(echo "$CMD" | grep ^sudo)" ]; then
 			echo "$MIN $HOUR $DAY $MONTH $WDAY $CMD" \
 				| sed -e "s/%quote%/'/g" -e "s/%dots%/:/g" \
-					>> /var/spool/cron/crontabs/hestiaweb
+					>> /var/spool/cron/crontabs/tulioweb
 			$BIN/v-delete-cron-job admin "$JOB"
 		fi
 	done < $TULIO/data/users/admin/cron.conf
 	# Update permissions
-	chmod 600 /var/spool/cron/crontabs/hestiaweb
-	chown hestiaweb:hestiaweb /var/spool/cron/crontabs/hestiaweb
+	chmod 600 /var/spool/cron/crontabs/tulioweb
+	chown tulioweb:tulioweb /var/spool/cron/crontabs/tulioweb
 
 fi
 
-chown hestiaweb:hestiaweb /usr/local/tulio/data/sessions
+chown tulioweb:tulioweb /usr/local/tulio/data/sessions
 
 packages=$(ls --sort=time $TULIO/data/packages | grep .pkg)
 # Update Hestia Packages
@@ -118,7 +118,7 @@ if [ -x /usr/bin/mariadb ]; then
 	sed -i 's|/usr/share/mysql|/usr/share/mariadb|g' /etc/mysql/my.cnf
 fi
 
-$BIN/v-add-user-notification 'admin' 'Hestia security has been upgraded' ' A new user "hestiaweb" has been created and is used for login. Make sure other Hestia packages are updated as well otherwise the system may not work as expected.'
-add_upgrade_message 'Security has been upgraded, A new user "hestiaweb" has been created and is used for login. Make sure other Hestia packages are updated as well otherwise the system may not work as expected.'
+$BIN/v-add-user-notification 'admin' 'Hestia security has been upgraded' ' A new user "tulioweb" has been created and is used for login. Make sure other Hestia packages are updated as well otherwise the system may not work as expected.'
+add_upgrade_message 'Security has been upgraded, A new user "tulioweb" has been created and is used for login. Make sure other Hestia packages are updated as well otherwise the system may not work as expected.'
 # Ensures proper permissions for Hestia service interactions.
-/usr/sbin/adduser hestiamail hestia-users
+/usr/sbin/adduser tuliomail hestia-users

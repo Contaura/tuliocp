@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.0.2
+# TulioCP Control Panel upgrade script for target version 1.0.2
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -49,11 +49,11 @@ fi
 
 # Remove old tulio.conf files from Apache & NGINX if they exist
 if [ -f "/etc/apache2/conf.d/tulio.conf" ]; then
-	echo "[ * ] Removing old Apache configuration file from previous version of Hestia Control Panel..."
+	echo "[ * ] Removing old Apache configuration file from previous version of TulioCP Control Panel..."
 	rm -f /etc/apache2/conf.d/tulio.conf
 fi
 if [ -f "/etc/nginx/conf.d/tulio.conf" ]; then
-	echo "[ * ] Removing old NGINX configuration file from previous version of Hestia Control Panel..."
+	echo "[ * ] Removing old NGINX configuration file from previous version of TulioCP Control Panel..."
 	rm -f /etc/nginx/conf.d/tulio.conf
 fi
 

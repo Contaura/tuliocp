@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.4.3
+# TulioCP Control Panel upgrade script for target version 1.4.3
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -14,7 +14,7 @@ fi
 
 # Reset PMA SSO
 if [ "$PHPMYADMIN_KEY" != "" ]; then
-	echo "[ * ] Refressh hestia-sso for PMA..."
+	echo "[ * ] Refressh tuliocp-sso for PMA..."
 	$BIN/v-delete-sys-pma-sso
 	$BIN/v-add-sys-pma-sso
 fi

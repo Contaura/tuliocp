@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.6.0
+# TulioCP Control Panel upgrade script for target version 1.6.0
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -109,9 +109,9 @@ if [ "$release" = "22.04" ]; then
 fi
 
 # Mute output v-add-sys-sftp-jail out put then enabling sftp on boot
-if [ -f "/etc/cron.d/hestia-sftp" ]; then
-	rm /etc/cron.d/hestia-sftp
-	echo "@reboot root sleep 60 && /usr/local/tulio/bin/v-add-sys-sftp-jail > /dev/null" > /etc/cron.d/hestia-sftp
+if [ -f "/etc/cron.d/tuliocp-sftp" ]; then
+	rm /etc/cron.d/tuliocp-sftp
+	echo "@reboot root sleep 60 && /usr/local/tulio/bin/v-add-sys-sftp-jail > /dev/null" > /etc/cron.d/tuliocp-sftp
 fi
 
 ips=$(ls /usr/local/tulio/data/ips/ | wc -l)

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.4.14
+# TulioCP Control Panel upgrade script for target version 1.4.14
 
 #######################################################################################
 #######                      Place additional commands below.                   #######

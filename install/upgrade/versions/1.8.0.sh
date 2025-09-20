@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Hestia Control Panel upgrade script for target version 1.8.0
+# TulioCP Control Panel upgrade script for target version 1.8.0
 
 #######################################################################################
 #######                      Place additional commands below.                   #######
@@ -40,7 +40,7 @@ fi
 if [ -f /etc/fail2ban/jail.local ]; then
 	# Add phpmyadmin rule
 	if ! grep -qw "phpmyadmin-auth" /etc/fail2ban/jail.local 2> /dev/null; then
-		sed -i '/\[recidive\]/i [phpmyadmin-auth]\nenabled  = true\nfilter   = phpmyadmin-syslog\naction   = hestia[name=WEB]\nlogpath  = /var/log/auth.log\nmaxretry = 5\n' /etc/fail2ban/jail.local
+		sed -i '/\[recidive\]/i [phpmyadmin-auth]\nenabled  = true\nfilter   = phpmyadmin-syslog\naction   = tuliocp[name=WEB]\nlogpath  = /var/log/auth.log\nmaxretry = 5\n' /etc/fail2ban/jail.local
 	fi
 fi
 
