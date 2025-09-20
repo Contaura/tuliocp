@@ -43,7 +43,7 @@ Add network ports as comma separated list
 
 ```bash
 rm /usr/local/tulio/web/rrd/net/*
-systemctl restart hestia
+systemctl restart tulio
 ```
 
 ## What does the “Enforce subdomain ownership” policy mean?

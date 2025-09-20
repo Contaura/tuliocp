@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Hestia\WebApp\Installers\ThirtyBees;
+namespace Tulio\WebApp\Installers\ThirtyBees;
 
-use Hestia\WebApp\BaseSetup;
-use Hestia\WebApp\InstallationTarget\InstallationTarget;
+use Tulio\WebApp\BaseSetup;
+use Tulio\WebApp\InstallationTarget\InstallationTarget;
 
 class ThirtyBeesSetup extends BaseSetup
 {

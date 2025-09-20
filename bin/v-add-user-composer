@@ -17,12 +17,12 @@ version=${2-2}
 update=$3
 
 if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/hestia"
+	HESTIA="/usr/local/tulio"
 fi
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -38,7 +38,7 @@ is_number_format_valid "$version" "version"
 is_object_valid 'user' 'USER' "$user"
 is_object_unsuspended 'user' 'USER' "$user"
 
-[ -z "$HOMEDIR" ] && check_result "$E_NOTEXIST" "Hestia environment vars not present"
+[ -z "$HOMEDIR" ] && check_result "$E_NOTEXIST" "Tulio environment vars not present"
 
 # Perform verification if read-only mode is enabled
 check_tulio_demo_mode

@@ -2,7 +2,7 @@
 # info: deletes temp database user
 # options: USER DBUSER [TYPE] [HOST]
 #
-# example: v-delete-database-temp-user wordpress hestia_sso_user mysql
+# example: v-delete-database-temp-user wordpress tulio_sso_user mysql
 #
 # Revokes "temp user" access to a database and removes the user
 # To be used in combination with v-add-database-temp-user
@@ -20,7 +20,7 @@ host=$5
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/db.sh
@@ -41,7 +41,7 @@ is_object_valid 'db' 'DB' "$database"
 is_object_unsuspended 'db' 'DB' "$database"
 get_next_dbhost
 
-if [[ $dbuser != *"hestia_sso"* ]]; then
+if [[ $dbuser != *"tulio_sso"* ]]; then
 	echo "DBUSER is invalid SSO user"
 	exit "$E_INVALID"
 fi

@@ -101,7 +101,7 @@ if echo "$BACKUP_SYSTEM" | grep "google" > /dev/null; then
 fi
 
 if [ -f /etc/logrotate.d/httpd-prerotate/awstats ]; then
-	echo "[ * ] Update Awstats prerotate to Hestia update method..."
+	echo "[ * ] Update Awstats prerotate to Tulio update method..."
 	# Replace awstatst function
 	cp -f $TULIO_INSTALL_DIR/logrotate/httpd-prerotate/awstats /etc/logrotate.d/httpd-prerotate/
 fi

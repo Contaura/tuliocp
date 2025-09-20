@@ -4,7 +4,7 @@
 #
 # example: v-update-web-templates
 #
-# This function for obtaining updated web (Nginx/Apache2/PHP) templates from the Hestia package.
+# This function for obtaining updated web (Nginx/Apache2/PHP) templates from the Tulio package.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -16,7 +16,7 @@ skip=$2
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file

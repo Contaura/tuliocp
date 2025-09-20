@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Hestia\WebApp\Installers\Flarum;
+namespace Tulio\WebApp\Installers\Flarum;
 
-use Hestia\System\Util;
-use Hestia\WebApp\BaseSetup;
-use Hestia\WebApp\InstallationTarget\InstallationTarget;
+use Tulio\System\Util;
+use Tulio\WebApp\BaseSetup;
+use Tulio\WebApp\InstallationTarget\InstallationTarget;
 
 class FlarumSetup extends BaseSetup
 {

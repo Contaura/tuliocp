@@ -19,8 +19,8 @@ notify=$4
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
-# source=/usr/local/hestia/func/main.sh
+source /etc/tuliocp/tulio.conf
+# source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"

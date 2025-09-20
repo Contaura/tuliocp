@@ -2,7 +2,7 @@
 
 These are some install script generators created by the community:
 
-- [hestiacp-scriptline-generator](https://github.com/gabizz/hestiacp-scriptline-generator)
+- [tuliocp-scriptline-generator](https://github.com/gabizz/tuliocp-scriptline-generator)
 
   Tiny online app aimed to generate the necessary command for an unattended Tulio Control Panel installation.
 

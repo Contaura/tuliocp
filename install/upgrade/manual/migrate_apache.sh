@@ -90,7 +90,7 @@ $BIN/v-restart-web-backend "yes"
 check_result $? "Backend restart" > /dev/null 2>&1
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       Tulio                             #
 #----------------------------------------------------------#
 
 # Logging

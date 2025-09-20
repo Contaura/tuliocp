@@ -25,7 +25,7 @@ fi
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/db.sh
@@ -59,7 +59,7 @@ get_database_values
 
 #generate password and unique user
 dbpass=$(generate_password)
-dbuser="hestia_sso_$(generate_password)"
+dbuser="tulio_sso_$(generate_password)"
 
 add_mysql_database_temp_user
 if [ $? -ne 0 ]; then

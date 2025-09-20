@@ -57,7 +57,7 @@ All notable changes to this project will be documented in this file.
 ### Notes
 
 - To improve security, we now allow users to rename the default `admin` user.
-- Hestia now runs under a new `tulio-web` user.
+- Tulio now runs under a new `tulio-web` user.
 - In initial versions of TulioCP, we used Jailkit to enabled Jailed SSH. It had major disadvantages, so we have decided it to replace it with [bubblewrap](https://github.com/containers/bubblewrap). Users running Jailed SSH in the past are advised to run the migration script! It can be found in `/usr/local/tulio/install/upgrade/manual/migrate_jailkit_to_bubblewrap.sh`. See [#4698](https://github.com/contaura/tuliocp/pull/4698)
 - We are aware that cgroups are currently not working as they should be. They work fine if you login with SSH as the user, but they don't work for PHP-FPM yet.
 - Dropped support for Debian 10 due to EOL.
@@ -148,7 +148,7 @@ All notable changes to this project will be documented in this file.
 
 ### Security
 
-- Restrict hestiamail file permissions (todo should probably have a link here)
+- Restrict tuliomail file permissions (todo should probably have a link here)
 - Fix roundcube permissions ( GH-4387 )
 
 ## [1.8.11] - Service release
@@ -165,8 +165,8 @@ All notable changes to this project will be documented in this file.
 - Confirm before restoring part of backup (#4147)
 - Multiple Bugfixes v-import-cpanel (#4150, #4149 #4144 #4139, #4120, #4121 thanks @vipxr)
 - Fix an issue with small screens in logs header (#4126)
-- Fixed a few bugs due to the permissions changes with hestiamail user
-- Updated v-list-sys-users to fix issues with new hestiamail user
+- Fixed a few bugs due to the permissions changes with tuliomail user
+- Updated v-list-sys-users to fix issues with new tuliomail user
 - Use -f instead --force=yes (#4097)
 - Delay submit in Desktop Safari (#4137)
 - Fixed an bug in v-add-backup-host to report inability to connect via sftp (#4119)
@@ -295,7 +295,7 @@ All notable changes to this project will be documented in this file.
 - Updated dependency esbuild to v0.18.16 (#3826)
 - Updated dependency stylelint to v15.10.2 (#3829)
 - Updated dependency chart.js to v4.3.2 (#3866)
-- Updated dependency hestiacp/phpquoteshellarg to v1.0.1 (#3827)
+- Updated dependency tuliocp/phpquoteshellarg to v1.0.1 (#3827)
 - Pinned dependency @fortawesome/fontawesome-free to 6.4.0 (#3862)
 - Updated renovate config (#3840)
 - Updated all non-major dependencies (#3880)
@@ -368,7 +368,7 @@ All notable changes to this project will be documented in this file.
 
 - Fix: DNS cluster expected return code instead of string (#3706)
 - Resolve #3684 Process "http2" directive for NGINX (#3704 @myrevery)
-- Upload hestiacp.pot file directly to Crowdin (#3702)
+- Upload tuliocp.pot file directly to Crowdin (#3702)
 - Refactor add ns buttons (#3701)
 - Remove \r chars from legacy cron.conf (#3708 @maunklana)
 - Unable to edit password domain smtp relay (#3690)
@@ -640,7 +640,7 @@ All notable changes to this project will be documented in this file.
 - Updated Roundcube to 1.6.1
 - Updated Filegator to 7.9.2
 - Updated phpMyAdmin to 5.2.21
-- Updated phpPgAdmin to 7.3.14-hestiacp
+- Updated phpPgAdmin to 7.3.14-tuliocp
 - Update MediaWiki to 1.39.2
 - Update Prestashop to 8.0.1
 - Update TwoFactorAuth to 2.0.0
@@ -697,7 +697,7 @@ All notable changes to this project will be documented in this file.
 
 ### Important
 
-A bug in v-update-sys-hestia caused auto update to be not working. Please run: `apt update && apt upgrade`
+A bug in v-update-sys-tulio caused auto update to be not working. Please run: `apt update && apt upgrade`
 
 ### Security
 
@@ -762,7 +762,7 @@ A bug in v-update-sys-hestia caused auto update to be not working. Please run: `
 
 ### Security
 
-- Fix issue in is_hestia_package (#2889)
+- Fix issue in is_tulio_package (#2889)
 
 ### Bugfixes
 
@@ -850,7 +850,7 @@ A bug in v-update-sys-hestia caused auto update to be not working. Please run: `
 - Don't allow /inc/2fa/secret.php called from the web browser directly (#2784 @mayappear)
 - Improve CSRF Origin Check Bypass (#2785 @mayappear)
 - Fix vulnerability in Dokuwiki Quick Install App @redstarp2 (CVE-2022-2550)
-- Fixed an issue where custom ports where not saved on restart fail2ban service making Hestia login screen vulnerable for brute force
+- Fixed an issue where custom ports where not saved on restart fail2ban service making Tulio login screen vulnerable for brute force
 
 ### Dependencies
 
@@ -1048,7 +1048,7 @@ A bug in v-update-sys-hestia caused auto update to be not working. Please run: `
 
 ### Bugfixes
 
-- Fixed an issue where Hestia port change did not update chain for fail2ban (#2465)
+- Fixed an issue where Tulio port change did not update chain for fail2ban (#2465)
 - Fixed permission issues with /var/log/roundcube (#2466)
 - Fixed multiple issues in UI (#2464)
 - Allow v-change-user-template update backend templates (#2475)
@@ -1156,7 +1156,7 @@ After that run apt update && apt upgrade
 - Fixed an issue where databases where not able to backup if it required custom settings
 - Allow users to edit default.pkg again. On new installs the default admin user will get assigned a new system.pkg (#2365)
 - Disable enabling PMA SSO when Api was disabled + Added link to FAQ for frequently asked questions. (#2365)
-- Remove error_reporting(null) and allow all errors to be logged in /var/log/hestia/nginx-error.log (#2365)
+- Remove error_reporting(null) and allow all errors to be logged in /var/log/tulio/nginx-error.log (#2365)
 - Fixed an issue where value "Allow suspended wasn't saved" (#2356, #2355)
 - Fixed and issue where AUTH_USER and AUTH_HASH was not present and there for during rebuild caused issues with Nginx (#2350, #2355)
 
@@ -1264,7 +1264,7 @@ After that run apt update && apt upgrade
 ### Breaking changes
 
 - **NOTE:** Changes have been made on how phpmyadmin/phppgadmin config are included in apache2 config. To restore to the old behaviour add `IncludeOptional conf.d/*.inc` below `IncludeOptional conf.d/*.conf` in /etc/apache2/apache2.conf and restart your server.
-- **NOTE:** Hestia packages for arm64 has been added to atp.tuliocp.com please use the normal install instructions instead! For current ARM installs to enable auto update remove the `#` in /etc/apt/sources.list.d/tulio.list `# deb https://apt.tuliocp.com/ focal main` becomes `deb https://apt.tuliocp.com/ focal main` and then run `apt update && apt upgrade -y`
+- **NOTE:** Tulio packages for arm64 has been added to atp.tuliocp.com please use the normal install instructions instead! For current ARM installs to enable auto update remove the `#` in /etc/apt/sources.list.d/tulio.list `# deb https://apt.tuliocp.com/ focal main` becomes `deb https://apt.tuliocp.com/ focal main` and then run `apt update && apt upgrade -y`
 - **NOTE:** Make sure your server / VPS has a valid PTR record or otherwise you will not be able to send any mail!
 
 ### Features
@@ -1285,7 +1285,7 @@ After that run apt update && apt upgrade
 - Run shellcheck to improve code quality
 - Improve ssh port detection for filemanager. Allowing users to create /etc/ssh/sshd.conf.d/custom.conf with custom port
 - Fix an bug in v-add-letsencrypt-host due to changes of Lets Encrypt causing issues with rate limiting
-- Improve Update process Hestia and allow versions to decide a a rebuild is required
+- Improve Update process Tulio and allow versions to decide a a rebuild is required
 - Add Download SSL certificate function for self generated ssl certificates #2181
 - Block access to .user.ini for Nginx + Apache2 #2179
 - Add support for download B2 backup to local server to allow for restore #2199
@@ -1527,7 +1527,7 @@ After that run apt update && apt upgrade
 
 ## [1.4.2] - Service release
 
-- **NOTE:** During the 1.4.1 / 1.4.0 release we have introduced a bug for Ubuntu 20.04 and 18.04 users with multiple network ports on the server. This release will solve the problems caused by this bug! If you are unable to download the Hestia packages via apt. Run the following command via CLI or SSH as root
+- **NOTE:** During the 1.4.1 / 1.4.0 release we have introduced a bug for Ubuntu 20.04 and 18.04 users with multiple network ports on the server. This release will solve the problems caused by this bug! If you are unable to download the Tulio packages via apt. Run the following command via CLI or SSH as root
 
 ```bash
 iptables -A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
@@ -1579,7 +1579,7 @@ apt update && apt upgrade
 - Added Drupal and Nextcloud quick installer support (Removed placeholder Joomla)
 - Added a new optional theme "Vestia"
 - Added a switch to disable the API and also limit the api by default to 127.0.0.1 only. For current installs added the option "allow-all" on default
-- After first reboot of Hestia will try do 1 attempt to request / generate a valid Lets encrypt certificate
+- After first reboot of Tulio will try do 1 attempt to request / generate a valid Lets encrypt certificate
 - Introduced multiple new security policies via WebUI.
   - Allow users to edit Web / Proxy / DNS / Backend templates
   - Allow users to edit account details
@@ -1626,7 +1626,7 @@ apt update && apt upgrade
 - Disabled changing backup folder via Web UI because it used symbolic link instead of mount causing issues with restore mail / user files.
 - Fixed XSS vulnerability in `v-add-sys-ip` and user history log (thanks **@numanturle**).
 - Fixed remote code execution vulnerability which could occur when deleting SSH keys (thanks **@numanturle**).
-- Fixed vulnerability in v-update-sys-hestia (thanks **@numanturle**)
+- Fixed vulnerability in v-update-sys-tulio (thanks **@numanturle**)
 - Disabled the Update via WebUI due to timeout issues. Please update via `apt update && apt upgrade` in command line instead.
 - Improve how Quick install of web apps are handled and allow users added apps to be maintained in list view.
 - Fixed an issue where the api was enabled after an update of TulioCP
@@ -1875,7 +1875,7 @@ apt update && apt upgrade
 
 ### Bugfixes
 
-- Prevent ability to change the password of a non-Hestia user account. Thanks to **Alexandre Zanni**!
+- Prevent ability to change the password of a non-Tulio user account. Thanks to **Alexandre Zanni**!
 - Adjust Let's Encrypt validation check for IDN domains, thanks to **@zanami**!
 - Set backup download location on FTP/SFTP restore, thanks to **@Daniyal-Javani**!
 - Stop trying to renew Let's Encrypt certificates after multiple consecutive failed attempts. Thanks to **@dpeca**!
@@ -1947,7 +1947,7 @@ apt update && apt upgrade
 - Rework of Let's Encrypt routine to use progressive delay between validation retries.
 - Fixed syntax issue in v-list-sys-db-status which prevented main functions from loading.
 - Removed /home size reporting when running v-list-sys-info due to performance issues.
-- Updated installer to use Ubuntu key server for Hestia APT repository.
+- Updated installer to use Ubuntu key server for Tulio APT repository.
 - Fixed duplicate demo mode check in v-change-user-password.
 
 ## [1.1.0] - 2020-03-11 - Major Release (Feature / Quality Update)
@@ -1970,7 +1970,7 @@ apt update && apt upgrade
 ### Bugfixes
 
 - Added a detection of web root for add .well-known ACME challenge.
-- Reworked Let's Encrypt ACME staging to use Hestia code standards.
+- Reworked Let's Encrypt ACME staging to use Tulio code standards.
 - Fixed issues with incorrect font rendering on Windows and Linux.
 - Fixed issues with Let's Encrypt - use Nginx for Let's Encrypt ACME request if present.
 - Reworked v-add-sys-ip, removed deprecated CentOS/Red Hat code and reworked conditions.
@@ -2063,7 +2063,7 @@ apt update && apt upgrade
 - v-sys-update-tulio-git: Added the ability to update using Git from the command line.
 - Implemented support for SFTP chroot jails.
 - A newly redesigned user interface which features:
-  - A softer color palette which better matches the Hestia Control Panel logo colors.
+  - A softer color palette which better matches the Tulio Control Panel logo colors.
   - A consolidated overview of domains and other information.
   - Improved navigation paths to make things easier to find.
   - Improved compatibility when viewing the Control Panel interface from a mobile device.

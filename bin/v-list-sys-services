@@ -15,7 +15,7 @@ format=${1-shell}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -101,8 +101,8 @@ get_srv_state() {
 		used_pgrep=1
 	fi
 
-	# Correctly handle hestia-web-terminal service
-	if [ "$name" == 'hestia-web-terminal' ] && [ "$(systemctl show $name.service | grep 'SubState=' | cut -f2 -d=)" == "running" ]; then
+	# Correctly handle tulio-web-terminal service
+	if [ "$name" == 'tulio-web-terminal' ] && [ "$(systemctl show $name.service | grep 'SubState=' | cut -f2 -d=)" == "running" ]; then
 		pids=$(systemctl show $name.service | grep '^MainPID=' | cut -f2 -d=)
 	fi
 
@@ -336,7 +336,7 @@ fi
 
 # Checking WEB_TERMINAL
 if [ -n "$WEB_TERMINAL" ] && [ "$WEB_TERMINAL" != 'false' ]; then
-	get_srv_state hestia-web-terminal
+	get_srv_state tulio-web-terminal
 	data="$data\nNAME='web-terminal' SYSTEM='web terminal backend'"
 	data="$data STATE='$state' CPU='$cpu' MEM='$mem' RTIME='$rtime'"
 fi

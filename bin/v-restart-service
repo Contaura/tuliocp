@@ -16,7 +16,7 @@ restart=$2
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 source_conf "$HESTIA/conf/tulio.conf"
@@ -35,7 +35,7 @@ is_format_valid 'service' 'restart'
 log="/dev/null"
 if [ "$DEBUG_MODE" = "true" ]; then
 
-	log="/var/log/hestia/debug.log"
+	log="/var/log/tulio/debug.log"
 fi
 
 # Multi-instance service restart request handling

@@ -16,7 +16,7 @@ reset=${2-no}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source "$TULIO/func/main.sh"
 # load config file

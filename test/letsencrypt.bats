@@ -1,7 +1,7 @@
 #!/usr/bin/env bats
 
 if [ "${PATH#*/usr/local/tulio/bin*}" = "$PATH" ]; then
-    . /etc/profile.d/hestia.sh
+    . /etc/profile.d/tulio.sh
 fi
 
 load 'test_helper/bats-support/load'
@@ -39,7 +39,7 @@ function setup() {
 }
 
 @test "[ Web ] Create 2nd web domain" {
-    run v-add-web-domain $user "hestia.$domain" $ip yes
+    run v-add-web-domain $user "tulio.$domain" $ip yes
     assert_success
     refute_output
 }
@@ -51,7 +51,7 @@ function setup() {
 }
 
 @test "[ Web ] Request 2nd new certificate for web domain" {
-    run v-add-letsencrypt-domain $user "hestia.$domain"
+    run v-add-letsencrypt-domain $user "tulio.$domain"
     assert_success
     refute_output
 }

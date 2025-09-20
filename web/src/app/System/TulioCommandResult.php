@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Hestia\System;
+namespace Tulio\System;
 
 use function json_decode;
 
-class HestiaCommandResult
+class TulioCommandResult
 {
     public function __construct(
         public readonly string $command,

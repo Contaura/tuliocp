@@ -26,7 +26,7 @@ FROM_V_ADD_USER=true
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -93,19 +93,19 @@ if [ $? -ne 0 ]; then
 	exit 2
 fi
 
-# Add a general group for normal users created by Hestia
-if [ -z "$(grep ^hestia-users: /etc/group)" ]; then
-	groupadd --system "hestia-users"
+# Add a general group for normal users created by Tulio
+if [ -z "$(grep ^tulio-users: /etc/group)" ]; then
+	groupadd --system "tulio-users"
 fi
 
-# Add membership to hestia-users group to non-admin users
+# Add membership to tulio-users group to non-admin users
 if [ "$user" = "$ROOT_USER" ]; then
 	setfacl -m "g:$ROOT_USER:r-x" "$HOMEDIR/$user"
 else
-	usermod -a -G "hestia-users" "$user"
+	usermod -a -G "tulio-users" "$user"
 	setfacl -m "u:$user:r-x" "$HOMEDIR/$user"
 fi
-setfacl -m "g:hestia-users:---" "$HOMEDIR/$user"
+setfacl -m "g:tulio-users:---" "$HOMEDIR/$user"
 
 # Building directory tree
 mkdir $HOMEDIR/$user/conf

@@ -63,7 +63,7 @@ fi
 chown tulioweb:tulioweb /usr/local/tulio/data/sessions
 
 packages=$(ls --sort=time $TULIO/data/packages | grep .pkg)
-# Update Hestia Packages
+# Update Tulio Packages
 for package in $packages; do
 	if [ -z "$(grep -e 'BACKUPS_INCREMENTAL' $TULIO/data/packages/$package)" ]; then
 		echo "BACKUPS_INCREMENTAL='no'" >> $TULIO/data/packages/$package
@@ -118,7 +118,7 @@ if [ -x /usr/bin/mariadb ]; then
 	sed -i 's|/usr/share/mysql|/usr/share/mariadb|g' /etc/mysql/my.cnf
 fi
 
-$BIN/v-add-user-notification 'admin' 'Hestia security has been upgraded' ' A new user "tulioweb" has been created and is used for login. Make sure other Hestia packages are updated as well otherwise the system may not work as expected.'
-add_upgrade_message 'Security has been upgraded, A new user "tulioweb" has been created and is used for login. Make sure other Hestia packages are updated as well otherwise the system may not work as expected.'
-# Ensures proper permissions for Hestia service interactions.
+$BIN/v-add-user-notification 'admin' 'Tulio security has been upgraded' ' A new user "tulioweb" has been created and is used for login. Make sure other Tulio packages are updated as well otherwise the system may not work as expected.'
+add_upgrade_message 'Security has been upgraded, A new user "tulioweb" has been created and is used for login. Make sure other Tulio packages are updated as well otherwise the system may not work as expected.'
+# Ensures proper permissions for Tulio service interactions.
 /usr/sbin/adduser tuliomail tulio-users

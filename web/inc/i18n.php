@@ -5,7 +5,7 @@
 putenv("LANGUAGE=" . detect_user_language());
 setlocale(LC_ALL, "en_US.UTF-8");
 
-$domain = "hestiacp";
+$domain = "tuliocp";
 $localedir = "/usr/local/tulio/web/locale";
 bindtextdomain($domain, $localedir);
 textdomain($domain);

@@ -4,7 +4,7 @@
 #
 # example: v-list-sys-info
 #
-# This function checks available updates for hestia packages.
+# This function checks available updates for tulio packages.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -15,13 +15,13 @@ format=${1-shell}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
 
-# Retrieve Hestia Control Panel version number
+# Retrieve Tulio Control Panel version number
 HESTIA_VERSION=$(grep VERSION $HESTIA/conf/tulio.conf | cut -d '=' -f2 | sed "s|'||g")
 HESTIA_RELEASE=$(grep RELEASE_BRANCH $HESTIA/conf/tulio.conf | cut -d '=' -f2 | sed "s|'||g")
 

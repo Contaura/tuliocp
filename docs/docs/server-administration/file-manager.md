@@ -42,10 +42,10 @@ DebianBanner no
 
 Changing all of the other parameters to their defaults and also changing to `PasswordAuthentication no` did not reproduce the error, thus it would seem to be isolated to the `Subsystem sftp internal-sftp` parameter.
 
-For more information regarding debugging, inspect the Hestia Nginx log:
+For more information regarding debugging, inspect the Tulio Nginx log:
 
 ```bash
-tail -f -s0.1 /var/log/hestia/nginx-error.log
+tail -f -s0.1 /var/log/tulio/nginx-error.log
 ```
 
 ## I changed SSH port and I cannot use the file manager anymore

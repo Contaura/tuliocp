@@ -19,7 +19,7 @@ mail=${4// /}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
@@ -35,8 +35,8 @@ if [[ "$LE_STAGING" = 'yes' ]]; then
 fi
 
 # LE Pre-Hook
-if [ -x "/etc/hestiacp/hooks/le_pre.sh" ]; then
-	/etc/hestiacp/hooks/le_pre.sh "$user" "$domain" "$aliases" "$mail"
+if [ -x "/etc/tuliocp/hooks/le_pre.sh" ]; then
+	/etc/tuliocp/hooks/le_pre.sh "$user" "$domain" "$aliases" "$mail"
 fi
 
 # encode base64
@@ -64,7 +64,7 @@ query_le_v2() {
 	# Save http response to file passed as "$4" arg or print to stdout if not provided
 	# http response headers are always sent to stdout
 	local save_to_file=${4:-"/dev/stdout"}
-	curl --location --user-agent "HestiaCP" --insecure --retry 5 --retry-connrefused --silent --dump-header /dev/stdout --data "$post_data" "$1" --header "$content" --output "$save_to_file"
+	curl --location --user-agent "TulioCP" --insecure --retry 5 --retry-connrefused --silent --dump-header /dev/stdout --data "$post_data" "$1" --header "$content" --output "$save_to_file"
 	debug_log "API call" "exit status: $?"
 }
 
@@ -142,7 +142,7 @@ else
 	fi
 fi
 
-log_file="/var/log/hestia/LE-${user}-${domain}.log"
+log_file="/var/log/tulio/LE-${user}-${domain}.log"
 touch "$log_file"
 chmod 600 "$log_file"
 
@@ -213,7 +213,7 @@ if [ -n "$DNS_SYSTEM" ]; then
 fi
 
 # Requesting nonce / STEP 1
-answer=$(curl --user-agent "HestiaCP" -s -I "$LE_API/directory")
+answer=$(curl --user-agent "TulioCP" -s -I "$LE_API/directory")
 nonce=$(echo "$answer" | grep -i nonce | cut -f2 -d \  | tr -d '\r\n')
 status=$(echo "$answer" | grep HTTP/ | tail -n1 | cut -f 2 -d ' ')
 
@@ -461,7 +461,7 @@ done
 
 # Generating new ssl certificate
 ssl_dir=$($BIN/v-generate-ssl-cert "$domain" "info@$domain" "US" "California" \
-	"San Francisco" "Hestia" "IT" "$aliases" | tail -n1 | awk '{print $2}')
+	"San Francisco" "Tulio" "IT" "$aliases" | tail -n1 | awk '{print $2}')
 
 # Sending CSR to finalize order / STEP 6
 csr=$(openssl req -in $ssl_dir/$domain.csr -outform DER | encode_base64)
@@ -517,7 +517,7 @@ done
 
 # Fallback on depreciated download method for certs (unauthenticated GET)
 if [[ $status != 200 ]]; then
-	answer=$(curl --insecure --user-agent "HestiaCP" --retry 5 --retry-connrefused --silent --dump-header /dev/stdout "$certificate" --output "$ssl_dir/$domain.pem")
+	answer=$(curl --insecure --user-agent "TulioCP" --retry 5 --retry-connrefused --silent --dump-header /dev/stdout "$certificate" --output "$ssl_dir/$domain.pem")
 	status=$(echo "$answer" | grep HTTP/ | tail -n1 | cut -f 2 -d ' ')
 
 	debug_log "Step 8 - Fallback" "- status: ${status}\n- answer: ${answer}"
@@ -585,10 +585,10 @@ if [ "$?" -ne '0' ]; then
 fi
 
 # Adding LE autorenew cronjob
-if [ -z "$(grep $BIN/v-update-letsencrypt "/var/spool/cron/crontabs/hestiaweb")" ]; then
+if [ -z "$(grep $BIN/v-update-letsencrypt "/var/spool/cron/crontabs/tulioweb")" ]; then
 	min=$(generate_password '012345' '2')
 	hour=$(generate_password '1234567' '1')
-	sed -i -e "\$a*/5 * * * * sudo $BIN/v-update-letsencrypt" "/var/spool/cron/crontabs/hestiaweb"
+	sed -i -e "\$a*/5 * * * * sudo $BIN/v-update-letsencrypt" "/var/spool/cron/crontabs/tulioweb"
 fi
 
 # Updating letsencrypt key
@@ -617,8 +617,8 @@ else
 fi
 
 # LE Post-Hook
-if [ -x "/etc/hestiacp/hooks/le_post.sh" ]; then
-	/etc/hestiacp/hooks/le_post.sh "$user" "$domain" "$aliases" "$mail"
+if [ -x "/etc/tuliocp/hooks/le_post.sh" ]; then
+	/etc/tuliocp/hooks/le_post.sh "$user" "$domain" "$aliases" "$mail"
 fi
 
 # Remove challenge folder if exist
@@ -630,7 +630,7 @@ fi
 [ -d "$ssl_dir" ] && rm -rf "$ssl_dir"
 
 #----------------------------------------------------------#
-#                        Hestia                            #
+#                        Tulio                            #
 #----------------------------------------------------------#
 
 # Deleting task from queue

@@ -1,6 +1,6 @@
 <?php
 
-/* Hestia way to enable support for SSO to PHPmyAdmin */
+/* Tulio way to enable support for SSO to PHPmyAdmin */
 /* To install please run v-add-sys-pma-sso */
 
 /* Following keys will get replaced when calling v-add-sys-pma-sso */
@@ -9,7 +9,7 @@ define("API_HOST_NAME", "%API_HOST_NAME%");
 define("API_HESTIA_PORT", "%API_HESTIA_PORT%");
 define("API_KEY", "%API_KEY%");
 
-class Hestia_API {
+class Tulio_API {
 	/** @var string */
 	public $hostname;
 	/** @var string */
@@ -150,7 +150,7 @@ function session_invalid() {
 	die();
 }
 
-$api = new Hestia_API();
+$api = new Tulio_API();
 if (!empty($_GET)) {
 	if (isset($_GET["logout"])) {
 		$api->delete_temp_user(
@@ -162,11 +162,11 @@ if (!empty($_GET)) {
 		//remove session
 		session_invalid();
 	} else {
-		if (isset($_GET["user"]) && isset($_GET["hestia_token"])) {
+		if (isset($_GET["user"]) && isset($_GET["tulio_token"])) {
 			$database = $_GET["database"];
 			$user = $_GET["user"];
 			$host = "localhost";
-			$token = $_GET["hestia_token"];
+			$token = $_GET["tulio_token"];
 			if (is_numeric($_GET["exp"])) {
 				$time = $_GET["exp"];
 			} else {

@@ -15,7 +15,7 @@
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
 
@@ -96,22 +96,22 @@ fi
 
 # Extract cPanel package name
 cpanel_package_name=$(cat ./cp/$new_user | grep 'PLAN=' | cut -f2 -d'=')
-if /usr/local/hestia/bin/v-list-user-packages | grep -qw "$cpanel_package_name"; then
-	hestia_package="$cpanel_package_name"
-	echo "Package $hestia_package will be used for the user."
+if /usr/local/tulio/bin/v-list-user-packages | grep -qw "$cpanel_package_name"; then
+	tulio_package="$cpanel_package_name"
+	echo "Package $tulio_package will be used for the user."
 else
-	hestia_package="default" # Replace "default" with your default Hestia package name
-	echo "Default package $hestia_package will be used for the user."
+	tulio_package="default" # Replace "default" with your default Tulio package name
+	echo "Default package $tulio_package will be used for the user."
 fi
 
 # Create a new user
 tmp_passwd=$(generate_password)
 email=$(cat ./cp/$new_user | grep CONTACTEMAIL= | cut -f2 -d'=')
 if [ -z "$email" ]; then
-	# Hestia does not like email to be set to an empty string
+	# Tulio does not like email to be set to an empty string
 	email="info@"$(hostname)
 fi
-$BIN/v-add-user "$new_user" "$tmp_passwd" "$email" "$hestia_package"
+$BIN/v-add-user "$new_user" "$tmp_passwd" "$email" "$tulio_package"
 if [ "$?" -ne 0 ]; then
 	echo "Unable to create user"
 	exit 1
@@ -158,14 +158,14 @@ cat uni_u_db | while read db userdb; do
 		# default cpanel user has all database privileges
 		# if you use default user in your config files to connect with database
 		# you will need remove && [ "$userdb" != "$sk_cp_user" ] to restore main user, but
-		# this will cause database duplication in db.conf and will interfer with hestiacp backups
+		# this will cause database duplication in db.conf and will interfer with tuliocp backups
 		if [ "$userdb" == "$user" ] && [ "$userdb" != "$new_user" ]; then
-			echo "DB='$db' DBUSER='$userdb' MD5='$end_user_pass' HOST='localhost' TYPE='mysql' CHARSET='UTF8' U_DISK='0' SUSPENDED='no' TIME='$time' DATE='$data'" >> /usr/local/hestia/data/users/$new_user/db.conf
+			echo "DB='$db' DBUSER='$userdb' MD5='$end_user_pass' HOST='localhost' TYPE='mysql' CHARSET='UTF8' U_DISK='0' SUSPENDED='no' TIME='$time' DATE='$data'" >> /usr/local/tulio/data/users/$new_user/db.conf
 		fi
 	done
 done
 
-# Leave hestia restore passwords and create users
+# Leave tulio restore passwords and create users
 tput setaf 2
 echo "Rebuild databases files for $new_user"
 tput sgr0
@@ -260,7 +260,7 @@ if [ -n "$CPANEL_PHP_VERSION" ]; then
 		fi
 	else
 		tput setaf 1
-		echo "PHP version $HESTIA_PHP_VERSION is not installed on HestiaCP."
+		echo "PHP version $HESTIA_PHP_VERSION is not installed on TulioCP."
 		echo "Please install and set it to avoid errors in website."
 		echo "The restoration will continue but the website may not work as expected"
 		tput sgr0
@@ -326,7 +326,7 @@ for folder in *; do
 			# This is needed as parked domains have emails but not added
 			if ! $BIN/v-list-mail-domains $new_user plain | awk '{ print $1 }' | grep "^${folder}$"; then
 				tput setaf 3
-				echo "Found Parked domain $folder  not added in hestia mail, adding..."
+				echo "Found Parked domain $folder  not added in tulio mail, adding..."
 				tput sgr0
 				$BIN/v-add-mail-domain $new_user $folder
 			fi
@@ -376,7 +376,7 @@ for folder in *; do
 						escaped=$(printf '%s\n' "$newline" | sed -e 's/[\/&]/\\&/g')
 						escaped2=$(printf '%s\n' "$newline2" | sed -e 's/[\/&]/\\&/g')
 						sed -i "s/^${mail_account}:.*/$escaped/g" /home/${new_user}/conf/mail/${folder}/passwd
-						sed -i "s/^ACCOUNT='${mail_account}.*/$escaped2/g" /usr/local/hestia/data/users/${new_user}/mail/${folder}.conf
+						sed -i "s/^ACCOUNT='${mail_account}.*/$escaped2/g" /usr/local/tulio/data/users/${new_user}/mail/${folder}.conf
 					else
 						echo "Warning: Password for $mail_account@$folder not found in shadow file."
 					fi
@@ -430,12 +430,12 @@ if [ -f "$CRON_FILE" ] && [ -s "$CRON_FILE" ]; then
 		month=$(echo "$cron_job" | awk '{print $4}')
 		dow=$(echo "$cron_job" | awk '{print $5}')
 		cmd=$(echo "$cron_job" | awk '{for (i=6; i<=NF; i++) printf $i " "; print ""}')
-		#This try fix PHP crons converting cpanel paths to hestia paths
+		#This try fix PHP crons converting cpanel paths to tulio paths
 		if [[ $cmd =~ "ea-php" ]]; then
 			EAPHP=$(echo $cmd | awk '{ print $1 }')
 			# /opt/cpanel/ea-php70/root/bin/php
 			# /usr/local/bin/ea-php70
-			# default hestia /usr/bin/php
+			# default tulio /usr/bin/php
 			DEFAULT_PHP="/usr/bin/php"
 			vPHP="ea-php71 ea-php72 ea-php73 ea-php74 ea-php80 ea-php81 ea-php82 ea-php83"
 			EAOPT="opt/cpanel/ea-php"

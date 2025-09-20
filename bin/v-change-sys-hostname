@@ -15,7 +15,7 @@ domain=$1
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -50,13 +50,13 @@ echo "$domain" > /etc/hostname
 
 # Update webmail's password plugin configuration
 if [ -d /etc/roundcube/ ]; then
-	sed -i "/password_hestia_host/c\$rcmail_config['password_hestia_host'] = '$domain';" /etc/roundcube/plugins/password/config.inc.php
+	sed -i "/password_tulio_host/c\$rcmail_config['password_tulio_host'] = '$domain';" /etc/roundcube/plugins/password/config.inc.php
 fi
 if [ -d /etc/rainloop/ ]; then
-	sed -i "/hestia_host/c\hestia_host = \"$domain\"" /etc/rainloop/data/_data_/_default_/configs/plugin-hestia-change-password.ini
+	sed -i "/tulio_host/c\tulio_host = \"$domain\"" /etc/rainloop/data/_data_/_default_/configs/plugin-tulio-change-password.ini
 fi
 if [ -d /etc/snappymail/ ]; then
-	sed -i "/\"hestia_host\":/c\\\"hestia_host\": \"$domain\"," /etc/snappymail/data/_data_/_default_/configs/plugin-change-password.json
+	sed -i "/\"tulio_host\":/c\\\"tulio_host\": \"$domain\"," /etc/snappymail/data/_data_/_default_/configs/plugin-change-password.json
 fi
 
 # Update /etc/hosts

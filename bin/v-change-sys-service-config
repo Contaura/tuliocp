@@ -17,7 +17,7 @@ restart=$3
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -73,7 +73,7 @@ case $service in
 	clamd) dst=$($BIN/v-list-sys-clamd-config plain) ;;
 	fail2ban) dst='/etc/fail2ban/jail.local' ;;
 	ssh) dst='/etc/ssh/sshd_config' ;;
-	hestiaweb) dst='/var/spool/cron/crontabs/hestiaweb' ;;
+	tulioweb) dst='/var/spool/cron/crontabs/tulioweb' ;;
 	*) check_result $E_NOTEXIST "service $service doesn't exist" ;;
 esac
 
@@ -109,7 +109,7 @@ if [ "$update" = 'yes' ] && [ "$restart" != 'no' ]; then
 		fi
 	fi
 
-	if [[ "$service" != "hestiaweb" ]]; then
+	if [[ "$service" != "tulioweb" ]]; then
 		$BIN/v-restart-service "$service" > /dev/null 2>&1
 		if [ $? -ne 0 ]; then
 			for config in $dst; do

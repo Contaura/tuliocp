@@ -4,10 +4,10 @@
 #
 # example: v-search-command web
 #
-# This function searches for available Hestia Control Panel commands
+# This function searches for available Tulio Control Panel commands
 # and returns results based on the specified criteria.
 # Originally developed by Federico Krum
-# Ported for use with Hestia Control Panel
+# Ported for use with Tulio Control Panel
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -15,7 +15,7 @@
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file

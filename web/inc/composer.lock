@@ -7,7 +7,7 @@
     "content-hash": "6e54a19cc09660113257c4db821b3738",
     "packages": [
         {
-            "name": "hestiacp/phpquoteshellarg",
+            "name": "tuliocp/phpquoteshellarg",
             "version": "v1.1.0",
             "source": {
                 "type": "git",
@@ -16,7 +16,7 @@
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/hestiacp/phpquoteshellarg/zipball/3499670c48aed5f04f2656e9cd06d6e2709e8e08",
+                "url": "https://api.github.com/repos/tuliocp/phpquoteshellarg/zipball/3499670c48aed5f04f2656e9cd06d6e2709e8e08",
                 "reference": "3499670c48aed5f04f2656e9cd06d6e2709e8e08",
                 "shasum": ""
             },
@@ -26,7 +26,7 @@
             "type": "library",
             "autoload": {
                 "files": [
-                    "src/Hestiacp/quoteshellarg/quoteshellarg.php"
+                    "src/Tuliocp/quoteshellarg/quoteshellarg.php"
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",

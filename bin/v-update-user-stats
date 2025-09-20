@@ -12,11 +12,11 @@
 
 # Importing system environment  as we run this script
 #       mostly by cron wich not read it by itself
-source /etc/profile.d/hestia.sh
+source /etc/profile.d/tulio.sh
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh

@@ -56,7 +56,7 @@
 			<h1 class="server-summary-title"><?= $sys["sysinfo"]["HOSTNAME"] ?></h1>
 			<ul class="server-summary-list">
 				<li class="server-summary-item">
-					<span class="server-summary-list-label">Hestia Control Panel</span>
+					<span class="server-summary-list-label">Tulio Control Panel</span>
 					<span class="server-summary-list-value">
 						<?php if ($sys["sysinfo"]["RELEASE"] == "release") { ?>
 							<i class="fas fa-cube" title="<?= _("Production Release") ?>"></i>

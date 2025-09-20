@@ -21,9 +21,9 @@ case $(arch) in x86_64) ARCH="amd64" ;; aarch64) ARCH="arm64" ;; esac
 codename="$(lsb_release -s -c)"
 apt="/etc/apt/sources.list.d"
 
-# Add the beta repo to hestia.list
-sed -i 's/^/#/' $apt/hestia.list
-echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/tulio-beta-keyring.gpg] https://beta-apt.tuliocp.com/ $codename main" >> $apt/hestia.list
+# Add the beta repo to tulio.list
+sed -i 's/^/#/' $apt/tulio.list
+echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/tulio-beta-keyring.gpg] https://beta-apt.tuliocp.com/ $codename main" >> $apt/tulio.list
 curl -s "https://beta-apt.tuliocp.com/pubkey.gpg" | gpg --dearmor | tee /usr/share/keyrings/tulio-beta-keyring.gpg > /dev/null 2>&1
 
 # Update to the beta version
@@ -32,7 +32,7 @@ apt update && apt upgrade
 
 ## Install from beta repo
 
-If you want to install a new Hestia installation form the beta server.
+If you want to install a new Tulio installation form the beta server.
 
 ```bash
 # Debian

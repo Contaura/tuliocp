@@ -2,7 +2,7 @@
 
 #===========================================================================#
 #                                                                           #
-# Hestia Control Panel - Upgrade Function Library                           #
+# Tulio Control Panel - Upgrade Function Library                           #
 #                                                                           #
 #===========================================================================#
 
@@ -43,7 +43,7 @@ upgrade_health_check() {
 		export VERSION="1.1.0"
 		$BIN/v-change-sys-config-value 'VERSION' "$VERSION"
 		echo
-		echo "[ ! ] Unable to detect installed version of Hestia Control Panel."
+		echo "[ ! ] Unable to detect installed version of Tulio Control Panel."
 		echo "      Setting default version to $VERSION and processing upgrade steps."
 		echo
 	fi
@@ -62,7 +62,7 @@ upgrade_welcome_message() {
 	echo '                 |  _  |  __/\__ \ |_| | (_| | |___|  __/                     '
 	echo '                 |_| |_|\___||___/\__|_|\__,_|\____|_|                        '
 	echo "                                                                              "
-	echo "                    Hestia Control Panel Software Update                      "
+	echo "                    Tulio Control Panel Software Update                      "
 	echo "                               Version: ${DISPLAY_VER}"
 	if [[ "$new_version" =~ "beta" ]]; then
 		echo "                                BETA RELEASE                                 "
@@ -86,7 +86,7 @@ upgrade_welcome_message() {
 
 upgrade_welcome_message_log() {
 	echo "============================================================================="
-	echo "Hestia Control Panel Software Update Log"
+	echo "Tulio Control Panel Software Update Log"
 	echo "============================================================================="
 	echo
 	echo "OPERATING SYSTEM:      $OS_TYPE ($OS_VERSION)"
@@ -124,18 +124,18 @@ upgrade_complete_message() {
 	echo "Read the release notes to learn about new fixes and features:                "
 	echo "https://github.com/contaura/tuliocp/blob/main/CHANGELOG.md                "
 	echo
-	echo "We hope that you enjoy using this version of Hestia Control Panel,           "
+	echo "We hope that you enjoy using this version of Tulio Control Panel,           "
 	echo "have a wonderful day!                                                        "
 	echo
 	echo "Sincerely,                                                                   "
-	echo "The Hestia Control Panel development team                                    "
+	echo "The Tulio Control Panel development team                                    "
 	echo
 	echo "Web:      https://www.tuliocp.com/                                          "
 	echo "Docs:     https://docs.tuliocp.com/										   "
 	echo "Forum:    https://forum.tuliocp.com/                                        "
 	echo "GitHub:   https://github.com/contaura/tuliocp/                              "
 	echo
-	echo "Help support the Hestia Control Panel project by donating via PayPal:        "
+	echo "Help support the Tulio Control Panel project by donating via PayPal:        "
 	echo "https://www.tuliocp.com/donate                                              "
 	echo
 	echo "Made with love & pride by the open-source community around the world.        "
@@ -162,8 +162,8 @@ upgrade_cleanup_message() {
 }
 
 upgrade_get_version() {
-	# Retrieve new version number for Hestia Control Panel from .deb package
-	new_version=$(dpkg -l | awk '$2=="hestia" { print $3 }')
+	# Retrieve new version number for Tulio Control Panel from .deb package
+	new_version=$(dpkg -l | awk '$2=="tulio" { print $3 }')
 }
 
 upgrade_set_version() {
@@ -187,13 +187,13 @@ upgrade_send_notification_to_panel() {
 	# Add notification to panel if variable is set to true or is not set
 	if [[ "$new_version" =~ "alpha" ]]; then
 		# Send notifications for development releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Development snapshot installed' '<p><span class="u-text-bold">Version:</span> '$new_version'<br><span class="u-text-bold">Code Branch:</span> '$RELEASE_BRANCH'</p><p>Please report any bugs by <a href="https://github.com/contaura/tuliocp/issues" target="_blank">opening an issue on GitHub</a>, and feel free to share your feedback on our <a href="https://forum.tuliocp.com" target="_blank">discussion forum</a>.</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Development snapshot installed' '<p><span class="u-text-bold">Version:</span> '$new_version'<br><span class="u-text-bold">Code Branch:</span> '$RELEASE_BRANCH'</p><p>Please report any bugs by <a href="https://github.com/contaura/tuliocp/issues" target="_blank">opening an issue on GitHub</a>, and feel free to share your feedback on our <a href="https://forum.tuliocp.com" target="_blank">discussion forum</a>.</p><p><i class="fas fa-heart icon-red"></i> The Tulio Control Panel development team</p>'
 	elif [[ "$new_version" =~ "beta" ]]; then
 		# Send feedback notification for beta releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Thank you for testing Hestia Control Panel '$new_version'.' '<p>Please share your feedback with our development team through our <a href="https://forum.tuliocp.com" target="_blank">discussion forum</a>.</p><p>Found a bug? <a href="https://github.com/contaura/tuliocp/issues" target="_blank">Open an issue on GitHub</a>!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Thank you for testing Tulio Control Panel '$new_version'.' '<p>Please share your feedback with our development team through our <a href="https://forum.tuliocp.com" target="_blank">discussion forum</a>.</p><p>Found a bug? <a href="https://github.com/contaura/tuliocp/issues" target="_blank">Open an issue on GitHub</a>!</p><p><i class="fas fa-heart icon-red"></i> The Tulio Control Panel development team</p>'
 	else
 		# Send normal upgrade complete notification for stable releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Upgrade complete' '<p>Hestia Control Panel has been updated to <span class="u-text-bold">v'$new_version'</span>.</p><p><a href="https://github.com/contaura/tuliocp/blob/main/CHANGELOG.md" target="_blank">View release notes</a></p><p>Please report any bugs by <a href="https://github.com/contaura/tuliocp/issues" target="_blank">opening an issue on GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Upgrade complete' '<p>Tulio Control Panel has been updated to <span class="u-text-bold">v'$new_version'</span>.</p><p><a href="https://github.com/contaura/tuliocp/blob/main/CHANGELOG.md" target="_blank">View release notes</a></p><p>Please report any bugs by <a href="https://github.com/contaura/tuliocp/issues" target="_blank">opening an issue on GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Tulio Control Panel development team</p>'
 	fi
 }
 
@@ -212,7 +212,7 @@ upgrade_send_notification_to_email() {
 		touch $message_tmp_file
 
 		# Write message to file
-		echo "$HOSTNAME has been upgraded from Hestia Control Panel v$VERSION to v${new_version}." >> $message_tmp_file
+		echo "$HOSTNAME has been upgraded from Tulio Control Panel v$VERSION to v${new_version}." >> $message_tmp_file
 		echo "Installation log: $LOG" >> $message_tmp_file
 		echo "" >> $message_tmp_file
 
@@ -233,10 +233,10 @@ upgrade_send_notification_to_email() {
 		echo "- Check our forums for possible solutions: https://forum.tuliocp.com" >> $message_tmp_file
 		echo "- File an issue report on GitHub: https://github.com/contaura/tuliocp/issues" >> $message_tmp_file
 		echo "" >> $message_tmp_file
-		echo "Help support the Hestia Control Panel project by donating via PayPal: https://www.tuliocp.com/donate" >> $message_tmp_file
+		echo "Help support the Tulio Control Panel project by donating via PayPal: https://www.tuliocp.com/donate" >> $message_tmp_file
 		echo "===================================================" >> $message_tmp_file
 		echo "Have a wonderful day," >> $message_tmp_file
-		echo "The Hestia Control Panel development team" >> $message_tmp_file
+		echo "The Tulio Control Panel development team" >> $message_tmp_file
 
 		# Read back message from file and pass through to sendmail
 		cat $message_tmp_file | $send_mail -s "Update Installed - v${new_version}" $admin_email
@@ -276,8 +276,8 @@ prepare_upgrade_config() {
 
 upgrade_init_backup() {
 	# Ensure that backup directories are created
-	# Hestia Control Panel configuration files
-	mkdir -p $TULIO_BACKUP/conf/hestia/
+	# Tulio Control Panel configuration files
+	mkdir -p $TULIO_BACKUP/conf/tulio/
 
 	# OpenSSL configuration files
 	mkdir -p $TULIO_BACKUP/conf/openssl/
@@ -374,11 +374,11 @@ upgrade_start_backup() {
 		echo "      - Configuration files:"
 	fi
 
-	# Hestia Control Panel configuration files
+	# Tulio Control Panel configuration files
 	if [ "$DEBUG_MODE" = "true" ]; then
-		echo "      ---- hestia"
+		echo "      ---- tulio"
 	fi
-	cp -fr $TULIO/conf/* $TULIO_BACKUP/conf/hestia/
+	cp -fr $TULIO/conf/* $TULIO_BACKUP/conf/tulio/
 
 	# OpenSSL configuration files
 	if [ "$DEBUG_MODE" = "true" ]; then
@@ -527,7 +527,7 @@ upgrade_start_routine() {
 		upgrade_refresh_config
 	else
 		echo ""
-		echo "[ ! ] The latest version of Hestia Control Panel is already installed."
+		echo "[ ! ] The latest version of Tulio Control Panel is already installed."
 		echo "      Verifying configuration..."
 		echo ""
 		if [ -e "$TULIO/install/upgrade/versions/$VERSION.sh" ]; then
@@ -621,11 +621,11 @@ upgrade_phpmyadmin() {
 			echo "[ * ] phpMyAdmin is up to date (${pma_version})..."
 			# Update permissions
 			if [ -e /var/lib/phpmyadmin/blowfish_secret.inc.php ]; then
-				chown root:hestiamail /var/lib/phpmyadmin/blowfish_secret.inc.php
+				chown root:tuliomail /var/lib/phpmyadmin/blowfish_secret.inc.php
 				chmod 0640 /var/lib/phpmyadmin/blowfish_secret.inc.php
 			fi
-			chown hestiamail:hestiamail /usr/share/phpmyadmin/tmp
-			chown -R root:hestiamail /etc/phpmyadmin/
+			chown tuliomail:tuliomail /usr/share/phpmyadmin/tmp
+			chown -R root:tuliomail /etc/phpmyadmin/
 
 			chmod 0770 /usr/share/phpmyadmin/tmp
 		else
@@ -651,18 +651,18 @@ upgrade_phpmyadmin() {
 			# Create temporary folder and change permissions
 			if [ ! -d /usr/share/phpmyadmin/tmp ]; then
 				mkdir /usr/share/phpmyadmin/tmp
-				chown hestiamail:hestiamail /usr/share/phpmyadmin/tmp
+				chown tuliomail:tuliomail /usr/share/phpmyadmin/tmp
 				chmod 0770 /usr/share/phpmyadmin/tmp
 
 			fi
 
 			if [ -e /var/lib/phpmyadmin/blowfish_secret.inc.php ]; then
-				chown root:hestiamail /var/lib/phpmyadmin/blowfish_secret.inc.php
+				chown root:tuliomail /var/lib/phpmyadmin/blowfish_secret.inc.php
 				chmod 0640 /var/lib/phpmyadmin/blowfish_secret.inc.php
 			fi
 
 			# Make sure to give it the correct permissions
-			chown -R root:hestiamail /etc/phpmyadmin/
+			chown -R root:tuliomail /etc/phpmyadmin/
 
 			# Clean up source files
 			rm -fr phpMyAdmin-$pma_v-all-languages
@@ -738,7 +738,7 @@ upgrade_snappymail() {
 }
 
 upgrade_dependencies() {
-	echo "[ ! ] Update Hestia PHP dependencies..."
+	echo "[ ! ] Update Tulio PHP dependencies..."
 	$BIN/v-add-sys-dependencies
 }
 
@@ -892,9 +892,9 @@ upgrade_restart_services() {
 		$BIN/v-restart-service ssh
 	fi
 
-	# Always restart the Hestia Control Panel service
+	# Always restart the Tulio Control Panel service
 	if [ "$DEBUG_MODE" = "true" ]; then
-		echo "      - hestia"
+		echo "      - tulio"
 	fi
-	$BIN/v-restart-service hestia
+	$BIN/v-restart-service tulio
 }

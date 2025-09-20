@@ -169,7 +169,7 @@ rm -rf $TULIO/data/templates/web/nginx/php-fpm/drupal8.*tpl
 rm -rf $TULIO/data/templates/web/nginx/php-fpm/codeigniter2.*tpl
 rm -rf $TULIO/data/templates/web/nginx/php-fpm/codeigniter3.*tpl
 
-# Clean up old Hestia controlled webapps
+# Clean up old Tulio controlled webapps
 if [ -d "$TULIO/web/images/webapps/" ]; then
 	echo "[ * ] Clean up old web apps code..."
 	rm -rf $TULIO/web/images/webapps/

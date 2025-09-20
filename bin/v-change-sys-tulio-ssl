@@ -1,10 +1,10 @@
 #!/bin/bash
-# info: change hestia ssl certificate
+# info: change tulio ssl certificate
 # options: SSL_DIR [RESTART]
 #
-# example: v-change-sys-hestia-ssl /home/new/dir/path yes
+# example: v-change-sys-tulio-ssl /home/new/dir/path yes
 #
-# This function changes hestia SSL certificate and the key.
+# This function changes tulio SSL certificate and the key.
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -17,7 +17,7 @@ restart=$2
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
@@ -66,7 +66,7 @@ cp -f $ssl_dir/certificate.key $HESTIA/ssl/certificate.key
 
 # Restarting web server
 if [ "$restart" != 'no' ]; then
-	kill -HUP $(cat /run/hestia-nginx.pid)
+	kill -HUP $(cat /run/tulio-nginx.pid)
 	$BIN/v-restart-mail "$restart"
 fi
 

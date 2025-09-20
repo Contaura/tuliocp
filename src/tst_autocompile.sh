@@ -85,25 +85,25 @@ get_branch_file() {
 
 usage() {
 	echo "Usage:"
-	echo "    $0 (--all|--hestia|--nginx|--php|--web-terminal) [options] [branch] [Y]"
+	echo "    $0 (--all|--tulio|--nginx|--php|--web-terminal) [options] [branch] [Y]"
 	echo ""
-	echo "    --all           Build all hestia packages."
-	echo "    --hestia        Build only the Control Panel package."
+	echo "    --all           Build all tulio packages."
+	echo "    --tulio        Build only the Control Panel package."
 	echo "    --nginx         Build only the backend nginx engine package."
 	echo "    --php           Build only the backend php engine package"
 	echo "    --web-terminal  Build only the backend web terminal websocket package"
 	echo "  Options:"
 	echo "    --install       Install generated packages"
 	echo "    --keepbuild     Don't delete downloaded source and build folders"
-	echo "    --cross         Compile hestia package for both AMD64 and ARM64"
+	echo "    --cross         Compile tulio package for both AMD64 and ARM64"
 	echo "    --debug         Debug mode"
 	echo ""
 	echo "For automated builds and installations, you may specify the branch"
 	echo "after one of the above flags. To install the packages, specify 'Y'"
 	echo "following the branch name."
 	echo ""
-	echo "Example: bash hst_autocompile.sh --hestia develop Y"
-	echo "This would install a Hestia Control Panel package compiled with the"
+	echo "Example: bash hst_autocompile.sh --tulio develop Y"
+	echo "This would install a Tulio Control Panel package compiled with the"
 	echo "develop branch code."
 }
 
@@ -139,7 +139,7 @@ for i in $*; do
 		--web-terminal)
 			WEB_TERMINAL_B='true'
 			;;
-		--hestia)
+		--tulio)
 			HESTIA_B='true'
 			;;
 		--debug)
@@ -278,7 +278,7 @@ if [ "$TULIO_DEBUG" ]; then
 	echo "OS type          : Debian / Ubuntu"
 	echo "Branch           : $branch"
 	echo "Install          : $install"
-	echo "Hestia version   : $BUILD_VER"
+	echo "Tulio version   : $BUILD_VER"
 	echo "Nginx version    : $NGINX_V"
 	echo "PHP version      : $PHP_V"
 	echo "Web Term version : $WEB_TERMINAL_V"
@@ -372,9 +372,9 @@ if [ "$NGINX_B" = true ]; then
 		rm -r "$BUILD_DIR$INSTALL_DIR"
 	fi
 
-	# Copy local hestia source files
+	# Copy local tulio source files
 	if [ "$use_src_folder" == 'true' ] && [ -d $SRC_DIR ]; then
-		cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
+		cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
 	fi
 
 	# Create the files and install them
@@ -414,8 +414,8 @@ if [ "$NGINX_B" = true ]; then
 
 	# Init file
 	mkdir -p $BUILD_DIR_HESTIANGINX/etc/init.d
-	get_branch_file 'src/deb/nginx/hestia' "$BUILD_DIR_HESTIANGINX/etc/init.d/hestia"
-	chmod +x "$BUILD_DIR_HESTIANGINX/etc/init.d/hestia"
+	get_branch_file 'src/deb/nginx/tulio' "$BUILD_DIR_HESTIANGINX/etc/init.d/tulio"
+	chmod +x "$BUILD_DIR_HESTIANGINX/etc/init.d/tulio"
 
 	# Custom config
 	get_branch_file 'src/deb/nginx/nginx.conf' "${BUILD_DIR_HESTIANGINX}/usr/local/tulio/nginx/conf/nginx.conf"
@@ -430,8 +430,8 @@ if [ "$NGINX_B" = true ]; then
 		# Clean up the source folder
 		rm -r tulio- nginx_$NGINX_V
 		rm -rf $BUILD_DIR/rpmbuild
-		if [ "$use_src_folder" == 'true' ] && [ -d $BUILD_DIR/hestiacp-$branch_dash ]; then
-			rm -r $BUILD_DIR/hestiacp-$branch_dash
+		if [ "$use_src_folder" == 'true' ] && [ -d $BUILD_DIR/tuliocp-$branch_dash ]; then
+			rm -r $BUILD_DIR/tuliocp-$branch_dash
 		fi
 	fi
 fi
@@ -494,10 +494,10 @@ if [ "$PHP_B" = true ]; then
 	# Create the files and install them
 	make -j $NUM_CPUS && make INSTALL_ROOT=$BUILD_DIR install
 
-	# Copy local hestia source files
+	# Copy local tulio source files
 	if [ "$use_src_folder" == 'true' ] && [ -d $SRC_DIR ]; then
-		[ "$TULIO_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
-		cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
+		[ "$TULIO_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
+		cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
 	fi
 	# Move php directory
 	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_HESTIAPHP/usr/local/tulio
@@ -554,8 +554,8 @@ if [ "$PHP_B" = true ]; then
 	if [ "$KEEPBUILD" != 'true' ]; then
 		rm -r $BUILD_DIR/php-$(echo $PHP_V | cut -d"~" -f1)
 		rm -r $BUILD_DIR_HESTIAPHP
-		if [ "$use_src_folder" == 'true' ] && [ -d $BUILD_DIR/hestiacp-$branch_dash ]; then
-			rm -r $BUILD_DIR/hestiacp-$branch_dash
+		if [ "$use_src_folder" == 'true' ] && [ -d $BUILD_DIR/tuliocp-$branch_dash ]; then
+			rm -r $BUILD_DIR/tuliocp-$branch_dash
 		fi
 	fi
 fi
@@ -621,15 +621,15 @@ if [ "$WEB_TERMINAL_B" = true ]; then
 	# clear up the source folder
 	if [ "$KEEPBUILD" != 'true' ]; then
 		rm -r $BUILD_DIR_HESTIA_TERMINAL
-		if [ "$use_src_folder" == 'true' ] && [ -d $BUILD_DIR/hestiacp-$branch_dash ]; then
-			rm -r $BUILD_DIR/hestiacp-$branch_dash
+		if [ "$use_src_folder" == 'true' ] && [ -d $BUILD_DIR/tuliocp-$branch_dash ]; then
+			rm -r $BUILD_DIR/tuliocp-$branch_dash
 		fi
 	fi
 fi
 
 #################################################################################
 #
-# Building hestia
+# Building tulio
 #
 #################################################################################
 
@@ -640,9 +640,9 @@ if [ "$TULIO_B" = true ]; then
 		arch="amd64 arm64"
 	fi
 	for BUILD_ARCH in $arch; do
-		echo "Building Hestia Control Panel package..."
+		echo "Building Tulio Control Panel package..."
 
-		BUILD_DIR_TULIO=$BUILD_DIR/hestia_$TULIO_V
+		BUILD_DIR_TULIO=$BUILD_DIR/tulio_$TULIO_V
 
 		# Change to build directory
 		cd $BUILD_DIR
@@ -658,11 +658,11 @@ if [ "$TULIO_B" = true ]; then
 		fi
 
 		cd $BUILD_DIR
-		rm -rf $BUILD_DIR/hestiacp-$branch_dash
+		rm -rf $BUILD_DIR/tuliocp-$branch_dash
 		# Download and unpack source files
 		if [ "$use_src_folder" == 'true' ]; then
-			[ "$TULIO_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
-			cp -rf "$SRC_DIR/" $BUILD_DIR/hestiacp-$branch_dash
+			[ "$TULIO_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
+			cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
 		elif [ -d $SRC_DIR ]; then
 			download_file $TULIO_ARCHIVE_LINK '-' 'fresh' | tar xz
 		fi
@@ -670,7 +670,7 @@ if [ "$TULIO_B" = true ]; then
 		mkdir -p $BUILD_DIR_HESTIA/usr/local/tulio
 
 		# Build web and move needed directories
-		cd $BUILD_DIR/hestiacp-$branch_dash
+		cd $BUILD_DIR/tuliocp-$branch_dash
 		npm ci --ignore-scripts
 		npm run build
 		cp -rf bin func install web $BUILD_DIR_HESTIA/usr/local/tulio/
@@ -697,15 +697,15 @@ if [ "$TULIO_B" = true ]; then
 		chmod +x $BUILD_DIR_HESTIA/DEBIAN/postinst
 		chmod +x $BUILD_DIR_HESTIA/DEBIAN/preinst
 
-		echo Building Hestia DEB
+		echo Building Tulio DEB
 		dpkg-deb -Zxz --build $BUILD_DIR_HESTIA $DEB_DIR
 
 		# clear up the source folder
 		if [ "$KEEPBUILD" != 'true' ]; then
 			rm -r $BUILD_DIR_HESTIA
-			rm -rf hestiacp-$branch_dash
+			rm -rf tuliocp-$branch_dash
 		fi
-		cd $BUILD_DIR/hestiacp-$branch_dash
+		cd $BUILD_DIR/tuliocp-$branch_dash
 	done
 fi
 

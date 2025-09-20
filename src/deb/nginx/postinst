@@ -11,23 +11,23 @@ if [ ! -e "/usr/local/tulio/data/users/" ]; then
 	exit
 fi
 
-# Prevent running and causes issues with outdated hestia version
+# Prevent running and causes issues with outdated tulio version
 if ! id "tulioweb" &> /dev/null; then
 	exit
 fi
 
 # Touch and set permisions on default log files on installation
-update-rc.d hestia defaults > /dev/null
-invoke-rc.d hestia start || true
+update-rc.d tulio defaults > /dev/null
+invoke-rc.d tulio start || true
 
 # Adapt Port Listing in HESTIA NGINX Backend
 source /usr/local/tulio/func/syshealth.sh # Load syshealth functions
 
-# Check if the function syshealth_adapt_hestia_nginx_listen_ports exists
-if ! declare -f syshealth_adapt_hestia_nginx_listen_ports > /dev/null; then
+# Check if the function syshealth_adapt_tulio_nginx_listen_ports exists
+if ! declare -f syshealth_adapt_tulio_nginx_listen_ports > /dev/null; then
 	exit
 fi
-syshealth_adapt_hestia_nginx_listen_ports # Adapt port listing
+syshealth_adapt_tulio_nginx_listen_ports # Adapt port listing
 syshealth_adapt_nginx_resolver
 
 ###############################################################
@@ -60,7 +60,7 @@ if [ -e "/etc/tuliocp/hooks/nginx/post_install.sh" ]; then
 	/etc/tuliocp/hooks/nginx/post_install.sh
 fi
 
-# Restart hestia service
-if [ -f "/etc/init.d/hestia" ]; then
-	systemctl restart hestia > /dev/null 2>&1
+# Restart tulio service
+if [ -f "/etc/init.d/tulio" ]; then
+	systemctl restart tulio > /dev/null 2>&1
 fi

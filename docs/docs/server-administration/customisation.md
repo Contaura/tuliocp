@@ -38,7 +38,7 @@ The default structure that will be added to a domain when it gets created is loc
 
 ## Running commands before and after updates
 
-With the release of Hestia 1.4.6 we have added pre-install and post-install hooks. For example, you can use hooks to:
+With the release of Tulio 1.4.6 we have added pre-install and post-install hooks. For example, you can use hooks to:
 
 - Disable and enable demo mode before and after an update.
 - Restore a customised skeleton page.

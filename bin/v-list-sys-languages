@@ -4,7 +4,7 @@
 #
 # example: v-list-sys-languages json
 #
-# This function for obtaining the available languages for HestiaCP
+# This function for obtaining the available languages for TulioCP
 # Output is always in the ISO language code
 
 #----------------------------------------------------------#
@@ -16,7 +16,7 @@ format=${1-shell}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file

@@ -1,7 +1,8 @@
 {
     "autoload": {
         "psr-4": {
-            "Hestia\\": "app/"
+            "Tulio\\": "app/",
+            "Tulio\\System\\": "app/System/"
         }
     },
     "require": {

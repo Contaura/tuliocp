@@ -6,7 +6,7 @@ Add to /root/.bashrc the following code:
 
 ```bash
 if [ "${PATH#*/usr/local/tulio/bin*}" = "$PATH" ]; then
-	. /etc/profile.d/hestia.sh
+	. /etc/profile.d/tulio.sh
 fi
 ```
 

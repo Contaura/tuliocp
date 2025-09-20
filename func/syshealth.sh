@@ -2,7 +2,7 @@
 
 #===========================================================================#
 #                                                                           #
-# Hestia Control Panel - System Health Check and Repair Function Library    #
+# Tulio Control Panel - System Health Check and Repair Function Library    #
 #                                                                           #
 #===========================================================================#
 
@@ -445,7 +445,7 @@ function syshealth_repair_system_config() {
 		echo "[ ! ] Adding missing variable to tulio.conf: PHPMYADMIN_KEY ('')"
 		$BIN/v-change-sys-config-value "PHPMYADMIN_KEY" ""
 	fi
-	# Use SMTP server for hestia internal mail
+	# Use SMTP server for tulio internal mail
 	if [[ -z $(check_key_exists 'USE_SERVER_SMTP') ]]; then
 		echo "[ ! ] Adding missing variable to tulio.conf: USE_SERVER_SMTP ('')"
 		$BIN/v-change-sys-config-value "USE_SERVER_SMTP" "false"
@@ -485,16 +485,16 @@ function syshealth_repair_system_config() {
 		$BIN/v-change-sys-config-value "POLICY_CSRF_STRICTNESS" "1"
 	fi
 	if [[ -z $(check_key_exists 'DNS_CLUSTER_SYSTEM') ]]; then
-		echo "[ ! ] Adding missing variable to tulio.conf: DNS_CLUSTER_SYSTEM ('hestia')"
-		$BIN/v-change-sys-config-value "DNS_CLUSTER_SYSTEM" "hestia"
+		echo "[ ! ] Adding missing variable to tulio.conf: DNS_CLUSTER_SYSTEM ('tulio')"
+		$BIN/v-change-sys-config-value "DNS_CLUSTER_SYSTEM" "tulio"
 	fi
 	if [[ -z $(check_key_exists 'DISABLE_IP_CHECK') ]]; then
 		echo "[ ! ] Adding missing variable to tulio.conf: DISABLE_IP_CHECK ('no')"
 		$BIN/v-change-sys-config-value "DISABLE_IP_CHECK" "no"
 	fi
 	if [[ -z $(check_key_exists 'APP_NAME') ]]; then
-		echo "[ ! ] Adding missing variable to tulio.conf: APP_NAME ('Hestia Control Panel')"
-		$BIN/v-change-sys-config-value "APP_NAME" "Hestia Control Panel"
+		echo "[ ! ] Adding missing variable to tulio.conf: APP_NAME ('Tulio Control Panel')"
+		$BIN/v-change-sys-config-value "APP_NAME" "Tulio Control Panel"
 	fi
 	if [[ -z $(check_key_exists 'FROM_NAME') ]]; then
 		# Default is always APP_NAME
@@ -598,7 +598,7 @@ function syshealth_repair_system_cronjobs() {
 
 # Adapt Port Listing in HESTIA NGINX Backend
 # Activates or deactivates port listing on IPV4 or/and IPV6 network interfaces
-function syshealth_adapt_hestia_nginx_listen_ports() {
+function syshealth_adapt_tulio_nginx_listen_ports() {
 	# Detect "physical" NICs only (virtual NICs created by Docker, WireGuard etc. are excluded)
 	physical_nics="$(ip -d -j link show | jq -r '.[] | if .link_type == "loopback" // .linkinfo.info_kind then empty else .ifname end')"
 	if [ -z "$physical_nics" ]; then

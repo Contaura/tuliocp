@@ -15,7 +15,7 @@ user=$1
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -33,7 +33,7 @@ if [ -z "$user_str" ]; then
 fi
 
 # Get current users and split into array
-ssh_users=$(grep -A1 "^# Hestia SFTP Chroot" /etc/ssh/sshd_config | sed -n 2p | sed 's/Match User //')
+ssh_users=$(grep -A1 "^# Tulio SFTP Chroot" /etc/ssh/sshd_config | sed -n 2p | sed 's/Match User //')
 IFS=',' read -r -a users <<< "$ssh_users"
 
 match_string="$ssh_users,"

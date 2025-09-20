@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Hestia\WebApp;
+namespace Tulio\WebApp;
 
-use Hestia\WebApp\InstallationTarget\TargetDatabase;
-use Hestia\WebApp\InstallationTarget\TargetDomain;
+use Tulio\WebApp\InstallationTarget\TargetDatabase;
+use Tulio\WebApp\InstallationTarget\TargetDomain;
 
 class InstallerInfo
 {

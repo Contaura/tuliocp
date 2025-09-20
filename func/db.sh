@@ -2,7 +2,7 @@
 
 #===========================================================================#
 #                                                                           #
-# Hestia Control Panel - Domain Function Library                            #
+# Tulio Control Panel - Domain Function Library                            #
 #                                                                           #
 #===========================================================================#
 

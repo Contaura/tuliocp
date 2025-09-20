@@ -26,7 +26,7 @@ msgstr ""
 #: ../../web/unsuspend/dns/index.php:44 ../../web/unsuspend/mail/index.php:18
 #: ../../web/unsuspend/mail/index.php:45 ../../web/schedule/backup/index.php:17
 #: ../../web/schedule/restore/index.php:70 ../../web/bulk/restore/index.php:78
-msgid "Error: Hestia did not return any output."
+msgid "Error: Tulio did not return any output."
 msgstr ""
 
 #: ../../web/schedule/backup/incremental/index.php:17
@@ -236,7 +236,7 @@ msgstr ""
 msgid "Inactive session timeout can not lower than 1 minute."
 msgstr ""
 
-#: ../../web/edit/server/hestiaweb/index.php:34
+#: ../../web/edit/server/tulioweb/index.php:34
 #: ../../web/templates/pages/edit_server.php:15
 msgid "Panel Cronjobs"
 msgstr ""
@@ -1162,7 +1162,7 @@ msgstr ""
 msgid "Cron job email reporting has been successfully enabled."
 msgstr ""
 
-#: ../../web/update/hestia/index.php:20
+#: ../../web/update/tulio/index.php:20
 #, php-format
 msgid "Error: %s update failed."
 msgstr ""
@@ -2889,7 +2889,7 @@ msgstr ""
 
 #: ../../web/templates/pages/list_server_info.php:19
 #: ../../web/templates/pages/list_server_info.php:20
-msgid "Hestia Control Panel"
+msgid "Tulio Control Panel"
 msgstr ""
 
 #: ../../web/templates/pages/list_server_info.php:30
@@ -5018,7 +5018,7 @@ msgstr ""
 msgid "BACKUP"
 msgstr ""
 
-#: ../../web/src/app/System/HestiaApp.php:218
+#: ../../web/src/app/System/TulioApp.php:218
 msgid "Unable to add database!"
 msgstr ""
 
@@ -5030,16 +5030,16 @@ msgstr ""
 msgid "NGINX cache has been purged successfully."
 msgstr ""
 
-#: ../../bin/v-list-sys-hestia-updates:110
-msgid "Hestia core package"
+#: ../../bin/v-list-sys-tulio-updates:110
+msgid "Tulio core package"
 msgstr ""
 
-#: ../../bin/v-list-sys-hestia-updates:125
-msgid "Hestia internal php interpreter"
+#: ../../bin/v-list-sys-tulio-updates:125
+msgid "Tulio internal php interpreter"
 msgstr ""
 
-#: ../../bin/v-list-sys-hestia-updates:141
-msgid "Hestia internal web server"
+#: ../../bin/v-list-sys-tulio-updates:141
+msgid "Tulio internal web server"
 msgstr ""
 
 #: ../../bin/v-list-sys-services:167

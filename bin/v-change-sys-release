@@ -3,7 +3,7 @@
 # options: [RESTART]
 #
 # This function for changing the release branch for the
-# Hestia Control Panel. This allows the user to switch between
+# Tulio Control Panel. This allows the user to switch between
 # stable and pre-release builds which will automaticlly update
 # based on the appropriate release schedule if auto-update is
 # turned on.
@@ -17,7 +17,7 @@ branch=$1
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -49,7 +49,7 @@ if [ -z "$branch" ]; then
 else
 	# Check that requested branch exists
 	echo "Checking for existence of $branch branch..."
-	branch_check=$(curl -s --head -w %{http_code} "https://raw.githubusercontent.com/contaura/tuliocp/$branch/src/deb/hestia/control" -o /dev/null)
+	branch_check=$(curl -s --head -w %{http_code} "https://raw.githubusercontent.com/contaura/tuliocp/$branch/src/deb/tulio/control" -o /dev/null)
 	if [ "$branch_check" -ne "200" ]; then
 		echo "Error: invalid branch name specified."
 		exit 1

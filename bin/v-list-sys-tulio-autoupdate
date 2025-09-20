@@ -1,8 +1,8 @@
 #!/bin/bash
-# info: list hestia autoupdate settings
+# info: list tulio autoupdate settings
 # options: [FORMAT]
 #
-# example: v-list-sys-hestia-autoupdate
+# example: v-list-sys-tulio-autoupdate
 #
 # This function for obtaining autoupdate settings.
 
@@ -15,7 +15,7 @@ format=${1-shell}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -66,7 +66,7 @@ csv_list() {
 #----------------------------------------------------------#
 
 # Check cron tab
-check_cron=$(grep 'v-update-sys-hestia-all' /var/spool/cron/crontabs/hestiaweb)
+check_cron=$(grep 'v-update-sys-tulio-all' /var/spool/cron/crontabs/tulioweb)
 
 # Listing data
 case $format in

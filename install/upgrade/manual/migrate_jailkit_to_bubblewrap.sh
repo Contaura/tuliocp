@@ -73,7 +73,7 @@ done
 
 # Checking sshd directives
 config='/etc/ssh/sshd_config'
-ssh_i=$(grep -n "^# Hestia SSH Chroot" $config)
+ssh_i=$(grep -n "^# Tulio SSH Chroot" $config)
 
 # Backing up config
 cp $config $config.bak
@@ -104,7 +104,7 @@ rm -f /etc/cron.d/tulio-ssh-jail
 apt remove -qq jailkit -y > /dev/null 2>&1
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       Tulio                             #
 #----------------------------------------------------------#
 
 # Logging

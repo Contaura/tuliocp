@@ -1,8 +1,8 @@
 #!/bin/bash
 
 for file in /usr/local/tulio/bin/*; do
-	echo "$file" >> ~/hestia_cli_help.txt
-	[ -f "$file" ] && [ -x "$file" ] && "$file" >> ~/hestia_cli_help.txt
+	echo "$file" >> ~/tulio_cli_help.txt
+	[ -f "$file" ] && [ -x "$file" ] && "$file" >> ~/tulio_cli_help.txt
 done
 
-sed -i 's\/usr/local/tulio/bin/\\' ~/hestia_cli_help.txt
+sed -i 's\/usr/local/tulio/bin/\\' ~/tulio_cli_help.txt

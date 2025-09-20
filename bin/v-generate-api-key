@@ -12,7 +12,7 @@
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
@@ -33,7 +33,7 @@ check_tulio_demo_mode
 
 if [ ! -d "$HESTIA/data/keys/" ]; then
 	mkdir -p $HESTIA/data/keys/
-	chown hestiaweb:root $HESTIA/data/keys/
+	chown tulioweb:root $HESTIA/data/keys/
 	chmod 750 $HESTIA/data/keys/
 fi
 

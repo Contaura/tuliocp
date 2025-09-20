@@ -26,7 +26,7 @@ arch=$(arch)
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/backup.sh
@@ -186,14 +186,14 @@ if [ "$type" = 'rclone' ]; then
 	curl -s https://rclone.org/install.sh | bash /dev/null > /dev/null 2>&1
 	# Verify account exists
 	if [ ! -z "$(cat /root/.config/rclone/rclone.conf | grep "\[$host\]")" ]; then
-		echo "test" > /tmp/hestia-backup.txt
+		echo "test" > /tmp/tulio-backup.txt
 		# Try to upload a single file
 		if [ -z "$path" ]; then
-			rclone copy /tmp/hestia-backup.txt $host:/hestia-backup.txt
-			rclone delete $host:/hestia-backup.txt
+			rclone copy /tmp/tulio-backup.txt $host:/tulio-backup.txt
+			rclone delete $host:/tulio-backup.txt
 		else
-			rclone copy /tmp/hestia-backup.txt $host:$path/hestia-backup.txt
-			rclone delete $host:$path/hestia-backup.txt
+			rclone copy /tmp/tulio-backup.txt $host:$path/tulio-backup.txt
+			rclone delete $host:$path/tulio-backup.txt
 		fi
 	else
 		check_result "$E_CONNECT" "Rclone config does not exist"

@@ -21,7 +21,7 @@ fi
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
@@ -89,7 +89,7 @@ if [ ! -e "$BACKUP/$backup" ]; then
 	else
 		if [ -e "$BACKUP/$backup" ]; then
 			chmod 0640 $BACKUP/$backup
-			chown hestiaweb:hestiaweb $BACKUP/$backup
+			chown tulioweb:tulioweb $BACKUP/$backup
 			echo "rm $BACKUP/$backup" | at now + 1 day
 		fi
 	fi

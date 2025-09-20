@@ -16,7 +16,7 @@ notify=${2-no}
 
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
-source /etc/hestiacp/tulio.conf
+source /etc/tuliocp/tulio.conf
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
@@ -205,25 +205,25 @@ fi
 
 # Backup sys configs
 echo "-- SYSTEM --" | tee $BACKUP/$user.log
-mkdir $tmpdir/hestia
+mkdir $tmpdir/tulio
 
 echo -e "$(date "+%F %T") $user.conf" | tee -a $BACKUP/$user.log
-cp -r $USER_DATA/user.conf $tmpdir/hestia/
-cp -r $USER_DATA/ssl $tmpdir/hestia/
+cp -r $USER_DATA/user.conf $tmpdir/tulio/
+cp -r $USER_DATA/ssl $tmpdir/tulio/
 
 if [ -e "$USER_DATA/stats.log" ]; then
 	echo -e "$(date "+%F %T") stats.log" | tee -a $BACKUP/$user.log
-	cp -r $USER_DATA/stats.log $tmpdir/hestia/
+	cp -r $USER_DATA/stats.log $tmpdir/tulio/
 fi
 
 if [ -e "$USER_DATA/history.log" ]; then
 	echo -e "$(date "+%F %T") history.log" | tee -a $BACKUP/$user.log
-	cp -r $USER_DATA/history.log $tmpdir/hestia/
+	cp -r $USER_DATA/history.log $tmpdir/tulio/
 fi
 
 if [ -e "$USER_DATA/backup-excludes.conf" ]; then
 	echo -e "$(date "+%F %T") backup-excludes.conf" | tee -a $BACKUP/$user.log
-	cp -r $USER_DATA/backup-excludes.conf $tmpdir/hestia/
+	cp -r $USER_DATA/backup-excludes.conf $tmpdir/tulio/
 fi
 
 # Backup PAM
@@ -263,7 +263,7 @@ if [ -n "$WEB_SYSTEM" ] && [ "$WEB" != '*' ]; then
 		((i++))
 		echo -e "$(date "+%F %T") $domain" | tee -a $BACKUP/$user.log
 		mkdir -p $tmpdir/web/$domain/conf
-		mkdir -p $tmpdir/web/$domain/hestia
+		mkdir -p $tmpdir/web/$domain/tulio
 
 		# Get domain variables
 		domain_idn=$domain
@@ -273,7 +273,7 @@ if [ -n "$WEB_SYSTEM" ] && [ "$WEB" != '*' ]; then
 		# Backup web.conf
 		cd $tmpdir/web/$domain/
 		conf="$USER_DATA/web.conf"
-		grep "DOMAIN='$domain'" $conf > hestia/web.conf
+		grep "DOMAIN='$domain'" $conf > tulio/web.conf
 
 		# Backup vhost config
 		if [ -e "$HOMEDIR/$user/conf/web/$domain/$WEB_SYSTEM.conf" ]; then
@@ -356,7 +356,7 @@ if [ -n "$WEB_SYSTEM" ] && [ "$WEB" != '*' ]; then
 		# Backup ssl certificates
 		if [ "$SSL" = 'yes' ]; then
 			cp $HOMEDIR/$user/conf/web/$domain/ssl/$domain.* conf/
-			cp $USER_DATA/ssl/$domain.* hestia/
+			cp $USER_DATA/ssl/$domain.* tulio/
 		fi
 
 		# Changin dir to documentroot
@@ -429,15 +429,15 @@ if [ -n "$DNS_SYSTEM" ] && [ "$DNS" != '*' ]; then
 		# Building directory tree
 		mkdir -p $tmpdir/dns/$domain/conf
 		mkdir -p $tmpdir/dns/$domain/conf/keys
-		mkdir -p $tmpdir/dns/$domain/hestia
+		mkdir -p $tmpdir/dns/$domain/tulio
 
 		# Backup dns.conf
 		cd $tmpdir/dns/$domain/
 		conf="$USER_DATA/dns.conf"
-		grep "DOMAIN='$domain'" $conf > hestia/dns.conf
+		grep "DOMAIN='$domain'" $conf > tulio/dns.conf
 
 		# Backup dns recods
-		cp $USER_DATA/dns/$domain.conf hestia/$domain.conf
+		cp $USER_DATA/dns/$domain.conf tulio/$domain.conf
 		if [ "$DNS_SYSTEM" != 'remote' ]; then
 			cp $HOMEDIR/$user/conf/dns/$domain.db conf/$domain.db
 		fi
@@ -480,7 +480,7 @@ if [ -n "$MAIL_SYSTEM" ] && [ "$MAIL" != '*' ]; then
 		((i++))
 		echo -e "$(date "+%F %T") $domain" | tee -a $BACKUP/$user.log
 		mkdir -p $tmpdir/mail/$domain/conf
-		mkdir -p $tmpdir/mail/$domain/hestia
+		mkdir -p $tmpdir/mail/$domain/tulio
 		domain_idn=$domain
 		format_domain_idn
 
@@ -492,10 +492,10 @@ if [ -n "$MAIL_SYSTEM" ] && [ "$MAIL" != '*' ]; then
 
 		# Backup mail.conf
 		conf="$USER_DATA/mail.conf"
-		grep "DOMAIN='$domain'" $conf > hestia/mail.conf
-		cp $USER_DATA/mail/$domain.* hestia/
+		grep "DOMAIN='$domain'" $conf > tulio/mail.conf
+		cp $USER_DATA/mail/$domain.* tulio/
 		if [ -n "$(ls $USER_DATA/mail/ | grep *@$domain)" ]; then
-			cp $USER_DATA/mail/*@$domain.* hestia/
+			cp $USER_DATA/mail/*@$domain.* tulio/
 		fi
 
 		# Backup emails
@@ -557,10 +557,10 @@ if [ -n "$DB_SYSTEM" ] && [ "$DB" != '*' ]; then
 
 		echo -e "$(date "+%F %T") $database ($TYPE)" | tee -a $BACKUP/$user.log
 		mkdir -p $tmpdir/db/$database/conf
-		mkdir -p $tmpdir/db/$database/hestia
+		mkdir -p $tmpdir/db/$database/tulio
 
 		cd $tmpdir/db/$database/
-		grep "DB='$database'" $conf > hestia/db.conf
+		grep "DB='$database'" $conf > tulio/db.conf
 
 		dump="$tmpdir/db/$database/$database.$TYPE.sql"
 		if [ "$BACKUP_MODE" = 'zstd' ]; then

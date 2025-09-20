@@ -2,7 +2,7 @@
 
 #===========================================================================#
 #                                                                           #
-# Hestia Control Panel - API Function Library                               #
+# Tulio Control Panel - API Function Library                               #
 #                                                                           #
 #===========================================================================#
 
@@ -50,7 +50,7 @@ send_api_cmd() {
 
 	if [ "$DEBUG_MODE" = "yes" ]; then
 		# log out going request if wanted for debugging
-		echo "$1 $2 $3 $4 $5 $6 $7 $8 $9" >> /var/log/hestia/api_out.log
+		echo "$1 $2 $3 $4 $5 $6 $7 $8 $9" >> /var/log/tulio/api_out.log
 	fi
 	return $answer
 }
@@ -156,7 +156,7 @@ remote_dns_health_check() {
 			echo -e "following commands:\n" >> $tmpfile
 			echo "v-unsuspend-remote-dns-host $HOST" >> $tmpfile
 			echo "v-sync-dns-cluster $HOST" >> $tmpfile
-			echo -e "\n\n--\nHestia Control Panel\n$(hostname)" >> $tmpfile
+			echo -e "\n\n--\nTulio Control Panel\n$(hostname)" >> $tmpfile
 
 			if [ "$1" = 'no_email' ]; then
 				cat $tmpfile

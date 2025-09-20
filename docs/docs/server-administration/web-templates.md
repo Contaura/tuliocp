@@ -148,9 +148,9 @@ To write custom caching templates, use the following naming scheme:
 
 `caching-yourname.tpl`, `caching-yourname.stpl` and `caching-yourname.sh`
 
-### Does Hestia support Web socket support
+### Does Tulio support Web socket support
 
-Yes, Hestia works fine with Web sockets how ever our default templates include on default:
+Yes, Tulio works fine with Web sockets how ever our default templates include on default:
 
 ```bash
 proxy_hide_header Upgrade

@@ -2,7 +2,7 @@
 
 #===========================================================================#
 #                                                                           #
-# Hestia Control Panel - Domain Function Library                            #
+# Tulio Control Panel - Domain Function Library                            #
 #                                                                           #
 #===========================================================================#
 
@@ -718,7 +718,7 @@ add_mail_ssl_config() {
 		mkdir -p /etc/dovecot/conf.d/domains
 	fi
 
-	# Add certificate to Hestia user configuration data directory
+	# Add certificate to Tulio user configuration data directory
 	if [ -f "$ssl_dir/$domain.crt" ]; then
 		cp -f $ssl_dir/$domain.crt $USER_DATA/ssl/mail.$domain.crt
 		cp -f $ssl_dir/$domain.key $USER_DATA/ssl/mail.$domain.key
