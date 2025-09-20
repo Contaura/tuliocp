@@ -122,7 +122,7 @@ upgrade_complete_message() {
 	echo "https://github.com/contaura/tuliocp/issues                                  "
 	echo
 	echo "Read the release notes to learn about new fixes and features:                "
-	echo "https://github.com/contaura/tuliocp/blob/release/CHANGELOG.md               "
+	echo "https://github.com/contaura/tuliocp/blob/main/CHANGELOG.md                "
 	echo
 	echo "We hope that you enjoy using this version of Hestia Control Panel,           "
 	echo "have a wonderful day!                                                        "
@@ -175,7 +175,7 @@ upgrade_set_branch() {
 	# Set branch in tulio.conf
 	DISPLAY_VER=$(echo "$1" | sed "s|~alpha||g" | sed "s|~beta||g")
 	if [ "$DISPLAY_VER" = "$1" ]; then
-		$BIN/v-change-sys-config-value "RELEASE_BRANCH" "release"
+		$BIN/v-change-sys-config-value "RELEASE_BRANCH" "main"
 	fi
 }
 
@@ -193,7 +193,7 @@ upgrade_send_notification_to_panel() {
 		$BIN/v-add-user-notification "$ROOT_USER" 'Thank you for testing Hestia Control Panel '$new_version'.' '<p>Please share your feedback with our development team through our <a href="https://forum.tuliocp.com" target="_blank">discussion forum</a>.</p><p>Found a bug? <a href="https://github.com/contaura/tuliocp/issues" target="_blank">Open an issue on GitHub</a>!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
 	else
 		# Send normal upgrade complete notification for stable releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Upgrade complete' '<p>Hestia Control Panel has been updated to <span class="u-text-bold">v'$new_version'</span>.</p><p><a href="https://github.com/contaura/tuliocp/blob/release/CHANGELOG.md" target="_blank">View release notes</a></p><p>Please report any bugs by <a href="https://github.com/contaura/tuliocp/issues" target="_blank">opening an issue on GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Upgrade complete' '<p>Hestia Control Panel has been updated to <span class="u-text-bold">v'$new_version'</span>.</p><p><a href="https://github.com/contaura/tuliocp/blob/main/CHANGELOG.md" target="_blank">View release notes</a></p><p>Please report any bugs by <a href="https://github.com/contaura/tuliocp/issues" target="_blank">opening an issue on GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
 	fi
 }
 

@@ -33,31 +33,31 @@ fi
 if [ -f "$TULIO/web/images/custom/logo-tulio.svg" ]; then
 	cp -f "$TULIO/web/images/custom/logo-tulio.svg" "$TULIO/web/images/logo-tulio.svg"
 elif [ ! -f "$TULIO/web/images/custom/logo-tulio.svg" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/logo-tulio.svg" "$TULIO/web/images/logo-tulio.svg"
+	download_file "https://raw.githubusercontent.com/contaura/tuliocp/main/web/images/logo-tulio.svg" "$TULIO/web/images/logo-tulio.svg"
 fi
 
 if [ -f "$TULIO/web/images/custom/logo.png" ]; then
 	cp -f "$TULIO/web/images/custom/logo.png" "$TULIO/web/images/logo.png"
 elif [ ! -f "$TULIO/web/images/custom/logo.png" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/logo.png" "$TULIO/web/images/logo.png"
+	download_file "https://raw.githubusercontent.com/contaura/tuliocp/main/web/images/logo.png" "$TULIO/web/images/logo.png"
 fi
 
 if [ -f "$TULIO/web/images/custom/logo-tulio-header.svg" ]; then
 	cp -f "$TULIO/web/images/custom/logo-tulio-header.svg" "$TULIO/web/images/logo-tulio-header.svg"
 elif [ ! -f "$TULIO/web/images/custom/logo-tulio-header.svg" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/logo-tulio-header.svg" "$TULIO/web/images/logo-tulio-header.svg"
+	download_file "https://raw.githubusercontent.com/contaura/tuliocp/main/web/images/logo-tulio-header.svg" "$TULIO/web/images/logo-tulio-header.svg"
 fi
 
 if [ -f "$TULIO/web/images/custom/favicon.png" ]; then
 	cp -f "$TULIO/web/images/custom/favicon.png" "$TULIO/web/images/favicon.png"
 elif [ ! -f "$TULIO/web/images/custom/favicon.png" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/favicon.png" "$TULIO/web/images/favicon.png"
+	download_file "https://raw.githubusercontent.com/contaura/tuliocp/main/web/images/favicon.png" "$TULIO/web/images/favicon.png"
 fi
 
 if [ -f "$TULIO/web/images/custom/favicon.ico" ]; then
 	cp -f "$TULIO/web/images/custom/favicon.ico" "$TULIO/web/favicon.ico"
 elif [ ! -f "$TULIO/web/images/custom/favicon.ico" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/favicon.ico" "$TULIO/web/favicon.ico"
+	download_file "https://raw.githubusercontent.com/contaura/tuliocp/main/web/favicon.ico" "$TULIO/web/favicon.ico"
 fi
 
 #----------------------------------------------------------#
