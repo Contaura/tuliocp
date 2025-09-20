@@ -15,7 +15,7 @@
 #----------------------------------------------------------#
 export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
-RHOST='apt.tuliocp.com'
+RHOST='apt.hestiacp.com'
 VERSION='debian'
 TULIO='/usr/local/tulio'
 LOG="/root/hst_install_backups/hst_install-$(date +%d%m%Y%H%M).log"
@@ -467,7 +467,7 @@ fi
 
 # Check repository availability
 wget --quiet "https://$RHOST" -O /dev/null
-check_result $? "Unable to connect to the TulioCP APT repository"
+check_result $? "Unable to connect to the Hestia APT repository"
 
 # Check installed packages
 tmpfile=$(mktemp -p /tmp)
@@ -863,7 +863,7 @@ if [ "$mysql8" = 'yes' ]; then
 	done
 fi
 
-# Installing TulioCP repo
+# Installing Hestia repo
 echo "[ * ] Hestia Control Panel"
 echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://$RHOST/ $codename main" > $apt/hestia.list
 gpg --no-default-keyring --keyring /usr/share/keyrings/tulio-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5 > /dev/null 2>&1
