@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-packages:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     
     steps:
     - name: Checkout code
@@ -77,7 +77,7 @@ jobs:
 
   create-repository:
     needs: build-packages
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     
     steps:
