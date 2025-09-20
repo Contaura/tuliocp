@@ -34,8 +34,7 @@ jobs:
           mkdir -p apt-repo/dists/stable/main/binary-amd64
           mkdir -p apt-repo/pool/main
           
-          # Copy our index page to the root
-          cp docs/index.html apt-repo/
+          # The index.html is already in apt-repo/ and will be deployed as-is
           
           # setup.sh is already in apt-repo/ directory and will be deployed
           # Verify setup.sh exists for deployment
