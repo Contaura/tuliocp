@@ -17,6 +17,8 @@ export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
 RHOST='apt.hestiacp.com'
 VERSION='ubuntu'
+# Using Hestia package paths temporarily until TulioCP packages are available
+HESTIA_ROOT='/usr/local/hestia'
 TULIO='/usr/local/tulio'
 LOG="/root/hst_install_backups/hst_install-$(date +%d%m%Y%H%M).log"
 memory=$(grep 'MemTotal' /proc/meminfo | tr ' ' '\n' | grep [0-9])
@@ -26,8 +28,8 @@ os='ubuntu'
 release="$(lsb_release -s -r)"
 codename="$(lsb_release -s -c)"
 architecture="$(arch)"
-HESTIA_INSTALL_DIR="$TULIO/install/deb"
-HESTIA_COMMON_DIR="$TULIO/install/common"
+HESTIA_INSTALL_DIR="$HESTIA_ROOT/install/deb"
+HESTIA_COMMON_DIR="$HESTIA_ROOT/install/common"
 VERBOSE='no'
 
 # Define software versions
@@ -1129,6 +1131,19 @@ if [ -n "$withdebs" ] && [ -d "$withdebs" ]; then
 			echo "    - tulio-web-terminal"
 			dpkg -i $withdebs/tulio-web-terminal_*.deb > /dev/null 2>&1
 		fi
+	fi
+fi
+
+# Create TulioCP directory structure and link to Hestia installation
+echo "[ * ] Setting up TulioCP directory structure..."
+if [ ! -d "$TULIO" ]; then
+	# Create TulioCP base directory
+	mkdir -p "$TULIO"
+	# Link Hestia installation files to TulioCP paths
+	if [ -d "$HESTIA_ROOT" ]; then
+		# Copy Hestia files to TulioCP directory
+		cp -r "$HESTIA_ROOT/"* "$TULIO/"
+		echo "Hestia files copied to TulioCP directory"
 	fi
 fi
 
