@@ -568,13 +568,11 @@ esac
 install_welcome_message() {
 	DISPLAY_VER=$(echo $HESTIA_INSTALL_VER | sed "s|~alpha||g" | sed "s|~beta||g")
 	echo
-	echo '                _   _           _   _        ____ ____                  '
-	echo '               | | | | ___  ___| |_(_) __ _ / ___|  _ \                 '
-	echo '               | |_| |/ _ \/ __| __| |/ _` | |   | |_) |                '
-	echo '               |  _  |  __/\__ \ |_| | (_| | |___|  __/                 '
-	echo '               |_| |_|\___||___/\__|_|\__,_|\____|_|                    '
+	echo "========================================================================"
 	echo "                                                                        "
 	echo "                              TulioCP                                   "
+	echo "                      Web Server Control Panel                         "
+	echo "                                                                        "
 	if [[ "$HESTIA_INSTALL_VER" =~ "beta" ]]; then
 		echo "                              BETA RELEASE                          "
 	fi
@@ -593,7 +591,7 @@ install_welcome_message() {
 	echo
 }
 
-# Printing nice ASCII logo
+# Display welcome message
 clear
 install_welcome_message
 
