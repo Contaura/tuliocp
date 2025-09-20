@@ -14,7 +14,7 @@ The following is useful for testing a Pull Request or a branch on a fork.
 
 ```bash
 # Replace with https://github.com/username/hestiacp.git if you want to test a branch that you created yourself
-git clone https://github.com/tuliocp/tuliocp.git
+git clone https://github.com/contaura/tuliocp.git
 cd ./hestiacp/
 
 # Replace main with the branch you want to test

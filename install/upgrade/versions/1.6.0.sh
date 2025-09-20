@@ -118,8 +118,8 @@ ips=$(ls /usr/local/tulio/data/ips/ | wc -l)
 release=$(lsb_release -s -i)
 if [ $release = 'Ubuntu' ]; then
 	if [ $ips -gt 1 ]; then
-		add_upgrade_message "Warning: Please check your network configuration!\n\n A bug has been discovered that might affect your setup and can lead to issues after a system reboot. Please review your network configuration. See https://github.com/tuliocp/tuliocp/pull/2612#issuecomment-1135571835 for more info regarding this issue!"
-		$TULIO/bin/v-add-user-notification admin "Warning: Please check your network configuration!\n\n A bug has been discovered that might affect your setup and can lead to issues after a system reboot. Please review your network configuration. <a href='https://github.com/tuliocp/tuliocp/pull/2612#issuecomment-1135571835'>More info</a>"
+		add_upgrade_message "Warning: Please check your network configuration!\n\n A bug has been discovered that might affect your setup and can lead to issues after a system reboot. Please review your network configuration. See https://github.com/contaura/tuliocp/pull/2612#issuecomment-1135571835 for more info regarding this issue!"
+		$TULIO/bin/v-add-user-notification admin "Warning: Please check your network configuration!\n\n A bug has been discovered that might affect your setup and can lead to issues after a system reboot. Please review your network configuration. <a href='https://github.com/contaura/tuliocp/pull/2612#issuecomment-1135571835'>More info</a>"
 	fi
 fi
 

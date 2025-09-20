@@ -566,7 +566,7 @@ case $architecture in
 		echo -e "\e[33mERROR: $architecture is currently not supported!\e[0m"
 		echo -e "\e[33mPlease verify the achitecture used is currenlty supported\e[0m"
 		echo ""
-		echo -e "\e[33mhttps://github.com/tuliocp/tuliocp/blob/main/README.md\e[0m"
+		echo -e "\e[33mhttps://github.com/contaura/tuliocp/blob/main/README.md\e[0m"
 		echo ""
 		check_result 1 "Installation aborted"
 		;;
@@ -2447,7 +2447,7 @@ or if you encounter any bugs or problems:
 
 Documentation:  https://docs.tuliocp.com/
 Forum:          https://forum.tuliocp.com/
-GitHub:         https://www.github.com/tuliocp/tuliocp
+GitHub:         https://www.github.com/contaura/tuliocp
 
 Note: Automatic updates are enabled by default. If you would like to disable them,
 please log in and navigate to Server > Updates to turn them off.
@@ -2471,7 +2471,7 @@ cat $tmpfile
 rm -f $tmpfile
 
 # Add welcome message to notification panel
-$TULIO/bin/v-add-user-notification "$username" 'Welcome to Hestia Control Panel!' '<p>You are now ready to begin adding <a href="/add/user/">user accounts</a> and <a href="/add/web/">domains</a>. For help and assistance, <a href="https://tuliocp.com/docs/" target="_blank">view the documentation</a> or <a href="https://forum.tuliocp.com/" target="_blank">visit our forum</a>.</p><p>Please <a href="https://github.com/tuliocp/tuliocp/issues" target="_blank">report any issues via GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+$TULIO/bin/v-add-user-notification "$username" 'Welcome to Hestia Control Panel!' '<p>You are now ready to begin adding <a href="/add/user/">user accounts</a> and <a href="/add/web/">domains</a>. For help and assistance, <a href="https://tuliocp.com/docs/" target="_blank">view the documentation</a> or <a href="https://forum.tuliocp.com/" target="_blank">visit our forum</a>.</p><p>Please <a href="https://github.com/contaura/tuliocp/issues" target="_blank">report any issues via GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
 
 # Clean-up
 # Sort final configuration file

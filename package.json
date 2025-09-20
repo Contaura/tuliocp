@@ -3,7 +3,7 @@
 	"private": true,
 	"version": "1.10.0~alpha",
 	"description": "An open-source Linux web server control panel.",
-	"repository": "https://github.com/tuliocp/tuliocp",
+	"repository": "https://github.com/contaura/tuliocp",
 	"license": "GPL-3.0-or-later",
 	"type": "module",
 	"scripts": {

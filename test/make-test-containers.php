@@ -14,7 +14,7 @@
 # CONFIG HOST STEPS:
 #   export SHARED_HOST_FOLDER="/home/myuser/projectfiles"
 #   mkdir -p $SHARED_HOST_FOLDER
-#   cd $SHARED_HOST_FOLDER && git clone https://github.com/tuliocp/tuliocp.git && cd hestiacp && git checkout ..branch..
+#   cd $SHARED_HOST_FOLDER && git clone https://github.com/contaura/tuliocp.git && cd hestiacp && git checkout ..branch..
 #
 
 /*

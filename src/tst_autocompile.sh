@@ -288,7 +288,7 @@ if [ "$TULIO_DEBUG" ]; then
 fi
 
 # Generate Links for sourcecode
-HESTIA_ARCHIVE_LINK='https://github.com/tuliocp/tuliocp/archive/'$branch'.tar.gz'
+HESTIA_ARCHIVE_LINK='https://github.com/contaura/tuliocp/archive/'$branch'.tar.gz'
 if [[ $NGINX_V =~ - ]]; then
 	NGINX='https://nginx.org/download/nginx-'$(echo $NGINX_V | cut -d"-" -f1)'.tar.gz'
 else

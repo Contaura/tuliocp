@@ -51,4 +51,4 @@ Once that’s done, run `apt update && apt upgrade` to rollback to the regular r
 
 ## Reporting bugs
 
-If you encounter a bug, please [open an issue](https://github.com/tuliocp/tuliocp/issues/new/choose) or [submit a Pull Request](https://github.com/tuliocp/tuliocp/pulls). You can also report it on our forum or our Discord server
+If you encounter a bug, please [open an issue](https://github.com/contaura/tuliocp/issues/new/choose) or [submit a Pull Request](https://github.com/contaura/tuliocp/pulls). You can also report it on our forum or our Discord server

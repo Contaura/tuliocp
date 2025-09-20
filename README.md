@@ -4,7 +4,7 @@
 
 <h2 align="center">Lightweight and powerful control panel for the modern web</h2>
 
-<p align="center"><strong>Latest stable release:</strong> Version 1.9.4 | <a href="https://github.com/tuliocp/tuliocp/blob/release/CHANGELOG.md">View Changelog</a></p>
+<p align="center"><strong>Latest stable release:</strong> Version 1.9.4 | <a href="https://github.com/contaura/tuliocp/blob/release/CHANGELOG.md">View Changelog</a></p>
 
 <p align="center">
 	<a href="https://www.tuliocp.com/">TulioCP.com</a> |
@@ -14,8 +14,8 @@
 	<a href="https://drone.tuliocp.com/tuliocp/tuliocp">
 		<img src="https://drone.tuliocp.com/api/badges/tuliocp/tuliocp/status.svg?ref=refs/heads/main" alt="Drone Status"/>
 	</a>
-	<a href="https://github.com/tuliocp/tuliocp/actions/workflows/lint.yml">
-		<img src="https://github.com/tuliocp/tuliocp/actions/workflows/lint.yml/badge.svg" alt="Lint Status"/>
+	<a href="https://github.com/contaura/tuliocp/actions/workflows/lint.yml">
+		<img src="https://github.com/contaura/tuliocp/actions/workflows/lint.yml/badge.svg" alt="Lint Status"/>
 	</a>
 	<a href="https://gurubase.io/g/hestia">
 		<img src="https://img.shields.io/badge/Gurubase-Ask%20Hestia%20Guru-006BFF" alt="Gurubase"/>
@@ -114,13 +114,13 @@ apt-get upgrade
 ## Issues & Support Requests
 
 - If you encounter a general problem while using Tulio Control Panel and need help, please [visit our forum](https://forum.tuliocp.com/) to search for potential solutions or post a new thread where community members can assist.
-- Bugs and other reproducible issues should be filed via GitHub by [creating a new issue report](https://github.com/tuliocp/tuliocp/issues) so that our developers can investigate further. Please note that requests for support will be redirected to our forum.
+- Bugs and other reproducible issues should be filed via GitHub by [creating a new issue report](https://github.com/contaura/tuliocp/issues) so that our developers can investigate further. Please note that requests for support will be redirected to our forum.
 
 **IMPORTANT: We _cannot_ provide support for requests that do not describe the troubleshooting steps that have already been performed, or for third-party applications not related to Tulio Control Panel (such as WordPress). Please make sure that you include as much information as possible in your forum posts or issue reports!**
 
 ## Contributions
 
-If you would like to contribute to the project, please [read our Contribution Guidelines](https://github.com/tuliocp/tuliocp/blob/release/CONTRIBUTING.md) for a brief overview of our development process and standards.
+If you would like to contribute to the project, please [read our Contribution Guidelines](https://github.com/contaura/tuliocp/blob/release/CONTRIBUTING.md) for a brief overview of our development process and standards.
 
 ## Copyright
 
@@ -138,4 +138,4 @@ If you would like to contribute to the project, please [read our Contribution Gu
 
 ## License
 
-Tulio Control Panel is licensed under [GPL v3](https://github.com/tuliocp/tuliocp/blob/release/LICENSE) license, and is based on the [VestaCP](https://vestacp.com/) project.<br>
+Tulio Control Panel is licensed under [GPL v3](https://github.com/contaura/tuliocp/blob/release/LICENSE) license, and is based on the [VestaCP](https://vestacp.com/) project.<br>

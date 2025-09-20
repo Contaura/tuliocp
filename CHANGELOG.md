@@ -58,7 +58,7 @@ All notable changes to this project will be documented in this file.
 
 - To improve security, we now allow users to rename the default `admin` user.
 - Hestia now runs under a new `hestia-web` user.
-- In initial versions of HestiaCP, we used Jailkit to enabled Jailed SSH. It had major disadvantages, so we have decided it to replace it with [bubblewrap](https://github.com/containers/bubblewrap). Users running Jailed SSH in the past are advised to run the migration script! It can be found in `/usr/local/hestia/install/upgrade/manual/migrate_jailkit_to_bubblewrap.sh`. See [#4698](https://github.com/tuliocp/tuliocp/pull/4698)
+- In initial versions of HestiaCP, we used Jailkit to enabled Jailed SSH. It had major disadvantages, so we have decided it to replace it with [bubblewrap](https://github.com/containers/bubblewrap). Users running Jailed SSH in the past are advised to run the migration script! It can be found in `/usr/local/hestia/install/upgrade/manual/migrate_jailkit_to_bubblewrap.sh`. See [#4698](https://github.com/contaura/tuliocp/pull/4698)
 - We are aware that cgroups are currently not working as they should be. They work fine if you login with SSH as the user, but they don't work for PHP-FPM yet.
 - Dropped support for Debian 10 due to EOL.
 
@@ -177,7 +177,7 @@ All notable changes to this project will be documented in this file.
 ### Bug fixes
 
 - Include missed changes
-- Include <https://github.com/tuliocp/tuliocp/blob/main/install/upgrade/manual/secure_php.sh>
+- Include <https://github.com/contaura/tuliocp/blob/main/install/upgrade/manual/secure_php.sh>
 
 ## [1.8.9] - Service release
 
@@ -2097,8 +2097,8 @@ apt update && apt upgrade
 
 -
 
-[1.0.4]: https://github.com/tuliocp/tuliocp/releases/tag/1.0.4
-[1.0.3]: https://github.com/tuliocp/tuliocp/releases/tag/1.0.3
-[1.0.1]: https://github.com/tuliocp/tuliocp/releases/tag/1.0.1
-[1.0.0-190618]: https://github.com/tuliocp/tuliocp/releases/tag/1.0.0-190618
-[0.9.8-28]: https://github.com/tuliocp/tuliocp/releases/tag/0.9.8-28
+[1.0.4]: https://github.com/contaura/tuliocp/releases/tag/1.0.4
+[1.0.3]: https://github.com/contaura/tuliocp/releases/tag/1.0.3
+[1.0.1]: https://github.com/contaura/tuliocp/releases/tag/1.0.1
+[1.0.0-190618]: https://github.com/contaura/tuliocp/releases/tag/1.0.0-190618
+[0.9.8-28]: https://github.com/contaura/tuliocp/releases/tag/0.9.8-28

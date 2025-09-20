@@ -20,7 +20,7 @@ hero:
       link: https://demo.tuliocp.com:8083/
     - theme: alt
       text: View on GitHub
-      link: https://github.com/tuliocp/tuliocp
+      link: https://github.com/contaura/tuliocp
 
 features:
   - icon: 🚀
