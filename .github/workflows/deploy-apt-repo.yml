@@ -1,0 +1,70 @@
+name: Deploy APT Repository Files
+
+on:
+  push:
+    branches: [ main ]
+    paths: 
+      - 'apt-repo/**'
+  workflow_dispatch:
+
+# Sets permissions for GitHub Pages deployment
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow only one concurrent deployment
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Create minimal APT repository structure
+        run: |
+          # Create basic APT repo structure
+          mkdir -p apt-repo/dists/stable/main/binary-amd64
+          mkdir -p apt-repo/pool/main
+          
+          # Create minimal Release file
+          cat > apt-repo/dists/stable/Release << EOF
+          Origin: TulioCP
+          Label: TulioCP APT Repository
+          Suite: stable
+          Codename: stable
+          Components: main
+          Architectures: amd64
+          Date: $(date -u +"%a, %d %b %Y %H:%M:%S %Z")
+          Description: TulioCP Control Panel packages
+          EOF
+          
+          # Create CNAME file for custom domain
+          echo "apt.tuliocp.com" > apt-repo/CNAME
+          
+          # Ensure Packages file exists (even if empty)
+          touch apt-repo/dists/stable/main/binary-amd64/Packages
+          gzip -c apt-repo/dists/stable/main/binary-amd64/Packages > apt-repo/dists/stable/main/binary-amd64/Packages.gz
+          
+          # Show what we're deploying
+          echo "Deploying files:"
+          find apt-repo -type f
+        
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './apt-repo'
+          
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
