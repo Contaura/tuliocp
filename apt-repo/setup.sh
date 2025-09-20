@@ -2,6 +2,7 @@
 # TulioCP APT Repository Setup Script
 # https://apt.tuliocp.com/setup.sh
 # Updated with intelligent package detection and auto-fallback to direct installer
+# Last updated: 2025-09-20 18:20 - Fixed --force flag handling
 
 set -e
 
