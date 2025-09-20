@@ -111,9 +111,10 @@ else
     echo -e "${BLUE}📥 Downloading TulioCP installer...${NC}"
     if curl -sSL https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh -o /tmp/hst-install.sh; then
         echo -e "${GREEN}✅ Installer downloaded successfully${NC}"
-        echo -e "${BLUE}🚀 Running TulioCP installer...${NC}"
+        echo -e "${BLUE}🚀 Running TulioCP installer with --force flag...${NC}"
+        echo -e "${YELLOW}   (This will handle any existing admin users/groups automatically)${NC}"
         echo ""
-        bash /tmp/hst-install.sh
+        bash /tmp/hst-install.sh --force
         exit 0
     else
         echo -e "${RED}❌ Failed to download installer${NC}"

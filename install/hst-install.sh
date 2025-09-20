@@ -19,24 +19,44 @@ if [ "x$(id -u)" != 'x0' ]; then
 	exit 1
 fi
 
+# Parse arguments to check for force flag
+FORCE_INSTALL=false
+for arg in "$@"; do
+	case $arg in
+		--force|-f)
+			FORCE_INSTALL=true
+			;;
+	esac
+done
+
 # Check admin user account
-if [ ! -z "$(grep ^admin: /etc/passwd)" ] && [ -z "$1" ]; then
-	echo "Error: user admin exists"
-	echo
-	echo 'Please remove admin user before proceeding.'
-	echo 'If you want to do it automatically run installer with -f option:'
-	echo "Example: bash $0 --force"
-	exit 1
+if [ ! -z "$(grep ^admin: /etc/passwd)" ]; then
+	if [ "$FORCE_INSTALL" = "true" ]; then
+		echo "[ * ] Removing existing admin user (--force enabled)..."
+		userdel admin 2>/dev/null || true
+	else
+		echo "Error: user admin exists"
+		echo
+		echo 'Please remove admin user before proceeding.'
+		echo 'If you want to do it automatically run installer with --force option:'
+		echo "Example: bash $0 --force"
+		exit 1
+	fi
 fi
 
 # Check admin group
-if [ ! -z "$(grep ^admin: /etc/group)" ] && [ -z "$1" ]; then
-	echo "Error: group admin exists"
-	echo
-	echo 'Please remove admin group before proceeding.'
-	echo 'If you want to do it automatically run installer with -f option:'
-	echo "Example: bash $0 --force"
-	exit 1
+if [ ! -z "$(grep ^admin: /etc/group)" ]; then
+	if [ "$FORCE_INSTALL" = "true" ]; then
+		echo "[ * ] Removing existing admin group (--force enabled)..."
+		groupdel admin 2>/dev/null || true
+	else
+		echo "Error: group admin exists"
+		echo
+		echo 'Please remove admin group before proceeding.'
+		echo 'If you want to do it automatically run installer with --force option:'
+		echo "Example: bash $0 --force"
+		exit 1
+	fi
 fi
 
 # Detect OS
