@@ -19,8 +19,8 @@ source $TULIO/conf/tulio.conf
 #                    Verifications                         #
 #----------------------------------------------------------#
 
-echo "This will soft remove the mail stack from HestiaCP and disable related systemd service."
-echo "You won't be able to access mail related configurations from HestiaCP."
+echo "This will soft remove the mail stack from TulioCP and disable related systemd service."
+echo "You won't be able to access mail related configurations from TulioCP."
 echo "Your existing mail data and apt packages will be kept back."
 read -p 'Would you like to continue? [y/n]'
 

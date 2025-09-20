@@ -641,9 +641,9 @@ function check_ip_not_banned(){
     local a2_remoteip="/etc/$WEB_SYSTEM/mods-enabled/remoteip.conf"
 
     # Save initial state
-    echo "interface=${interface}" >> /tmp/hestia-test-env.sh
-    [ -f "$a2_rpaf" ]     && file_hash1=$(cat $a2_rpaf     |md5sum |cut -d" " -f1) && echo "a2_rpaf_hash='${file_hash1}'"     >> /tmp/hestia-test-env.sh
-    [ -f "$a2_remoteip" ] && file_hash2=$(cat $a2_remoteip |md5sum |cut -d" " -f1) && echo "a2_remoteip_hash='${file_hash2}'" >> /tmp/hestia-test-env.sh
+    echo "interface=${interface}" >> /tmp/tulio-test-env.sh
+    [ -f "$a2_rpaf" ]     && file_hash1=$(cat $a2_rpaf     |md5sum |cut -d" " -f1) && echo "a2_rpaf_hash='${file_hash1}'"     >> /tmp/tulio-test-env.sh
+    [ -f "$a2_remoteip" ] && file_hash2=$(cat $a2_remoteip |md5sum |cut -d" " -f1) && echo "a2_remoteip_hash='${file_hash2}'" >> /tmp/tulio-test-env.sh
 
 
     local ip="198.18.0.12"
@@ -898,7 +898,7 @@ function check_ip_not_banned(){
 
 
 @test "WEB: Generate Self signed certificate" {
-    ssl=$(v-generate-ssl-cert "$domain" "info@$domain" US CA "Orange County" HestiaCP IT "mail.$domain" | tail -n1 | awk '{print $2}')
+    ssl=$(v-generate-ssl-cert "$domain" "info@$domain" US CA "Orange County" TulioCP IT "mail.$domain" | tail -n1 | awk '{print $2}')
     echo $ssl;
     mv $ssl/$domain.crt /tmp/$domain.crt
     mv $ssl/$domain.key /tmp/$domain.key
@@ -942,7 +942,7 @@ function check_ip_not_banned(){
 
 
 @test "WEB: Generate Self signed certificate ASCII idn-tést.eu" {
-    run v-generate-ssl-cert "xn--idn-tst-fya.eu" "info@xn--idn-tst-fya.eu" US CA "Orange County" HestiaCP IT "mail.xn--idn-tst-fya.eu"
+    run v-generate-ssl-cert "xn--idn-tst-fya.eu" "info@xn--idn-tst-fya.eu" US CA "Orange County" TulioCP IT "mail.xn--idn-tst-fya.eu"
     assert_success
 }
 
@@ -960,7 +960,7 @@ function check_ip_not_banned(){
 }
 
 @test "WEB: Generate Self signed certificate ASCII bløst.рф" {
-    run v-generate-ssl-cert "xn--blst-hra.xn--p1ai" "info@xn--blst-hra.xn--p1ai" US CA "Orange County" HestiaCP IT "mail.xn--blst-hra.xn--p1ai"
+    run v-generate-ssl-cert "xn--blst-hra.xn--p1ai" "info@xn--blst-hra.xn--p1ai" US CA "Orange County" TulioCP IT "mail.xn--blst-hra.xn--p1ai"
     assert_success
 }
 
@@ -1007,8 +1007,8 @@ function check_ip_not_banned(){
     num_fpm_config_files="$(find -L /etc/php/ -name "${multi_domain}.conf" | wc -l)"
     assert_equal "$num_fpm_config_files" '1'
 
-    echo -e "<?php\necho 'hestia-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
-    validate_web_domain $user $multi_domain "hestia-multiphptest:$test_phpver" 'php-test.php'
+    echo -e "<?php\necho 'tulio-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
+    validate_web_domain $user $multi_domain "tulio-multiphptest:$test_phpver" 'php-test.php'
     rm "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
 }
 
@@ -1031,8 +1031,8 @@ function check_ip_not_banned(){
     num_fpm_config_files="$(find -L /etc/php/ -name "${multi_domain}.conf" | wc -l)"
     assert_equal "$num_fpm_config_files" '1'
 
-    echo -e "<?php\necho 'hestia-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
-    validate_web_domain $user $multi_domain "hestia-multiphptest:$test_phpver" 'php-test.php'
+    echo -e "<?php\necho 'tulio-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
+    validate_web_domain $user $multi_domain "tulio-multiphptest:$test_phpver" 'php-test.php'
     rm "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
 }
 
@@ -1055,8 +1055,8 @@ function check_ip_not_banned(){
     num_fpm_config_files="$(find -L /etc/php/ -name "${multi_domain}.conf" | wc -l)"
     assert_equal "$num_fpm_config_files" '1'
 
-    echo -e "<?php\necho 'hestia-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
-    validate_web_domain $user $multi_domain "hestia-multiphptest:$test_phpver" 'php-test.php'
+    echo -e "<?php\necho 'tulio-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
+    validate_web_domain $user $multi_domain "tulio-multiphptest:$test_phpver" 'php-test.php'
     rm "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
 }
 
@@ -1079,8 +1079,8 @@ function check_ip_not_banned(){
     num_fpm_config_files="$(find -L /etc/php/ -name "${multi_domain}.conf" | wc -l)"
     assert_equal "$num_fpm_config_files" '1'
 
-    echo -e "<?php\necho 'hestia-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
-    validate_web_domain $user $multi_domain "hestia-multiphptest:$test_phpver" 'php-test.php'
+    echo -e "<?php\necho 'tulio-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
+    validate_web_domain $user $multi_domain "tulio-multiphptest:$test_phpver" 'php-test.php'
     rm "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
 }
 
@@ -1103,8 +1103,8 @@ function check_ip_not_banned(){
     num_fpm_config_files="$(find -L /etc/php/ -name "${multi_domain}.conf" | wc -l)"
     assert_equal "$num_fpm_config_files" '1'
 
-    echo -e "<?php\necho 'hestia-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
-    validate_web_domain $user $multi_domain "hestia-multiphptest:$test_phpver" 'php-test.php'
+    echo -e "<?php\necho 'tulio-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
+    validate_web_domain $user $multi_domain "tulio-multiphptest:$test_phpver" 'php-test.php'
     rm "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
 }
 
@@ -1127,8 +1127,8 @@ function check_ip_not_banned(){
     num_fpm_config_files="$(find -L /etc/php/ -name "${multi_domain}.conf" | wc -l)"
     assert_equal "$num_fpm_config_files" '1'
 
-    echo -e "<?php\necho 'hestia-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
-    validate_web_domain $user $multi_domain "hestia-multiphptest:$test_phpver" 'php-test.php'
+    echo -e "<?php\necho 'tulio-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
+    validate_web_domain $user $multi_domain "tulio-multiphptest:$test_phpver" 'php-test.php'
     rm "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
 }
 
@@ -1151,8 +1151,8 @@ function check_ip_not_banned(){
     num_fpm_config_files="$(find -L /etc/php/ -name "${multi_domain}.conf" | wc -l)"
     assert_equal "$num_fpm_config_files" '1'
 
-    echo -e "<?php\necho 'hestia-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
-    validate_web_domain $user $multi_domain "hestia-multiphptest:$test_phpver" 'php-test.php'
+    echo -e "<?php\necho 'tulio-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
+    validate_web_domain $user $multi_domain "tulio-multiphptest:$test_phpver" 'php-test.php'
     rm $HOMEDIR/$user/web/$multi_domain/public_html/php-test.php
 }
 
@@ -1175,8 +1175,8 @@ function check_ip_not_banned(){
     num_fpm_config_files="$(find -L /etc/php/ -name "${multi_domain}.conf" | wc -l)"
     assert_equal "$num_fpm_config_files" '1'
 
-    echo -e "<?php\necho 'hestia-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
-    validate_web_domain $user $multi_domain "hestia-multiphptest:$test_phpver" 'php-test.php'
+    echo -e "<?php\necho 'tulio-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
+    validate_web_domain $user $multi_domain "tulio-multiphptest:$test_phpver" 'php-test.php'
     rm $HOMEDIR/$user/web/$multi_domain/public_html/php-test.php
 }
 
@@ -1199,8 +1199,8 @@ function check_ip_not_banned(){
 	num_fpm_config_files="$(find -L /etc/php/ -name "${multi_domain}.conf" | wc -l)"
 	assert_equal "$num_fpm_config_files" '1'
 
-	echo -e "<?php\necho 'hestia-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
-	validate_web_domain $user $multi_domain "hestia-multiphptest:$test_phpver" 'php-test.php'
+	echo -e "<?php\necho 'tulio-multiphptest:'.PHP_MAJOR_VERSION.'.'.PHP_MINOR_VERSION;" > "$HOMEDIR/$user/web/$multi_domain/public_html/php-test.php"
+	validate_web_domain $user $multi_domain "tulio-multiphptest:$test_phpver" 'php-test.php'
 	rm $HOMEDIR/$user/web/$multi_domain/public_html/php-test.php
 }
 

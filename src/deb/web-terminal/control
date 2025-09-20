@@ -1,5 +1,5 @@
-Source: hestia-web-terminal
-Package: hestia-web-terminal
+Source: tulio-web-terminal
+Package: tulio-web-terminal
 Priority: optional
 Version: 1.0.2
 Section: admin

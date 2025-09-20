@@ -38,14 +38,14 @@ if [ "$MAIL_SYSTEM" = "exim4" ]; then
 fi
 
 # With setup from installer
-if [ -f "/etc/apt/sources.list.d/hestia-beta.list" ]; then
+if [ -f "/etc/apt/sources.list.d/tulio-beta.list" ]; then
 	echo "[ ! ] Change to stable release!"
-	rm /etc/apt/sources.list.d/hestia-beta.list
-	sed -i 's/#//g' /etc/apt/sources.list.d/hestia.list
+	rm /etc/apt/sources.list.d/tulio-beta.list
+	sed -i 's/#//g' /etc/apt/sources.list.d/tulio.list
 fi
-check=$(cat /etc/apt/sources.list.d/hestia.list | grep "beta.tuliocp.com")
+check=$(cat /etc/apt/sources.list.d/tulio.list | grep "beta.tuliocp.com")
 if [ ! -z "$check" ]; then
 	echo "[ ! ] Change to stable release!"
-	sed -i '/beta.tuliocp.com/d' /etc/apt/sources.list.d/hestia.list
-	sed -i 's/#//g' /etc/apt/sources.list.d/hestia.list
+	sed -i '/beta.tuliocp.com/d' /etc/apt/sources.list.d/tulio.list
+	sed -i 's/#//g' /etc/apt/sources.list.d/tulio.list
 fi

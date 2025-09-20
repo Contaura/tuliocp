@@ -17,7 +17,7 @@ export PATH=$PATH:/sbin
 export DEBIAN_FRONTEND=noninteractive
 RHOST='apt.tuliocp.com'
 VERSION='debian'
-HESTIA='/usr/local/tulio'
+TULIO='/usr/local/tulio'
 LOG="/root/hst_install_backups/hst_install-$(date +%d%m%Y%H%M).log"
 memory=$(grep 'MemTotal' /proc/meminfo | tr ' ' '\n' | grep [0-9])
 hst_backups="/root/hst_install_backups/$(date +%d%m%Y%H%M)"
@@ -46,7 +46,7 @@ node_v="20"
 # Defining software pack for all distros
 software="acl apache2 apache2-suexec-custom apache2-utils at awstats bc bind9 bsdmainutils bsdutils
   clamav-daemon cron curl dnsutils dovecot-imapd dovecot-managesieved dovecot-pop3d dovecot-sieve e2fslibs e2fsprogs
-  exim4 exim4-daemon-heavy expect fail2ban flex ftp git hestia=${HESTIA_INSTALL_VER} hestia-nginx hestia-php hestia-web-terminal
+  exim4 exim4-daemon-heavy expect fail2ban flex ftp git hestia=${HESTIA_INSTALL_VER} tulio-nginx tulio-php tulio-web-terminal
   idn2 imagemagick ipset jq libapache2-mod-fcgid libapache2-mod-php$fpm_v libapache2-mpm-itk libmail-dkim-perl lsb-release
   lsof mariadb-client mariadb-common mariadb-server mc mysql-client mysql-common mysql-server net-tools nginx nodejs openssh-server
   php$fpm_v php$fpm_v-apcu php$fpm_v-bz2 php$fpm_v-cgi php$fpm_v-cli php$fpm_v-common php$fpm_v-curl php$fpm_v-gd
@@ -534,7 +534,7 @@ fi
 
 # Validate whether installation script matches release version before continuing with install
 if [ -z "$withdebs" ] || [ ! -d "$withdebs" ]; then
-	release_branch_ver=$(curl -s https://raw.githubusercontent.com/contaura/tuliocp/release/src/deb/hestia/control | grep "Version:" | awk '{print $2}')
+	release_branch_ver=$(curl -s https://raw.githubusercontent.com/contaura/tuliocp/release/src/deb/tulio/control | grep "Version:" | awk '{print $2}')
 	if [ "$TULIO_INSTALL_VER" != "$release_branch_ver" ]; then
 		echo
 		echo -e "\e[91mInstallation aborted\e[0m"
@@ -865,8 +865,8 @@ fi
 
 # Installing TulioCP repo
 echo "[ * ] Hestia Control Panel"
-echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/hestia-keyring.gpg] https://$RHOST/ $codename main" > $apt/hestia.list
-gpg --no-default-keyring --keyring /usr/share/keyrings/hestia-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5 > /dev/null 2>&1
+echo "deb [arch=$ARCH signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://$RHOST/ $codename main" > $apt/hestia.list
+gpg --no-default-keyring --keyring /usr/share/keyrings/tulio-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5 > /dev/null 2>&1
 
 # Installing Node.js repo
 if [ "$webterminal" = 'yes' ]; then
@@ -971,7 +971,7 @@ mv -f /root/.my.cnf $hst_backups/mysql > /dev/null 2>&1
 # Backup Hestia
 systemctl stop hestia > /dev/null 2>&1
 cp -r $TULIO/* $hst_backups/hestia > /dev/null 2>&1
-apt-get -y purge hestia hestia-nginx hestia-php > /dev/null 2>&1
+apt-get -y purge hestia tulio-nginx tulio-php > /dev/null 2>&1
 rm -rf $TULIO > /dev/null 2>&1
 
 #----------------------------------------------------------#
@@ -1070,7 +1070,7 @@ if [ "$iptables" = 'no' ]; then
 fi
 if [ "$webterminal" = 'no' ]; then
 	software=$(echo "$software" | sed -e "s/nodejs//")
-	software=$(echo "$software" | sed -e "s/hestia-web-terminal//")
+	software=$(echo "$software" | sed -e "s/tulio-web-terminal//")
 fi
 if [ "$phpfpm" = 'yes' ]; then
 	software=$(echo "$software" | sed -e "s/php$fpm_v-cgi//")
@@ -1079,9 +1079,9 @@ if [ "$phpfpm" = 'yes' ]; then
 	software=$(echo "$software" | sed -e "s/libapache2-mod-php$fpm_v//")
 fi
 if [ -d "$withdebs" ]; then
-	software=$(echo "$software" | sed -e "s/hestia-nginx//")
-	software=$(echo "$software" | sed -e "s/hestia-php//")
-	software=$(echo "$software" | sed -e "s/hestia-web-terminal//")
+	software=$(echo "$software" | sed -e "s/tulio-nginx//")
+	software=$(echo "$software" | sed -e "s/tulio-php//")
+	software=$(echo "$software" | sed -e "s/tulio-web-terminal//")
 	software=$(echo "$software" | sed -e "s/hestia=${HESTIA_INSTALL_VER}//")
 fi
 
@@ -1128,29 +1128,29 @@ if [ -n "$withdebs" ] && [ -d "$withdebs" ]; then
 	echo "    - hestia core package"
 	dpkg -i $withdebs/hestia_*.deb > /dev/null 2>&1
 
-	if [ -z $(ls $withdebs/hestia-php_*.deb 2> /dev/null) ]; then
-		echo "    - hestia-php backend package (from apt)"
-		apt-get -y install hestia-php > /dev/null 2>&1
+	if [ -z $(ls $withdebs/tulio-php_*.deb 2> /dev/null) ]; then
+		echo "    - tulio-php backend package (from apt)"
+		apt-get -y install tulio-php > /dev/null 2>&1
 	else
-		echo "    - hestia-php backend package"
-		dpkg -i $withdebs/hestia-php_*.deb > /dev/null 2>&1
+		echo "    - tulio-php backend package"
+		dpkg -i $withdebs/tulio-php_*.deb > /dev/null 2>&1
 	fi
 
-	if [ -z $(ls $withdebs/hestia-nginx_*.deb 2> /dev/null) ]; then
-		echo "    - hestia-nginx backend package (from apt)"
-		apt-get -y install hestia-nginx > /dev/null 2>&1
+	if [ -z $(ls $withdebs/tulio-nginx_*.deb 2> /dev/null) ]; then
+		echo "    - tulio-nginx backend package (from apt)"
+		apt-get -y install tulio-nginx > /dev/null 2>&1
 	else
-		echo "    - hestia-nginx backend package"
-		dpkg -i $withdebs/hestia-nginx_*.deb > /dev/null 2>&1
+		echo "    - tulio-nginx backend package"
+		dpkg -i $withdebs/tulio-nginx_*.deb > /dev/null 2>&1
 	fi
 
 	if [ "$webterminal" = "yes" ]; then
-		if [ -z $(ls $withdebs/hestia-web-terminal_*.deb 2> /dev/null) ]; then
-			echo "    - hestia-web-terminal package (from apt)"
-			apt-get -y install hestia-web-terminal > /dev/null 2>&1
+		if [ -z $(ls $withdebs/tulio-web-terminal_*.deb 2> /dev/null) ]; then
+			echo "    - tulio-web-terminal package (from apt)"
+			apt-get -y install tulio-web-terminal > /dev/null 2>&1
 		else
-			echo "    - hestia-web-terminal"
-			dpkg -i $withdebs/hestia-web-terminal_*.deb > /dev/null 2>&1
+			echo "    - tulio-web-terminal"
+			dpkg -i $withdebs/tulio-web-terminal_*.deb > /dev/null 2>&1
 		fi
 	fi
 fi
@@ -1166,20 +1166,20 @@ echo "[ * ] Configuring system settings..."
 
 # Generate a random password
 random_password=$(gen_pass '32')
-# Create the new hestiaweb user
-/usr/sbin/useradd "hestiaweb" -c "$email" --no-create-home
-# do not allow login into hestiaweb user
-echo hestiaweb:$random_password | sudo chpasswd -e
+# Create the new tulioweb user
+/usr/sbin/useradd "tulioweb" -c "$email" --no-create-home
+# do not allow login into tulioweb user
+echo tulioweb:$random_password | sudo chpasswd -e
 
 # Add a general group for normal users created by Hestia
-if [ -z "$(grep ^hestia-users: /etc/group)" ]; then
-	groupadd --system "hestia-users"
+if [ -z "$(grep ^tulio-users: /etc/group)" ]; then
+	groupadd --system "tulio-users"
 fi
 
 # Create user for php-fpm configs
 /usr/sbin/useradd "hestiamail" -c "$email" --no-create-home
 # Ensures proper permissions for Hestia service interactions.
-/usr/sbin/adduser hestiamail hestia-users
+/usr/sbin/adduser hestiamail tulio-users
 
 # Enable SFTP subsystem for SSH
 sftp_subsys_enabled=$(grep -iE "^#?.*subsystem.+(sftp )?sftp-server" /etc/ssh/sshd_config)
@@ -1238,7 +1238,7 @@ mount -o remount,defaults,hidepid=2 /proc > /dev/null 2>&1
 if [ $? -ne 0 ]; then
 	echo "Info: Cannot remount /proc (LXC containers require additional perm added to host apparmor profile)"
 else
-	echo "@reboot root sleep 5 && mount -o remount,defaults,hidepid=2 /proc" > /etc/cron.d/hestia-proc
+	echo "@reboot root sleep 5 && mount -o remount,defaults,hidepid=2 /proc" > /etc/cron.d/tulio-proc
 fi
 
 #----------------------------------------------------------#
@@ -1248,17 +1248,17 @@ fi
 echo "[ * ] Configuring Hestia Control Panel..."
 # Installing sudo configuration
 mkdir -p /etc/sudoers.d
-cp -f $TULIO_COMMON_DIR/sudo/hestiaweb /etc/sudoers.d/
-chmod 440 /etc/sudoers.d/hestiaweb
+cp -f $TULIO_COMMON_DIR/sudo/tulioweb /etc/sudoers.d/
+chmod 440 /etc/sudoers.d/tulioweb
 
 # Add Hestia global config
 if [[ ! -e /etc/tuliocp/tulio.conf ]]; then
 	mkdir -p /etc/tuliocp
-	echo -e "# Do not edit this file, will get overwritten on next upgrade, use /etc/tuliocp/local.conf instead\n\nexport HESTIA='/usr/local/tulio'\n\n[[ -f /etc/tuliocp/local.conf ]] && source /etc/tuliocp/local.conf" > /etc/tuliocp/tulio.conf
+	echo -e "# Do not edit this file, will get overwritten on next upgrade, use /etc/tuliocp/local.conf instead\n\nexport TULIO='/usr/local/tulio'\n\n[[ -f /etc/tuliocp/local.conf ]] && source /etc/tuliocp/local.conf" > /etc/tuliocp/tulio.conf
 fi
 
 # Configuring system env
-echo "export HESTIA='$TULIO'" > /etc/profile.d/hestia.sh
+echo "export TULIO='$TULIO'" > /etc/profile.d/hestia.sh
 echo 'PATH=$PATH:'$TULIO'/bin' >> /etc/profile.d/hestia.sh
 echo 'export PATH' >> /etc/profile.d/hestia.sh
 chmod 755 /etc/profile.d/hestia.sh
@@ -1477,15 +1477,15 @@ $TULIO/bin/v-change-sys-hostname $servername > /dev/null 2>&1
 echo "[ * ] Configuring OpenSSL to improve TLS performance..."
 tls13_ciphers="TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384"
 if [ "$release" = "11" ]; then
-	sed -i '/^system_default = system_default_sect$/a system_default = hestia_openssl_sect\n\n[hestia_openssl_sect]\nCiphersuites = '"$tls13_ciphers"'\nOptions = PrioritizeChaCha' /etc/ssl/openssl.cnf
+	sed -i '/^system_default = system_default_sect$/a system_default = tulio_openssl_sect\n\n[tulio_openssl_sect]\nCiphersuites = '"$tls13_ciphers"'\nOptions = PrioritizeChaCha' /etc/ssl/openssl.cnf
 elif [ "$release" = "12" ]; then
 	if ! grep -qw "^ssl_conf = ssl_sect$" /etc/ssl/openssl.cnf 2> /dev/null; then
 		sed -i '/providers = provider_sect$/a ssl_conf = ssl_sect' /etc/ssl/openssl.cnf
 	fi
 	if ! grep -qw "^[ssl_sect]$" /etc/ssl/openssl.cnf 2> /dev/null; then
-		sed -i '$a \\n[ssl_sect]\nsystem_default = hestia_openssl_sect\n\n[hestia_openssl_sect]\nCiphersuites = '"$tls13_ciphers"'\nOptions = PrioritizeChaCha' /etc/ssl/openssl.cnf
+		sed -i '$a \\n[ssl_sect]\nsystem_default = tulio_openssl_sect\n\n[tulio_openssl_sect]\nCiphersuites = '"$tls13_ciphers"'\nOptions = PrioritizeChaCha' /etc/ssl/openssl.cnf
 	elif grep -qw "^system_default = system_default_sect$" /etc/ssl/openssl.cnf 2> /dev/null; then
-		sed -i '/^system_default = system_default_sect$/a system_default = hestia_openssl_sect\n\n[hestia_openssl_sect]\nCiphersuites = '"$tls13_ciphers"'\nOptions = PrioritizeChaCha' /etc/ssl/openssl.cnf
+		sed -i '/^system_default = system_default_sect$/a system_default = tulio_openssl_sect\n\n[tulio_openssl_sect]\nCiphersuites = '"$tls13_ciphers"'\nOptions = PrioritizeChaCha' /etc/ssl/openssl.cnf
 	fi
 fi
 
@@ -1606,8 +1606,8 @@ if [ "$apache" = 'yes' ]; then
 
 	# Copy configuration files
 	cp -f $TULIO_INSTALL_DIR/apache2/apache2.conf /etc/apache2/
-	cp -f $TULIO_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/hestia-status.conf
-	cp -f /etc/apache2/mods-available/status.load /etc/apache2/mods-available/hestia-status.load
+	cp -f $TULIO_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/tulio-status.conf
+	cp -f /etc/apache2/mods-available/status.load /etc/apache2/mods-available/tulio-status.load
 	cp -f $TULIO_INSTALL_DIR/logrotate/apache2 /etc/logrotate.d/
 
 	# Enable needed modules
@@ -1617,7 +1617,7 @@ if [ "$apache" = 'yes' ]; then
 	a2enmod actions > /dev/null 2>&1
 	a2enmod headers > /dev/null 2>&1
 	a2dismod --quiet status > /dev/null 2>&1
-	a2enmod --quiet hestia-status > /dev/null 2>&1
+	a2enmod --quiet tulio-status > /dev/null 2>&1
 
 	# Enable mod_ruid/mpm_itk or mpm_event
 	if [ "$phpfpm" = 'yes' ]; then
@@ -1625,7 +1625,7 @@ if [ "$apache" = 'yes' ]; then
 		a2dismod php$fpm_v > /dev/null 2>&1
 		a2dismod mpm_prefork > /dev/null 2>&1
 		a2enmod mpm_event > /dev/null 2>&1
-		cp -f $TULIO_INSTALL_DIR/apache2/hestia-event.conf /etc/apache2/conf.d/
+		cp -f $TULIO_INSTALL_DIR/apache2/tulio-event.conf /etc/apache2/conf.d/
 	else
 		a2enmod mpm_itk > /dev/null 2>&1
 	fi
@@ -1641,7 +1641,7 @@ if [ "$apache" = 'yes' ]; then
 	chmod 751 /var/log/apache2/domains
 
 	# Prevent remote access to server-status page
-	sed -i '/Allow from all/d' /etc/apache2/mods-available/hestia-status.conf
+	sed -i '/Allow from all/d' /etc/apache2/mods-available/tulio-status.conf
 
 	update-rc.d apache2 defaults > /dev/null 2>&1
 	systemctl start apache2 >> $LOG
@@ -2239,8 +2239,8 @@ fi
 if [ "$webterminal" = 'yes' ]; then
 	write_config_value "WEB_TERMINAL" "true"
 	systemctl daemon-reload > /dev/null 2>&1
-	systemctl enable hestia-web-terminal > /dev/null 2>&1
-	systemctl restart hestia-web-terminal > /dev/null 2>&1
+	systemctl enable tulio-web-terminal > /dev/null 2>&1
+	systemctl restart tulio-web-terminal > /dev/null 2>&1
 else
 	write_config_value "WEB_TERMINAL" "false"
 fi
@@ -2342,25 +2342,25 @@ export SCHEDULED_RESTART="yes"
 
 min=$(gen_pass '012345' '2')
 hour=$(gen_pass '1234567' '1')
-echo "MAILTO=\"\"" > /var/spool/cron/crontabs/hestiaweb
-echo "CONTENT_TYPE=\"text/plain; charset=utf-8\"" >> /var/spool/cron/crontabs/hestiaweb
-echo "*/2 * * * * sudo /usr/local/tulio/bin/v-update-sys-queue restart" >> /var/spool/cron/crontabs/hestiaweb
-echo "10 00 * * * sudo /usr/local/tulio/bin/v-update-sys-queue daily" >> /var/spool/cron/crontabs/hestiaweb
-echo "15 02 * * * sudo /usr/local/tulio/bin/v-update-sys-queue disk" >> /var/spool/cron/crontabs/hestiaweb
-echo "10 00 * * * sudo /usr/local/tulio/bin/v-update-sys-queue traffic" >> /var/spool/cron/crontabs/hestiaweb
-echo "30 03 * * * sudo /usr/local/tulio/bin/v-update-sys-queue webstats" >> /var/spool/cron/crontabs/hestiaweb
-echo "*/5 * * * * sudo /usr/local/tulio/bin/v-update-sys-queue backup" >> /var/spool/cron/crontabs/hestiaweb
-echo "10 05 * * * sudo /usr/local/tulio/bin/v-backup-users" >> /var/spool/cron/crontabs/hestiaweb
-echo "20 00 * * * sudo /usr/local/tulio/bin/v-update-user-stats" >> /var/spool/cron/crontabs/hestiaweb
-echo "*/5 * * * * sudo /usr/local/tulio/bin/v-update-sys-rrd" >> /var/spool/cron/crontabs/hestiaweb
-echo "$min $hour * * * sudo /usr/local/tulio/bin/v-update-letsencrypt-ssl" >> /var/spool/cron/crontabs/hestiaweb
-echo "41 4 * * * sudo /usr/local/tulio/bin/v-update-sys-hestia-all" >> /var/spool/cron/crontabs/hestiaweb
+echo "MAILTO=\"\"" > /var/spool/cron/crontabs/tulioweb
+echo "CONTENT_TYPE=\"text/plain; charset=utf-8\"" >> /var/spool/cron/crontabs/tulioweb
+echo "*/2 * * * * sudo /usr/local/tulio/bin/v-update-sys-queue restart" >> /var/spool/cron/crontabs/tulioweb
+echo "10 00 * * * sudo /usr/local/tulio/bin/v-update-sys-queue daily" >> /var/spool/cron/crontabs/tulioweb
+echo "15 02 * * * sudo /usr/local/tulio/bin/v-update-sys-queue disk" >> /var/spool/cron/crontabs/tulioweb
+echo "10 00 * * * sudo /usr/local/tulio/bin/v-update-sys-queue traffic" >> /var/spool/cron/crontabs/tulioweb
+echo "30 03 * * * sudo /usr/local/tulio/bin/v-update-sys-queue webstats" >> /var/spool/cron/crontabs/tulioweb
+echo "*/5 * * * * sudo /usr/local/tulio/bin/v-update-sys-queue backup" >> /var/spool/cron/crontabs/tulioweb
+echo "10 05 * * * sudo /usr/local/tulio/bin/v-backup-users" >> /var/spool/cron/crontabs/tulioweb
+echo "20 00 * * * sudo /usr/local/tulio/bin/v-update-user-stats" >> /var/spool/cron/crontabs/tulioweb
+echo "*/5 * * * * sudo /usr/local/tulio/bin/v-update-sys-rrd" >> /var/spool/cron/crontabs/tulioweb
+echo "$min $hour * * * sudo /usr/local/tulio/bin/v-update-letsencrypt-ssl" >> /var/spool/cron/crontabs/tulioweb
+echo "41 4 * * * sudo /usr/local/tulio/bin/v-update-sys-tulio-all" >> /var/spool/cron/crontabs/tulioweb
 
-chmod 600 /var/spool/cron/crontabs/hestiaweb
-chown hestiaweb:hestiaweb /var/spool/cron/crontabs/hestiaweb
+chmod 600 /var/spool/cron/crontabs/tulioweb
+chown tulioweb:tulioweb /var/spool/cron/crontabs/tulioweb
 
 # Enable automatic updates
-$TULIO/bin/v-add-cron-hestia-autoupdate apt
+$TULIO/bin/v-add-cron-tulio-autoupdate apt
 
 # Building initial rrd images
 $TULIO/bin/v-update-sys-rrd
@@ -2387,14 +2387,14 @@ echo
 update-rc.d hestia defaults
 systemctl start hestia
 check_result $? "hestia start failed"
-chown hestiaweb:hestiaweb $TULIO/data/sessions
+chown tulioweb:tulioweb $TULIO/data/sessions
 
 # Create backup folder and set correct permission
 mkdir -p /backup/
 chmod 755 /backup/
 
 # Create cronjob to generate ssl
-echo "@reboot root sleep 10 && rm /etc/cron.d/hestia-ssl && PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:' && /usr/local/tulio/bin/v-add-letsencrypt-host" > /etc/cron.d/hestia-ssl
+echo "@reboot root sleep 10 && rm /etc/cron.d/tulio-ssl && PATH='/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:' && /usr/local/tulio/bin/v-add-letsencrypt-host" > /etc/cron.d/tulio-ssl
 
 #----------------------------------------------------------#
 #              Set tulio.conf default values              #

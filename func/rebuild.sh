@@ -73,18 +73,18 @@ rebuild_user_conf() {
 		-m -d "$HOMEDIR/$user" > /dev/null 2>&1
 
 	# Add a general group for normal users created by Hestia
-	if [ -z "$(grep "^hestia-users:" /etc/group)" ]; then
-		groupadd --system "hestia-users"
+	if [ -z "$(grep "^tulio-users:" /etc/group)" ]; then
+		groupadd --system "tulio-users"
 	fi
 
-	# Add membership to hestia-users group to non-admin users
+	# Add membership to tulio-users group to non-admin users
 	if [ "$user" = "$ROOT_USER" ]; then
 		setfacl -m "g:$ROOT_USER:r-x" "$HOMEDIR/$user"
 	else
-		usermod -a -G "hestia-users" "$user"
+		usermod -a -G "tulio-users" "$user"
 		setfacl -m "u:$user:r-x" "$HOMEDIR/$user"
 	fi
-	setfacl -m "g:hestia-users:---" "$HOMEDIR/$user"
+	setfacl -m "g:tulio-users:---" "$HOMEDIR/$user"
 
 	# Update user shell
 	/usr/bin/chsh -s "$shell" "$user" &> /dev/null

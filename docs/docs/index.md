@@ -47,8 +47,8 @@
 
 ## Community
 
-- [Hestia Nginx Cache](/docs/community/hestia-nginx-cache)
-- [Ioncube installer for Hestia](/docs/community/ioncube-hestia-installer)
+- [Hestia Nginx Cache](/docs/community/tulio-nginx-cache)
+- [Ioncube installer for Hestia](/docs/community/ioncube-tulio-installer)
 - [Install script generator](/docs/community/install-script-generator)
 
 ## Reference

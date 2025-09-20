@@ -5,7 +5,7 @@
 source $TULIO/conf/tulio.conf
 
 # Variables and arguments
-HESTIA="/usr/local/tulio"
+TULIO="/usr/local/tulio"
 script=$1
 log=$2
 scroll=$3

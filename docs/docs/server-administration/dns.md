@@ -78,7 +78,7 @@ Preparing your **Slave** server(s):
    - Has the role `dns-cluster`
    - You may want to set 'Do not allow user to log in to Control Panel' if they are not a regular user
    - If you have more than one slave, the slave user must be unique
-5. Edit `/usr/local/tulio.conf/tulio.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='hestia-zone'`.
+5. Edit `/usr/local/tulio.conf/tulio.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='tulio-zone'`.
 6. Edit `/etc/bind/named.conf.options`, do the following changes, then restart bind9 with `systemctl restart bind9`:
 
    ```bash
@@ -92,7 +92,7 @@ Preparing your **Slave** server(s):
 
 Preparing your **Master** server:
 
-1. On the **Master** server, open `/usr/local/tulio.conf/tulio.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='hestia-zone'`.
+1. On the **Master** server, open `/usr/local/tulio.conf/tulio.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='tulio-zone'`.
 2. Edit `/etc/bind/named.conf.options`, do the following changes, then restart bind9 with `systemctl restart bind9`.
 
    ```bash
@@ -122,7 +122,7 @@ Preparing your **Master** server:
 
 ### Converting an existing DNS cluster to Master -> Slave
 
-1. On **Master** and **Slave** servers, open `/usr/local/tulio.conf/tulio.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='hestia-zone'`.
+1. On **Master** and **Slave** servers, open `/usr/local/tulio.conf/tulio.conf`, change `DNS_CLUSTER_SYSTEM='hestia'` to `DNS_CLUSTER_SYSTEM='tulio-zone'`.
 2. On the **Master** server, open `/etc/bind/named.conf.options`, do the following changes, then restart bind9 with `systemctl restart bind9`.
 
    ```bash
@@ -192,7 +192,7 @@ By default the user `dns-cluster` or user with the role `dns-cluster` are exempt
 When trying to add a DNS server for a cluster I get the following error:
 
 ```bash
-/usr/local/hestia/func/remote.sh: line 43: return: Error:: numeric argument required
+/usr/local/tulio/func/remote.sh: line 43: return: Error:: numeric argument required
 Error: api connection to slave.domain.tld failed
 ```
 

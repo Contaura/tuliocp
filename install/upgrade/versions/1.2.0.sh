@@ -113,24 +113,24 @@ if [ -f "/etc/network/if-pre-up.d/iptables" ]; then
 	$BIN/v-update-firewall
 fi
 
-# Add hestia-event.conf, if the server is running apache2
+# Add tulio-event.conf, if the server is running apache2
 if [ "$WEB_SYSTEM" = "apache2" ]; then
 	echo "[ * ] Updating Apache2 configuration..."
 	# Cleanup
-	rm --force /etc/apache2/mods-available/hestia-event.conf
-	rm --force /etc/apache2/mods-enabled/hestia-event.conf
-	rm --force /etc/apache2/conf-available/hestia-event.conf
-	rm --force /etc/apache2/conf-enabled/hestia-event.conf
+	rm --force /etc/apache2/mods-available/tulio-event.conf
+	rm --force /etc/apache2/mods-enabled/tulio-event.conf
+	rm --force /etc/apache2/conf-available/tulio-event.conf
+	rm --force /etc/apache2/conf-enabled/tulio-event.conf
 
-	if [ $(a2query -M) = 'event' ] && [ ! -e "/etc/apache2/conf.d/hestia-event.conf" ]; then
-		cp -f $TULIO_INSTALL_DIR/apache2/hestia-event.conf /etc/apache2/conf.d/
+	if [ $(a2query -M) = 'event' ] && [ ! -e "/etc/apache2/conf.d/tulio-event.conf" ]; then
+		cp -f $TULIO_INSTALL_DIR/apache2/tulio-event.conf /etc/apache2/conf.d/
 	fi
 
 	# Move apache mod_status config to /mods-available and rename it to prevent losing changes on upgrade
-	cp -f $TULIO_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/hestia-status.conf
-	cp -f /etc/apache2/mods-available/status.load /etc/apache2/mods-available/hestia-status.load
+	cp -f $TULIO_INSTALL_DIR/apache2/status.conf /etc/apache2/mods-available/tulio-status.conf
+	cp -f /etc/apache2/mods-available/status.load /etc/apache2/mods-available/tulio-status.load
 	a2dismod --quiet status > /dev/null 2>&1
-	a2enmod --quiet hestia-status > /dev/null 2>&1
+	a2enmod --quiet tulio-status > /dev/null 2>&1
 	rm --force /etc/apache2/mods-enabled/status.conf # a2dismod will not remove the file if it isn't a symlink
 fi
 

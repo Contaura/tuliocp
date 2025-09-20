@@ -6,7 +6,7 @@ We currently only support changing the layout via CSS. You can customise HTML fi
 
 ## Adding a new theme
 
-Create a new theme in `/usr/local/hestia/web/css/themes/custom/my_theme.css`
+Create a new theme in `/usr/local/tulio/web/css/themes/custom/my_theme.css`
 
 ```css
 .page-login,
@@ -20,7 +20,7 @@ Create a new theme in `/usr/local/hestia/web/css/themes/custom/my_theme.css`
 
 ## Customising a default theme
 
-Changes to default themes are always overwritten during updates. Custom CSS files can be uploaded to `/usr/local/hestia/web/css/custom` in `.css` or `.min.css` format.
+Changes to default themes are always overwritten during updates. Custom CSS files can be uploaded to `/usr/local/tulio/web/css/custom` in `.css` or `.min.css` format.
 
 Please note that `default.css` base theme is always loaded. Other default and custom themes override the rules in this file.
 
@@ -34,7 +34,7 @@ nano /var/www/html/index.html
 
 ## Customising the default domain skeleton structure
 
-The default structure that will be added to a domain when it gets created is located in `/usr/local/hestia/data/templates/web/skel/public_html`.
+The default structure that will be added to a domain when it gets created is located in `/usr/local/tulio/data/templates/web/skel/public_html`.
 
 ## Running commands before and after updates
 
@@ -45,18 +45,18 @@ With the release of Hestia 1.4.6 we have added pre-install and post-install hook
 
 Hooks are located in one of the following files:
 
-- `/etc/hestiacp/hooks/pre_install.sh`
-- `/etc/hestiacp/hooks/post_install.sh`
+- `/etc/tuliocp/hooks/pre_install.sh`
+- `/etc/tuliocp/hooks/post_install.sh`
 
 ::: tip
-Don’t forget to make the file executable by running `chmod +x /etc/hestiacp/hooks/[file].sh`.
+Don’t forget to make the file executable by running `chmod +x /etc/tuliocp/hooks/[file].sh`.
 :::
 
 For example, to disable demo mode on pre-install:
 
-```bash /etc/hestiacp/hooks/pre_install.sh
+```bash /etc/tuliocp/hooks/pre_install.sh
 #!/bin/bash
-sed -i "s|^DEMO_MODE=.*'|DEMO_MODE='no'|g" $HESTIA/conf/tulio.conf
+sed -i "s|^DEMO_MODE=.*'|DEMO_MODE='no'|g" $TULIO/conf/tulio.conf
 ```
 
 ::: warning

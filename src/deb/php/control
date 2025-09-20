@@ -1,5 +1,5 @@
-Source: hestia-php
-Package: hestia-php
+Source: tulio-php
+Package: tulio-php
 Priority: optional
 Version: 8.3.17
 Section: admin

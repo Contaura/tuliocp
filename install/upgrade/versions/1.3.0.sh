@@ -51,13 +51,13 @@ if [ -e "/etc/exim4/exim4.conf.template" ]; then
 fi
 
 # Restrict access to /proc fs
-if [ ! -e "/etc/cron.d/hestia-proc" ]; then
+if [ ! -e "/etc/cron.d/tulio-proc" ]; then
 	echo "[ * ] Restricting access to /proc fs..."
 	mount -o remount,defaults,hidepid=2 /proc > /dev/null 2>&1
 	if [ $? -ne 0 ]; then
 		echo "[ ! ] WARNING: Cannot remount /proc (LXC containers require additional permissions be added to host apparmor profile)"
 	else
-		echo "@reboot root sleep 5 && mount -o remount,defaults,hidepid=2 /proc" > /etc/cron.d/hestia-proc
+		echo "@reboot root sleep 5 && mount -o remount,defaults,hidepid=2 /proc" > /etc/cron.d/tulio-proc
 	fi
 fi
 

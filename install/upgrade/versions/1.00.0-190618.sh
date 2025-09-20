@@ -97,23 +97,23 @@ fi
 
 # Add a general group for normal users created by Hestia
 echo "[ * ] Verifying ACLs and hardening user permissions..."
-if [ -z "$(grep ^hestia-users: /etc/group)" ]; then
-	groupadd --system "hestia-users"
+if [ -z "$(grep ^tulio-users: /etc/group)" ]; then
+	groupadd --system "tulio-users"
 fi
 
 # Make sure non-admin users belong to correct Hestia group
 for user in $($BIN/v-list-users plain | cut -f1); do
 	if [ "$user" != "admin" ]; then
-		usermod -a -G "hestia-users" "$user"
+		usermod -a -G "tulio-users" "$user"
 		setfacl -m "u:$user:r-x" "$HOMEDIR/$user"
 
 		# Update FTP users groups membership
 		uid=$(id -u $user)
 		for ftp_user in $(cat /etc/passwd | grep -v "^$user:" | grep "^$user.*:$uid:$uid:" | cut -d ":" -f1); do
-			usermod -a -G "hestia-users" "$ftp_user"
+			usermod -a -G "tulio-users" "$ftp_user"
 		done
 	fi
-	setfacl -m "g:hestia-users:---" "$HOMEDIR/$user"
+	setfacl -m "g:tulio-users:---" "$HOMEDIR/$user"
 done
 
 # Add unassigned hosts configuration to Nginx and Apache
@@ -191,11 +191,11 @@ fi
 
 # Remove old OS-specific installation files if they exist to free up space
 if [ -d $TULIO/install/ubuntu ]; then
-	echo "[ * ] Removing old HestiaCP installation files for Ubuntu..."
+	echo "[ * ] Removing old TulioCP installation files for Ubuntu..."
 	rm -rf $TULIO/install/ubuntu
 fi
 if [ -d $TULIO/install/debian ]; then
-	echo "[ * ] Removing old HestiaCP installation files for Debian..."
+	echo "[ * ] Removing old TulioCP installation files for Debian..."
 	rm -rf $TULIO/install/debian
 fi
 

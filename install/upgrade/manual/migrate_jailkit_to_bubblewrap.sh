@@ -98,7 +98,7 @@ fi
 groupdel ssh-jailed 2> /dev/null
 
 # Remove cronjob
-rm -f /etc/cron.d/hestia-ssh-jail
+rm -f /etc/cron.d/tulio-ssh-jail
 
 # Remove jailkit
 apt remove -qq jailkit -y > /dev/null 2>&1

@@ -197,13 +197,13 @@ if [ -z $install ]; then
 fi
 
 # Set Version for compiling
-if [ -f "$SRC_DIR/src/deb/hestia/control" ] && [ "$use_src_folder" == 'true' ]; then
-	BUILD_VER=$(cat $SRC_DIR/src/deb/hestia/control | grep "Version:" | cut -d' ' -f2)
+if [ -f "$SRC_DIR/src/deb/tulio/control" ] && [ "$use_src_folder" == 'true' ]; then
+	BUILD_VER=$(cat $SRC_DIR/src/deb/tulio/control | grep "Version:" | cut -d' ' -f2)
 	NGINX_V=$(cat $SRC_DIR/src/deb/nginx/control | grep "Version:" | cut -d' ' -f2)
 	PHP_V=$(cat $SRC_DIR/src/deb/php/control | grep "Version:" | cut -d' ' -f2)
 	WEB_TERMINAL_V=$(cat $SRC_DIR/src/deb/web-terminal/control | grep "Version:" | cut -d' ' -f2)
 else
-	BUILD_VER=$(curl -s https://raw.githubusercontent.com/$REPO/$branch/src/deb/hestia/control | grep "Version:" | cut -d' ' -f2)
+	BUILD_VER=$(curl -s https://raw.githubusercontent.com/$REPO/$branch/src/deb/tulio/control | grep "Version:" | cut -d' ' -f2)
 	NGINX_V=$(curl -s https://raw.githubusercontent.com/$REPO/$branch/src/deb/nginx/control | grep "Version:" | cut -d' ' -f2)
 	PHP_V=$(curl -s https://raw.githubusercontent.com/$REPO/$branch/src/deb/php/control | grep "Version:" | cut -d' ' -f2)
 	WEB_TERMINAL_V=$(curl -s https://raw.githubusercontent.com/$REPO/$branch/src/deb/web-terminal/control | grep "Version:" | cut -d' ' -f2)
@@ -310,21 +310,21 @@ branch_dash=$(echo "$branch" | sed 's/\//-/g')
 
 #################################################################################
 #
-# Building hestia-nginx
+# Building tulio-nginx
 #
 #################################################################################
 
 if [ "$NGINX_B" = true ]; then
-	echo "Building hestia-nginx package..."
+	echo "Building tulio-nginx package..."
 	if [ "$CROSS" = "true" ]; then
-		echo "Cross compile not supported for hestia-nginx, hestia-php or hestia-web-terminal"
+		echo "Cross compile not supported for tulio-nginx, tulio-php or tulio-web-terminal"
 		exit 1
 	fi
 
 	# Change to build directory
 	cd $BUILD_DIR
 
-	BUILD_DIR_HESTIANGINX=$BUILD_DIR/hestia-nginx_$NGINX_V
+	BUILD_DIR_HESTIANGINX=$BUILD_DIR/tulio-nginx_$NGINX_V
 	if [[ $NGINX_V =~ - ]]; then
 		BUILD_DIR_NGINX=$BUILD_DIR/nginx-$(echo $NGINX_V | cut -d"-" -f1)
 	else
@@ -334,7 +334,7 @@ if [ "$NGINX_B" = true ]; then
 	if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_HESTIANGINX" ]; then
 		# Check if target directory exist
 		if [ -d "$BUILD_DIR_HESTIANGINX" ]; then
-			#mv $BUILD_DIR/hestia-nginx_$NGINX_V $BUILD_DIR/hestia-nginx_$NGINX_V-$(timestamp)
+			#mv $BUILD_DIR/tulio-nginx_$NGINX_V $BUILD_DIR/tulio-nginx_$NGINX_V-$(timestamp)
 			rm -r "$BUILD_DIR_HESTIANGINX"
 		fi
 
@@ -395,7 +395,7 @@ if [ "$NGINX_B" = true ]; then
 	rm -f $BUILD_DIR_HESTIANGINX/usr/local/tulio/nginx/conf/nginx.conf
 
 	# copy binary
-	mv $BUILD_DIR_HESTIANGINX/usr/local/tulio/nginx/sbin/nginx $BUILD_DIR_HESTIANGINX/usr/local/tulio/nginx/sbin/hestia-nginx
+	mv $BUILD_DIR_HESTIANGINX/usr/local/tulio/nginx/sbin/nginx $BUILD_DIR_HESTIANGINX/usr/local/tulio/nginx/sbin/tulio-nginx
 
 	# change permission and build the package
 	cd $BUILD_DIR
@@ -428,7 +428,7 @@ if [ "$NGINX_B" = true ]; then
 
 	if [ "$KEEPBUILD" != 'true' ]; then
 		# Clean up the source folder
-		rm -r hestia- nginx_$NGINX_V
+		rm -r tulio- nginx_$NGINX_V
 		rm -rf $BUILD_DIR/rpmbuild
 		if [ "$use_src_folder" == 'true' ] && [ -d $BUILD_DIR/hestiacp-$branch_dash ]; then
 			rm -r $BUILD_DIR/hestiacp-$branch_dash
@@ -438,19 +438,19 @@ fi
 
 #################################################################################
 #
-# Building hestia-php
+# Building tulio-php
 #
 #################################################################################
 
 if [ "$PHP_B" = true ]; then
 	if [ "$CROSS" = "true" ]; then
-		echo "Cross compile not supported for hestia-nginx, hestia-php or hestia-web-terminal"
+		echo "Cross compile not supported for tulio-nginx, tulio-php or tulio-web-terminal"
 		exit 1
 	fi
 
-	echo "Building hestia-php package..."
+	echo "Building tulio-php package..."
 
-	BUILD_DIR_HESTIAPHP=$BUILD_DIR/hestia-php_$PHP_V
+	BUILD_DIR_HESTIAPHP=$BUILD_DIR/tulio-php_$PHP_V
 
 	BUILD_DIR_PHP=$BUILD_DIR/php-$(echo $PHP_V | cut -d"~" -f1)
 
@@ -512,8 +512,8 @@ if [ "$PHP_B" = true ]; then
 	mv ${BUILD_DIR}/usr/local/tulio/php ${BUILD_DIR_HESTIAPHP}/usr/local/tulio/
 
 	# copy binary
-	[ "$TULIO_DEBUG" ] && echo DEBUG: cp $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/php-fpm $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/hestia-php
-	cp $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/php-fpm $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/hestia-php
+	[ "$TULIO_DEBUG" ] && echo DEBUG: cp $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/php-fpm $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/tulio-php
+	cp $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/php-fpm $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/tulio-php
 
 	# Change permissions and build the package
 	chown -R root:root $BUILD_DIR_HESTIAPHP
@@ -562,19 +562,19 @@ fi
 
 #################################################################################
 #
-# Building hestia-web-terminal
+# Building tulio-web-terminal
 #
 #################################################################################
 
 if [ "$WEB_TERMINAL_B" = true ]; then
 	if [ "$CROSS" = "true" ]; then
-		echo "Cross compile not supported for hestia-nginx, hestia-php or hestia-web-terminal"
+		echo "Cross compile not supported for tulio-nginx, tulio-php or tulio-web-terminal"
 		exit 1
 	fi
 
-	echo "Building hestia-web-terminal package..."
+	echo "Building tulio-web-terminal package..."
 
-	BUILD_DIR_HESTIA_TERMINAL=$BUILD_DIR/hestia-web-terminal_$WEB_TERMINAL_V
+	BUILD_DIR_HESTIA_TERMINAL=$BUILD_DIR/tulio-web-terminal_$WEB_TERMINAL_V
 
 	# Check if target directory exist
 	if [ -d $BUILD_DIR_HESTIA_TERMINAL ]; then
@@ -611,7 +611,7 @@ if [ "$WEB_TERMINAL_B" = true ]; then
 	# Systemd service
 	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system
 	mkdir -p $BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system
-	get_branch_file 'src/deb/web-terminal/hestia-web-terminal.service' "$BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system/hestia-web-terminal.service"
+	get_branch_file 'src/deb/web-terminal/tulio-web-terminal.service' "$BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system/tulio-web-terminal.service"
 
 	# Build the package
 	echo Building Web Terminal DEB
@@ -642,7 +642,7 @@ if [ "$TULIO_B" = true ]; then
 	for BUILD_ARCH in $arch; do
 		echo "Building Hestia Control Panel package..."
 
-		BUILD_DIR_HESTIA=$BUILD_DIR/hestia_$TULIO_V
+		BUILD_DIR_TULIO=$BUILD_DIR/hestia_$TULIO_V
 
 		# Change to build directory
 		cd $BUILD_DIR
@@ -687,13 +687,13 @@ if [ "$TULIO_B" = true ]; then
 		chown -R root:root $BUILD_DIR_HESTIA
 		# Get Debian package files
 		mkdir -p $BUILD_DIR_HESTIA/DEBIAN
-		get_branch_file 'src/deb/hestia/control' "$BUILD_DIR_HESTIA/DEBIAN/control"
+		get_branch_file 'src/deb/tulio/control' "$BUILD_DIR_HESTIA/DEBIAN/control"
 		if [ "$BUILD_ARCH" != "amd64" ]; then
 			sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_HESTIA/DEBIAN/control"
 		fi
-		get_branch_file 'src/deb/hestia/copyright' "$BUILD_DIR_HESTIA/DEBIAN/copyright"
-		get_branch_file 'src/deb/hestia/preinst' "$BUILD_DIR_HESTIA/DEBIAN/preinst"
-		get_branch_file 'src/deb/hestia/postinst' "$BUILD_DIR_HESTIA/DEBIAN/postinst"
+		get_branch_file 'src/deb/tulio/copyright' "$BUILD_DIR_HESTIA/DEBIAN/copyright"
+		get_branch_file 'src/deb/tulio/preinst' "$BUILD_DIR_HESTIA/DEBIAN/preinst"
+		get_branch_file 'src/deb/tulio/postinst' "$BUILD_DIR_HESTIA/DEBIAN/postinst"
 		chmod +x $BUILD_DIR_HESTIA/DEBIAN/postinst
 		chmod +x $BUILD_DIR_HESTIA/DEBIAN/preinst
 

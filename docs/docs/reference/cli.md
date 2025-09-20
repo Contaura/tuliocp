@@ -25,7 +25,7 @@ v-add-access-key admin v-purge-nginx-cache,v-list-mail-accounts comment json
 ```
 
 The "PERMISSIONS" argument is optional for the admin user only.
-This function creates a key file in $HESTIA/data/access-keys/
+This function creates a key file in $TULIO/data/access-keys/
 
 ## v-add-backup-host
 
@@ -61,9 +61,9 @@ v-add-backup-host b2 bucketName keyID applicationKey
 
 Add a new remote backup location. Currently SFTP, FTP and Backblaze are supported
 
-## v-add-cron-hestia-autoupdate
+## v-add-cron-tulio-autoupdate
 
-[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-add-cron-hestia-autoupdate)
+[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-add-cron-tulio-autoupdate)
 
 add cron job for hestia automatic updates
 
@@ -83,7 +83,7 @@ add cron job
 **Examples**:
 
 ```bash
-v-add-cron-job admin * * * * * sudo /usr/local/hestia/bin/v-backup-users
+v-add-cron-job admin * * * * * sudo /usr/local/tulio/bin/v-backup-users
 ```
 
 This function adds a job to cron daemon. When executing commands, any output
@@ -1814,9 +1814,9 @@ and prevent modification of objects in the control panel.
 It will also disable virtual hosts for Apache and NGINX
 for domains which have been created.
 
-## v-change-sys-hestia-ssl
+## v-change-sys-tulio-ssl
 
-[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-change-sys-hestia-ssl)
+[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-change-sys-tulio-ssl)
 
 change hestia ssl certificate
 
@@ -1825,7 +1825,7 @@ change hestia ssl certificate
 **Examples**:
 
 ```bash
-v-change-sys-hestia-ssl /home/new/dir/path yes
+v-change-sys-tulio-ssl /home/new/dir/path yes
 ```
 
 This function changes hestia SSL certificate and the key.
@@ -2505,7 +2505,7 @@ check api key
 v-check-api-key random_key 127.0.0.1
 ```
 
-This function checks a key file in $HESTIA/data/keys/
+This function checks a key file in $TULIO/data/keys/
 
 ## v-check-fs-permission
 
@@ -2650,7 +2650,7 @@ delete access key
 v-delete-access-key mykey
 ```
 
-This function removes a key from in $HESTIA/data/access-keys/
+This function removes a key from in $TULIO/data/access-keys/
 
 ## v-delete-backup-host
 
@@ -2684,9 +2684,9 @@ v-delete-backup-host sftp
 
 This function deletes ftp backup host
 
-## v-delete-cron-hestia-autoupdate
+## v-delete-cron-tulio-autoupdate
 
-[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-delete-cron-hestia-autoupdate)
+[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-delete-cron-tulio-autoupdate)
 
 delete hestia autoupdate cron job
 
@@ -4011,7 +4011,7 @@ generate api key
 
 **Options**: –
 
-This function creates a key file in $HESTIA/data/keys/
+This function creates a key file in $TULIO/data/keys/
 
 ## v-generate-password-hash
 
@@ -4871,9 +4871,9 @@ list dovecot config parameters
 
 This function for obtaining the list of dovecot config parameters.
 
-## v-list-sys-hestia-autoupdate
+## v-list-sys-tulio-autoupdate
 
-[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-list-sys-hestia-autoupdate)
+[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-list-sys-tulio-autoupdate)
 
 list hestia autoupdate settings
 
@@ -4881,9 +4881,9 @@ list hestia autoupdate settings
 
 This function for obtaining autoupdate settings.
 
-## v-list-sys-hestia-ssl
+## v-list-sys-tulio-ssl
 
-[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-list-sys-hestia-ssl)
+[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-list-sys-tulio-ssl)
 
 list hestia ssl certificate
 
@@ -4891,9 +4891,9 @@ list hestia ssl certificate
 
 This function of obtaining hestia ssl files.
 
-## v-list-sys-hestia-updates
+## v-list-sys-tulio-updates
 
-[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-list-sys-hestia-updates)
+[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-list-sys-tulio-updates)
 
 list system updates
 
@@ -4961,7 +4961,7 @@ list system languages
 v-list-sys-languages json
 ```
 
-This function for obtaining the available languages for HestiaCP
+This function for obtaining the available languages for TulioCP
 Output is always in the ISO language code
 
 ## v-list-sys-mail-status
@@ -5649,7 +5649,7 @@ Install Quick Install Web App via CLI
 **Examples**:
 
 ```php
-v-quick-install-app install admin domain.com WordPress email="info@hestiacp" password="123456" username="admin" site_name="HestiaCP Demo" install_directory="/" language="nl_NL" php_version="8.2" database_create="true"
+v-quick-install-app install admin domain.com WordPress email="info@hestiacp" password="123456" username="admin" site_name="TulioCP Demo" install_directory="/" language="nl_NL" php_version="8.2" database_create="true"
  example: v-quick-install-app app
  example: v-quick-install-app options admin domain.com WordPress
 ```
@@ -6227,7 +6227,7 @@ revokes api key
 v-revoke-api-key mykey
 ```
 
-This function removes a key from in $HESTIA/data/keys/
+This function removes a key from in $TULIO/data/keys/
 
 ## v-run-cli-cmd
 
@@ -7225,15 +7225,15 @@ update hestia package/configs
 **Examples**:
 
 ```bash
-v-update-sys-hestia hestia-php
+v-update-sys-hestia tulio-php
 ```
 
 This function runs as apt update trigger. It pulls shell script from hestia
-server and runs it. (hestia, hestia-nginx and hestia-php are valid options)
+server and runs it. (hestia, tulio-nginx and tulio-php are valid options)
 
-## v-update-sys-hestia-all
+## v-update-sys-tulio-all
 
-[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-update-sys-hestia-all)
+[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-update-sys-tulio-all)
 
 update all hestia packages
 
@@ -7241,9 +7241,9 @@ update all hestia packages
 
 This function of updating all hestia packages
 
-## v-update-sys-hestia-git
+## v-update-sys-tulio-git
 
-[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-update-sys-hestia-git)
+[Source](https://github.com/contaura/tuliocp/blob/release/bin/v-update-sys-tulio-git)
 
 Install update from Git repository
 
@@ -7252,7 +7252,7 @@ Install update from Git repository
 **Examples**:
 
 ```bash
-v-update-sys-hestia-git hestiacp staging/beta install
+v-update-sys-tulio-git hestiacp staging/beta install
 # Will download from the hestiacp repository
 # Pulls code from staging/beta branch
 # install: installs package immediately

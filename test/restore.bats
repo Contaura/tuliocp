@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-if [ "${PATH#*/usr/local/hestia/bin*}" = "$PATH" ]; then
+if [ "${PATH#*/usr/local/tulio/bin*}" = "$PATH" ]; then
     . /etc/profile.d/hestia.sh
 fi
 
@@ -15,21 +15,21 @@ head /dev/urandom | tr -dc 0-9 | head -c$1
 function setup() {
     # echo "# Setup_file" > &3
     if [ $BATS_TEST_NUMBER = 1 ]; then
-        echo 'user=test-5285' > /tmp/hestia-test-env.sh
-        echo 'user2=test-5286' >> /tmp/hestia-test-env.sh
-        echo 'userbk=testbk-5285' >> /tmp/hestia-test-env.sh
-        echo 'userpass1=test-5285' >> /tmp/hestia-test-env.sh
-        echo 'userpass2=t3st-p4ssw0rd' >> /tmp/hestia-test-env.sh
-        echo 'HESTIA=/usr/local/hestia' >> /tmp/hestia-test-env.sh
-        echo 'domain=test-5285.tuliocp.com' >> /tmp/hestia-test-env.sh
-        echo 'domainuk=test-5285.tuliocp.com.uk' >> /tmp/hestia-test-env.sh
-        echo 'rootdomain=testtuliocp.com' >> /tmp/hestia-test-env.sh
-        echo 'subdomain=cdn.testtuliocp.com' >> /tmp/hestia-test-env.sh
-        echo 'database=test-5285_database' >> /tmp/hestia-test-env.sh
-        echo 'dbuser=test-5285_dbuser' >> /tmp/hestia-test-env.sh
+        echo 'user=test-5285' > /tmp/tulio-test-env.sh
+        echo 'user2=test-5286' >> /tmp/tulio-test-env.sh
+        echo 'userbk=testbk-5285' >> /tmp/tulio-test-env.sh
+        echo 'userpass1=test-5285' >> /tmp/tulio-test-env.sh
+        echo 'userpass2=t3st-p4ssw0rd' >> /tmp/tulio-test-env.sh
+        echo 'TULIO=/usr/local/tulio' >> /tmp/tulio-test-env.sh
+        echo 'domain=test-5285.tuliocp.com' >> /tmp/tulio-test-env.sh
+        echo 'domainuk=test-5285.tuliocp.com.uk' >> /tmp/tulio-test-env.sh
+        echo 'rootdomain=testtuliocp.com' >> /tmp/tulio-test-env.sh
+        echo 'subdomain=cdn.testtuliocp.com' >> /tmp/tulio-test-env.sh
+        echo 'database=test-5285_database' >> /tmp/tulio-test-env.sh
+        echo 'dbuser=test-5285_dbuser' >> /tmp/tulio-test-env.sh
     fi
 
-    source /tmp/hestia-test-env.sh
+    source /tmp/tulio-test-env.sh
     source $TULIO/func/main.sh
     source $TULIO/conf/tulio.conf
     source $TULIO/func/ip.sh
@@ -316,7 +316,7 @@ function validate_web_domain() {
 @test "Restore[3]: From Hestia [WEB] Custom rule" {
     # check if custom rule is still working
     local domain="test.hestia.com"
-    validate_web_domain $userbk $domain 'hestia-yes' '/hestia/hestia' 'no'
+    validate_web_domain $userbk $domain 'tulio-yes' '/hestia/hestia' 'no'
 }
 
 
@@ -409,7 +409,7 @@ function validate_web_domain() {
 @test "Restore[4]: From Hestia [WEB] Custom rule" {
     # check if custom rule is still working
     local domain="test.hestia.com"
-    validate_web_domain $userbk $domain 'hestia-yes' '/hestia/hestia' 'no'
+    validate_web_domain $userbk $domain 'tulio-yes' '/hestia/hestia' 'no'
 }
 
 

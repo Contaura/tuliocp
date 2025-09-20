@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Run triggers only on updates
-if [ ! -e "/usr/local/hestia/data/users/admin" ]; then
+if [ ! -e "/usr/local/tulio/data/users/admin" ]; then
 	exit
 fi
 
@@ -10,6 +10,6 @@ HESTIA_BACKUP="/root/hst_nginx_backups/$(date +%d%m%Y%H%M)"
 mkdir -p HESTIA_BACKUP
 
 # Create a backup of the current configuration
-cp -r /usr/local/hestia/nginx/conf/nginx.conf $HESTIA_BACKUP/nginx.conf
+cp -r /usr/local/tulio/nginx/conf/nginx.conf $TULIO_BACKUP/nginx.conf
 
 exit

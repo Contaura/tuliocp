@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-if [ "${PATH#*/usr/local/hestia/bin*}" = "$PATH" ]; then
+if [ "${PATH#*/usr/local/tulio/bin*}" = "$PATH" ]; then
     . /etc/profile.d/hestia.sh
 fi
 
@@ -40,7 +40,7 @@ function setup() {
     assert_success
     refute_output
 
-    run openssl x509 -text -in /usr/local/hestia/data/users/$user/ssl/$domain.crt
+    run openssl x509 -text -in /usr/local/tulio/data/users/$user/ssl/$domain.crt
     assert_success
     assert_output --partial "*.$domain"
 }

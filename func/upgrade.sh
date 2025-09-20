@@ -206,7 +206,7 @@ upgrade_send_notification_to_email() {
 		# Retrieve admin email address, sendmail path, and message temp file path
 		admin_email=$($BIN/v-list-user "$ROOT_USER" json | grep "CONTACT" | cut -d'"' -f4)
 		send_mail="$TULIO/web/inc/mail-wrapper.php"
-		message_tmp_file="/tmp/hestia-upgrade-complete.txt"
+		message_tmp_file="/tmp/tulio-upgrade-complete.txt"
 
 		# Create temporary file
 		touch $message_tmp_file
@@ -881,9 +881,9 @@ upgrade_restart_services() {
 		fi
 		if [ "$WEB_TERMINAL" = "true" ]; then
 			if [ "$DEBUG_MODE" = "true" ]; then
-				echo "      - hestia-web-terminal"
+				echo "      - tulio-web-terminal"
 			fi
-			$BIN/v-restart-service "hestia-web-terminal"
+			$BIN/v-restart-service "tulio-web-terminal"
 		fi
 		# Restart SSH daemon service
 		if [ "$DEBUG_MODE" = "true" ]; then

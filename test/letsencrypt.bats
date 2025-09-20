@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-if [ "${PATH#*/usr/local/hestia/bin*}" = "$PATH" ]; then
+if [ "${PATH#*/usr/local/tulio/bin*}" = "$PATH" ]; then
     . /etc/profile.d/hestia.sh
 fi
 
@@ -14,7 +14,7 @@ function random() {
 }
 
 function setup() {
-    source /tmp/hestia-le-env.sh
+    source /tmp/tulio-le-env.sh
     source $TULIO/func/main.sh
     source $TULIO/conf/tulio.conf
     source $TULIO/func/ip.sh

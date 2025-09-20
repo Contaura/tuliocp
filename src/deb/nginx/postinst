@@ -7,12 +7,12 @@ if [ "$1" != "configure" ]; then
 fi
 
 # Run triggers only on updates
-if [ ! -e "/usr/local/hestia/data/users/" ]; then
+if [ ! -e "/usr/local/tulio/data/users/" ]; then
 	exit
 fi
 
 # Prevent running and causes issues with outdated hestia version
-if ! id "hestiaweb" &> /dev/null; then
+if ! id "tulioweb" &> /dev/null; then
 	exit
 fi
 
@@ -21,7 +21,7 @@ update-rc.d hestia defaults > /dev/null
 invoke-rc.d hestia start || true
 
 # Adapt Port Listing in HESTIA NGINX Backend
-source /usr/local/hestia/func/syshealth.sh # Load syshealth functions
+source /usr/local/tulio/func/syshealth.sh # Load syshealth functions
 
 # Check if the function syshealth_adapt_hestia_nginx_listen_ports exists
 if ! declare -f syshealth_adapt_hestia_nginx_listen_ports > /dev/null; then
@@ -34,30 +34,30 @@ syshealth_adapt_nginx_resolver
 #                Initialize functions/variables               #
 ###############################################################
 
-if [ -z "$HESTIA" ]; then
-	export HESTIA='/usr/local/hestia'
-	PATH=$PATH:/usr/local/hestia/bin
+if [ -z "$TULIO" ]; then
+	export TULIO='/usr/local/tulio'
+	PATH=$PATH:/usr/local/tulio/bin
 	export PATH
 fi
 
 # Check if preinstall hook exists
-if [ -e "/etc/hestiacp/hooks/nginx/pre_install.sh" ]; then
-	/etc/hestiacp/hooks/nginx/pre_install.sh
+if [ -e "/etc/tuliocp/hooks/nginx/pre_install.sh" ]; then
+	/etc/tuliocp/hooks/nginx/pre_install.sh
 fi
 
 # Load upgrade functions and variables
-source /usr/local/hestia/func/main.sh
-source /usr/local/hestia/func/upgrade.sh
+source /usr/local/tulio/func/main.sh
+source /usr/local/tulio/func/upgrade.sh
 source /usr/local/tulio.conf/tulio.conf
-source /usr/local/hestia/install/upgrade/upgrade.conf
+source /usr/local/tulio/install/upgrade/upgrade.conf
 
 # Reset backend port
 if [ -n "$BACKEND_PORT" ]; then
-	/usr/local/hestia/bin/v-change-sys-port $BACKEND_PORT
+	/usr/local/tulio/bin/v-change-sys-port $BACKEND_PORT
 fi
 
-if [ -e "/etc/hestiacp/hooks/nginx/post_install.sh" ]; then
-	/etc/hestiacp/hooks/nginx/post_install.sh
+if [ -e "/etc/tuliocp/hooks/nginx/post_install.sh" ]; then
+	/etc/tuliocp/hooks/nginx/post_install.sh
 fi
 
 # Restart hestia service

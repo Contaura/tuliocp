@@ -40,7 +40,7 @@ esac
 chmod +x $TULIO/install/deb/
 
 echo "[ * ] Updating hestia apt configuration..."
-sed -i "s|deb https://$RHOST/ $codename main|deb [arch=$ARCH] https://$RHOST/ $codename main|g" /etc/apt/sources.list.d/hestia.list
+sed -i "s|deb https://$RHOST/ $codename main|deb [arch=$ARCH] https://$RHOST/ $codename main|g" /etc/apt/sources.list.d/tulio.list
 
 if [ -n "$IMAP_SYSTEM" ]; then
 	echo "[ * ] Updating dovecot configuration..."

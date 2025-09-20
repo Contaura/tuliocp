@@ -28,7 +28,7 @@ if [ "$IMAP_SYSTEM" = "dovecot" ]; then
 	cp -f $TULIO/install/deb/dovecot/conf.d/10-ssl.conf /etc/dovecot/conf.d/
 fi
 
-# Update DNS resolvers in hestia-nginx's configuration
+# Update DNS resolvers in tulio-nginx's configuration
 echo "[ * ] Updating DNS resolvers for Hestia Internal Web Server..."
 dns_resolver=$(cat /etc/resolv.conf | grep -i '^nameserver' | cut -d ' ' -f2 | tr '\r\n' ' ' | xargs)
 for ip in $dns_resolver; do

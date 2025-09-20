@@ -256,10 +256,10 @@ function lxc_run($args, &$rc) {
 function getHestiaVersion($branch) {
 	$control_file = "";
 	if ($branch === "~localsrc") {
-		$control_file = file_get_contents(SHARED_HOST_FOLDER . "/hestiacp/src/deb/hestia/control");
+		$control_file = file_get_contents(SHARED_HOST_FOLDER . "/hestiacp/src/deb/tulio/control");
 	} else {
 		$control_file = file_get_contents(
-			"https://raw.githubusercontent.com/contaura/tuliocp/${branch}/src/deb/hestia/control",
+			"https://raw.githubusercontent.com/contaura/tuliocp/${branch}/src/deb/tulio/control",
 		);
 	}
 

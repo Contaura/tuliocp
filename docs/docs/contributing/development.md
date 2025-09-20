@@ -27,19 +27,19 @@ These instructions use [Multipass](https://multipass.run/) to create an Ubuntu V
    _(if running VM on ARM architecture e.g. Apple M1, use at least 12GB of memory)_
 
    ```bash
-   multipass launch --name hestia-dev --memory 4G --disk 15G --cpus 4
+   multipass launch --name tulio-dev --memory 4G --disk 15G --cpus 4
    ```
 
 1. Mount your cloned repository to the VM's home directory
 
    ```bash
-   multipass mount ~/projects/hestiacp hestia-dev:/home/ubuntu/hestiacp
+   multipass mount ~/projects/hestiacp tulio-dev:/home/ubuntu/hestiacp
    ```
 
 1. SSH into the VM as root, then install some required packages
 
    ```bash
-   multipass exec hestia-dev -- sudo bash
+   multipass exec tulio-dev -- sudo bash
    sudo apt update && sudo apt install -y jq libjq1
    ```
 
@@ -85,8 +85,8 @@ Hestia is now running in a virtual machine. If you'd like to make changes to the
 Sometimes (with Multipass), the mapping between the source code directory on your local machine to the directory in the VM can be lost with a "failed to obtain exit status for remote process" error. If this happens, simply unmount and remount, e.g.
 
 ```bash
-multipass unmount hestia-dev
-multipass mount ~/projects/hestiacp hestia-dev:/home/ubuntu/hestiacp
+multipass unmount tulio-dev
+multipass mount ~/projects/hestiacp tulio-dev:/home/ubuntu/hestiacp
 ```
 
 :::
@@ -104,7 +104,7 @@ Below are some instructions for making a change to Hestia's UI, running the buil
 1. SSH into the VM as root and navigate to `/src`
 
    ```bash
-   multipass exec hestia-dev -- sudo bash
+   multipass exec tulio-dev -- sudo bash
    cd src
    ```
 

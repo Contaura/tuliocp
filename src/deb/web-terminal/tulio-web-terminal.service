@@ -1,0 +1,16 @@
+[Unit]
+Description=TulioCP Web Terminal
+Documentation=https://tuliocp.com/docs/
+After=network.target
+
+[Service]
+User=root
+Group=tulio-users
+Environment=NODE_ENV=production
+Environment=TULIO=/usr/local/tulio
+ExecStart=/usr/local/tulio/web-terminal/server.js
+ExecStop=/bin/kill -s TERM $MAINPID
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
