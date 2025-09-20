@@ -13,6 +13,11 @@ if [ ! -d "/opt/tuliocp-build" ]; then
     exit 1
 fi
 
+# If token provided as argument, use it
+if [ -n "$1" ]; then
+    GITHUB_TOKEN="$1"
+fi
+
 # Check for GitHub token
 if [ -z "$GITHUB_TOKEN" ]; then
     echo "❌ GitHub token not provided"
@@ -27,11 +32,6 @@ if [ -z "$GITHUB_TOKEN" ]; then
     echo "Or run this script with the token as an argument:"
     echo "   $0 your-token-here"
     exit 1
-fi
-
-# If token provided as argument, use it
-if [ -n "$1" ]; then
-    GITHUB_TOKEN="$1"
 fi
 
 echo "🔧 Configuring Git with GitHub token..."
