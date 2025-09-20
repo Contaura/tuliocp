@@ -4,7 +4,7 @@
 #
 # example: v-update-white-label-logo
 #
-# Replace Hestia logos with User created logo's
+# Replace TulioCP logos with User created logo's
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -18,50 +18,50 @@ reset=${2-no}
 # shellcheck source=/etc/hestiacp/tulio.conf
 source /etc/hestiacp/tulio.conf
 # shellcheck source=/usr/local/hestia/func/main.sh
-source "$HESTIA/func/main.sh"
+source "$TULIO/func/main.sh"
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                       Action                             #
 #----------------------------------------------------------#
 
 if [ "$reset" = "yes" ]; then
-	rm -rf "$HESTIA/web/images/custom/"
+	rm -rf "$TULIO/web/images/custom/"
 fi
 
-if [ -f "$HESTIA/web/images/custom/logo.svg" ]; then
-	cp -f "$HESTIA/web/images/custom/logo.svg" "$HESTIA/web/images/logo.svg"
-elif [ ! -f "$HESTIA/web/images/custom/logo.svg" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/logo.svg" "$HESTIA/web/images/logo.svg"
+if [ -f "$TULIO/web/images/custom/logo-tulio.svg" ]; then
+	cp -f "$TULIO/web/images/custom/logo-tulio.svg" "$TULIO/web/images/logo-tulio.svg"
+elif [ ! -f "$TULIO/web/images/custom/logo-tulio.svg" ] && [ "$download" = "yes" ]; then
+	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/logo-tulio.svg" "$TULIO/web/images/logo-tulio.svg"
 fi
 
-if [ -f "$HESTIA/web/images/custom/logo.png" ]; then
-	cp -f "$HESTIA/web/images/custom/logo.png" "$HESTIA/web/images/logo.png"
-elif [ ! -f "$HESTIA/web/images/custom/logo.png" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/logo.png" "$HESTIA/web/images/logo.png"
+if [ -f "$TULIO/web/images/custom/logo.png" ]; then
+	cp -f "$TULIO/web/images/custom/logo.png" "$TULIO/web/images/logo.png"
+elif [ ! -f "$TULIO/web/images/custom/logo.png" ] && [ "$download" = "yes" ]; then
+	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/logo.png" "$TULIO/web/images/logo.png"
 fi
 
-if [ -f "$HESTIA/web/images/custom/logo-header.svg" ]; then
-	cp -f "$HESTIA/web/images/custom/logo-header.svg" "$HESTIA/web/images/logo-header.svg"
-elif [ ! -f "$HESTIA/web/images/custom/logo-header.svg" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/logo-header.svg" "$HESTIA/web/images/logo-header.svg"
+if [ -f "$TULIO/web/images/custom/logo-tulio-header.svg" ]; then
+	cp -f "$TULIO/web/images/custom/logo-tulio-header.svg" "$TULIO/web/images/logo-tulio-header.svg"
+elif [ ! -f "$TULIO/web/images/custom/logo-tulio-header.svg" ] && [ "$download" = "yes" ]; then
+	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/logo-tulio-header.svg" "$TULIO/web/images/logo-tulio-header.svg"
 fi
 
-if [ -f "$HESTIA/web/images/custom/favicon.png" ]; then
-	cp -f "$HESTIA/web/images/custom/favicon.png" "$HESTIA/web/images/favicon.png"
-elif [ ! -f "$HESTIA/web/images/custom/favicon.png" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/favicon.png" "$HESTIA/web/images/favicon.png"
+if [ -f "$TULIO/web/images/custom/favicon.png" ]; then
+	cp -f "$TULIO/web/images/custom/favicon.png" "$TULIO/web/images/favicon.png"
+elif [ ! -f "$TULIO/web/images/custom/favicon.png" ] && [ "$download" = "yes" ]; then
+	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/images/favicon.png" "$TULIO/web/images/favicon.png"
 fi
 
-if [ -f "$HESTIA/web/images/custom/favicon.ico" ]; then
-	cp -f "$HESTIA/web/images/custom/favicon.ico" "$HESTIA/web/favicon.ico"
-elif [ ! -f "$HESTIA/web/images/custom/favicon.ico" ] && [ "$download" = "yes" ]; then
-	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/favicon.ico" "$HESTIA/web/favicon.ico"
+if [ -f "$TULIO/web/images/custom/favicon.ico" ]; then
+	cp -f "$TULIO/web/images/custom/favicon.ico" "$TULIO/web/favicon.ico"
+elif [ ! -f "$TULIO/web/images/custom/favicon.ico" ] && [ "$download" = "yes" ]; then
+	download_file "https://raw.githubusercontent.com/contaura/tuliocp/release/web/favicon.ico" "$TULIO/web/favicon.ico"
 fi
 
 #----------------------------------------------------------#
-#                       Hestia                             #
+#                       TulioCP                            #
 #----------------------------------------------------------#
 
 exit
