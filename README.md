@@ -4,27 +4,8 @@
   <img src="web/images/logo-tulio.svg" alt="TulioCP Logo" width="120" height="120">
 </p>
 
-![TulioCP Web Interface screenshot](https://storage.tuliocp.com/tuliocp-screenshot.png)
-
 <h2 align="center">Lightweight and powerful control panel for the modern web</h2>
 
-<p align="center"><strong>Latest stable release:</strong> Version 1.9.4 | <a href="https://github.com/contaura/tuliocp/blob/release/CHANGELOG.md">View Changelog</a></p>
-
-<p align="center">
-	<a href="https://www.tuliocp.com/">TulioCP.com</a> |
-	<a href="https://docs.tuliocp.com/">Documentation</a> |
-	<a href="https://forum.tuliocp.com/">Forum</a>
-	<br/><br/>
-	<a href="https://drone.tuliocp.com/contaura/tuliocp">
-		<img src="https://drone.tuliocp.com/api/badges/contaura/tuliocp/status.svg?ref=refs/heads/main" alt="Drone Status"/>
-	</a>
-	<a href="https://github.com/contaura/tuliocp/actions/workflows/lint.yml">
-		<img src="https://github.com/contaura/tuliocp/actions/workflows/lint.yml/badge.svg" alt="Lint Status"/>
-	</a>
-	<a href="https://gurubase.io/g/tuliocp">
-		<img src="https://img.shields.io/badge/Gurubase-Ask%20TulioCP%20Guru-006BFF" alt="Gurubase"/>
-	</a>
-</p>
 
 ## **Welcome!**
 
