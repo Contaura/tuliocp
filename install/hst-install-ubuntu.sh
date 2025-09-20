@@ -1189,102 +1189,137 @@ fi
 
 # Create TulioCP directory structure and copy source files
 echo "[ * ] Setting up TulioCP directory structure..."
+DOWNLOAD_TMP_DIR=""
 if [ ! -d "$TULIO" ]; then
-	# Create TulioCP base directory
-	mkdir -p "$TULIO"
-	
-	# Try to find the repository source files
-	# Check multiple possible locations for source files
-	SOURCE_DIR=""
-	for possible_dir in "$(pwd)" "$(dirname $0)/.." "/tmp/tuliocp-source" "$HOME/tuliocp"; do
-		if [ -d "$possible_dir/bin" ] && [ -d "$possible_dir/install" ]; then
-			SOURCE_DIR="$possible_dir"
-			break
-		fi
-	done
-	
-	if [ -n "$SOURCE_DIR" ]; then
-		echo "Found source files in: $SOURCE_DIR"
-		# Copy essential directories with verification
-		if [ -d "$SOURCE_DIR/bin" ]; then
-			cp -r "$SOURCE_DIR/bin" "$TULIO/" && echo "✓ bin directory copied successfully" || echo "✗ bin directory copy failed"
-		else
-			echo "✗ bin directory not found in source"
-		fi
-		
-		if [ -d "$SOURCE_DIR/func" ]; then
-			cp -r "$SOURCE_DIR/func" "$TULIO/" && echo "✓ func directory copied successfully" || echo "✗ func directory copy failed"
-		else
-			echo "✗ func directory not found in source"
-		fi
-		
-		if [ -d "$SOURCE_DIR/web" ]; then
-			cp -r "$SOURCE_DIR/web" "$TULIO/" && echo "✓ web directory copied successfully" || echo "✗ web directory copy failed"
-		else
-			echo "✗ web directory not found in source"
-		fi
-		
-		if [ -d "$SOURCE_DIR/install" ]; then
-			cp -r "$SOURCE_DIR/install" "$TULIO/" && echo "✓ install directory copied successfully" || echo "✗ install directory copy failed"
-		else
-			echo "✗ install directory not found in source"
-		fi
-		
-		# Verify bin directory was copied and make scripts executable
-		if [ -d "$TULIO/bin" ]; then
-			echo "Setting executable permissions on CLI scripts..."
-			chmod +x $TULIO/bin/* 2>/dev/null
-			echo "✓ TulioCP CLI scripts ready"
-		else
-			echo "✗ Warning: bin directory not available after copy - CLI features will not work"
-		fi
-		
-		echo "TulioCP files copied from source to installation directory"
-	else
-		echo "Warning: Could not locate TulioCP source files locally"
-		echo "Attempting to download essential files from repository..."
-		
-		# Create directory structure
-		mkdir -p $TULIO/bin $TULIO/func $TULIO/web $TULIO/install/common $TULIO/install/deb
-		
-		# Download essential CLI scripts
-		download_essential_scripts() {
-			local base_url="https://raw.githubusercontent.com/contaura/tuliocp/main/bin"
-			local essential_scripts=(
-				"v-add-user"
-				"v-change-user-shell"
-				"v-change-user-role"
-				"v-change-user-language"
-				"v-change-sys-config-value"
-				"v-change-sys-hostname"
-				"v-add-sys-sftp-jail"
-				"v-add-sys-ssh-jail"
-			)
-			
-			local downloaded=0
-			for script in "${essential_scripts[@]}"; do
-				if curl -sSL "$base_url/$script" -o "$TULIO/bin/$script" 2>/dev/null; then
-					chmod +x "$TULIO/bin/$script"
-					downloaded=$((downloaded + 1))
-				fi
-			done
-			
-			echo "Downloaded $downloaded essential CLI scripts"
-		}
-		
-		# Try to download essential scripts
-		if command -v curl >/dev/null 2>&1; then
-			download_essential_scripts
-		else
-			echo "Warning: curl not available, cannot download CLI scripts"
-		fi
-		
-		echo "Basic directory structure created - some features may have limited functionality"
-	fi
-	
-	# Update TULIO_INSTALL_DIR and TULIO_COMMON_DIR to point to installed locations
-	TULIO_INSTALL_DIR="$TULIO/install/deb"
-	TULIO_COMMON_DIR="$TULIO/install/common"
+        # Create TulioCP base directory
+        mkdir -p "$TULIO"
+
+        # Try to find the repository source files
+        # Check multiple possible locations for source files
+        SOURCE_DIR=""
+        for possible_dir in "$(pwd)" "$(dirname $0)/.." "/tmp/tuliocp-source" "$HOME/tuliocp"; do
+                if [ -d "$possible_dir/bin" ] && [ -d "$possible_dir/install" ]; then
+                        SOURCE_DIR="$possible_dir"
+                        break
+                fi
+        done
+
+        if [ -z "$SOURCE_DIR" ]; then
+                echo "Warning: Could not locate TulioCP source files locally"
+                echo "Attempting to download TulioCP source archive..."
+
+                if command -v curl >/dev/null 2>&1 || command -v wget >/dev/null 2>&1; then
+                        DOWNLOAD_TMP_DIR=$(mktemp -d 2>/dev/null)
+                        if [ -n "$DOWNLOAD_TMP_DIR" ] && [ -d "$DOWNLOAD_TMP_DIR" ]; then
+                                ARCHIVE_PATH="$DOWNLOAD_TMP_DIR/tuliocp.tar.gz"
+                                REPO_ARCHIVE_URL="https://github.com/contaura/tuliocp/archive/refs/heads/main.tar.gz"
+
+                                if command -v curl >/dev/null 2>&1; then
+                                        curl -fsSL "$REPO_ARCHIVE_URL" -o "$ARCHIVE_PATH" >> $LOG 2>&1
+                                else
+                                        wget -qO "$ARCHIVE_PATH" "$REPO_ARCHIVE_URL" >> $LOG 2>&1
+                                fi
+
+                                if [ $? -eq 0 ] && tar -xzf "$ARCHIVE_PATH" -C "$DOWNLOAD_TMP_DIR" >> $LOG 2>&1; then
+                                        SOURCE_DIR=$(find "$DOWNLOAD_TMP_DIR" -maxdepth 1 -mindepth 1 -type d -name 'tuliocp-*' | head -n1)
+                                        if [ -n "$SOURCE_DIR" ] && [ -d "$SOURCE_DIR/bin" ] && [ -d "$SOURCE_DIR/install" ]; then
+                                                echo "✓ Downloaded TulioCP source archive"
+                                        else
+                                                echo "Warning: Downloaded archive did not contain expected TulioCP structure"
+                                                SOURCE_DIR=""
+                                        fi
+                                else
+                                        echo "Warning: Failed to download TulioCP source archive"
+                                        SOURCE_DIR=""
+                                fi
+                        else
+                                echo "Warning: Unable to create temporary directory for download"
+                        fi
+                else
+                        echo "Warning: Neither curl nor wget available, cannot download TulioCP source files"
+                fi
+        fi
+
+        if [ -n "$SOURCE_DIR" ]; then
+                echo "Using TulioCP source files from: $SOURCE_DIR"
+
+                # Copy essential directories with verification
+                if [ -d "$SOURCE_DIR/bin" ]; then
+                        cp -r "$SOURCE_DIR/bin" "$TULIO/" && echo "✓ bin directory copied successfully" || echo "✗ bin directory copy failed"
+                else
+                        echo "✗ bin directory not found in source"
+                fi
+
+                if [ -d "$SOURCE_DIR/func" ]; then
+                        cp -r "$SOURCE_DIR/func" "$TULIO/" && echo "✓ func directory copied successfully" || echo "✗ func directory copy failed"
+                else
+                        echo "✗ func directory not found in source"
+                fi
+
+                if [ -d "$SOURCE_DIR/web" ]; then
+                        cp -r "$SOURCE_DIR/web" "$TULIO/" && echo "✓ web directory copied successfully" || echo "✗ web directory copy failed"
+                else
+                        echo "✗ web directory not found in source"
+                fi
+
+                if [ -d "$SOURCE_DIR/install" ]; then
+                        cp -r "$SOURCE_DIR/install" "$TULIO/" && echo "✓ install directory copied successfully" || echo "✗ install directory copy failed"
+                else
+                        echo "✗ install directory not found in source"
+                fi
+
+                # Verify bin directory was copied and make scripts executable
+                if [ -d "$TULIO/bin" ]; then
+                        echo "Setting executable permissions on CLI scripts..."
+                        chmod +x $TULIO/bin/* 2>/dev/null
+                        echo "✓ TulioCP CLI scripts ready"
+                else
+                        echo "✗ Warning: bin directory not available after copy - CLI features will not work"
+                fi
+
+                echo "TulioCP files copied to installation directory"
+        else
+                echo "Error: Unable to obtain TulioCP source files."
+                echo "Please ensure TulioCP packages are available or rerun the installer with the --with-debs option."
+                [ -n "$DOWNLOAD_TMP_DIR" ] && rm -rf "$DOWNLOAD_TMP_DIR"
+                exit 1
+        fi
+
+        # Clean up downloaded archive if we created one
+        if [ -n "$DOWNLOAD_TMP_DIR" ] && [ -d "$DOWNLOAD_TMP_DIR" ]; then
+                rm -rf "$DOWNLOAD_TMP_DIR"
+        fi
+
+        # Update TULIO_INSTALL_DIR and TULIO_COMMON_DIR to point to installed locations
+        TULIO_INSTALL_DIR="$TULIO/install/deb"
+        TULIO_COMMON_DIR="$TULIO/install/common"
+fi
+
+# Refresh install directories to point at the active TulioCP location
+if [ -d "$TULIO/install/deb" ]; then
+        TULIO_INSTALL_DIR="$TULIO/install/deb"
+fi
+if [ -d "$TULIO/install/common" ]; then
+        TULIO_COMMON_DIR="$TULIO/install/common"
+fi
+
+# Ensure critical TulioCP files exist before continuing
+missing_requirements=()
+if [ ! -f "$TULIO/func/main.sh" ]; then
+        missing_requirements+=("$TULIO/func/main.sh")
+fi
+if [ ! -f "$TULIO_INSTALL_DIR/nginx/nginx.conf" ]; then
+        missing_requirements+=("$TULIO_INSTALL_DIR/nginx/nginx.conf")
+fi
+
+if [ ${#missing_requirements[@]} -gt 0 ]; then
+        echo "Error: Required TulioCP files are missing:"
+        for missing_file in "${missing_requirements[@]}"; do
+                echo "  - $missing_file"
+        done
+        echo "TulioCP package installation appears incomplete."
+        echo "Please verify repository access or provide local packages with the --with-debs option."
+        exit 1
 fi
 
 # Restoring autostart policy
