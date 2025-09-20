@@ -1,0 +1,113 @@
+name: Build TulioCP Packages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-packages:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [amd64, arm64]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    
+    - name: Set up build environment
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+          build-essential \
+          libssl-dev \
+          zlib1g-dev \
+          libpcre3-dev \
+          libxml2-dev \
+          libxslt1-dev \
+          libgd-dev \
+          libgeoip-dev \
+          libzip-dev \
+          dpkg-dev \
+          wget \
+          curl \
+          lsb-release
+
+    - name: Install Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+    
+    - name: Build all packages
+      run: |
+        cd src
+        bash tst_autocompile.sh --all --keepbuild --noinstall ~localsrc
+      env:
+        DEBIAN_FRONTEND: noninteractive
+    
+    - name: List built packages
+      run: |
+        find /tmp/tuliocp-src -name "*.deb" -type f || echo "No .deb packages found"
+        ls -la /tmp/tuliocp-src/ || echo "Build directory not found"
+    
+    - name: Upload packages as artifacts
+      uses: actions/upload-artifact@v4
+      if: success()
+      with:
+        name: tuliocp-packages-${{ matrix.arch }}
+        path: /tmp/tuliocp-src/*.deb
+        retention-days: 30
+
+  create-repository:
+    needs: build-packages
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: artifacts/
+    
+    - name: Set up APT repository structure
+      run: |
+        mkdir -p apt-repo/dists/stable/main/binary-amd64
+        mkdir -p apt-repo/dists/stable/main/binary-arm64
+        mkdir -p apt-repo/pool/main
+        
+        # Move packages to pool
+        find artifacts/ -name "*.deb" -exec cp {} apt-repo/pool/main/ \;
+        
+        # Create Packages files
+        cd apt-repo
+        dpkg-scanpackages pool/ /dev/null > dists/stable/main/binary-amd64/Packages
+        dpkg-scanpackages pool/ /dev/null > dists/stable/main/binary-arm64/Packages
+        gzip -9 -c dists/stable/main/binary-amd64/Packages > dists/stable/main/binary-amd64/Packages.gz
+        gzip -9 -c dists/stable/main/binary-arm64/Packages > dists/stable/main/binary-arm64/Packages.gz
+        
+        # Create Release file
+        cat > dists/stable/Release << EOF
+        Origin: TulioCP
+        Label: TulioCP APT Repository
+        Suite: stable
+        Codename: stable
+        Components: main
+        Architectures: amd64 arm64
+        Date: $(date -u +"%a, %d %b %Y %H:%M:%S %Z")
+        Description: TulioCP Control Panel packages
+        EOF
+    
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      if: success()
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./apt-repo
+        publish_branch: gh-pages
+        cname: apt.tuliocp.com
