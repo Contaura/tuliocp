@@ -918,6 +918,8 @@ check_result $? 'apt-get upgrade failed'
 
 # Creating backup directory tree
 mkdir -p $hst_backups
+# Preserve the working directory so later steps can still locate the source tree
+ORIGINAL_PWD="$(pwd)"
 cd $hst_backups
 mkdir nginx apache2 php vsftpd proftpd bind exim4 dovecot clamd
 mkdir spamassassin mysql postgresql openssl tulio
@@ -979,6 +981,9 @@ systemctl stop tulio > /dev/null 2>&1
 cp -r $TULIO/* $hst_backups/tulio > /dev/null 2>&1
 apt-get -y purge tuliocp tulio-nginx tulio-php > /dev/null 2>&1
 rm -rf $TULIO > /dev/null 2>&1
+
+# Return to the original working directory before continuing with the installation
+cd "$ORIGINAL_PWD"
 
 #----------------------------------------------------------#
 #                     Package Includes                     #
