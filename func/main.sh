@@ -45,6 +45,14 @@ TULIO_INSTALL_DIR="$TULIO/install/deb"
 TULIO_COMMON_DIR="$TULIO/install/common"
 TULIO_BACKUP="/root/tst_backups/$(date +%d%m%Y%H%M)"
 TULIO_PHP="$TULIO/php/bin/php"
+if [ ! -x "$TULIO_PHP" ]; then
+        php_cmd=$(command -v php 2>/dev/null || true)
+        if [ -n "$php_cmd" ]; then
+                TULIO_PHP="$php_cmd"
+        elif [ -x "/usr/bin/php" ]; then
+                TULIO_PHP="/usr/bin/php"
+        fi
+fi
 USER_DATA=$TULIO/data/users/$user
 WEBTPL=$TULIO/data/templates/web
 MAILTPL=$TULIO/data/templates/mail
