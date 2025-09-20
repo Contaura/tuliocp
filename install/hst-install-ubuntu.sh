@@ -524,7 +524,7 @@ fi
 # Validate whether installation script matches release version before continuing with install
 if [ -z "$withdebs" ] || [ ! -d "$withdebs" ]; then
 	release_branch_ver=$(curl -s https://raw.githubusercontent.com/contaura/tuliocp/main/src/deb/tulio/control | grep "Version:" | awk '{print $2}')
-	if [ "$TULIO_INSTALL_VER" != "$release_branch_ver" ]; then
+	if [ "$HESTIA_INSTALL_VER" != "$release_branch_ver" ]; then
 		echo
 		echo -e "\e[91mInstallation aborted\e[0m"
 		echo "===================================================================="
@@ -566,7 +566,7 @@ esac
 #----------------------------------------------------------#
 
 install_welcome_message() {
-	DISPLAY_VER=$(echo $TULIO_INSTALL_VER | sed "s|~alpha||g" | sed "s|~beta||g")
+	DISPLAY_VER=$(echo $HESTIA_INSTALL_VER | sed "s|~alpha||g" | sed "s|~beta||g")
 	echo
 	echo '                _   _           _   _        ____ ____                  '
 	echo '               | | | | ___  ___| |_(_) __ _ / ___|  _ \                 '
@@ -575,10 +575,10 @@ install_welcome_message() {
 	echo '               |_| |_|\___||___/\__|_|\__,_|\____|_|                    '
 	echo "                                                                        "
 	echo "                              TulioCP                                   "
-	if [[ "$TULIO_INSTALL_VER" =~ "beta" ]]; then
+	if [[ "$HESTIA_INSTALL_VER" =~ "beta" ]]; then
 		echo "                              BETA RELEASE                          "
 	fi
-	if [[ "$TULIO_INSTALL_VER" =~ "alpha" ]]; then
+	if [[ "$HESTIA_INSTALL_VER" =~ "alpha" ]]; then
 		echo "                          DEVELOPMENT SNAPSHOT                      "
 		echo "                    NOT INTENDED FOR PRODUCTION USE                 "
 		echo "                          USE AT YOUR OWN RISK                      "
