@@ -1,6 +1,6 @@
 <h1 align="center"><a href="https://www.tuliocp.com/">Tulio Control Panel</a></h1>
 
-![HestiaCP Web Interface screenshot](https://storage.hestiacp.com/hestiascreen.png)
+![HestiaCP Web Interface screenshot](https://storage.tuliocp.com/hestiascreen.png)
 
 <h2 align="center">Lightweight and powerful control panel for the modern web</h2>
 
@@ -11,8 +11,8 @@
 	<a href="https://docs.tuliocp.com/">Documentation</a> |
 	<a href="https://forum.tuliocp.com/">Forum</a>
 	<br/><br/>
-	<a href="https://drone.hestiacp.com/tuliocp/tuliocp">
-		<img src="https://drone.hestiacp.com/api/badges/tuliocp/tuliocp/status.svg?ref=refs/heads/main" alt="Drone Status"/>
+	<a href="https://drone.tuliocp.com/tuliocp/tuliocp">
+		<img src="https://drone.tuliocp.com/api/badges/tuliocp/tuliocp/status.svg?ref=refs/heads/main" alt="Drone Status"/>
 	</a>
 	<a href="https://github.com/tuliocp/tuliocp/actions/workflows/lint.yml">
 		<img src="https://github.com/tuliocp/tuliocp/actions/workflows/lint.yml/badge.svg" alt="Lint Status"/>

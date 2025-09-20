@@ -167,7 +167,7 @@ for ip in $ips; do
 done
 
 # Updating NAT
-pub_ipv4="$(curl -fsLm5 --retry 2 --ipv4 https://ip.hestiacp.com/)"
+pub_ipv4="$(curl -fsLm5 --retry 2 --ipv4 https://ip.tuliocp.com/)"
 if [ ! -e "$HESTIA/data/ips/$pub_ipv4" ]; then
 	if [ -z "$(grep -R "$pub_ipv4" $HESTIA/data/ips/)" ]; then
 		ip="$(ls -t $HESTIA/data/ips/ | head -n1)"

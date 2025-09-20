@@ -1,6 +1,6 @@
 [Unit]
 Description=HestiaCP Web Terminal
-Documentation=https://hestiacp.com/docs/
+Documentation=https://tuliocp.com/docs/
 After=network.target
 
 [Service]

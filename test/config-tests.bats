@@ -21,10 +21,10 @@ function setup() {
         echo 'userpass1=test-5285' >> /tmp/hestia-test-env.sh
         echo 'userpass2=t3st-p4ssw0rd' >> /tmp/hestia-test-env.sh
         echo 'HESTIA=/usr/local/hestia' >> /tmp/hestia-test-env.sh
-        echo 'domain=test-5285.hestiacp.com' >> /tmp/hestia-test-env.sh
-        echo 'domainuk=test-5285.hestiacp.com.uk' >> /tmp/hestia-test-env.sh
-        echo 'rootdomain=testhestiacp.com' >> /tmp/hestia-test-env.sh
-        echo 'subdomain=cdn.testhestiacp.com' >> /tmp/hestia-test-env.sh
+        echo 'domain=test-5285.tuliocp.com' >> /tmp/hestia-test-env.sh
+        echo 'domainuk=test-5285.tuliocp.com.uk' >> /tmp/hestia-test-env.sh
+        echo 'rootdomain=testtuliocp.com' >> /tmp/hestia-test-env.sh
+        echo 'subdomain=cdn.testtuliocp.com' >> /tmp/hestia-test-env.sh
         echo 'database=test-5285_database' >> /tmp/hestia-test-env.sh
         echo 'dbuser=test-5285_dbuser' >> /tmp/hestia-test-env.sh
     fi
@@ -36,27 +36,27 @@ function setup() {
 }
 
 @test "Setup Test domain" {
-    run v-add-user $user $user $user@hestiacp.com default "Super Test"
+    run v-add-user $user $user $user@tuliocp.com default "Super Test"
     assert_success
     refute_output
 
-    run v-add-web-domain $user 'testhestiacp.com'
+    run v-add-web-domain $user 'testtuliocp.com'
     assert_success
     refute_output
 
-    ssl=$(v-generate-ssl-cert "testhestiacp.com" "info@testhestiacp.com" US CA "Orange County" HestiaCP IT "mail.$domain" | tail -n1 | awk '{print $2}')
-    mv $ssl/testhestiacp.com.crt /tmp/testhestiacp.com.crt
-    mv $ssl/testhestiacp.com.key /tmp/testhestiacp.com.key
+    ssl=$(v-generate-ssl-cert "testtuliocp.com" "info@testtuliocp.com" US CA "Orange County" HestiaCP IT "mail.$domain" | tail -n1 | awk '{print $2}')
+    mv $ssl/testtuliocp.com.crt /tmp/testtuliocp.com.crt
+    mv $ssl/testtuliocp.com.key /tmp/testtuliocp.com.key
 
     # Use self signed certificates during last test
-    run v-add-web-domain-ssl $user testhestiacp.com /tmp
+    run v-add-web-domain-ssl $user testtuliocp.com /tmp
     assert_success
     refute_output
 }
 
 @test "Web Config test" {
     for template in $(v-list-web-templates plain); do
-        run v-change-web-domain-tpl $user testhestiacp.com $template
+        run v-change-web-domain-tpl $user testtuliocp.com $template
         assert_success
         refute_output
     done
@@ -65,7 +65,7 @@ function setup() {
 @test "Proxy Config test" {
     if [ "$PROXY_SYSTEM" = "nginx" ]; then
         for template in $(v-list-proxy-templates plain); do
-            run v-change-web-domain-proxy-tpl $user testhestiacp.com $template
+            run v-change-web-domain-proxy-tpl $user testtuliocp.com $template
             assert_success
             refute_output
         done

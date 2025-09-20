@@ -57,8 +57,8 @@ function nav() {
 		{ text: 'Install', link: '/install' },
 		{ text: 'Documentation', link: '/docs/introduction/getting-started', activeMatch: '/docs/' },
 		{ text: 'Team', link: '/team' },
-		{ text: 'Demo', link: 'https://demo.hestiacp.com:8083/' },
-		{ text: 'Forum', link: 'https://forum.hestiacp.com/' },
+		{ text: 'Demo', link: 'https://demo.tuliocp.com:8083/' },
+		{ text: 'Forum', link: 'https://forum.tuliocp.com/' },
 		{ text: 'Donate', link: '/donate' },
 		{
 			text: `v${version}`,

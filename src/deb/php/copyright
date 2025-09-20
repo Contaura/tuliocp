@@ -1,9 +1,9 @@
 Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: hestia
-Source: https://www.hestiacp.com
+Source: https://www.tuliocp.com
 
 Files: *
-Copyright: 2018-2025, Hestia Control Panel <info@hestiacp.com>
+Copyright: 2018-2025, Tulio Control Panel <info@tuliocp.com>
 License: GPL-3.0+
 Remarks: Hestia is a fork from VestaCP, special thanks to vestacp.com and Serghey Rodin
 

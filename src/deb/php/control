@@ -3,8 +3,8 @@ Package: hestia-php
 Priority: optional
 Version: 8.3.17
 Section: admin
-Maintainer: HestaCP <info@hestiacp.com>
-Homepage: https://www.hestiacp.com
+Maintainer: TulioCP <info@tuliocp.com>
+Homepage: https://www.tuliocp.com
 Architecture: amd64
 Depends: hestia, libzip4, unzip, libonig5 | libonig4 | libonig2
 Conflct: libzip5

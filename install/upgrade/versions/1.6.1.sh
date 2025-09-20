@@ -43,9 +43,9 @@ if [ -f "/etc/apt/sources.list.d/hestia-beta.list" ]; then
 	rm /etc/apt/sources.list.d/hestia-beta.list
 	sed -i 's/#//g' /etc/apt/sources.list.d/hestia.list
 fi
-check=$(cat /etc/apt/sources.list.d/hestia.list | grep "beta.hestiacp.com")
+check=$(cat /etc/apt/sources.list.d/hestia.list | grep "beta.tuliocp.com")
 if [ ! -z "$check" ]; then
 	echo "[ ! ] Change to stable release!"
-	sed -i '/beta.hestiacp.com/d' /etc/apt/sources.list.d/hestia.list
+	sed -i '/beta.tuliocp.com/d' /etc/apt/sources.list.d/hestia.list
 	sed -i 's/#//g' /etc/apt/sources.list.d/hestia.list
 fi

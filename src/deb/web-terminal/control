@@ -3,8 +3,8 @@ Package: hestia-web-terminal
 Priority: optional
 Version: 1.0.2
 Section: admin
-Maintainer: HestiaCP <info@hestiacp.com>
-Homepage: https://www.hestiacp.com
+Maintainer: TulioCP <info@tuliocp.com>
+Homepage: https://www.tuliocp.com
 Architecture: amd64
 Depends: hestia, nodejs (>= 20.0.0)
 Description: hestia web terminal

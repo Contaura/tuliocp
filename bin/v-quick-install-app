@@ -111,7 +111,7 @@ $application -> register('apps')
 	foreach($appInstallers as $appInstaller){
 		$app = basename(dirname($appInstaller));
 		$hestia = new \Hestia\System\HestiaApp();
-		$domain = 'demo.hestiacp.com';
+		$domain = 'demo.tuliocp.com';
 		if( !file_exists(__DIR__ . "/../web/src/app/WebApp/Installers/" . $app . "/". $app . "Setup.php") ){
 			continue;
 		}
@@ -146,7 +146,7 @@ $application -> register('options')
 		$app_installer = new $app_installer_class($v_domain, $hestia);
 		$WebappInstaller = new \Hestia\WebApp\AppWizard($app_installer, $v_domain, $hestia);
 		$output -> writeln('To install '.$app.' use the following command:');
-		$output -> writeln('v-quick-install-app install ' . $user . ' ' . $v_domain . ' ' . $app . ' email="info@hestiacp" password="12346"');
+		$output -> writeln('v-quick-install-app install ' . $user . ' ' . $v_domain . ' ' . $app . ' email="info@tuliocp.com" password="12346"');
 		$output -> writeln('---------------------------------');
 		$output -> writeln('Options for ' . $app);
 		$output -> writeln('---------------------------------');

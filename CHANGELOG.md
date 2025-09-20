@@ -768,7 +768,7 @@ A bug in v-update-sys-hestia caused auto update to be not working. Please run: `
 
 - Force update composer to v2 instead of v1 when no version is provided (#2839 #2777)
 - Fixed an issue with v-change-web-domain-owner and mail only domains (#2840, #2841)
-- Grey out phpmyadmin buttons + add link to docs.hestiacp.com for support (#2843)
+- Grey out phpmyadmin buttons + add link to docs.tuliocp.com for support (#2843)
 - Block the use of CNAME records on @ or root records DNS domain (#2838, #2842)
 - Code clean up and remove unused tests and templates (#2829 and #2831)
 - Fixed an issue where no password was send when a user create a new mail account (#2819 #2815)
@@ -1129,7 +1129,7 @@ After that run apt update && apt upgrade
 ### Bugfixes
 
 - Fixed an issue with the installer. system.pkg didn't allow for a Web alias #2381
-- Fixed an issue with upgrade script causing command to to be executed (<https://forum.hestiacp.com/t/upgrading-to-1-5-5-error-line/5449/3>)
+- Fixed an issue with upgrade script causing command to to be executed (<https://forum.tuliocp.com/t/upgrading-to-1-5-5-error-line/5449/3>)
 
 ## [1.5.5] - Service release
 
@@ -1220,7 +1220,7 @@ After that run apt update && apt upgrade
 - Fixed an issue where passwords may not be correctly set on Debian 11 (#2270)
 - Fixed an issue with command path v-change-firewall-rule (#2249)
 - Fixed an issue in `v-backup-user` where you may encounter an error "invalid parameters for check_result" (#2284)
-- Fixed an issue which impacted the performance of Nextcloud/Owncloud ([forum post](https://forum.hestiacp.com/t/tip-create-a-nginx-template-for-nextcloud-to-let-synchronize-files-bigger-than-10mb/5123))
+- Fixed an issue which impacted the performance of Nextcloud/Owncloud ([forum post](https://forum.tuliocp.com/t/tip-create-a-nginx-template-for-nextcloud-to-let-synchronize-files-bigger-than-10mb/5123))
 - Fixed an issue where the access port for HestiaCP was not properly set on install (#2288 / #2291)
 - Fixed an issue where admins could not log in as a suspended user in the panel (#2286 / #2289)
 - Fixed an issue where the "Delete" button in the Edit User interface did not work as expected (#2282 / #2289)
@@ -1233,7 +1233,7 @@ After that run apt update && apt upgrade
 - Fixed an issue where grep would throw an error when adding ipset rules for the first time (#2307)
 - Fixed incorrect variable spelling ($v_interace > $v_interface) (#2307)
 - Updated mail domain templates
-- Updated command line examples for docs.hestiacp.com
+- Updated command line examples for docs.tuliocp.com
 - Fixed an issue where Lets encrypt was not able to obtain an valid ssl certificate when force ssl and / or redirect was enabled (#2176 / #2304 / #2304)
 - Fixed a issue in v-list-sys-dns-status
 
@@ -1245,12 +1245,12 @@ After that run apt update && apt upgrade
 
 - Add B2 delete file support to BlackBlaze
 - Open phpmyadmin in new tab or window #2250 @manuelserol
-- Fix issue with ipset not working properly [Forum](https://forum.hestiacp.com/t/error-ipset-object-not-found/5015)
+- Fix issue with ipset not working properly [Forum](https://forum.tuliocp.com/t/error-ipset-object-not-found/5015)
 - Improve port detection on multiple servers for SSH #2242 and #2255
 - Fixed an issue with # in config files
 - Fixed multiple bugs in installer
 - Set correct permission /install/deb/ folder
-- Adjust /etc/apt/sources.list.d/hestia.list to include architecture to resolve issue with I386 missing in apt.hestiacp.com
+- Adjust /etc/apt/sources.list.d/hestia.list to include architecture to resolve issue with I386 missing in apt.tuliocp.com
 - Fallback to hostname without retrying ptr lookup in exim (#2259)
 - Enable quota with in dovecot when sieve is enabled @madito
 - Unable to edit php8.1 service #2261
@@ -1264,12 +1264,12 @@ After that run apt update && apt upgrade
 ### Breaking changes
 
 - **NOTE:** Changes have been made on how phpmyadmin/phppgadmin config are included in apache2 config. To restore to the old behaviour add `IncludeOptional conf.d/*.inc` below `IncludeOptional conf.d/*.conf` in /etc/apache2/apache2.conf and restart your server.
-- **NOTE:** Hestia packages for arm64 has been added to atp.hestiacp.com please use the normal install instructions instead! For current ARM installs to enable auto update remove the `#` in /etc/apt/sources.list.d/hestia.list `# deb https://apt.hestiacp.com/ focal main` becomes `deb https://apt.hestiacp.com/ focal main` and then run `apt update && apt upgrade -y`
+- **NOTE:** Hestia packages for arm64 has been added to atp.tuliocp.com please use the normal install instructions instead! For current ARM installs to enable auto update remove the `#` in /etc/apt/sources.list.d/hestia.list `# deb https://apt.tuliocp.com/ focal main` becomes `deb https://apt.tuliocp.com/ focal main` and then run `apt update && apt upgrade -y`
 - **NOTE:** Make sure your server / VPS has a valid PTR record or otherwise you will not be able to send any mail!
 
 ### Features
 
-- Add support for Dovecote Sieve #2163 (@gejobj) => [How to enable Managesieve](https://hestiacp.com/docs/server-administration/email.html#how-can-i-enable-managesieve)
+- Add support for Dovecote Sieve #2163 (@gejobj) => [How to enable Managesieve](https://tuliocp.com/docs/server-administration/email.html#how-can-i-enable-managesieve)
 - Improve HELO based system and use RDNS lookup instead our old system
 - Add support for PHP 8.1 #2233
 - Set default php version for new installs to PHP 8.0
@@ -1357,7 +1357,7 @@ After that run apt update && apt upgrade
 - Improve the hostname check to prevent invalid hostnames or the use of an ip address (RFC1178).
 - Prevent CSRF from other domains / websites
 - Fix #2096 Hostname SSL got overwritten by mail.hostname.com certificate
-- Add small wait for /usr/bin/iptables-restore [Forum](https://forum.hestiacp.com/t/clean-install-arm64-does-not-start-after-reboot-v-start-service-iptables/4395/7) + Fixed v-add-firewall / v-delete-firewall function (#2112) @myrevery
+- Add small wait for /usr/bin/iptables-restore [Forum](https://forum.tuliocp.com/t/clean-install-arm64-does-not-start-after-reboot-v-start-service-iptables/4395/7) + Fixed v-add-firewall / v-delete-firewall function (#2112) @myrevery
 - Fix bug in v-change-sys-api. When using v-change-sys-api remove and then v-change-sys-api enable + custom release branch the resetting of api failed + no "error" output was producted
 - Improve error reporting PMA Single sign on function function
 - Fixed an issue in v-change-web-domain-name where webserserver where not able to start because old config files where not properly deleted #2104
@@ -1406,7 +1406,7 @@ After that run apt update && apt upgrade
 
 ### Bugfixes
 
-- Fixed UI issues after upgrade jQuery + jQuery UI to last version (#2021 and #2032) + [forum](https://forum.hestiacp.com/t/confusion-about-send-welcome-email-checkbox/4259/11)
+- Fixed UI issues after upgrade jQuery + jQuery UI to last version (#2021 and #2032) + [forum](https://forum.tuliocp.com/t/confusion-about-send-welcome-email-checkbox/4259/11)
 - Fixed security issues in caching templates of Nginx when used as Reverse Proxy
 - Fixed an issue with deleting multiple mail accounts (#2047)
 - Fixed an issue with phpmailer + non latin characters (#2050) thanks @Faymir
@@ -1662,7 +1662,7 @@ apt update && apt upgrade
 
 ### Bugfixes
 
-- Updated APT repository key for PHP from packages.sury.org (<https://forum.hestiacp.com/t/apt-upgrade-failed-gpg-error-packages-sury-org>)
+- Updated APT repository key for PHP from packages.sury.org (<https://forum.tuliocp.com/t/apt-upgrade-failed-gpg-error-packages-sury-org>)
 - Updated phpMyAdmin to v5.1.0.
 
 ## [1.3.4] - Service Release
@@ -1754,7 +1754,7 @@ apt update && apt upgrade
 ### Bugfixes
 
 - Fixed a security issue where user password reset keys could potentially be gleaned from system process list - thanks **RACK911 LABS**
-- Fixed an issue with passwords containing "`'`" - [Forum](https://forum.hestiacp.com/t/two-factor-authentication-issue-with-standard-user/1652/)
+- Fixed an issue with passwords containing "`'`" - [Forum](https://forum.tuliocp.com/t/two-factor-authentication-issue-with-standard-user/1652/)
 - Fixed an issue with database backups when the port was not specified (#1068)
 - Fixed an issue where websites without SSL enabled would display the content of the first valid SSL enabled website (#1103)
 - Fixed an issue that would occur when using the `--with-debs` flag with the installer due to an incorrect version check routine (#1110)
@@ -1772,7 +1772,7 @@ apt update && apt upgrade
 - Improved spam filtering by adding additional known-dangerous file extensions in exim's blacklist (#1138) - thanks **@kpapad904**
 - Updated Apache2 configuration to use Include with IncludeOptional (#1072)
 - Removed the ability to log in as "root" (whic logged to the admin account, deemed no longer necessary)
-- Add ca-certificates, software-properties-common to the dependencies (#1073 + [Forum](https://forum.hestiacp.com/t/hestiscp-fails-on-new-debian-9-vps/1623/8)) - thanks **@daniel-eder**
+- Add ca-certificates, software-properties-common to the dependencies (#1073 + [Forum](https://forum.tuliocp.com/t/hestiscp-fails-on-new-debian-9-vps/1623/8)) - thanks **@daniel-eder**
 - Create .npm directory by default when creating new user accounts (#1113) - thanks **@hahagu**
 - Improved accuracy of several UI translations (NL, DE, UK, RU, ES, IT, ZH-CN) - thanks **@myrevery** and other contributors for your work!
 - Added `$restart` flag to `v-add-web-domain-backend` command (#1094) (#797) - thanks **@bright-soft**

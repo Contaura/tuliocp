@@ -4,7 +4,7 @@
 #
 # Hestia Control Panel Installation Routine
 # Automatic OS detection wrapper
-# https://www.hestiacp.com/
+# https://www.tuliocp.com/
 #
 # Currently Supported Operating Systems:
 #

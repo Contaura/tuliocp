@@ -3,8 +3,8 @@ Package: hestia
 Priority: optional
 Version: 1.10.0~alpha
 Section: admin
-Maintainer: HestiaCP <info@hestiacp.com>
-Homepage: https://www.hestiacp.com
+Maintainer: TulioCP <info@tuliocp.com>
+Homepage: https://www.tuliocp.com
 Architecture: amd64
 Depends: bash, awk, sed, acl, sysstat, setpriv | util-linux (>= 2.33), zstd, lsb-release, idn2, jq, bubblewrap, at
 Description: hestia

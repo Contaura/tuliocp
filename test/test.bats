@@ -315,7 +315,7 @@ function check_ip_not_banned(){
 #----------------------------------------------------------#
 
 @test "User: Add new user" {
-    run v-add-user $user $user $user@hestiacp.com default "Super Test"
+    run v-add-user $user $user $user@tuliocp.com default "Super Test"
     assert_success
     refute_output
 }
@@ -393,13 +393,13 @@ function check_ip_not_banned(){
 }
 
 @test "User: Change user email" {
-    run v-change-user-contact "$user" tester@hestiacp.com
+    run v-change-user-contact "$user" tester@tuliocp.com
     assert_success
     refute_output
 }
 
 @test "User: Change user contact invalid email " {
-    run v-change-user-contact "$user" testerhestiacp.com
+    run v-change-user-contact "$user" testertuliocp.com
     assert_failure $E_INVALID
     assert_output --partial 'Error: invalid email format'
 }
@@ -1374,11 +1374,11 @@ function check_ip_not_banned(){
 }
 
 @test "DNS: Add domain record MX" {
-    run v-add-dns-record $user $domain '@' MX mx.hestiacp.com  '' 50
+    run v-add-dns-record $user $domain '@' MX mx.tuliocp.com  '' 50
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestiacp.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tuliocp.com."
 
     run v-change-dns-record $user $domain 50 '@' MX mx.hestia.com
     assert_success
@@ -1393,11 +1393,11 @@ function check_ip_not_banned(){
 
 @test "DNS: Add domain record NS" {
     run v-delete-dns-record $user $domain 50
-    run v-add-dns-record $user $domain '@' NS mx.hestiacp.com  '' 50
+    run v-add-dns-record $user $domain '@' NS mx.tuliocp.com  '' 50
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestiacp.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tuliocp.com."
 
     run v-change-dns-record $user $domain 50 '@' NS mx.hestia.com
     assert_success
@@ -1412,11 +1412,11 @@ function check_ip_not_banned(){
 
 @test "DNS: Add domain record SRV" {
     run v-delete-dns-record $user $domain 50
-    run v-add-dns-record $user $domain '_test_domain' SRV mx.hestiacp.com  '' 50
+    run v-add-dns-record $user $domain '_test_domain' SRV mx.tuliocp.com  '' 50
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestiacp.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tuliocp.com."
 
     run v-change-dns-record $user $domain 50 '_test.domain' SRV mx.hestia.com
     assert_success
@@ -1431,11 +1431,11 @@ function check_ip_not_banned(){
 
 @test "DNS: Add domain record CNAME" {
     run v-delete-dns-record $user $domain 50
-    run v-add-dns-record $user $domain 'mail' CNAME mx.hestiacp.com  '' 50
+    run v-add-dns-record $user $domain 'mail' CNAME mx.tuliocp.com  '' 50
     assert_success
     refute_output
 
-    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.hestiacp.com."
+    assert_file_contains "$HOMEDIR/$user/conf/dns/${domain}.db" "mx.tuliocp.com."
 
     run v-change-dns-record $user $domain 50 'mail' CNAME mx.hestia.com
     assert_success
@@ -1773,7 +1773,7 @@ function check_ip_not_banned(){
 @test "Allow Users: User can't add user.user2.com " {
     # Case: admin company.tld
     # users should not be allowed to add user.company.tld
-    run v-add-user $user2 $user2 $user@hestiacp.com default "Super Test"
+    run v-add-user $user2 $user2 $user@tuliocp.com default "Super Test"
     assert_success
     refute_output
 
@@ -1942,7 +1942,7 @@ function check_ip_not_banned(){
   if [ -z "$(echo $DB_SYSTEM | grep -w "pgsql")" ]; then
     skip "PostGreSQL is not installed"
   fi
-  run v-add-user $pguser $pguser $user@hestiacp.com default "Super Test"
+  run v-add-user $pguser $pguser $user@tuliocp.com default "Super Test"
   run v-add-database "$pguser" "database" "dbuser" "1234ABCD" "pgsql"
   assert_success
   refute_output

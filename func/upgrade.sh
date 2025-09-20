@@ -130,13 +130,13 @@ upgrade_complete_message() {
 	echo "Sincerely,                                                                   "
 	echo "The Hestia Control Panel development team                                    "
 	echo
-	echo "Web:      https://www.hestiacp.com/                                          "
-	echo "Docs:     https://docs.hestiacp.com/										   "
-	echo "Forum:    https://forum.hestiacp.com/                                        "
+	echo "Web:      https://www.tuliocp.com/                                          "
+	echo "Docs:     https://docs.tuliocp.com/										   "
+	echo "Forum:    https://forum.tuliocp.com/                                        "
 	echo "GitHub:   https://github.com/tuliocp/tuliocp/                              "
 	echo
 	echo "Help support the Hestia Control Panel project by donating via PayPal:        "
-	echo "https://www.hestiacp.com/donate                                              "
+	echo "https://www.tuliocp.com/donate                                              "
 	echo
 	echo "Made with love & pride by the open-source community around the world.        "
 	echo
@@ -187,10 +187,10 @@ upgrade_send_notification_to_panel() {
 	# Add notification to panel if variable is set to true or is not set
 	if [[ "$new_version" =~ "alpha" ]]; then
 		# Send notifications for development releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Development snapshot installed' '<p><span class="u-text-bold">Version:</span> '$new_version'<br><span class="u-text-bold">Code Branch:</span> '$RELEASE_BRANCH'</p><p>Please report any bugs by <a href="https://github.com/tuliocp/tuliocp/issues" target="_blank">opening an issue on GitHub</a>, and feel free to share your feedback on our <a href="https://forum.hestiacp.com" target="_blank">discussion forum</a>.</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Development snapshot installed' '<p><span class="u-text-bold">Version:</span> '$new_version'<br><span class="u-text-bold">Code Branch:</span> '$RELEASE_BRANCH'</p><p>Please report any bugs by <a href="https://github.com/tuliocp/tuliocp/issues" target="_blank">opening an issue on GitHub</a>, and feel free to share your feedback on our <a href="https://forum.tuliocp.com" target="_blank">discussion forum</a>.</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
 	elif [[ "$new_version" =~ "beta" ]]; then
 		# Send feedback notification for beta releases
-		$BIN/v-add-user-notification "$ROOT_USER" 'Thank you for testing Hestia Control Panel '$new_version'.' '<p>Please share your feedback with our development team through our <a href="https://forum.hestiacp.com" target="_blank">discussion forum</a>.</p><p>Found a bug? <a href="https://github.com/tuliocp/tuliocp/issues" target="_blank">Open an issue on GitHub</a>!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
+		$BIN/v-add-user-notification "$ROOT_USER" 'Thank you for testing Hestia Control Panel '$new_version'.' '<p>Please share your feedback with our development team through our <a href="https://forum.tuliocp.com" target="_blank">discussion forum</a>.</p><p>Found a bug? <a href="https://github.com/tuliocp/tuliocp/issues" target="_blank">Open an issue on GitHub</a>!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
 	else
 		# Send normal upgrade complete notification for stable releases
 		$BIN/v-add-user-notification "$ROOT_USER" 'Upgrade complete' '<p>Hestia Control Panel has been updated to <span class="u-text-bold">v'$new_version'</span>.</p><p><a href="https://github.com/tuliocp/tuliocp/blob/release/CHANGELOG.md" target="_blank">View release notes</a></p><p>Please report any bugs by <a href="https://github.com/tuliocp/tuliocp/issues" target="_blank">opening an issue on GitHub</a>.</p><p class="u-text-bold">Have a wonderful day!</p><p><i class="fas fa-heart icon-red"></i> The Hestia Control Panel development team</p>'
@@ -230,10 +230,10 @@ upgrade_send_notification_to_email() {
 		echo "What's new: https://github.com/tuliocp/tuliocp/blob/$RELEASE_BRANCH/CHANGELOG.md" >> $message_tmp_file
 		echo >> $message_tmp_file
 		echo "What to do if you run into issues:" >> $message_tmp_file
-		echo "- Check our forums for possible solutions: https://forum.hestiacp.com" >> $message_tmp_file
+		echo "- Check our forums for possible solutions: https://forum.tuliocp.com" >> $message_tmp_file
 		echo "- File an issue report on GitHub: https://github.com/tuliocp/tuliocp/issues" >> $message_tmp_file
 		echo "" >> $message_tmp_file
-		echo "Help support the Hestia Control Panel project by donating via PayPal: https://www.hestiacp.com/donate" >> $message_tmp_file
+		echo "Help support the Hestia Control Panel project by donating via PayPal: https://www.tuliocp.com/donate" >> $message_tmp_file
 		echo "===================================================" >> $message_tmp_file
 		echo "Have a wonderful day," >> $message_tmp_file
 		echo "The Hestia Control Panel development team" >> $message_tmp_file

@@ -17,7 +17,7 @@ hero:
       link: /docs/introduction/getting-started
     - theme: alt
       text: Try the demo
-      link: https://demo.hestiacp.com:8083/
+      link: https://demo.tuliocp.com:8083/
     - theme: alt
       text: View on GitHub
       link: https://github.com/tuliocp/tuliocp

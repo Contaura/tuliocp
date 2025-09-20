@@ -21,10 +21,10 @@ function setup() {
         echo 'userpass1=test-5285' >> /tmp/hestia-test-env.sh
         echo 'userpass2=t3st-p4ssw0rd' >> /tmp/hestia-test-env.sh
         echo 'HESTIA=/usr/local/hestia' >> /tmp/hestia-test-env.sh
-        echo 'domain=test-5285.hestiacp.com' >> /tmp/hestia-test-env.sh
-        echo 'domainuk=test-5285.hestiacp.com.uk' >> /tmp/hestia-test-env.sh
-        echo 'rootdomain=testhestiacp.com' >> /tmp/hestia-test-env.sh
-        echo 'subdomain=cdn.testhestiacp.com' >> /tmp/hestia-test-env.sh
+        echo 'domain=test-5285.tuliocp.com' >> /tmp/hestia-test-env.sh
+        echo 'domainuk=test-5285.tuliocp.com.uk' >> /tmp/hestia-test-env.sh
+        echo 'rootdomain=testtuliocp.com' >> /tmp/hestia-test-env.sh
+        echo 'subdomain=cdn.testtuliocp.com' >> /tmp/hestia-test-env.sh
         echo 'database=test-5285_database' >> /tmp/hestia-test-env.sh
         echo 'dbuser=test-5285_dbuser' >> /tmp/hestia-test-env.sh
     fi
@@ -116,9 +116,9 @@ function validate_web_domain() {
 #        Ratelimit: 10
 #    mail acc:
 #      - testaccount@test.hestia.com
-#           Alias: info@test.hestiacp.com
+#           Alias: info@test.tuliocp.com
 #           Ratelimit: 20
-#      - support@test.hestia.com
+#      - support@test.tulio.com
 #    db:
 #      - hestia170_db
 #    cron:
@@ -139,7 +139,7 @@ function validate_web_domain() {
 #      - 1: /bin/true
 #
 
-@test "Check if test.hestiacp.com is present" {
+@test "Check if test.tuliocp.com is present" {
 	assert_file_contains /etc/hosts test.hestia.com
 }
 
@@ -154,7 +154,7 @@ function validate_web_domain() {
     mkdir -p /backup
 
     local archive_name="hestia111.2020-03-26"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.tuliocp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"
@@ -217,14 +217,14 @@ function validate_web_domain() {
     fi
 
     if [ ! -d "$HOMEDIR/$userbk" ]; then
-        run v-add-user $userbk $userbk test@hestia.com
+        run v-add-user $userbk $userbk test@tulio.com
         assert_success
     fi
 
     mkdir -p /backup
 
     local archive_name="hestia111.2020-03-26"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.tuliocp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"
@@ -288,7 +288,7 @@ function validate_web_domain() {
     mkdir -p /backup
 
     local archive_name="hestia170.2022-08-23"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.tuliocp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"
@@ -374,14 +374,14 @@ function validate_web_domain() {
     fi
 
     if [ ! -d "$HOMEDIR/$userbk" ]; then
-        run v-add-user $userbk $userbk test@hestia.com
+        run v-add-user $userbk $userbk test@tulio.com
         assert_success
     fi
 
     mkdir -p /backup
 
     local archive_name="hestia170.2022-08-23"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.tuliocp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"
@@ -470,7 +470,7 @@ function validate_web_domain() {
     mkdir -p /backup
 
     local archive_name="vesta09823.2018-10-18"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.tuliocp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"
@@ -533,14 +533,14 @@ function validate_web_domain() {
     fi
 
     if [ ! -d "$HOMEDIR/$userbk" ]; then
-        run v-add-user $userbk $userbk test@hestia.com
+        run v-add-user $userbk $userbk test@tulio.com
         assert_success
     fi
 
     mkdir -p /backup
 
     local archive_name="vesta09823.2018-10-18"
-    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.hestiacp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
+    run wget --quiet --tries=3 --timeout=15 --read-timeout=15 --waitretry=3 --no-dns-cache "https://storage.tuliocp.com/testing/data/${archive_name}.tar" -O "/backup/${archive_name}.tar"
     assert_success
 
     run v-restore-user $userbk "${archive_name}.tar"

@@ -15,7 +15,7 @@ A good starting point for every software is to check the official docs:
 - For Apache2: [Apache Docs](http://httpd.apache.org/docs/2.4/)
 - For PHP-FPM: [PHP Docs](https://www.php.net/manual/en/install.fpm.configuration.php)
 
-You could also try [our Forum](https://forum.hestiacp.com)
+You could also try [our Forum](https://forum.tuliocp.com)
 
 ## Can I use HestiaCP behind Cloudflare CDN?
 
