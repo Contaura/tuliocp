@@ -10,9 +10,6 @@ on:
 jobs:
   build-packages:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        arch: [amd64, arm64]
     
     steps:
     - name: Checkout code
@@ -43,10 +40,17 @@ jobs:
     
     - name: Build all packages
       run: |
+        echo "Starting TulioCP package build..."
+        echo "Current directory: $(pwd)"
+        echo "Available memory: $(free -h)"
+        echo "Available disk: $(df -h)"
+        ls -la src/
         cd src
-        bash tst_autocompile.sh --all --keepbuild --noinstall ~localsrc
+        chmod +x tst_autocompile.sh
+        bash -x tst_autocompile.sh --all --keepbuild --noinstall ~localsrc
       env:
         DEBIAN_FRONTEND: noninteractive
+        TULIO_DEBUG: true
     
     - name: List built packages
       run: |
@@ -57,7 +61,7 @@ jobs:
       uses: actions/upload-artifact@v4
       if: success()
       with:
-        name: tuliocp-packages-${{ matrix.arch }}
+        name: tuliocp-packages-amd64
         path: /tmp/tuliocp-src/*.deb
         retention-days: 30
 
@@ -78,18 +82,24 @@ jobs:
     - name: Set up APT repository structure
       run: |
         mkdir -p apt-repo/dists/stable/main/binary-amd64
-        mkdir -p apt-repo/dists/stable/main/binary-arm64
         mkdir -p apt-repo/pool/main
         
+        # Debug: List artifacts
+        echo "Available artifacts:"
+        find artifacts/ -type f -name "*.deb" || echo "No .deb files found"
+        ls -la artifacts/ || echo "No artifacts directory"
+        
         # Move packages to pool
-        find artifacts/ -name "*.deb" -exec cp {} apt-repo/pool/main/ \;
+        find artifacts/ -name "*.deb" -exec cp {} apt-repo/pool/main/ \; || echo "Warning: No packages found to copy"
+        
+        # Debug: List repository contents
+        echo "Repository contents:"
+        find apt-repo/ -type f || echo "Repository is empty"
         
         # Create Packages files
         cd apt-repo
         dpkg-scanpackages pool/ /dev/null > dists/stable/main/binary-amd64/Packages
-        dpkg-scanpackages pool/ /dev/null > dists/stable/main/binary-arm64/Packages
         gzip -9 -c dists/stable/main/binary-amd64/Packages > dists/stable/main/binary-amd64/Packages.gz
-        gzip -9 -c dists/stable/main/binary-arm64/Packages > dists/stable/main/binary-arm64/Packages.gz
         
         # Create Release file
         cat > dists/stable/Release << EOF
@@ -98,9 +108,58 @@ jobs:
         Suite: stable
         Codename: stable
         Components: main
-        Architectures: amd64 arm64
+        Architectures: amd64
         Date: $(date -u +"%a, %d %b %Y %H:%M:%S %Z")
         Description: TulioCP Control Panel packages
+        EOF
+        
+        # Create index page
+        cat > index.html << 'EOF'
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>TulioCP APT Repository</title>
+            <style>
+                body { font-family: Arial, sans-serif; margin: 40px; }
+                h1 { color: #333; }
+                .code { background: #f4f4f4; padding: 10px; border-radius: 5px; margin: 10px 0; }
+                .package { margin: 10px 0; padding: 10px; border-left: 3px solid #007acc; }
+            </style>
+        </head>
+        <body>
+            <h1>TulioCP APT Repository</h1>
+            <p>Official APT repository for TulioCP Control Panel packages.</p>
+            
+            <h2>Usage</h2>
+            <div class="code">
+                <pre># Add GPG key
+gpg --no-default-keyring --keyring /usr/share/keyrings/tulio-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5
+
+# Add repository
+echo "deb [arch=amd64 signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://apt.tuliocp.com/ stable main" > /etc/apt/sources.list.d/tuliocp.list
+
+# Update and install
+apt update
+apt install tuliocp</pre>
+            </div>
+            
+            <h2>Available Packages</h2>
+            <div class="package">
+                <strong>tuliocp</strong> - Main control panel package
+            </div>
+            <div class="package">
+                <strong>tulio-nginx</strong> - Custom Nginx build optimized for TulioCP
+            </div>
+            <div class="package">
+                <strong>tulio-php</strong> - Custom PHP-FPM build with enhanced performance
+            </div>
+            <div class="package">
+                <strong>tulio-web-terminal</strong> - Browser-based terminal interface
+            </div>
+            
+            <p><small>Last updated: $(date -u)</small></p>
+        </body>
+        </html>
         EOF
     
     - name: Deploy to GitHub Pages
