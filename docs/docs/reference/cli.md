@@ -4181,9 +4181,9 @@ Import Cpanel backup to a new user
 v-import-cpanel /backup/backup.tar.gz yes
 ```
 
-Based on sk-import-cpanel-backup-to-vestacp
+Based on sk-import-cpanel-backup script
 Credits: Maks Usmanov (skamasle) and contributors:
-Thanks to <https://github.com/Skamasle/sk-import-cpanel-backup-to-vestacp/graphs/contributors>
+Thanks to original contributors
 
 ## v-import-database
 
@@ -6357,8 +6357,8 @@ v-search-command web
 
 This function searches for available Hestia Control Panel commands
 and returns results based on the specified criteria.
-Originally developed for VestaCP by Federico Krum
-<https://github.com/FastDigitalOceanDroplets/VestaCP/blob/master/files/v-search-command>
+Originally developed by Federico Krum
+Ported for use with Hestia Control Panel
 
 ## v-search-domain-owner
 

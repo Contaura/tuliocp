@@ -4,9 +4,9 @@
 #
 # example: v-import-cpanel /backup/backup.tar.gz yes
 #
-# Based on sk-import-cpanel-backup-to-vestacp
+# Based on sk-import-cpanel-backup script
 # Credits: Maks Usmanov (skamasle) and contributors:
-# Thanks to <https://github.com/Skamasle/sk-import-cpanel-backup-to-vestacp/graphs/contributors>
+# Thanks to original contributors
 
 # Known issue
 # - Importing certificates fails at the moment. Due to format changes of CPanel side

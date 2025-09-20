@@ -4,7 +4,7 @@ This file provides guidance to WARP (warp.dev) when working with code in this re
 
 ## Project Overview
 
-TulioCP is an open-source Linux web server control panel built as a fork of VestaCP. It's a comprehensive hosting control panel that provides web, mail, DNS, and database management capabilities with a modern web interface and extensive CLI toolkit.
+TulioCP is an open-source Linux web server control panel. It's a comprehensive hosting control panel that provides web, mail, DNS, and database management capabilities with a modern web interface and extensive CLI toolkit.
 
 ### Key Features
 - Apache2 and NGINX with PHP-FPM support (PHP 5.6-8.4)

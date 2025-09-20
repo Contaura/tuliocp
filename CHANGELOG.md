@@ -370,7 +370,7 @@ All notable changes to this project will be documented in this file.
 - Resolve #3684 Process "http2" directive for NGINX (#3704 @myrevery)
 - Upload hestiacp.pot file directly to Crowdin (#3702)
 - Refactor add ns buttons (#3701)
-- Remove \r chars from VestaCP cron.conf (#3708 @maunklana)
+- Remove \r chars from legacy cron.conf (#3708 @maunklana)
 - Unable to edit password domain smtp relay (#3690)
 - Fix: #3687 Improve check if alias already exists (#3689)
 - Fixed bug in v-update-sys-ip when multiple interfaces / ip addresses are available (#3688)

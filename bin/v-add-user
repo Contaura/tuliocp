@@ -17,7 +17,7 @@ HIDE=2
 email=$3
 package=${4-default}
 name=$5
-# Last name has been added for backward compatibility with WHMCS / Blesta VestaCP Plugins
+# Last name has been added for backward compatibility with WHMCS / Blesta Plugins
 if [ -n "$6" ]; then
 	name="$name $6"
 fi
