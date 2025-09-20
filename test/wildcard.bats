@@ -15,9 +15,9 @@ function random() {
 
 function setup() {
     source /tmp/wildcard.sh
-    source $HESTIA/func/main.sh
-    source $HESTIA/conf/tulio.conf
-    source $HESTIA/func/ip.sh
+    source $TULIO/func/main.sh
+    source $TULIO/conf/tulio.conf
+    source $TULIO/func/ip.sh
 }
 
 # User and domain needs to already exists as dns domain due to DNS

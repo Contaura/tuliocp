@@ -30,9 +30,9 @@ function setup() {
     fi
 
     source /tmp/hestia-test-env.sh
-    source $HESTIA/func/main.sh
-    source $HESTIA/conf/tulio.conf
-    source $HESTIA/func/ip.sh
+    source $TULIO/func/main.sh
+    source $TULIO/conf/tulio.conf
+    source $TULIO/func/ip.sh
 }
 
 
@@ -48,12 +48,12 @@ function validate_web_domain() {
     refute [ -z "$domain" ]
     refute [ -z "$webproof" ]
 
-    source $HESTIA/func/ip.sh
+    source $TULIO/func/ip.sh
 
     run v-list-web-domain $user $domain
     assert_success
 
-    USER_DATA=$HESTIA/data/users/$user
+    USER_DATA=$TULIO/data/users/$user
     local domain_ip=$(get_object_value 'web' 'DOMAIN' "$domain" '$IP')
     SSL=$(get_object_value 'web' 'DOMAIN' "$domain" '$SSL')
     domain_ip=$(get_real_ip "$domain_ip")

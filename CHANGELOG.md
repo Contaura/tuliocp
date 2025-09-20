@@ -1383,8 +1383,8 @@ After that run apt update && apt upgrade
 ### Features
 
 - Added support for Debian 11 (Bullseye) #1661
-- Added support for openssl in hestia-php
-- Use hestia-php for installing dependencies to solve issue user configurations (hestia-php 7.4.22 required)
+- Added support for openssl in tuliocp-php
+- Use tuliocp-php for installing dependencies to solve issue user configurations (tuliocp-php 7.4.22 required)
 - Replace old firewall system with systemd service / startup script #2064 @myrevery
 - Add Quick installers for GravCMS, Docuwiki and Mediawiki (#2002) @PsychotherapistSam
 

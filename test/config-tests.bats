@@ -30,9 +30,9 @@ function setup() {
     fi
 
     source /tmp/hestia-test-env.sh
-    source $HESTIA/func/main.sh
-    source $HESTIA/conf/tulio.conf
-    source $HESTIA/func/ip.sh
+    source $TULIO/func/main.sh
+    source $TULIO/conf/tulio.conf
+    source $TULIO/func/ip.sh
 }
 
 @test "Setup Test domain" {

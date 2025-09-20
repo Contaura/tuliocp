@@ -51,10 +51,10 @@ Smart Chain: 0xfF3Dd2c889bd0Ff73d8085B84A314FC7c88e5D51<br>
 
 **NOTES:**
 
-- Hestia Control Panel does not support 32 bit operating systems!
-- Hestia Control Panel in combination with OpenVZ 7 or lower might have issues with DNS and/or firewall. If you use a Virtual Private Server we strongly advice you to use something based on KVM or LXC!
+- Tulio Control Panel does not support 32 bit operating systems!
+- Tulio Control Panel in combination with OpenVZ 7 or lower might have issues with DNS and/or firewall. If you use a Virtual Private Server we strongly advice you to use something based on KVM or LXC!
 
-## Installing Hestia Control Panel
+## Installing Tulio Control Panel
 
 - **NOTE:** You must install Tulio Control Panel on top of a fresh operating system installation to ensure proper functionality.
 

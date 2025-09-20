@@ -15,9 +15,9 @@ function random() {
 
 function setup() {
     source /tmp/hestia-le-env.sh
-    source $HESTIA/func/main.sh
-    source $HESTIA/conf/tulio.conf
-    source $HESTIA/func/ip.sh
+    source $TULIO/func/main.sh
+    source $TULIO/conf/tulio.conf
+    source $TULIO/func/ip.sh
 }
 
 @test "[ User ] Create new user" {
