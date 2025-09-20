@@ -16,6 +16,8 @@
 source $HESTIA/func/main.sh
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
+: "${TULIO:=/usr/local/tulio}"
+: "${HESTIA:=$TULIO}"
 # load config file
 source_conf "$HESTIA/conf/tulio.conf"
 

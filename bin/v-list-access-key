@@ -15,6 +15,8 @@ format="${2:-shell}"
 # Includes
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
+: "${TULIO:=/usr/local/tulio}"
+: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
 source $HESTIA/func/main.sh
 # load config file
