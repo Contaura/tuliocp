@@ -70,7 +70,7 @@ jobs:
         echo "Contents of build directory:"
         ls -la /tmp/tuliocp-src/ || echo "No build directory found"
         
-        if [ -f /tmp/tuliocp-src/*.deb ]; then
+        if ls /tmp/tuliocp-src/*.deb 1>/dev/null 2>&1; then
           echo "✅ Package verification:"
           for deb in /tmp/tuliocp-src/*.deb; do
             echo "Package: $deb"
@@ -142,54 +142,18 @@ EOF
         # TODO: Add proper GPG signing when we have our own key
         echo "Created unsigned repository (packages will install with --allow-unauthenticated)"
         
-        # Create index page
-        cat > index.html << 'EOF'
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>TulioCP APT Repository</title>
-            <style>
-                body { font-family: Arial, sans-serif; margin: 40px; }
-                h1 { color: #333; }
-                .code { background: #f4f4f4; padding: 10px; border-radius: 5px; margin: 10px 0; }
-                .package { margin: 10px 0; padding: 10px; border-left: 3px solid #007acc; }
-            </style>
-        </head>
-        <body>
-            <h1>TulioCP APT Repository</h1>
-            <p>Official APT repository for TulioCP Control Panel packages.</p>
-            
-            <h2>Usage</h2>
-            <div class="code">
-                <pre># Add GPG key
-gpg --no-default-keyring --keyring /usr/share/keyrings/tulio-keyring.gpg --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys A189E93654F0B0E5
-
-# Add repository
-echo "deb [arch=amd64 signed-by=/usr/share/keyrings/tulio-keyring.gpg] https://apt.tuliocp.com/ stable main" > /etc/apt/sources.list.d/tuliocp.list
-
-# Update and install
-apt update
-apt install tuliocp</pre>
-            </div>
-            
-            <h2>Available Packages</h2>
-            <div class="package">
-                <strong>tuliocp</strong> - Main control panel package
-            </div>
-            <div class="package">
-                <strong>tulio-nginx</strong> - Custom Nginx build optimized for TulioCP
-            </div>
-            <div class="package">
-                <strong>tulio-php</strong> - Custom PHP-FPM build with enhanced performance
-            </div>
-            <div class="package">
-                <strong>tulio-web-terminal</strong> - Browser-based terminal interface
-            </div>
-            
-            <p><small>Last updated: $(date -u)</small></p>
-        </body>
-        </html>
-        EOF
+        # Copy existing index page and update timestamp
+        if [ -f "../apt-repo/index.html" ]; then
+          cp "../apt-repo/index.html" index.html
+          echo "Using existing repository index page"
+        else
+          echo "Warning: apt-repo/index.html not found, creating basic page"
+          cat > index.html << 'EOF'
+<!DOCTYPE html>
+<html><head><title>TulioCP APT Repository</title></head>
+<body><h1>TulioCP APT Repository</h1><p>Repository updated at $(date -u)</p></body></html>
+EOF
+        fi
     
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v3
