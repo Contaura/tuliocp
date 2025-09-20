@@ -199,26 +199,51 @@ sudo bash hst-install.sh</pre>
             <div class="usage">
                 <h2>🔧 Manual Repository Setup</h2>
                 <p>For advanced users who prefer manual configuration:</p>
-                <pre><button class="copy-btn" onclick="copyToClipboard('echo \"deb https://apt.tuliocp.com stable main\" | sudo tee /etc/apt/sources.list.d/tuliocp.list && sudo apt-get update && sudo apt-get install tuliocp')">Copy</button># Add TulioCP repository
+                <pre><button class="copy-btn" onclick="copyToClipboard('echo \"deb https://apt.tuliocp.com stable main\" | sudo tee /etc/apt/sources.list.d/tuliocp.list && sudo apt-get update && sudo apt-get install --allow-unauthenticated tuliocp')">Copy</button># Add TulioCP repository
 echo "deb https://apt.tuliocp.com stable main" | sudo tee /etc/apt/sources.list.d/tuliocp.list
 
 # Update package lists
 sudo apt-get update
 
-# Install TulioCP
-sudo apt-get install tuliocp</pre>
+# Install TulioCP (allow unsigned until GPG signing implemented)
+sudo apt-get install --allow-unauthenticated tuliocp</pre>
             </div>
 
             <div class="info-box">
-                <strong>Current Release:</strong> TulioCP 1.10.0~alpha is now available with improved security, modern web interface, and enhanced performance.
+                <strong>Current Release:</strong> TulioCP 1.10.0~alpha is now available with improved security, modern web interface, enhanced performance, and comprehensive development environment.
+            </div>
+
+            <div class="usage">
+                <h2>💻 Development Environment</h2>
+                <p>Set up a local development environment for TulioCP:</p>
+                <pre><button class="copy-btn" onclick="copyToClipboard('git clone https://github.com/contaura/tuliocp.git && cd tuliocp && ./dev-installer.sh')">Copy</button># Clone and setup development environment
+git clone https://github.com/contaura/tuliocp.git
+cd tuliocp
+./dev-installer.sh</pre>
+                
+                <p><strong>Development Features:</strong></p>
+                <ul>
+                    <li>Frontend build system with esbuild + Lightning CSS</li>
+                    <li>Code quality tools (Prettier, Biome, Stylelint)</li>
+                    <li>Documentation development server</li>
+                    <li>Git hooks for automated quality checks</li>
+                </ul>
             </div>
 
             <h2>📋 Available Packages</h2>
             <ul>
-                <li><strong>tuliocp</strong> - Main control panel package (1.8MB)</li>
-                <li><strong>tulio-nginx</strong> - Custom Nginx web server (coming soon)</li>
-                <li><strong>tulio-php</strong> - Custom PHP-FPM server (coming soon)</li>
-                <li><strong>tulio-web-terminal</strong> - Web-based terminal (coming soon)</li>
+                <li><strong>tuliocp</strong> - Main control panel package (1.8MB) - 🚀 Available Now</li>
+                <li><strong>tulio-nginx</strong> - Custom Nginx web server - 🚧 Coming Soon</li>
+                <li><strong>tulio-php</strong> - Custom PHP-FPM server - 🚧 Coming Soon</li>
+                <li><strong>tulio-web-terminal</strong> - Web-based terminal - 🚧 Coming Soon</li>
+            </ul>
+
+            <h2>🏗️ Build System Status</h2>
+            <ul>
+                <li><strong>Automated Builds:</strong> ✅ Active on every commit</li>
+                <li><strong>Repository Deployment:</strong> ✅ GitHub Pages with custom domain</li>
+                <li><strong>Package Signing:</strong> 🚧 GPG signing planned</li>
+                <li><strong>Multi-Architecture:</strong> 🚧 ARM64 support coming soon</li>
             </ul>
 
             <h2>🏗️ Supported Architectures</h2>

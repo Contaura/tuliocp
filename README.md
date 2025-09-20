@@ -224,6 +224,154 @@ sudo apt update && sudo apt upgrade tuliocp
 sudo apt update && sudo apt upgrade
 ```
 
+## 💻 Development Environment
+
+### 🚀 Quick Development Setup
+
+**Prerequisites:**
+- Node.js 18+ (tested with v22.19.0)
+- Git
+- macOS/Linux development environment
+
+**One-Command Setup:**
+```bash
+# Clone repository and setup development environment
+git clone https://github.com/contaura/tuliocp.git
+cd tuliocp
+./dev-installer.sh
+```
+
+### 🛠️ Development Features
+
+The development environment provides:
+
+- **Frontend Build System**: esbuild + Lightning CSS for fast asset compilation
+- **Code Quality**: Prettier, Biome, Stylelint, Markdownlint with git hooks
+- **Development Server**: VitePress documentation server
+- **Build Monitoring**: Real-time status and asset tracking
+- **Quality Checks**: Pre-commit hooks for code formatting and linting
+
+### 📦 Frontend Asset Building
+
+**Build all assets:**
+```bash
+npm run build
+```
+
+**Build outputs:**
+- `web/js/dist/main.min.js` - Main application bundle
+- `web/js/dist/*.min.js` - External packages (Alpine.js, Chart.js, xterm, etc.)
+- `web/css/themes/*.min.css` - CSS themes with source maps
+
+**Supported themes:** `dark`, `default`, `flat`, `vestia`
+
+### 🔧 Development Commands
+
+```bash
+# Install dependencies
+npm ci --ignore-scripts
+
+# Build frontend assets
+npm run build
+
+# Run all linters
+npm run lint
+
+# Format code
+npm run format
+
+# Start documentation server
+npm run docs:dev
+
+# Run tests
+npm run docs:test
+```
+
+### 📋 Development Shortcuts
+
+After running `./dev-installer.sh`, you get convenient shortcuts:
+
+```bash
+# Check development status
+~/.local/share/tuliocp-dev/status.sh
+
+# Quick rebuild
+~/.local/share/tuliocp-dev/build.sh
+
+# Code quality check
+~/.local/share/tuliocp-dev/lint.sh
+
+# Format all code
+~/.local/share/tuliocp-dev/format.sh
+
+# Start docs server
+~/.local/share/tuliocp-dev/docs-dev.sh
+```
+
+### 🔍 Environment Debugging
+
+**Verify setup:**
+```bash
+./debug-installer.sh
+```
+
+**Check build status:**
+```bash
+~/.local/share/tuliocp-dev/status.sh
+```
+
+### 🏗️ Frontend Architecture
+
+**JavaScript Build:**
+- **Tool**: esbuild for fast bundling and minification
+- **Entry**: `web/js/src/index.js`
+- **Output**: Bundled main.min.js + separate external packages
+- **Features**: Source maps, tree shaking, ES modules
+
+**CSS Build:**
+- **Tool**: Lightning CSS for processing and optimization
+- **Source**: `web/css/src/themes/*.css`
+- **Output**: Minified themes with browser targeting
+- **Features**: CSS nesting, custom media queries, autoprefixer
+
+**Key Dependencies:**
+- **Frontend**: Alpine.js (reactive), Chart.js (statistics), xterm.js (terminal)
+- **Build**: esbuild (JS), Lightning CSS (CSS), Browserslist (targets)
+- **Quality**: Biome (JS linting), Stylelint (CSS), Prettier (formatting)
+
+### 🔄 Development vs Production
+
+**Development Mode** (macOS/Linux):
+- Use `dev-installer.sh` for local development
+- Frontend asset building and live reloading
+- Code quality tools and git hooks
+- Documentation development server
+
+**Production Mode** (Ubuntu/Debian):
+- Use `hst-install.sh` for server deployment  
+- Full system installation with services
+- Web server configuration (Apache + Nginx)
+- Database, mail, and DNS server setup
+
+### 🧪 Testing & Quality
+
+**Linting Tools:**
+- **JavaScript**: Biome for fast linting and formatting
+- **CSS**: Stylelint with standard configuration
+- **PHP**: Prettier with PHP plugin
+- **Shell**: Prettier with shell script support
+- **Markdown**: Markdownlint for documentation
+
+**Git Hooks:**
+- **Pre-commit**: Runs linting and formatting on staged files
+- **Pre-push**: Additional validation (configurable)
+
+**Quality Standards:**
+- All code must pass linting before commit
+- Automatic formatting applied on staged files
+- Documentation linting for README and docs
+- Shell script validation
+
 ## Documentation
 
 For detailed installation guides, configuration instructions, and troubleshooting:
@@ -232,6 +380,7 @@ For detailed installation guides, configuration instructions, and troubleshootin
 - 🔧 [Configuration Reference](docs/) - Detailed setup and configuration guides  
 - 🐛 [Troubleshooting](docs/troubleshooting.md) - Common issues and solutions
 - 🚀 [Quick Start Examples](#custom-installation) - Command line installation options
+- 💻 [Development Setup](#development-environment) - Local development environment
 
 ## Community & Support
 
