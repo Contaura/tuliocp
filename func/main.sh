@@ -8,23 +8,21 @@
 
 # Source conf function for correct variable initialisation
 source_conf() {
-        while IFS='= ' read -r lhs rhs; do
-                if [[ ! $lhs =~ ^\ *# && -n $lhs ]]; then
-                        rhs="${rhs%%^\#*}" # Del in line right comments
+	while IFS='= ' read -r lhs rhs; do
+		if [[ ! $lhs =~ ^\ *# && -n $lhs ]]; then
+			rhs="${rhs%%^\#*}" # Del in line right comments
 			rhs="${rhs%%*( )}" # Del trailing spaces
 			rhs="${rhs%\'*}"   # Del opening string quotes
 			rhs="${rhs#\'*}"   # Del closing string quotes
 			declare -g $lhs="$rhs"
 		fi
-        done < $1
+	done < $1
 }
 
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
-
 if [ -z "$user" ]; then
-        if [ -z "$ROOT_USER" ]; then
-                if [ -z "$TULIO" ]; then
+	if [ -z "$ROOT_USER" ]; then
+		if [ -z "$TULIO" ]; then
 			# shellcheck source=/etc/tuliocp/tulio.conf
 			source /etc/tuliocp/tulio.conf
 		fi
@@ -46,12 +44,12 @@ TULIO_COMMON_DIR="$TULIO/install/common"
 TULIO_BACKUP="/root/tst_backups/$(date +%d%m%Y%H%M)"
 TULIO_PHP="$TULIO/php/bin/php"
 if [ ! -x "$TULIO_PHP" ]; then
-        php_cmd=$(command -v php 2>/dev/null || true)
-        if [ -n "$php_cmd" ]; then
-                TULIO_PHP="$php_cmd"
-        elif [ -x "/usr/bin/php" ]; then
-                TULIO_PHP="/usr/bin/php"
-        fi
+	php_cmd=$(command -v php 2> /dev/null || true)
+	if [ -n "$php_cmd" ]; then
+		TULIO_PHP="$php_cmd"
+	elif [ -x "/usr/bin/php" ]; then
+		TULIO_PHP="/usr/bin/php"
+	fi
 fi
 USER_DATA=$TULIO/data/users/$user
 WEBTPL=$TULIO/data/templates/web
@@ -62,12 +60,6 @@ SENDMAIL="$TULIO/web/inc/mail-wrapper.php"
 TULIO_GIT_REPO="https://raw.githubusercontent.com/contaura/tuliocp"
 TULIO_THEMES="$TULIO/web/css/themes"
 TULIO_THEMES_CUSTOM="$TULIO/web/css/themes/custom"
-# Provide legacy Hestia variables for backwards compatibility
-: "${HESTIA_INSTALL_DIR:=$TULIO_INSTALL_DIR}"
-: "${HESTIA_COMMON_DIR:=$TULIO_COMMON_DIR}"
-: "${HESTIA_PHP:=$TULIO_PHP}"
-: "${HESTIA_THEMES:=$TULIO_THEMES}"
-: "${HESTIA_THEMES_CUSTOM:=$TULIO_THEMES_CUSTOM}"
 SCRIPT="$(basename $0)"
 CHECK_RESULT_CALLBACK=""
 
@@ -1409,7 +1401,7 @@ check_access_key_cmd() {
 		check_result "$E_FORBIDEN" "Command not provided"
 	elif [[ "$cmd" = 'v-make-tmp-file' ]]; then
 		USER="" PERMISSIONS=""
-		source_conf "${HESTIA}/data/access-keys/${access_key_id}"
+		source_conf "${TULIO}/data/access-keys/${access_key_id}"
 		local allowed_commands
 		if [[ -n "$PERMISSIONS" ]]; then
 			allowed_commands="$(get_apis_commands "$PERMISSIONS")"
@@ -1424,7 +1416,7 @@ check_access_key_cmd() {
 		check_result "$E_FORBIDEN" "Command $cmd not found"
 	else
 		USER="" PERMISSIONS=""
-		source_conf "${HESTIA}/data/access-keys/${access_key_id}"
+		source_conf "${TULIO}/data/access-keys/${access_key_id}"
 
 		local allowed_commands
 		if [[ -n "$PERMISSIONS" ]]; then

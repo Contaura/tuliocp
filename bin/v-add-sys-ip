@@ -37,17 +37,16 @@ nat_ip="$7"
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/syshealth.sh
-source "$HESTIA/func/syshealth.sh"
+source "$TULIO/func/syshealth.sh"
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 if [ -z "$4" ]; then
 	user="$ROOT_USER"
@@ -133,8 +132,8 @@ INTERFACE='$iface'
 NETMASK='$netmask'
 NAT='$nat_ip'
 TIME='$time'
-DATE='$date'" > $HESTIA/data/ips/$ip
-chmod 660 $HESTIA/data/ips/$ip
+DATE='$date'" > $TULIO/data/ips/$ip
+chmod 660 $TULIO/data/ips/$ip
 
 # WEB support
 if [ -n "$WEB_SYSTEM" ]; then
@@ -146,12 +145,12 @@ if [ -n "$WEB_SYSTEM" ]; then
 			echo "NameVirtualHost $ip:$WEB_PORT" > "$web_conf"
 		fi
 		echo "Listen $ip:$WEB_PORT" >> "$web_conf"
-		cat $HESTIA_INSTALL_DIR/apache2/unassigned.conf >> "$web_conf"
+		cat $TULIO_INSTALL_DIR/apache2/unassigned.conf >> "$web_conf"
 		sed -i 's/directIP/'$ip'/g' "$web_conf"
 		sed -i 's/directPORT/'$WEB_PORT'/g' "$web_conf"
 
 	elif [ "$WEB_SYSTEM" = 'nginx' ]; then
-		cp -f $HESTIA_INSTALL_DIR/nginx/unassigned.inc "$web_conf"
+		cp -f $TULIO_INSTALL_DIR/nginx/unassigned.inc "$web_conf"
 		sed -i 's/directIP/'$ip'/g' "$web_conf"
 		process_http2_directive "$web_conf"
 	fi
@@ -201,7 +200,7 @@ if [ -n "$PROXY_SYSTEM" ]; then
 	fi
 fi
 
-# Adapt Port Listing in HESTIA NGINX Backend
+# Adapt Port Listing in TULIO NGINX Backend
 syshealth_adapt_tulio_nginx_listen_ports
 # Also update resolver
 syshealth_adapt_nginx_resolver

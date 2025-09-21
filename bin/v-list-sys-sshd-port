@@ -16,8 +16,7 @@ format=${1-shell}
 # Includes
 # shellcheck source=/usr/local/tulio/func/main.sh
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
-source "$HESTIA/func/main.sh"
+source "$TULIO/func/main.sh"
 
 json_list() {
 	sh_counter=$(echo "$ports" | wc -l)

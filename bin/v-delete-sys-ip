@@ -18,15 +18,14 @@ ip="$1"
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -46,7 +45,7 @@ check_tulio_demo_mode
 #----------------------------------------------------------#
 
 # Import IP variables
-source "$HESTIA/data/ips/$ip"
+source "$TULIO/data/ips/$ip"
 cidr="$(convert_netmask "$NETMASK")"
 
 # Get primary IP
@@ -87,7 +86,7 @@ elif [ -e "/etc/network/interfaces" ]; then
 fi
 
 # Deleting Tulio IP
-rm -f $HESTIA/data/ips/$ip
+rm -f $TULIO/data/ips/$ip
 
 # Deleting web config
 if [ -n "$WEB_SYSTEM" ]; then

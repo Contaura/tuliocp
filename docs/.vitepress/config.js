@@ -24,8 +24,8 @@ export default defineConfig({
 
 		socialLinks: [
 			{ icon: 'github', link: 'https://github.com/contaura/tuliocp' },
-		{ icon: 'twitter', link: 'https://twitter.com/TulioCP' },
-		{ icon: 'facebook', link: 'https://www.facebook.com/tuliocp' },
+			{ icon: 'twitter', link: 'https://twitter.com/TulioCP' },
+			{ icon: 'facebook', link: 'https://www.facebook.com/tuliocp' },
 		],
 
 		sidebar: { '/docs/': sidebarDocs() },
@@ -39,7 +39,7 @@ export default defineConfig({
 
 		footer: {
 			message: 'Released under the GPLv3 License.',
-		copyright: 'Copyright © 2019-present Tulio Control Panel',
+			copyright: 'Copyright © 2019-present Tulio Control Panel',
 		},
 
 		algolia: {
@@ -143,11 +143,11 @@ function sidebarDocs() {
 			text: 'Community',
 			collapsed: false,
 			items: [
-			{ text: 'Tulio Nginx Cache', link: '/docs/community/tulio-nginx-cache' },
-			{
-				text: 'Ioncube installer for Tulio',
-				link: '/docs/community/ioncube-tulio-installer',
-			},
+				{ text: 'Tulio Nginx Cache', link: '/docs/community/tulio-nginx-cache' },
+				{
+					text: 'Ioncube installer for Tulio',
+					link: '/docs/community/ioncube-tulio-installer',
+				},
 				{ text: 'Install script generator', link: '/docs/community/install-script-generator' },
 			],
 		},

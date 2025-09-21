@@ -6,7 +6,7 @@
 /* Following keys will get replaced when calling v-add-sys-pma-sso */
 define("PHPMYADMIN_KEY", "%PHPMYADMIN_KEY%");
 define("API_HOST_NAME", "%API_HOST_NAME%");
-define("API_HESTIA_PORT", "%API_HESTIA_PORT%");
+define("API_TULIO_PORT", "%API_TULIO_PORT%");
 define("API_KEY", "%API_KEY%");
 
 class Tulio_API {
@@ -19,7 +19,7 @@ class Tulio_API {
 	/** @var string */
 	private $api_url;
 	public function __construct() {
-		$this->hostname = "https://" . API_HOST_NAME . ":" . API_HESTIA_PORT . "/api/";
+		$this->hostname = "https://" . API_HOST_NAME . ":" . API_TULIO_PORT . "/api/";
 		$this->key = API_KEY;
 		$this->pma_key = PHPMYADMIN_KEY;
 	}
@@ -154,10 +154,10 @@ $api = new Tulio_API();
 if (!empty($_GET)) {
 	if (isset($_GET["logout"])) {
 		$api->delete_temp_user(
-			$_SESSION["HESTIA_sso_database"],
-			$_SESSION["HESTIA_sso_user"],
+			$_SESSION["TULIO_sso_database"],
+			$_SESSION["TULIO_sso_user"],
 			$_SESSION["PMA_single_signon_user"],
-			$_SESSION["HESTIA_sso_host"],
+			$_SESSION["TULIO_sso_host"],
 		);
 		//remove session
 		session_invalid();
@@ -185,9 +185,9 @@ if (!empty($_GET)) {
 					$_SESSION["PMA_single_signon_password"] = $data->login->password;
 					$_SESSION["PMA_single_signon_host"] = $host;
 					//save database / username to be used for sending logout notification.
-					$_SESSION["HESTIA_sso_user"] = $user;
-					$_SESSION["HESTIA_sso_database"] = $database;
-					$_SESSION["HESTIA_sso_host"] = $host;
+					$_SESSION["TULIO_sso_user"] = $user;
+					$_SESSION["TULIO_sso_database"] = $database;
+					$_SESSION["TULIO_sso_host"] = $host;
 
 					@session_write_close();
 					setcookie($session_name, $id, 0, "/");

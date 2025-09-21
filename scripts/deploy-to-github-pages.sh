@@ -10,9 +10,9 @@ echo "🚀 Deploying TulioCP packages to GitHub Pages..."
 
 # Check if repository exists
 if [ ! -d "$REPO_DIR" ]; then
-    echo "❌ Repository not found at $REPO_DIR"
-    echo "Run ./deploy-to-repo.sh first to build the repository"
-    exit 1
+	echo "❌ Repository not found at $REPO_DIR"
+	echo "Run ./deploy-to-repo.sh first to build the repository"
+	exit 1
 fi
 
 # Navigate to build directory
@@ -20,15 +20,15 @@ cd "$BUILD_DIR"
 
 # Check if we have a git repository for the pages
 if [ ! -d "tuliocp-pages" ]; then
-    echo "📥 Cloning GitHub Pages repository..."
-    git clone -b gh-pages https://github.com/Contaura/tuliocp.git tuliocp-pages || {
-        echo "📥 Creating new gh-pages branch..."
-        git clone https://github.com/Contaura/tuliocp.git tuliocp-pages
-        cd tuliocp-pages
-        git checkout --orphan gh-pages
-        git rm -rf .
-        cd ..
-    }
+	echo "📥 Cloning GitHub Pages repository..."
+	git clone -b gh-pages https://github.com/Contaura/tuliocp.git tuliocp-pages || {
+		echo "📥 Creating new gh-pages branch..."
+		git clone https://github.com/Contaura/tuliocp.git tuliocp-pages
+		cd tuliocp-pages
+		git checkout --orphan gh-pages
+		git rm -rf .
+		cd ..
+	}
 fi
 
 # Navigate to pages repository
@@ -50,8 +50,8 @@ git add .
 
 # Check if there are changes to commit
 if git diff --staged --quiet; then
-    echo "ℹ️  No changes to deploy"
-    exit 0
+	echo "ℹ️  No changes to deploy"
+	exit 0
 fi
 
 # Commit and push
@@ -61,16 +61,16 @@ git status --porcelain
 echo ""
 echo "Committing changes..."
 git commit -m "Deploy TulioCP packages - $(date)" || {
-    echo "❌ Commit failed. Checking for authentication issues..."
-    echo "Git remote info:"
-    git remote -v
-    exit 1
+	echo "❌ Commit failed. Checking for authentication issues..."
+	echo "Git remote info:"
+	git remote -v
+	exit 1
 }
 echo "Pushing to GitHub Pages..."
 git push origin gh-pages || {
-    echo "❌ Push failed. This might be due to authentication issues."
-    echo "Make sure the build server has proper GitHub access."
-    exit 1
+	echo "❌ Push failed. This might be due to authentication issues."
+	echo "Make sure the build server has proper GitHub access."
+	exit 1
 }
 
 echo "✅ Deployment complete!"

@@ -14,10 +14,9 @@
 # Includes
 # shellcheck source=/usr/local/tulio/func/main.sh
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
-source "$HESTIA/func/main.sh"
+source "$TULIO/func/main.sh"
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #

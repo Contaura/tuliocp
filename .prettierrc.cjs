@@ -21,7 +21,7 @@ module.exports = {
 			'prettier-plugin-nginx',
 			'prettier-plugin-sh',
 			'prettier-plugin-sql',
-		])
+		]),
 	],
 	// PHP Settings
 	phpVersion: '8.2',

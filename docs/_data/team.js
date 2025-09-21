@@ -14,6 +14,6 @@ const globeIcon = {
 
 /** @type {import("vitepress").DefaultTheme.TeamMember[]} */
 export const teamMembers = [
-	// New contributors welcome! 
+	// New contributors welcome!
 	// Submit a PR to be featured here.
 ];

@@ -18,15 +18,14 @@ backup=$2
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/db.sh
-source $HESTIA/func/db.sh
+source $TULIO/func/db.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -43,7 +42,7 @@ check_tulio_demo_mode
 #----------------------------------------------------------#
 
 # Adding backup task to  the queue
-echo "$BIN/v-download-backup $user $backup 2>&1" >> $HESTIA/data/queue/backup.pipe
+echo "$BIN/v-download-backup $user $backup 2>&1" >> $TULIO/data/queue/backup.pipe
 
 #----------------------------------------------------------#
 #                       TulioCP                            #

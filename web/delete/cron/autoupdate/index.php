@@ -10,7 +10,7 @@ if (
 	($_SESSION["userContext"] === "admin" && $_SESSION["POLICY_SYSTEM_HIDE_SERVICES"] == "no") ||
 	$_SESSION["user"] == $_SESSION["ROOT_USER"]
 ) {
-	exec(HESTIA_CMD . "v-delete-cron-tulio-autoupdate", $output, $return_var);
+	exec(TULIO_CMD . "v-delete-cron-tulio-autoupdate", $output, $return_var);
 	unset($output);
 }
 

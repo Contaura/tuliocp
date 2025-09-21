@@ -17,11 +17,10 @@ package=$1
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -36,7 +35,7 @@ is_package_valid
 #----------------------------------------------------------#
 for user in $("$BIN/v-list-users" list); do
 	# Fix Bug User Data contain path to the root user
-	USER_DATA="$HESTIA/data/users/$user"
+	USER_DATA="$TULIO/data/users/$user"
 	check_package=$(grep "PACKAGE='$package'" $USER_DATA/user.conf)
 	if [ -n "$check_package" ]; then
 		"$BIN/v-change-user-package" "$user" "$package" 'yes'

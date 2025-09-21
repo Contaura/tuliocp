@@ -17,21 +17,20 @@ format="${1-shell}"
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # JSON list function
 json_list() {
 	echo '{'
-	ip_count="$(ls $HESTIA/data/ips/ | wc -l)"
+	ip_count="$(ls $TULIO/data/ips/ | wc -l)"
 	i=1
 	while read IP; do
-		source_conf "$HESTIA/data/ips/$IP"
+		source_conf "$TULIO/data/ips/$IP"
 		echo -n '    "'$IP'": {
         "OWNER": "'$OWNER'",
         "STATUS": "'$STATUS'",
@@ -50,7 +49,7 @@ json_list() {
 			echo
 		fi
 		((i++))
-	done < <(ls $HESTIA/data/ips/)
+	done < <(ls $TULIO/data/ips/)
 	echo '}'
 }
 
@@ -59,21 +58,21 @@ shell_list() {
 	echo "IP   MASK   NAT    STATUS   WEB  DATE"
 	echo "--   ----   ---    ------   ---  ----"
 	while read IP; do
-		source_conf "$HESTIA/data/ips/$IP"
+		source_conf "$TULIO/data/ips/$IP"
 		if [ -z "$NAT" ]; then
 			NAT='no'
 		fi
 		echo "$IP $NETMASK $NAT $STATUS $U_WEB_DOMAINS $DATE"
-	done < <(ls $HESTIA/data/ips/)
+	done < <(ls $TULIO/data/ips/)
 }
 
 # PLAIN list function
 plain_list() {
 	while read IP; do
-		source_conf "$HESTIA/data/ips/$IP"
+		source_conf "$TULIO/data/ips/$IP"
 		echo -ne "$IP\t$OWNER\t$STATUS\t$NAME\t$U_SYS_USERS\t$U_WEB_DOMAINS\t"
 		echo -e "$INTERFACE\t$NETMASK\t$NAT\t$TIME\t$DATE"
-	done < <(ls $HESTIA/data/ips/)
+	done < <(ls $TULIO/data/ips/)
 }
 
 # CSV list function
@@ -81,10 +80,10 @@ csv_list() {
 	echo -n "IP,OWNER,STATUS,NAME,U_SYS_USERS,U_WEB_DOMAINS,INTERFACE"
 	echo "NETMASK,NAT,TIME,DATE"
 	while read IP; do
-		source_conf "$HESTIA/data/ips/$IP"
+		source_conf "$TULIO/data/ips/$IP"
 		echo -n "$IP,$OWNER,$STATUS,$NAME,\"$U_SYS_USERS\",$U_WEB_DOMAINS,"
 		echo "$INTERFACE, $NETMASK,$NAT,$TIME,$DATE"
-	done < <(ls $HESTIA/data/ips/)
+	done < <(ls $TULIO/data/ips/)
 }
 
 #----------------------------------------------------------#

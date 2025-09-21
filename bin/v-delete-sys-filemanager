@@ -17,13 +17,12 @@ FORCE=$2
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
-FM_INSTALL_DIR="$HESTIA/web/fm"
+FM_INSTALL_DIR="$TULIO/web/fm"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -35,12 +34,12 @@ if [ "x$(id -u)" != 'x0' ]; then
 	exit 10
 fi
 
-# Ensure that $HESTIA (/usr/local/tulio/) and other variables are valid.
-if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/tulio"
+# Ensure that $TULIO (/usr/local/tulio/) and other variables are valid.
+if [ -z "$TULIO" ]; then
+	TULIO="/usr/local/tulio"
 fi
 
-if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
+if [ -z "$HOMEDIR" ] || [ -z "$TULIO_INSTALL_DIR" ]; then
 	echo "Error: Tulio environment vars not present"
 	exit 2
 fi

@@ -18,13 +18,12 @@ source /etc/profile.d/tulio.sh
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Argument definition
 user=$1
@@ -74,11 +73,11 @@ TOTAL_USERS=0
 
 # Updating user stats
 for user in $user_list; do
-	USER_DATA=$HESTIA/data/users/$user
-	if [ ! -f "$HESTIA/data/users/$user/user.conf" ]; then
+	USER_DATA=$TULIO/data/users/$user
+	if [ ! -f "$TULIO/data/users/$user/user.conf" ]; then
 		continue
 	fi
-	USER_DATA=$HESTIA/data/users/$user
+	USER_DATA=$TULIO/data/users/$user
 	source $USER_DATA/user.conf
 	next_month=$(date +'%m/01/%y' -d "$(date +%Y-%m-15) 1 month")
 	DATE=$(date -d "$next_month -1day" +%F)
@@ -135,7 +134,7 @@ done
 
 if [ "$update_overall_stats" = 'yes' ]; then
 	# Updating overall stats
-	stats="$HESTIA/data/users/$ROOT_USER/overall_stats.log"
+	stats="$TULIO/data/users/$ROOT_USER/overall_stats.log"
 
 	s="DATE='$DATE' TIME='$TIME' PACKAGE='default' IP_OWNED='$TOTAL_IP_OWNED'"
 	s="$s DISK_QUOTA='0' U_DISK='$TOTAL_U_DISK' U_DISK_DIRS='$TOTAL_U_DISK_DIRS'"

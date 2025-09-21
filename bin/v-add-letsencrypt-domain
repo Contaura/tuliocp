@@ -21,13 +21,12 @@ mail=${4// /}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # LE API
 LE_API='https://acme-v02.api.letsencrypt.org'
@@ -159,8 +158,8 @@ domain: ${domain}
 # Registering LetsEncrypt user account
 $BIN/v-add-letsencrypt-user $user
 if [ "$?" -ne 0 ]; then
-	touch $HESTIA/data/queue/letsencrypt.pipe
-	sed -i "/ $domain /d" $HESTIA/data/queue/letsencrypt.pipe
+	touch $TULIO/data/queue/letsencrypt.pipe
+	sed -i "/ $domain /d" $TULIO/data/queue/letsencrypt.pipe
 	send_notice "LETSENCRYPT" "Account registration failed ($user)"
 	check_result "$E_CONNECT" "LE account registration ($user)" > /dev/null
 fi
@@ -172,7 +171,7 @@ source $USER_DATA/ssl/le.conf
 if [ "$aliases" = "*.$domain" ]; then
 	wildcard='yes'
 	proto="dns-01"
-	if [ ! -e "$HESTIA/data/users/$user/dns/$domain.conf" ]; then
+	if [ ! -e "$TULIO/data/users/$user/dns/$domain.conf" ]; then
 		check_result "$E_NOTEXIST" "DNS domain $domain doesn't exist"
 	fi
 else
@@ -580,8 +579,8 @@ fi
 
 if [ "$?" -ne '0' ]; then
 	[ -d "$ssl_dir" ] && rm -rf "$ssl_dir"
-	touch $HESTIA/data/queue/letsencrypt.pipe
-	sed -i "/ $domain /d" $HESTIA/data/queue/letsencrypt.pipe
+	touch $TULIO/data/queue/letsencrypt.pipe
+	sed -i "/ $domain /d" $TULIO/data/queue/letsencrypt.pipe
 	send_notice 'LETSENCRYPT' "$domain certificate installation failed ($domain)"
 	check_result $? "SSL install" > /dev/null
 fi
@@ -636,8 +635,8 @@ fi
 #----------------------------------------------------------#
 
 # Deleting task from queue
-touch $HESTIA/data/queue/letsencrypt.pipe
-sed -i "/ $domain /d" $HESTIA/data/queue/letsencrypt.pipe
+touch $TULIO/data/queue/letsencrypt.pipe
+sed -i "/ $domain /d" $TULIO/data/queue/letsencrypt.pipe
 
 # Notifying user
 send_notice 'LETSENCRYPT' "$domain SSL has been installed successfully"

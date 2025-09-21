@@ -17,11 +17,10 @@ restart=$1
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Perform verification if read-only mode is enabled
 check_tulio_demo_mode
@@ -37,7 +36,7 @@ is_format_valid 'restart'
 #----------------------------------------------------------#
 
 # Update templates
-cp -rf $HESTIA_COMMON_DIR/templates/dns $HESTIA/data/templates/
+cp -rf $TULIO_COMMON_DIR/templates/dns $TULIO/data/templates/
 
 #----------------------------------------------------------#
 #                       TulioCP                            #

@@ -393,7 +393,7 @@ class TulioApp
 
     private function run(string $cmd, array $arguments): TulioCommandResult
     {
-        $cli_script = realpath(HESTIA_DIR_BIN . $cmd);
+        $cli_script = realpath(TULIO_DIR_BIN . $cmd);
 
         $command = ['/usr/bin/sudo', $cli_script, ...$arguments];
 

@@ -9,7 +9,7 @@ verify_csrf($_GET);
 
 $site = quoteshellarg($_GET["site"]);
 
-exec(HESTIA_CMD . "v-dump-site " . $user . " " . $site . " full", $output, $return_var);
+exec(TULIO_CMD . "v-dump-site " . $user . " " . $site . " full", $output, $return_var);
 
 if ($return_var == 0) {
 	header("Content-type: application/zip");

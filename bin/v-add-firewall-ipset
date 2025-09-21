@@ -20,11 +20,10 @@ refresh=${5:-no}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -42,7 +41,7 @@ check_tulio_demo_mode
 # Define variables for ipset configuration
 ipset_hstobject='../../../data/firewall/ipset'
 IPSET_BIN="$(command -v ipset)"
-IPSET_PATH="$HESTIA/data/firewall/ipset"
+IPSET_PATH="$TULIO/data/firewall/ipset"
 
 # Ensure ipset is installed
 if [ -z "$IPSET_BIN" ]; then
@@ -55,8 +54,8 @@ fi
 
 # Ensure ipset configuration path and master file exist before attempting to parse
 mkdir -p "$IPSET_PATH"
-if [ ! -f "$HESTIA/data/firewall/ipset.conf" ]; then
-	touch $HESTIA/data/firewall/ipset.conf
+if [ ! -f "$TULIO/data/firewall/ipset.conf" ]; then
+	touch $TULIO/data/firewall/ipset.conf
 fi
 
 if [ -z "$data_source" ]; then
@@ -163,7 +162,7 @@ if [ ! -f "${IPSET_PATH}.conf" ] || [ -z "$(get_object_value "$ipset_hstobject" 
 	str="LISTNAME='$ip_name' IP_VERSION='$ip_version' SOURCE='$data_source'"
 	str="$str AUTOUPDATE='$autoupdate' SUSPENDED='no'"
 	str="$str TIME='$time' DATE='$date'"
-	echo "$str" >> $HESTIA/data/firewall/ipset.conf
+	echo "$str" >> $TULIO/data/firewall/ipset.conf
 	log_type="added"
 
 elif [ "$refresh" = "yes" ]; then
@@ -176,13 +175,13 @@ elif [ "$refresh" = "yes" ]; then
 fi
 
 # Changing permissions
-chmod 660 $HESTIA/data/firewall/ipset.conf
+chmod 660 $TULIO/data/firewall/ipset.conf
 chmod 660 "${IPSET_PATH}/${IPSET_FILE}.iplist"
 
 # Install ipset daily cron updater
-if ! grep --silent --no-messages "v-update-firewall-ipset" $HESTIA/data/queue/daily.pipe; then
+if ! grep --silent --no-messages "v-update-firewall-ipset" $TULIO/data/queue/daily.pipe; then
 	cmd="$BIN/v-update-firewall-ipset yes"
-	echo "$cmd" >> $HESTIA/data/queue/daily.pipe
+	echo "$cmd" >> $TULIO/data/queue/daily.pipe
 fi
 
 #----------------------------------------------------------#

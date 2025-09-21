@@ -9,8 +9,8 @@ echo "========================================"
 
 # Verify build server setup
 if [ ! -d "/opt/tuliocp-build" ]; then
-    echo "❌ Build server not set up. Run deploy-build-server.sh first."
-    exit 1
+	echo "❌ Build server not set up. Run deploy-build-server.sh first."
+	exit 1
 fi
 
 cd /opt/tuliocp-build
@@ -21,23 +21,23 @@ cd tuliocp
 git pull origin main
 
 if ./src/build-minimal-package.sh; then
-    echo "✅ Package build successful!"
-    
-    # Show built packages
-    echo "📦 Built packages:"
-    ls -la /tmp/*.deb 2>/dev/null || echo "No .deb files found"
-    
-    # Get package info
-    for deb in /tmp/*.deb; do
-        if [ -f "$deb" ]; then
-            echo "Package info for $(basename $deb):"
-            dpkg-deb --info "$deb" | head -15
-            echo "---"
-        fi
-    done
+	echo "✅ Package build successful!"
+
+	# Show built packages
+	echo "📦 Built packages:"
+	ls -la /tmp/*.deb 2> /dev/null || echo "No .deb files found"
+
+	# Get package info
+	for deb in /tmp/*.deb; do
+		if [ -f "$deb" ]; then
+			echo "Package info for $(basename $deb):"
+			dpkg-deb --info "$deb" | head -15
+			echo "---"
+		fi
+	done
 else
-    echo "❌ Package build failed!"
-    exit 1
+	echo "❌ Package build failed!"
+	exit 1
 fi
 
 # Create repository deployment script

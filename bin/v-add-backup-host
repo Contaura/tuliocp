@@ -28,15 +28,14 @@ arch=$(arch)
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/backup.sh
-source $HESTIA/func/backup.sh
+source $TULIO/func/backup.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 # Fetch current verison B2 CLI tool
-source_conf "$HESTIA/install/upgrade/upgrade.conf"
+source_conf "$TULIO/install/upgrade/upgrade.conf"
 
 # Paths
 b2cli="/usr/local/bin/b2"
@@ -207,19 +206,19 @@ if [ $type == 'ftp' ] || [ $type = 'sftp' ]; then
 	new_timestamp
 	str="HOST='$host'\nUSERNAME='$user'\nPASSWORD='$password'\nPRIVATEKEY='$privatekey'"
 	str="$str\nBPATH='$path'\nPORT='$port'\nTIME='$time'\nDATE='$date'"
-	echo -e "$str" > $HESTIA/conf/$type.backup.conf
-	chmod 660 $HESTIA/conf/$type.backup.conf
+	echo -e "$str" > $TULIO/conf/$type.backup.conf
+	chmod 660 $TULIO/conf/$type.backup.conf
 elif [ $type == 'b2' ]; then
 	new_timestamp
 	str="BUCKET='$host'\nB2_KEYID='$user'\nB2_KEY='$raw_password'"
 	str="$str\nTIME='$time'\nDATE='$date'"
-	echo -e "$str" > $HESTIA/conf/$type.backup.conf
-	chmod 660 $HESTIA/conf/$type.backup.conf
+	echo -e "$str" > $TULIO/conf/$type.backup.conf
+	chmod 660 $TULIO/conf/$type.backup.conf
 elif [ $type == "rclone" ]; then
 	new_timestamp
 	str="HOST='$host'\nBPATH='$path'"
 	str="$str\nTIME='$time'\nDATE='$date'"
-	echo -e "$str" > $HESTIA/conf/$type.backup.conf
+	echo -e "$str" > $TULIO/conf/$type.backup.conf
 fi
 
 #----------------------------------------------------------#
@@ -227,15 +226,15 @@ fi
 #----------------------------------------------------------#
 
 # Update tulio.conf
-if [ -z "$(grep BACKUP_SYSTEM $HESTIA/conf/tulio.conf)" ]; then
-	echo "BACKUP_SYSTEM='$type'" >> $HESTIA/conf/tulio.conf
+if [ -z "$(grep BACKUP_SYSTEM $TULIO/conf/tulio.conf)" ]; then
+	echo "BACKUP_SYSTEM='$type'" >> $TULIO/conf/tulio.conf
 else
 	bckp=$(echo "$BACKUP_SYSTEM,$type" \
 		| sed "s/,/\n/g" \
 		| sort -r -u \
 		| sed "/^$/d" \
 		| sed ':a;N;$!ba;s/\n/,/g')
-	sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $HESTIA/conf/tulio.conf
+	sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $TULIO/conf/tulio.conf
 fi
 
 # Logging

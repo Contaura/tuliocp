@@ -6,14 +6,14 @@ set -e
 echo "📤 Deploying packages to repository..."
 
 # Check if packages exist
-if [ ! -d "/tmp" ] || [ -z "$(find /tmp -name "*.deb" 2>/dev/null)" ]; then
-    echo "❌ No packages found in /tmp/"
-    echo "Run build script first to create packages"
-    exit 1
+if [ ! -d "/tmp" ] || [ -z "$(find /tmp -name "*.deb" 2> /dev/null)" ]; then
+	echo "❌ No packages found in /tmp/"
+	echo "Run build script first to create packages"
+	exit 1
 fi
 
 echo "📦 Packages ready for deployment:"
-ls -la /tmp/*.deb 2>/dev/null || echo "No .deb files found"
+ls -la /tmp/*.deb 2> /dev/null || echo "No .deb files found"
 
 # Create repository structure
 REPO_DIR="/tmp/tuliocp-repo"
@@ -22,9 +22,9 @@ mkdir -p "$REPO_DIR"/{dists/stable/main/binary-amd64,pool/main}
 
 # Copy packages
 echo "📋 Copying packages to repository..."
-cp /tmp/*.deb "$REPO_DIR/pool/main/" 2>/dev/null || {
-    echo "❌ Failed to copy packages"
-    exit 1
+cp /tmp/*.deb "$REPO_DIR/pool/main/" 2> /dev/null || {
+	echo "❌ Failed to copy packages"
+	exit 1
 }
 
 cd "$REPO_DIR"
@@ -52,36 +52,36 @@ EOF
 # Add MD5Sum section
 echo "MD5Sum:" >> Release
 find . -name "*.gz" -o -name "Packages" | while read file; do
-    if [ -f "$file" ]; then
-        md5sum "$file" | awk -v file="$file" '{printf " %s %8d %s\n", $1, length, file}'
-    fi
+	if [ -f "$file" ]; then
+		md5sum "$file" | awk -v file="$file" '{printf " %s %8d %s\n", $1, length, file}'
+	fi
 done | sed 's|^\./||' >> Release
 
-# Add SHA1 section  
+# Add SHA1 section
 echo "SHA1:" >> Release
 find . -name "*.gz" -o -name "Packages" | while read file; do
-    if [ -f "$file" ]; then
-        sha1sum "$file" | awk -v file="$file" '{printf " %s %8d %s\n", $1, length, file}'
-    fi
+	if [ -f "$file" ]; then
+		sha1sum "$file" | awk -v file="$file" '{printf " %s %8d %s\n", $1, length, file}'
+	fi
 done | sed 's|^\./||' >> Release
 
 # Add SHA256 section
 echo "SHA256:" >> Release
 find . -name "*.gz" -o -name "Packages" | while read file; do
-    if [ -f "$file" ]; then
-        sha256sum "$file" | awk -v file="$file" '{printf " %s %8d %s\n", $1, length, file}'
-    fi
+	if [ -f "$file" ]; then
+		sha256sum "$file" | awk -v file="$file" '{printf " %s %8d %s\n", $1, length, file}'
+	fi
 done | sed 's|^\./||' >> Release
 
 cd "$REPO_DIR"
 
 # Copy repository index page
 if [ -f "/opt/tuliocp-build/tuliocp/apt-repo/index.html" ]; then
-    cp "/opt/tuliocp-build/tuliocp/apt-repo/index.html" index.html
-    echo "✅ Using updated repository index page"
+	cp "/opt/tuliocp-build/tuliocp/apt-repo/index.html" index.html
+	echo "✅ Using updated repository index page"
 else
-    echo "⚠️ Creating basic index page"
-    cat > index.html << 'EOF'
+	echo "⚠️ Creating basic index page"
+	cat > index.html << 'EOF'
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -135,7 +135,7 @@ echo "🚀 Repository ready for deployment!"
 echo ""
 echo "📋 Repository includes:"
 echo "  ✅ Proper Release file with checksums"
-echo "  ✅ Packages and Packages.gz files" 
+echo "  ✅ Packages and Packages.gz files"
 echo "  ✅ Repository index page"
 echo "  ⚠️  Unsigned (requires --allow-unauthenticated)"
 echo ""

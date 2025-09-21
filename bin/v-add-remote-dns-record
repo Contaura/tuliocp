@@ -19,13 +19,12 @@ id=$3
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/remote.sh
-source $HESTIA/func/remote.sh
+source $TULIO/func/remote.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -49,7 +48,7 @@ check_tulio_demo_mode
 # Parsing record
 str=$(grep "ID='$id'" $USER_DATA/dns/$domain.conf)
 if [ -z "$str" ]; then
-	pipe="$HESTIA/data/queue/dns-cluster.pipe"
+	pipe="$TULIO/data/queue/dns-cluster.pipe"
 	queue_str=$(grep -n "$SCRIPT $1 $2 $3$" $pipe | cut -f1 -d: | head -n1)
 	if [ -n "$queue_str" ]; then
 		sed -i "$queue_str d" $pipe
@@ -60,7 +59,7 @@ fi
 
 if [ "$DNS_CLUSTER_SYSTEM" != "tulio-zone" ]; then
 	IFS=$'\n'
-	for cluster in $(grep "SUSPENDED='no'" $HESTIA/conf/dns-cluster.conf); do
+	for cluster in $(grep "SUSPENDED='no'" $TULIO/conf/dns-cluster.conf); do
 
 		# Reset user, password and hash vars
 		clear_dns_cluster_settings
@@ -91,7 +90,7 @@ fi
 #----------------------------------------------------------#
 
 # Updating pipe
-pipe="$HESTIA/data/queue/dns-cluster.pipe"
+pipe="$TULIO/data/queue/dns-cluster.pipe"
 str=$(grep -n "$SCRIPT $1 $2 $3$" $pipe | cut -f1 -d: | head -n1)
 if [ -n "$str" ]; then
 	sed -i "$str d" $pipe

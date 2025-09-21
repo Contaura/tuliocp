@@ -20,13 +20,12 @@ source /etc/profile.d/tulio.sh
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source "$HESTIA/func/main.sh"
+source "$TULIO/func/main.sh"
 # shellcheck source=/usr/local/tulio/func/firewall.sh
-source "$HESTIA/func/firewall.sh"
+source "$TULIO/func/firewall.sh"
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -42,7 +41,7 @@ is_system_enabled "$FIREWALL_SYSTEM" 'FIREWALL_SYSTEM'
 heal_iptables_links
 
 # Checking local IPv4 rules
-rules="$HESTIA/data/firewall/rules.conf"
+rules="$TULIO/data/firewall/rules.conf"
 
 if [ ! -e "$rules" ]; then
 	exit
@@ -62,8 +61,8 @@ if [ $? -ne 0 ]; then
 	conntrack_ftp='no'
 fi
 
-chains="$HESTIA/data/firewall/chains.conf"
-banlist="$HESTIA/data/firewall/banlist.conf"
+chains="$TULIO/data/firewall/chains.conf"
+banlist="$TULIO/data/firewall/banlist.conf"
 
 # Checking custom OpenSSH port (or ports)
 sshport="$($BIN/v-list-sys-sshd-port plain | sed ':a;N;$!ba;s/\n/,/g')"
@@ -93,7 +92,7 @@ if [ "$conntrack" != 'no' ] || grep --quiet container=lxc /proc/1/environ; then
 	echo "$str" >> "$tmp"
 fi
 
-ips="$(ls $HESTIA/data/ips)"
+ips="$(ls $TULIO/data/ips)"
 # Handling local traffic
 for ip in $ips; do
 	echo "$iptables -A INPUT -s $ip -j ACCEPT" >> "$tmp"
@@ -157,8 +156,8 @@ bash "$tmp" 2> /dev/null
 rm -f "$tmp"
 
 # Checking custom trigger
-if [ -x "$HESTIA/data/firewall/custom.sh" ]; then
-	bash "$HESTIA/data/firewall/custom.sh"
+if [ -x "$TULIO/data/firewall/custom.sh" ]; then
+	bash "$TULIO/data/firewall/custom.sh"
 fi
 
 # Checking fail2ban support
@@ -209,7 +208,7 @@ else
 		echo "[Service]" >> $sd_unit
 		echo "Type=oneshot" >> $sd_unit
 		echo "RemainAfterExit=yes" >> $sd_unit
-		echo "ExecStartPre=-${HESTIA}/bin/v-update-firewall-ipset load" >> $sd_unit
+		echo "ExecStartPre=-${TULIO}/bin/v-update-firewall-ipset load" >> $sd_unit
 		if [ "$iptablesversion" = "v1.6" ]; then
 			echo "ExecStart=/sbin/iptables-restore /etc/iptables.rules" >> $sd_unit
 		else

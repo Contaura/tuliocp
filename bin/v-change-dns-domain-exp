@@ -21,11 +21,10 @@ exp=$3
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Additional argument formatting
 format_domain
@@ -57,10 +56,10 @@ update_object_value 'dns' 'DOMAIN' "$domain" '$EXP' "$exp"
 # Updating dns-cluster queue
 if [ "$DNS_CLUSTER" = "yes" ]; then
 	# Check for first sync
-	dlock=$(grep "domain $user $domain" $HESTIA/data/queue/dns-cluster.pipe)
+	dlock=$(grep "domain $user $domain" $TULIO/data/queue/dns-cluster.pipe)
 	if [ -z "$dlock" ]; then
 		cmd="$BIN/v-change-remote-dns-domain-exp $user $domain $exp"
-		echo "$cmd" >> $HESTIA/data/queue/dns-cluster.pipe
+		echo "$cmd" >> $TULIO/data/queue/dns-cluster.pipe
 	fi
 fi
 

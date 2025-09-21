@@ -18,11 +18,10 @@ format="${2-shell}"
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # JSON list function
 json_list() {
@@ -30,7 +29,7 @@ json_list() {
 	ip_count="$(echo "$ips" | wc -l)"
 	i=1
 	for IP in $ips; do
-		source_conf "$HESTIA/data/ips/$IP"
+		source_conf "$TULIO/data/ips/$IP"
 		echo -n '    "'$IP'": {
         "OWNER": "'$OWNER'",
         "STATUS": "'$STATUS'",
@@ -52,7 +51,7 @@ shell_list() {
 	echo "IP  NAT  OWNER   STATUS   NAME"
 	echo "--  ---  -----   ------   ---"
 	for IP in $ips; do
-		source_conf "$HESTIA/data/ips/$IP"
+		source_conf "$TULIO/data/ips/$IP"
 		if [ -z "$NAT" ]; then
 			NAT='no'
 		fi
@@ -66,7 +65,7 @@ shell_list() {
 # PLAIN list function
 plain_list() {
 	for IP in $ips; do
-		source_conf "$HESTIA/data/ips/$IP"
+		source_conf "$TULIO/data/ips/$IP"
 		echo -e "$IP\t$OWNER\t$STATUS\t$NAME\t$NAT"
 	done
 }
@@ -75,7 +74,7 @@ plain_list() {
 csv_list() {
 	echo "IP,OWNER,STATUS,NAME,NAT"
 	for IP in $ips; do
-		source_conf "$HESTIA/data/ips/$IP"
+		source_conf "$TULIO/data/ips/$IP"
 		echo "$IP,$OWNER,$STATUS,$NAME,$NAT"
 	done
 }
@@ -94,10 +93,10 @@ is_object_valid 'user' 'USER' "$user"
 
 # Defining fileds to select
 owner="$ROOT_USER"
-owner_ips="$(grep -A 1 -H "OWNER='$owner'" $HESTIA/data/ips/*)"
+owner_ips="$(grep -A 1 -H "OWNER='$owner'" $TULIO/data/ips/*)"
 owner_ips="$(echo "$owner_ips" | grep "STATUS='shared'")"
 owner_ips="$(echo "$owner_ips" | cut -f 7 -d / | cut -f 1 -d -)"
-user_ips="$(grep -H "OWNER='$user'" $HESTIA/data/ips/*)"
+user_ips="$(grep -H "OWNER='$user'" $TULIO/data/ips/*)"
 user_ips="$(echo "$user_ips" | cut -f 7 -d / | cut -f 1 -d :)"
 ips="$(echo -e "$user_ips\n$owner_ips" | sort -u | sed "/^$/d")"
 fields='$IP $OWNER $STATUS $NAME $NAT'

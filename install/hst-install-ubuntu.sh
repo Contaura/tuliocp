@@ -18,7 +18,7 @@ export DEBIAN_FRONTEND=noninteractive
 RHOST='apt.tuliocp.com'
 VERSION='ubuntu'
 # Using Tulio package paths temporarily until TulioCP packages are available
-HESTIA_ROOT='/usr/local/tulio'
+TULIO_ROOT='/usr/local/tulio'
 TULIO='/usr/local/tulio'
 LOG="/root/hst_install_backups/hst_install-$(date +%d%m%Y%H%M).log"
 memory=$(grep 'MemTotal' /proc/meminfo | tr ' ' '\n' | grep [0-9])
@@ -28,15 +28,15 @@ os='ubuntu'
 release="$(lsb_release -s -r)"
 codename="$(lsb_release -s -c)"
 architecture="$(arch)"
-HESTIA_INSTALL_DIR="$HESTIA_ROOT/install/deb"
-HESTIA_COMMON_DIR="$HESTIA_ROOT/install/common"
+TULIO_INSTALL_DIR="$TULIO_ROOT/install/deb"
+TULIO_COMMON_DIR="$TULIO_ROOT/install/common"
 # TulioCP directories (using repository paths during installation)
 TULIO_INSTALL_DIR="$(pwd)/install/deb"
 TULIO_COMMON_DIR="$(pwd)/install/common"
 VERBOSE='no'
 
 # Define software versions
-HESTIA_INSTALL_VER='1.10.0~alpha'
+TULIO_INSTALL_VER='1.10.0~alpha'
 # Supported PHP versions
 multiphp_v=("5.6" "7.0" "7.1" "7.2" "7.3" "7.4" "8.0" "8.1" "8.2" "8.3" "8.4")
 # One of the following PHP versions is required for Roundcube / phpmyadmin
@@ -580,17 +580,17 @@ esac
 #----------------------------------------------------------#
 
 install_welcome_message() {
-	DISPLAY_VER=$(echo $HESTIA_INSTALL_VER | sed "s|~alpha||g" | sed "s|~beta||g")
+	DISPLAY_VER=$(echo $TULIO_INSTALL_VER | sed "s|~alpha||g" | sed "s|~beta||g")
 	echo
 	echo "========================================================================"
 	echo "                                                                        "
 	echo "                              TulioCP                                   "
 	echo "                      Web Server Control Panel                         "
 	echo "                                                                        "
-	if [[ "$HESTIA_INSTALL_VER" =~ "beta" ]]; then
+	if [[ "$TULIO_INSTALL_VER" =~ "beta" ]]; then
 		echo "                              BETA RELEASE                          "
 	fi
-	if [[ "$HESTIA_INSTALL_VER" =~ "alpha" ]]; then
+	if [[ "$TULIO_INSTALL_VER" =~ "alpha" ]]; then
 		echo "                          DEVELOPMENT SNAPSHOT                      "
 		echo "                    NOT INTENDED FOR PRODUCTION USE                 "
 		echo "                          USE AT YOUR OWN RISK                      "
@@ -1094,7 +1094,7 @@ if [ -d "$withdebs" ]; then
 	software=$(echo "$software" | sed -e "s/tulio-nginx//")
 	software=$(echo "$software" | sed -e "s/tulio-php//")
 	software=$(echo "$software" | sed -e "s/tulio-web-terminal//")
-	software=$(echo "$software" | sed -e "s/tuliocp=${HESTIA_INSTALL_VER}//")
+	software=$(echo "$software" | sed -e "s/tuliocp=${TULIO_INSTALL_VER}//")
 fi
 
 if [ "$release" = '24.04' ]; then
@@ -1191,135 +1191,135 @@ fi
 echo "[ * ] Setting up TulioCP directory structure..."
 DOWNLOAD_TMP_DIR=""
 if [ ! -d "$TULIO" ]; then
-        # Create TulioCP base directory
-        mkdir -p "$TULIO"
+	# Create TulioCP base directory
+	mkdir -p "$TULIO"
 
-        # Try to find the repository source files
-        # Check multiple possible locations for source files
-        SOURCE_DIR=""
-        for possible_dir in "$(pwd)" "$(dirname $0)/.." "/tmp/tuliocp-source" "$HOME/tuliocp"; do
-                if [ -d "$possible_dir/bin" ] && [ -d "$possible_dir/install" ]; then
-                        SOURCE_DIR="$possible_dir"
-                        break
-                fi
-        done
+	# Try to find the repository source files
+	# Check multiple possible locations for source files
+	SOURCE_DIR=""
+	for possible_dir in "$(pwd)" "$(dirname $0)/.." "/tmp/tuliocp-source" "$HOME/tuliocp"; do
+		if [ -d "$possible_dir/bin" ] && [ -d "$possible_dir/install" ]; then
+			SOURCE_DIR="$possible_dir"
+			break
+		fi
+	done
 
-        if [ -z "$SOURCE_DIR" ]; then
-                echo "Warning: Could not locate TulioCP source files locally"
-                echo "Attempting to download TulioCP source archive..."
+	if [ -z "$SOURCE_DIR" ]; then
+		echo "Warning: Could not locate TulioCP source files locally"
+		echo "Attempting to download TulioCP source archive..."
 
-                if command -v curl >/dev/null 2>&1 || command -v wget >/dev/null 2>&1; then
-                        DOWNLOAD_TMP_DIR=$(mktemp -d 2>/dev/null)
-                        if [ -n "$DOWNLOAD_TMP_DIR" ] && [ -d "$DOWNLOAD_TMP_DIR" ]; then
-                                ARCHIVE_PATH="$DOWNLOAD_TMP_DIR/tuliocp.tar.gz"
-                                REPO_ARCHIVE_URL="https://github.com/contaura/tuliocp/archive/refs/heads/main.tar.gz"
+		if command -v curl > /dev/null 2>&1 || command -v wget > /dev/null 2>&1; then
+			DOWNLOAD_TMP_DIR=$(mktemp -d 2> /dev/null)
+			if [ -n "$DOWNLOAD_TMP_DIR" ] && [ -d "$DOWNLOAD_TMP_DIR" ]; then
+				ARCHIVE_PATH="$DOWNLOAD_TMP_DIR/tuliocp.tar.gz"
+				REPO_ARCHIVE_URL="https://github.com/contaura/tuliocp/archive/refs/heads/main.tar.gz"
 
-                                if command -v curl >/dev/null 2>&1; then
-                                        curl -fsSL "$REPO_ARCHIVE_URL" -o "$ARCHIVE_PATH" >> $LOG 2>&1
-                                else
-                                        wget -qO "$ARCHIVE_PATH" "$REPO_ARCHIVE_URL" >> $LOG 2>&1
-                                fi
+				if command -v curl > /dev/null 2>&1; then
+					curl -fsSL "$REPO_ARCHIVE_URL" -o "$ARCHIVE_PATH" >> $LOG 2>&1
+				else
+					wget -qO "$ARCHIVE_PATH" "$REPO_ARCHIVE_URL" >> $LOG 2>&1
+				fi
 
-                                if [ $? -eq 0 ] && tar -xzf "$ARCHIVE_PATH" -C "$DOWNLOAD_TMP_DIR" >> $LOG 2>&1; then
-                                        SOURCE_DIR=$(find "$DOWNLOAD_TMP_DIR" -maxdepth 1 -mindepth 1 -type d -name 'tuliocp-*' | head -n1)
-                                        if [ -n "$SOURCE_DIR" ] && [ -d "$SOURCE_DIR/bin" ] && [ -d "$SOURCE_DIR/install" ]; then
-                                                echo "✓ Downloaded TulioCP source archive"
-                                        else
-                                                echo "Warning: Downloaded archive did not contain expected TulioCP structure"
-                                                SOURCE_DIR=""
-                                        fi
-                                else
-                                        echo "Warning: Failed to download TulioCP source archive"
-                                        SOURCE_DIR=""
-                                fi
-                        else
-                                echo "Warning: Unable to create temporary directory for download"
-                        fi
-                else
-                        echo "Warning: Neither curl nor wget available, cannot download TulioCP source files"
-                fi
-        fi
+				if [ $? -eq 0 ] && tar -xzf "$ARCHIVE_PATH" -C "$DOWNLOAD_TMP_DIR" >> $LOG 2>&1; then
+					SOURCE_DIR=$(find "$DOWNLOAD_TMP_DIR" -maxdepth 1 -mindepth 1 -type d -name 'tuliocp-*' | head -n1)
+					if [ -n "$SOURCE_DIR" ] && [ -d "$SOURCE_DIR/bin" ] && [ -d "$SOURCE_DIR/install" ]; then
+						echo "✓ Downloaded TulioCP source archive"
+					else
+						echo "Warning: Downloaded archive did not contain expected TulioCP structure"
+						SOURCE_DIR=""
+					fi
+				else
+					echo "Warning: Failed to download TulioCP source archive"
+					SOURCE_DIR=""
+				fi
+			else
+				echo "Warning: Unable to create temporary directory for download"
+			fi
+		else
+			echo "Warning: Neither curl nor wget available, cannot download TulioCP source files"
+		fi
+	fi
 
-        if [ -n "$SOURCE_DIR" ]; then
-                echo "Using TulioCP source files from: $SOURCE_DIR"
+	if [ -n "$SOURCE_DIR" ]; then
+		echo "Using TulioCP source files from: $SOURCE_DIR"
 
-                # Copy essential directories with verification
-                if [ -d "$SOURCE_DIR/bin" ]; then
-                        cp -r "$SOURCE_DIR/bin" "$TULIO/" && echo "✓ bin directory copied successfully" || echo "✗ bin directory copy failed"
-                else
-                        echo "✗ bin directory not found in source"
-                fi
+		# Copy essential directories with verification
+		if [ -d "$SOURCE_DIR/bin" ]; then
+			cp -r "$SOURCE_DIR/bin" "$TULIO/" && echo "✓ bin directory copied successfully" || echo "✗ bin directory copy failed"
+		else
+			echo "✗ bin directory not found in source"
+		fi
 
-                if [ -d "$SOURCE_DIR/func" ]; then
-                        cp -r "$SOURCE_DIR/func" "$TULIO/" && echo "✓ func directory copied successfully" || echo "✗ func directory copy failed"
-                else
-                        echo "✗ func directory not found in source"
-                fi
+		if [ -d "$SOURCE_DIR/func" ]; then
+			cp -r "$SOURCE_DIR/func" "$TULIO/" && echo "✓ func directory copied successfully" || echo "✗ func directory copy failed"
+		else
+			echo "✗ func directory not found in source"
+		fi
 
-                if [ -d "$SOURCE_DIR/web" ]; then
-                        cp -r "$SOURCE_DIR/web" "$TULIO/" && echo "✓ web directory copied successfully" || echo "✗ web directory copy failed"
-                else
-                        echo "✗ web directory not found in source"
-                fi
+		if [ -d "$SOURCE_DIR/web" ]; then
+			cp -r "$SOURCE_DIR/web" "$TULIO/" && echo "✓ web directory copied successfully" || echo "✗ web directory copy failed"
+		else
+			echo "✗ web directory not found in source"
+		fi
 
-                if [ -d "$SOURCE_DIR/install" ]; then
-                        cp -r "$SOURCE_DIR/install" "$TULIO/" && echo "✓ install directory copied successfully" || echo "✗ install directory copy failed"
-                else
-                        echo "✗ install directory not found in source"
-                fi
+		if [ -d "$SOURCE_DIR/install" ]; then
+			cp -r "$SOURCE_DIR/install" "$TULIO/" && echo "✓ install directory copied successfully" || echo "✗ install directory copy failed"
+		else
+			echo "✗ install directory not found in source"
+		fi
 
-                # Verify bin directory was copied and make scripts executable
-                if [ -d "$TULIO/bin" ]; then
-                        echo "Setting executable permissions on CLI scripts..."
-                        chmod +x $TULIO/bin/* 2>/dev/null
-                        echo "✓ TulioCP CLI scripts ready"
-                else
-                        echo "✗ Warning: bin directory not available after copy - CLI features will not work"
-                fi
+		# Verify bin directory was copied and make scripts executable
+		if [ -d "$TULIO/bin" ]; then
+			echo "Setting executable permissions on CLI scripts..."
+			chmod +x $TULIO/bin/* 2> /dev/null
+			echo "✓ TulioCP CLI scripts ready"
+		else
+			echo "✗ Warning: bin directory not available after copy - CLI features will not work"
+		fi
 
-                echo "TulioCP files copied to installation directory"
-        else
-                echo "Error: Unable to obtain TulioCP source files."
-                echo "Please ensure TulioCP packages are available or rerun the installer with the --with-debs option."
-                [ -n "$DOWNLOAD_TMP_DIR" ] && rm -rf "$DOWNLOAD_TMP_DIR"
-                exit 1
-        fi
+		echo "TulioCP files copied to installation directory"
+	else
+		echo "Error: Unable to obtain TulioCP source files."
+		echo "Please ensure TulioCP packages are available or rerun the installer with the --with-debs option."
+		[ -n "$DOWNLOAD_TMP_DIR" ] && rm -rf "$DOWNLOAD_TMP_DIR"
+		exit 1
+	fi
 
-        # Clean up downloaded archive if we created one
-        if [ -n "$DOWNLOAD_TMP_DIR" ] && [ -d "$DOWNLOAD_TMP_DIR" ]; then
-                rm -rf "$DOWNLOAD_TMP_DIR"
-        fi
+	# Clean up downloaded archive if we created one
+	if [ -n "$DOWNLOAD_TMP_DIR" ] && [ -d "$DOWNLOAD_TMP_DIR" ]; then
+		rm -rf "$DOWNLOAD_TMP_DIR"
+	fi
 
-        # Update TULIO_INSTALL_DIR and TULIO_COMMON_DIR to point to installed locations
-        TULIO_INSTALL_DIR="$TULIO/install/deb"
-        TULIO_COMMON_DIR="$TULIO/install/common"
+	# Update TULIO_INSTALL_DIR and TULIO_COMMON_DIR to point to installed locations
+	TULIO_INSTALL_DIR="$TULIO/install/deb"
+	TULIO_COMMON_DIR="$TULIO/install/common"
 fi
 
 # Refresh install directories to point at the active TulioCP location
 if [ -d "$TULIO/install/deb" ]; then
-        TULIO_INSTALL_DIR="$TULIO/install/deb"
+	TULIO_INSTALL_DIR="$TULIO/install/deb"
 fi
 if [ -d "$TULIO/install/common" ]; then
-        TULIO_COMMON_DIR="$TULIO/install/common"
+	TULIO_COMMON_DIR="$TULIO/install/common"
 fi
 
 # Ensure critical TulioCP files exist before continuing
 missing_requirements=()
 if [ ! -f "$TULIO/func/main.sh" ]; then
-        missing_requirements+=("$TULIO/func/main.sh")
+	missing_requirements+=("$TULIO/func/main.sh")
 fi
 if [ ! -f "$TULIO_INSTALL_DIR/nginx/nginx.conf" ]; then
-        missing_requirements+=("$TULIO_INSTALL_DIR/nginx/nginx.conf")
+	missing_requirements+=("$TULIO_INSTALL_DIR/nginx/nginx.conf")
 fi
 
 if [ ${#missing_requirements[@]} -gt 0 ]; then
-        echo "Error: Required TulioCP files are missing:"
-        for missing_file in "${missing_requirements[@]}"; do
-                echo "  - $missing_file"
-        done
-        echo "TulioCP package installation appears incomplete."
-        echo "Please verify repository access or provide local packages with the --with-debs option."
-        exit 1
+	echo "Error: Required TulioCP files are missing:"
+	for missing_file in "${missing_requirements[@]}"; do
+		echo "  - $missing_file"
+	done
+	echo "TulioCP package installation appears incomplete."
+	echo "Please verify repository access or provide local packages with the --with-debs option."
+	exit 1
 fi
 
 # Restoring autostart policy
@@ -1462,7 +1462,7 @@ fi
 # Add Tulio global config
 mkdir -p /etc/tuliocp
 if [[ ! -e /etc/tuliocp/tulio.conf ]]; then
-        cat <<EOF > /etc/tuliocp/tulio.conf
+	cat << EOF > /etc/tuliocp/tulio.conf
 # Do not edit this file, will get overwritten on next upgrade, use /etc/tuliocp/local.conf instead
 
 export TULIO='$TULIO'
@@ -1470,15 +1470,15 @@ export TULIO='$TULIO'
 [[ -f /etc/tuliocp/local.conf ]] && source /etc/tuliocp/local.conf
 EOF
 else
-        if grep -q '^export HESTIA=' /etc/tuliocp/tulio.conf; then
-                sed -i "/^export HESTIA=/d" /etc/tuliocp/tulio.conf
-        fi
-        if ! grep -q '^export TULIO=' /etc/tuliocp/tulio.conf; then
-                echo "export TULIO='$TULIO'" >> /etc/tuliocp/tulio.conf
-        fi
-        if ! grep -q 'source /etc/tuliocp/local.conf' /etc/tuliocp/tulio.conf; then
-                echo "[[ -f /etc/tuliocp/local.conf ]] && source /etc/tuliocp/local.conf" >> /etc/tuliocp/tulio.conf
-        fi
+	if grep -q '^export TULIO=' /etc/tuliocp/tulio.conf; then
+		sed -i "/^export TULIO=/d" /etc/tuliocp/tulio.conf
+	fi
+	if ! grep -q '^export TULIO=' /etc/tuliocp/tulio.conf; then
+		echo "export TULIO='$TULIO'" >> /etc/tuliocp/tulio.conf
+	fi
+	if ! grep -q 'source /etc/tuliocp/local.conf' /etc/tuliocp/tulio.conf; then
+		echo "[[ -f /etc/tuliocp/local.conf ]] && source /etc/tuliocp/local.conf" >> /etc/tuliocp/tulio.conf
+	fi
 fi
 
 # Configuring system env
@@ -1648,7 +1648,7 @@ write_config_value "THEME" "dark"
 write_config_value "INACTIVE_SESSION_TIMEOUT" "60"
 
 # Version & Release Branch
-write_config_value "VERSION" "${HESTIA_INSTALL_VER}"
+write_config_value "VERSION" "${TULIO_INSTALL_VER}"
 write_config_value "RELEASE_BRANCH" "release"
 
 # Email notifications after upgrade
@@ -1692,21 +1692,21 @@ fi
 IFS='.' read -r -a domain_elements <<< "$servername"
 if [ -n "${domain_elements[-2]}" ] && [ -n "${domain_elements[-1]}" ]; then
 	serverdomain="${domain_elements[-2]}.${domain_elements[-1]}"
-	if [ -f $TULIO/data/packages/*.pkg 2>/dev/null ]; then
-		sed -i s/"domain.tld"/"$serverdomain"/g $TULIO/data/packages/*.pkg 2>/dev/null
+	if [ -f $TULIO/data/packages/*.pkg ] 2> /dev/null; then
+		sed -i s/"domain.tld"/"$serverdomain"/g $TULIO/data/packages/*.pkg 2> /dev/null
 	fi
 fi
 
 # Installing templates
 mkdir -p $TULIO/data/templates
 if [ -d "$TULIO_INSTALL_DIR/templates" ]; then
-	cp -rf $TULIO_INSTALL_DIR/templates/* $TULIO/data/templates/ 2>/dev/null
+	cp -rf $TULIO_INSTALL_DIR/templates/* $TULIO/data/templates/ 2> /dev/null
 fi
 if [ -d "$TULIO_COMMON_DIR/templates/web" ]; then
-	cp -rf $TULIO_COMMON_DIR/templates/web $TULIO/data/templates/ 2>/dev/null
+	cp -rf $TULIO_COMMON_DIR/templates/web $TULIO/data/templates/ 2> /dev/null
 fi
 if [ -d "$TULIO_COMMON_DIR/templates/dns" ]; then
-	cp -rf $TULIO_COMMON_DIR/templates/dns $TULIO/data/templates/ 2>/dev/null
+	cp -rf $TULIO_COMMON_DIR/templates/dns $TULIO/data/templates/ 2> /dev/null
 fi
 
 mkdir -p /var/www/html
@@ -1720,7 +1720,7 @@ else
 fi
 
 if [ -d "$TULIO_COMMON_DIR/templates/web/skel/document_errors" ]; then
-	cp -rf $TULIO_COMMON_DIR/templates/web/skel/document_errors/* /var/www/document_errors/ 2>/dev/null
+	cp -rf $TULIO_COMMON_DIR/templates/web/skel/document_errors/* /var/www/document_errors/ 2> /dev/null
 else
 	echo '<h1>404 Not Found</h1>' > /var/www/document_errors/404.html
 fi
@@ -1728,7 +1728,7 @@ fi
 # Installing firewall rules
 if [ -d "$TULIO_COMMON_DIR/firewall" ]; then
 	cp -rf $TULIO_COMMON_DIR/firewall $TULIO/data/
-	rm -f $TULIO/data/firewall/ipset/blacklist.sh $TULIO/data/firewall/ipset/blacklist.ipv6.sh 2>/dev/null
+	rm -f $TULIO/data/firewall/ipset/blacklist.sh $TULIO/data/firewall/ipset/blacklist.ipv6.sh 2> /dev/null
 else
 	echo "Warning: firewall rules not found, creating minimal firewall structure"
 	mkdir -p $TULIO/data/firewall
@@ -1766,7 +1766,7 @@ if [ -x "$TULIO/bin/v-change-sys-hostname" ]; then
 	$TULIO/bin/v-change-sys-hostname $servername > /dev/null 2>&1
 else
 	echo "Warning: Hostname script not found, setting hostname manually"
-	hostname $servername 2>/dev/null || echo "Warning: Failed to set hostname"
+	hostname $servername 2> /dev/null || echo "Warning: Failed to set hostname"
 fi
 
 # Configuring global OpenSSL options
@@ -1803,7 +1803,7 @@ cp /tmp/hst.crt certificate.crt
 cp /tmp/hst.key certificate.key
 
 # Set proper ownership and permissions
-chown root:mail $TULIO/ssl/* 2>/dev/null || chown root:root $TULIO/ssl/*
+chown root:mail $TULIO/ssl/* 2> /dev/null || chown root:root $TULIO/ssl/*
 chmod 660 $TULIO/ssl/*
 
 # Clean up temporary files
@@ -2676,10 +2676,10 @@ echo
 
 # Ensure Tulio service init script and systemd unit are available
 if [ ! -f "/etc/init.d/tulio" ]; then
-        if [ -f "$TULIO/install/deb/nginx/tulio" ]; then
-                cp -f "$TULIO/install/deb/nginx/tulio" /etc/init.d/tulio
-        else
-                cat <<'EOF' > /etc/init.d/tulio
+	if [ -f "$TULIO/install/deb/nginx/tulio" ]; then
+		cp -f "$TULIO/install/deb/nginx/tulio" /etc/init.d/tulio
+	else
+		cat << 'EOF' > /etc/init.d/tulio
 #!/bin/sh
 
 ### BEGIN INIT INFO
@@ -2883,12 +2883,12 @@ esac
 
 exit 0
 EOF
-        fi
-        chmod 755 /etc/init.d/tulio
+	fi
+	chmod 755 /etc/init.d/tulio
 fi
 
 if [ ! -f "/lib/systemd/system/tulio.service" ]; then
-        cat <<'EOF' > /lib/systemd/system/tulio.service
+	cat << 'EOF' > /lib/systemd/system/tulio.service
 [Unit]
 Description=Tulio Control Panel
 After=network.target
@@ -2903,8 +2903,8 @@ RemainAfterExit=yes
 [Install]
 WantedBy=multi-user.target
 EOF
-        chmod 644 /lib/systemd/system/tulio.service
-        systemctl daemon-reload > /dev/null 2>&1
+	chmod 644 /lib/systemd/system/tulio.service
+	systemctl daemon-reload > /dev/null 2>&1
 fi
 
 # Starting Tulio service

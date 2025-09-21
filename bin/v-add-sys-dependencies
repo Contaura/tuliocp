@@ -12,19 +12,18 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 # upgrade config file
-source "$HESTIA/install/upgrade/upgrade.conf"
+source "$TULIO/install/upgrade/upgrade.conf"
 
 MODE=$1
 user="$ROOT_USER"
 
-PM_INSTALL_DIR="$HESTIA/web/inc"
-QUICK_INSTALL_DIR="$HESTIA/web/src"
+PM_INSTALL_DIR="$TULIO/web/inc"
+QUICK_INSTALL_DIR="$TULIO/web/src"
 COMPOSER_BIN="$HOMEDIR/$user/.composer/composer"
 
 #----------------------------------------------------------#
@@ -37,12 +36,12 @@ if [ "x$(id -u)" != 'x0' ]; then
 	exit 10
 fi
 
-# Ensure that $HESTIA (/usr/local/tulio/) and other variables are valid.
-if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/tulio"
+# Ensure that $TULIO (/usr/local/tulio/) and other variables are valid.
+if [ -z "$TULIO" ]; then
+	TULIO="/usr/local/tulio"
 fi
 
-if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
+if [ -z "$HOMEDIR" ] || [ -z "$TULIO_INSTALL_DIR" ]; then
 	echo "ERROR: Environment variables not present, installation aborted."
 	exit 2
 fi
@@ -63,25 +62,25 @@ check_tulio_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
-system_php=$(command -v php 2>/dev/null || true)
+system_php=$(command -v php 2> /dev/null || true)
 if [ -z "$system_php" ] && [ -x "/usr/bin/php" ]; then
-        system_php="/usr/bin/php"
+	system_php="/usr/bin/php"
 fi
 
-php_binary="$HESTIA_PHP"
+php_binary="$TULIO_PHP"
 if [ -z "$php_binary" ] || [ ! -x "$php_binary" ]; then
-        php_binary="$system_php"
+	php_binary="$system_php"
 fi
 
 if [ -z "$php_binary" ] || [ ! -x "$php_binary" ]; then
-        echo "ERROR: Unable to locate a PHP binary required for installing Tulio dependencies."
-        exit 1
+	echo "ERROR: Unable to locate a PHP binary required for installing Tulio dependencies."
+	exit 1
 fi
 
-openssl_installed=$("$php_binary" -m 2>/dev/null | grep openssl || true)
+openssl_installed=$("$php_binary" -m 2> /dev/null | grep openssl || true)
 
 if [ -z "$system_php" ] || [ ! -x "$system_php" ]; then
-        system_php="$php_binary"
+	system_php="$php_binary"
 fi
 
 cd "$PM_INSTALL_DIR"
@@ -90,9 +89,9 @@ mkdir -p ${PM_INSTALL_DIR}/vendor
 chown $user: -R ${PM_INSTALL_DIR}/vendor
 
 if [ -z "$openssl_installed" ]; then
-        COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec "$system_php" "$COMPOSER_BIN" --quiet --no-dev install
+	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec "$system_php" "$COMPOSER_BIN" --quiet --no-dev install
 else
-        COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec "$php_binary" "$COMPOSER_BIN" --quiet --no-dev install
+	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec "$php_binary" "$COMPOSER_BIN" --quiet --no-dev install
 fi
 
 # Check if installation was successful, if not abort script and throw error message notification and clean-up
@@ -114,9 +113,9 @@ mkdir -p ${QUICK_INSTALL_DIR}/vendor
 chown $user: -R ${QUICK_INSTALL_DIR}/vendor
 
 if [ -z "$openssl_installed" ]; then
-        COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec "$system_php" "$COMPOSER_BIN" --quiet --no-dev install
+	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec "$system_php" "$COMPOSER_BIN" --quiet --no-dev install
 else
-        COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec "$php_binary" "$COMPOSER_BIN" --quiet --no-dev install
+	COMPOSER_HOME="$HOMEDIR/$user/.config/composer" user_exec "$php_binary" "$COMPOSER_BIN" --quiet --no-dev install
 fi
 
 # Set permissions

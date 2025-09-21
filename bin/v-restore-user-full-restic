@@ -20,19 +20,18 @@ notify=${4-no}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # shellcheck source=/usr/local/tulio/func/rebuild.sh
-source $HESTIA/func/rebuild.sh
+source $TULIO/func/rebuild.sh
 # shellcheck source=/usr/local/tulio/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+source $TULIO/func/syshealth.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -42,7 +41,7 @@ args_usage='USER SNAPSHOT KEY [NOTIFY]'
 check_args '3' "$#" "$args_usage"
 is_format_valid 'user'
 
-source_conf $HESTIA/conf/restic.conf
+source_conf $TULIO/conf/restic.conf
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -123,7 +122,7 @@ $BIN/v-update-user-counters $user
 $BIN/v-update-user-counters admin
 $BIN/v-update-sys-ip-counters
 
-sed -i "/v-restore-user-full-restic '$user' /d" $HESTIA/data/queue/backup.pipe
+sed -i "/v-restore-user-full-restic '$user' /d" $TULIO/data/queue/backup.pipe
 
 # Logging
 $BIN/v-log-action "system" "Info" "Backup" "Mail domain successfully restored (User: $user, Snapshot: $snapshot, Databse: $database)."

@@ -17,13 +17,12 @@ iptables="/sbin/iptables"
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/firewall.sh
-source $HESTIA/func/firewall.sh
+source $TULIO/func/firewall.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -51,7 +50,7 @@ echo "$iptables -X tulio" >> $tmp
 
 # Deleting custom chains
 IFS=$'\n'
-for chain in $(cat $HESTIA/data/firewall/chains.conf 2> /dev/null); do
+for chain in $(cat $TULIO/data/firewall/chains.conf 2> /dev/null); do
 	parse_object_kv_list "$chain"
 	echo "$iptables -F fail2ban-$CHAIN" >> $tmp
 	echo "$iptables -X fail2ban-$CHAIN" >> $tmp
@@ -81,7 +80,7 @@ else
 		echo "[Service]" >> $sd_unit
 		echo "Type=oneshot" >> $sd_unit
 		echo "RemainAfterExit=yes" >> $sd_unit
-		echo "ExecStartPre=-${HESTIA}/bin/v-update-firewall-ipset load" >> $sd_unit
+		echo "ExecStartPre=-${TULIO}/bin/v-update-firewall-ipset load" >> $sd_unit
 		if [ "$iptablesversion" = "v1.6" ]; then
 			echo "ExecStart=/sbin/iptables-restore /etc/iptables.rules" >> $sd_unit
 		else

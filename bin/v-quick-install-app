@@ -24,11 +24,11 @@ require_once( __DIR__ . '/../web/inc/vendor/autoload.php');
 require_once( __DIR__ . '/../web/src/init.php');
 
 
-define("HESTIA_DIR_BIN", "/usr/local/tulio/bin/");
-define("HESTIA_CMD", "/usr/bin/sudo /usr/local/tulio/bin/");
+define("TULIO_DIR_BIN", "/usr/local/tulio/bin/");
+define("TULIO_CMD", "/usr/bin/sudo /usr/local/tulio/bin/");
 define("DEFAULT_PHP_VERSION", "php-" . exec('php -r "echo substr(phpversion(),0,3);"'));
 
-exec(HESTIA_CMD . "v-list-sys-config json", $output, $return_var);
+exec(TULIO_CMD . "v-list-sys-config json", $output, $return_var);
 $data = json_decode(implode("", $output), true);
 $sys_arr = $data["config"];
 foreach ($sys_arr as $key => $value) {

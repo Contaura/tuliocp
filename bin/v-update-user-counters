@@ -14,11 +14,10 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Argument definition
 user=$1
@@ -46,7 +45,7 @@ fi
 
 # Updating user stats
 for user in $user_list; do
-	USER_DATA=$HESTIA/data/users/$user
+	USER_DATA=$TULIO/data/users/$user
 	# Cleaning counters
 	SUSPENDED_USERS=0
 	SUSPENDED_WEB=0
@@ -85,15 +84,15 @@ for user in $user_list; do
 
 	# Checking users
 	if [ "$user" = "$ROOT_USER" ]; then
-		spnd=$(grep "SUSPENDED='yes'" $HESTIA/data/users/*/user.conf | wc -l)
+		spnd=$(grep "SUSPENDED='yes'" $TULIO/data/users/*/user.conf | wc -l)
 		SUSPENDED_USERS=$spnd
 		U_USERS=$("$BIN/v-list-users" list | wc -l)
 	fi
 
-	ips=$(ls $HESTIA/data/ips)
+	ips=$(ls $TULIO/data/ips)
 	# Checking ip
 	for ip in $ips; do
-		source $HESTIA/data/ips/$ip
+		source $TULIO/data/ips/$ip
 		if [ "$OWNER" = "$user" ]; then
 			IP_OWNED=$((IP_OWNED + 1))
 			IP_AVAIL=$((IP_AVAIL + 1))
@@ -103,7 +102,7 @@ for user in $user_list; do
 		fi
 	done
 	if [ "$user" = "$ROOT_USER" ]; then
-		IP_AVAIL=$(ls $HESTIA/data/ips | wc -l)
+		IP_AVAIL=$(ls $TULIO/data/ips | wc -l)
 	fi
 
 	# Checking web system

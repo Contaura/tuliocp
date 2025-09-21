@@ -22,7 +22,7 @@ if ($_SESSION["user"] == "admin" && !empty($_GET["user"])) {
 // Check if domain belongs to the user
 $v_domain = $_GET["domain"];
 exec(
-	HESTIA_CMD . "v-list-web-domain " . $user . " " . quoteshellarg($v_domain) . " json",
+	TULIO_CMD . "v-list-web-domain " . $user . " " . quoteshellarg($v_domain) . " json",
 	$output,
 	$return_var,
 );
@@ -30,7 +30,7 @@ if ($return_var > 0) {
 	check_return_code_redirect($return_var, $output, "/list/web/");
 }
 unset($output);
-exec(HESTIA_CMD . "v-list-sys-php json", $output, $return_var);
+exec(TULIO_CMD . "v-list-sys-php json", $output, $return_var);
 $php_versions = json_decode(implode("", $output), true);
 unset($output);
 
@@ -38,7 +38,7 @@ unset($output);
 if (!empty($_GET["app"])) {
 	$app = basename($_GET["app"]);
 
-        $tulio = new \Tulio\System\TulioApp();
+	$tulio = new \Tulio\System\TulioApp();
 	$app_installer_class = "\Tulio\WebApp\Installers\\" . $app . "\\" . $app . "Setup";
 	if (class_exists($app_installer_class)) {
 		try {
@@ -88,7 +88,7 @@ if (!empty($_POST["ok"]) && !empty($app)) {
 if (!empty($installer)) {
 	render_page($user, $TAB, "setup_webapp");
 } else {
-        $tulio = new \Tulio\System\TulioApp();
+	$tulio = new \Tulio\System\TulioApp();
 	$appInstallers = glob(__DIR__ . "/../../src/app/WebApp/Installers/*/*.php");
 
 	$v_web_apps = [];

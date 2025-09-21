@@ -23,26 +23,25 @@ rule=$6
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Get next firewall rule id
 get_next_fw_rule() {
 	if [ -z "$rule" ]; then
-		curr_str=$(grep "RULE=" $HESTIA/data/firewall/rules.conf \
+		curr_str=$(grep "RULE=" $TULIO/data/firewall/rules.conf \
 			| cut -f 2 -d \' | sort -n | tail -n1)
 		rule="$((curr_str + 1))"
 	fi
 }
 
 sort_fw_rules() {
-	cat $HESTIA/data/firewall/rules.conf \
-		| sort -n -k 2 -t \' > $HESTIA/data/firewall/rules.conf.tmp
-	mv -f $HESTIA/data/firewall/rules.conf.tmp \
-		$HESTIA/data/firewall/rules.conf
+	cat $TULIO/data/firewall/rules.conf \
+		| sort -n -k 2 -t \' > $TULIO/data/firewall/rules.conf.tmp
+	mv -f $TULIO/data/firewall/rules.conf.tmp \
+		$TULIO/data/firewall/rules.conf
 }
 
 #----------------------------------------------------------#
@@ -84,10 +83,10 @@ str="$str IP='$ipv4_cidr' COMMENT='$comment' SUSPENDED='no'"
 str="$str TIME='$time' DATE='$date'"
 
 # Adding to config
-echo "$str" >> $HESTIA/data/firewall/rules.conf
+echo "$str" >> $TULIO/data/firewall/rules.conf
 
 # Changing permissions
-chmod 660 $HESTIA/data/firewall/rules.conf
+chmod 660 $TULIO/data/firewall/rules.conf
 
 # Sorting firewall rules by id number
 sort_fw_rules

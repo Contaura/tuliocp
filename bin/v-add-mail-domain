@@ -24,17 +24,16 @@ reject=${8-no}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # shellcheck source=/usr/local/tulio/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+source $TULIO/func/syshealth.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Define mail user
 if [ "$MAIL_SYSTEM" = 'exim4' ]; then
@@ -202,8 +201,8 @@ if [ -n "$WEB_SYSTEM" ] || [ -n "$PROXY_SYSTEM" ]; then
 fi
 
 # Run extension trigger
-if [ -x "$HESTIA/data/extensions/add-mail-domain.sh" ]; then
-	$HESTIA/data/extensions/add-mail-domain.sh "$user" "$domain"
+if [ -x "$TULIO/data/extensions/add-mail-domain.sh" ]; then
+	$TULIO/data/extensions/add-mail-domain.sh "$user" "$domain"
 fi
 
 #----------------------------------------------------------#

@@ -18,14 +18,13 @@ version=$2
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 send_email_report() {
-	email=$(grep CONTACT "$HESTIA/data/users/$ROOT_USER/user.conf")
+	email=$(grep CONTACT "$TULIO/data/users/$ROOT_USER/user.conf")
 	email=$(echo "$email" | cut -f 2 -d "'")
 	subj="$(hostname): $WEB_BACKEND restart failed"
 	cat $tmpfile | $SENDMAIL -s "$subj" $email
@@ -60,8 +59,8 @@ fi
 
 # Schedule restart
 if [ "$1" = 'scheduled' ] || [ -z "$1" ] && [ "$SCHEDULED_RESTART" = 'yes' ]; then
-	sed -i "/\/$SCRIPT now/d" $HESTIA/data/queue/restart.pipe
-	echo "$BIN/$SCRIPT now" >> $HESTIA/data/queue/restart.pipe
+	sed -i "/\/$SCRIPT now/d" $TULIO/data/queue/restart.pipe
+	echo "$BIN/$SCRIPT now" >> $TULIO/data/queue/restart.pipe
 	exit
 fi
 
@@ -72,7 +71,7 @@ if [ -z "$version" ]; then
 	for version in $($BIN/v-list-sys-php plain); do
 		v_php="php$version-fpm"
 		if [ ! -f "/etc/php/${version}/fpm/pool.d/dummy.conf" ]; then
-			cp -f "$HESTIA_INSTALL_DIR/php-fpm/dummy.conf" "/etc/php/${version}/fpm/pool.d/"
+			cp -f "$TULIO_INSTALL_DIR/php-fpm/dummy.conf" "/etc/php/${version}/fpm/pool.d/"
 			sed -i "s/9999/99${version//./}/g" "/etc/php/${version}/fpm/pool.d/dummy.conf"
 		fi
 
@@ -92,8 +91,8 @@ else
 fi
 
 # Update restart queue
-if [ -e "$HESTIA/data/queue/restart.pipe" ]; then
-	sed -i "/\/$SCRIPT now/d" $HESTIA/data/queue/restart.pipe
+if [ -e "$TULIO/data/queue/restart.pipe" ]; then
+	sed -i "/\/$SCRIPT now/d" $TULIO/data/queue/restart.pipe
 fi
 
 #----------------------------------------------------------#

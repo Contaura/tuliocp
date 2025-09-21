@@ -53,7 +53,7 @@ if [ "$num_php_versions" -gt 1 ] && [ -z "$WEB_BACKEND" ]; then
 	done
 
 	if [ ! -z "$WEB_SYSTEM" ]; then
-		cp -rf "${HESTIA_INSTALL_DIR}/templates/web/$WEB_SYSTEM" "${WEBTPL}/"
+		cp -rf "${TULIO_INSTALL_DIR}/templates/web/$WEB_SYSTEM" "${WEBTPL}/"
 	fi
 
 	# Migrate domains

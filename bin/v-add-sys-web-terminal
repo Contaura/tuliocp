@@ -14,11 +14,10 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -61,7 +60,7 @@ else
 	fi
 fi
 
-if [ ! -f "$HESTIA/web-terminal/server.js" ]; then
+if [ ! -f "$TULIO/web-terminal/server.js" ]; then
 	apt-get -qq update
 	apt-get -qq install tulio-web-terminal -y
 else

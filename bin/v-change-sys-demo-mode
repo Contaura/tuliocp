@@ -18,11 +18,10 @@ active=$1
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -42,7 +41,7 @@ if [ "$active" = "yes" ]; then
 	$BIN/v-change-sys-config-value 'DEMO_MODE' 'yes'
 elif [ "$active" = "no" ]; then
 	# Note even v-change-sys-demo-mode can be called v-change-sys-config-value is protected to disable demo mode call
-	# Use sed -i "s|^DEMO_MODE=.*'|DEMO_MODE='no'|g" $HESTIA/conf/tulio.conf
+	# Use sed -i "s|^DEMO_MODE=.*'|DEMO_MODE='no'|g" $TULIO/conf/tulio.conf
 	#TODO: Instructions for enabling vhosts
 	$BIN/v-change-sys-config-value 'DEMO_MODE' 'no'
 fi

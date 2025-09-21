@@ -17,17 +17,16 @@ user=$1
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/db.sh
-source $HESTIA/func/db.sh
+source $TULIO/func/db.sh
 # shellcheck source=/usr/local/tulio/func/backup.sh
-source $HESTIA/func/backup.sh
+source $TULIO/func/backup.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -191,17 +190,17 @@ if [ -n "$WEB_SYSTEM" ] && [ "$WEB" != '*' ]; then
 		mkdir -p template/php-fpm/
 
 		if [ $WEB_BACKEND == 'php-fpm' ]; then
-			cp $HESTIA/data/templates/web/$WEB_SYSTEM/php-fpm/$TPL.tpl template/$WEB_SYSTEM/
-			cp $HESTIA/data/templates/web/$WEB_SYSTEM/php-fpm/$TPL.stpl template/$WEB_SYSTEM/
-			cp $HESTIA/data/templates/web/php-fpm/$BACKEND.tpl template/php-fpm/
+			cp $TULIO/data/templates/web/$WEB_SYSTEM/php-fpm/$TPL.tpl template/$WEB_SYSTEM/
+			cp $TULIO/data/templates/web/$WEB_SYSTEM/php-fpm/$TPL.stpl template/$WEB_SYSTEM/
+			cp $TULIO/data/templates/web/php-fpm/$BACKEND.tpl template/php-fpm/
 		else
-			cp $HESTIA/data/templates/web/$WEB_SYSTEM/$TPL.tpl template/$WEB_SYSTEM/
-			cp $HESTIA/data/templates/web/$WEB_SYSTEM/$TPL.stpl template/$WEB_SYSTEM/
+			cp $TULIO/data/templates/web/$WEB_SYSTEM/$TPL.tpl template/$WEB_SYSTEM/
+			cp $TULIO/data/templates/web/$WEB_SYSTEM/$TPL.stpl template/$WEB_SYSTEM/
 		fi
 		if [ -n "$PROXY_SYSTEM" ] && [ -n "$PROXY" ]; then
 			mkdir -p template/$PROXY_SYSTEM
-			cp $HESTIA/data/templates/web/$PROXY_SYSTEM/$PROXY.tpl template/$PROXY_SYSTEM/
-			cp $HESTIA/data/templates/web/$PROXY_SYSTEM/$PROXY.stpl template/$PROXY_SYSTEM/
+			cp $TULIO/data/templates/web/$PROXY_SYSTEM/$PROXY.tpl template/$PROXY_SYSTEM/
+			cp $TULIO/data/templates/web/$PROXY_SYSTEM/$PROXY.stpl template/$PROXY_SYSTEM/
 		fi
 
 		# Backup ssl certificates

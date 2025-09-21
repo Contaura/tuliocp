@@ -25,16 +25,15 @@ iptables="/sbin/iptables"
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source "$HESTIA/func/main.sh"
+source "$TULIO/func/main.sh"
 # shellcheck source=/usr/local/tulio/func/firewall.sh
-source "$HESTIA/func/firewall.sh"
+source "$TULIO/func/firewall.sh"
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Get tulio port by reading nginx.conf
-tulioport=$(sed -ne "/listen/{s/.*listen[^0-9]*\([0-9][0-9]*\)[ \t]*ssl\;/\1/p;q}" "$HESTIA/nginx/conf/nginx.conf")
+tulioport=$(sed -ne "/listen/{s/.*listen[^0-9]*\([0-9][0-9]*\)[ \t]*ssl\;/\1/p;q}" "$TULIO/nginx/conf/nginx.conf")
 if [ -z "$tulioport" ]; then
 	tulioport=8083
 fi
@@ -87,7 +86,7 @@ case $chain in
 		port='3306,5432'
 		protocol=TCP
 		;;
-	HESTIA)
+	TULIO)
 		port=$tulioport
 		protocol=TCP
 		;;
@@ -113,7 +112,7 @@ if [ $? -eq 0 ]; then
 fi
 
 # Preserving chain
-chains="$HESTIA/data/firewall/chains.conf"
+chains="$TULIO/data/firewall/chains.conf"
 check_chain=""
 [ -f "$chains" ] && check_chain=$(grep "CHAIN='$chain'" "$chains")
 if [ -z "$check_chain" ]; then

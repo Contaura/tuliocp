@@ -38,7 +38,7 @@ if ($_GET["type"] == "udir") {
 
 if (!empty($_GET["type"])) {
 	$restore_cmd =
-		HESTIA_CMD .
+		TULIO_CMD .
 		"v-schedule-user-restore " .
 		$user .
 		" " .
@@ -56,7 +56,7 @@ if (!empty($_GET["type"])) {
 		" " .
 		$udir;
 } else {
-	$restore_cmd = HESTIA_CMD . "v-schedule-user-restore " . $user . " " . $backup;
+	$restore_cmd = TULIO_CMD . "v-schedule-user-restore " . $user . " " . $backup;
 }
 
 exec($restore_cmd, $output, $return_var);

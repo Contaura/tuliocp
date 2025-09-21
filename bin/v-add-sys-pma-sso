@@ -16,11 +16,10 @@ MODE=$1
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 PMA_INSTALL="/usr/share/phpmyadmin"
 PMA_CONFIG="/etc/phpmyadmin"
@@ -67,14 +66,14 @@ phpmyadminkey=$(generate_password)
 apikey=$($BIN/v-add-access-key "$ROOT_USER" 'phpmyadmin-sso' 'phpMyAdmin' 'plain')
 
 # copy config dir to /usr/share/phpmyadmin/
-cp -f $HESTIA_INSTALL_DIR/phpmyadmin/tulio-sso.php $PMA_INSTALL/tulio-sso.php
+cp -f $TULIO_INSTALL_DIR/phpmyadmin/tulio-sso.php $PMA_INSTALL/tulio-sso.php
 chmod 640 $PMA_INSTALL/tulio-sso.php
 chown root:tuliomail $PMA_INSTALL/tulio-sso.php
 
 sed -i "s/%PHPMYADMIN_KEY%/$phpmyadminkey/g" $PMA_INSTALL/tulio-sso.php
 sed -i "s/%API_KEY%/$apikey/g" $PMA_INSTALL/tulio-sso.php
 sed -i "s/%API_HOST_NAME%/$(hostname)/g" $PMA_INSTALL/tulio-sso.php
-sed -i "s/%API_HESTIA_PORT%/$BACKEND_PORT/g" $PMA_INSTALL/tulio-sso.php
+sed -i "s/%API_TULIO_PORT%/$BACKEND_PORT/g" $PMA_INSTALL/tulio-sso.php
 
 # Check if config already contains the keys
 touch $PMA_CONFIG/tulio-sso.inc.php

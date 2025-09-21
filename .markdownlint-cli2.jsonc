@@ -1,23 +1,17 @@
 {
-  // Markdownlint configuration to temporarily ignore problematic files
-  "globs": [
-    "*.md",
-    "docs/**/*.md"
-  ],
-  "ignores": [
-    "docs/build-server-setup.md",
-    "LOGO-IMPLEMENTATION.md"
-  ],
-  "config": {
-    // Allow some common formatting that's hard to fix automatically
-    "MD022": false,  // blanks-around-headings
-    "MD032": false,  // blanks-around-lists  
-    "MD031": false,  // blanks-around-fences
-    "MD009": false,  // no-trailing-spaces
-    "MD012": false,  // no-multiple-blanks
-    "MD026": false,  // no-trailing-punctuation
-    "MD029": false,  // ol-prefix
-    "MD040": false,  // fenced-code-language
-    "MD047": false   // single-trailing-newline
-  }
+	// Markdownlint configuration to temporarily ignore problematic files
+	"globs": ["*.md", "docs/**/*.md"],
+	"ignores": ["docs/build-server-setup.md", "LOGO-IMPLEMENTATION.md"],
+	"config": {
+		// Allow some common formatting that's hard to fix automatically
+		"MD022": false, // blanks-around-headings
+		"MD032": false, // blanks-around-lists
+		"MD031": false, // blanks-around-fences
+		"MD009": false, // no-trailing-spaces
+		"MD012": false, // no-multiple-blanks
+		"MD026": false, // no-trailing-punctuation
+		"MD029": false, // ol-prefix
+		"MD040": false, // fenced-code-language
+		"MD047": false, // single-trailing-newline
+	},
 }

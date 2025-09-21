@@ -6,8 +6,8 @@ if [ ! -e "/usr/local/tulio/data/users/admin" ]; then
 fi
 
 # Create a new Backup folder
-HESTIA_BACKUP="/root/hst_nginx_backups/$(date +%d%m%Y%H%M)"
-mkdir -p HESTIA_BACKUP
+TULIO_BACKUP="/root/hst_nginx_backups/$(date +%d%m%Y%H%M)"
+mkdir -p TULIO_BACKUP
 
 # Create a backup of the current configuration
 cp -r /usr/local/tulio/nginx/conf/nginx.conf $TULIO_BACKUP/nginx.conf

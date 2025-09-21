@@ -19,21 +19,20 @@ snapshot=$2
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # shellcheck source=/usr/local/tulio/func/rebuild.sh
-source $HESTIA/func/rebuild.sh
+source $TULIO/func/rebuild.sh
 # shellcheck source=/usr/local/tulio/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+source $TULIO/func/syshealth.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
-source_conf $HESTIA/conf/restic.conf
+source_conf $TULIO/conf/restic.conf
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -44,7 +43,7 @@ check_args '2' "$#" "$args_usage"
 is_format_valid 'user'
 is_object_valid 'user' 'USER' "$user"
 
-source_conf $HESTIA/conf/restic.conf
+source_conf $TULIO/conf/restic.conf
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -64,7 +63,7 @@ restic --repo "$REPO$user" --password-file "$USER_DATA/restic.conf" forget "$sna
 #                       TulioCP                            #
 #----------------------------------------------------------#
 
-sed -i "/v-delete-user-backup-restic '$user' '$snapshot' /d" $HESTIA/data/queue/backup.pipe
+sed -i "/v-delete-user-backup-restic '$user' '$snapshot' /d" $TULIO/data/queue/backup.pipe
 
 # Logging
 $BIN/v-log-action "system" "Info" "Backup" "Restic snapshot successfully deleted (User: $user, Snapshot: $snapshot)."

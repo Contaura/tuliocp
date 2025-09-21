@@ -4,7 +4,7 @@
 #
 # example: v-revoke-api-key mykey
 #
-# This function removes a key from in $HESTIA/data/keys/
+# This function removes a key from in $TULIO/data/keys/
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -14,11 +14,10 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -37,12 +36,12 @@ check_tulio_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
-if [ ! -d "$HESTIA/data/keys/" ]; then
+if [ ! -d "$TULIO/data/keys/" ]; then
 	exit "$E_NOTEXIST"
 fi
 
-if [[ -e "$HESTIA/data/keys/$hash" ]]; then
-	rm $HESTIA/data/keys/$hash
+if [[ -e "$TULIO/data/keys/$hash" ]]; then
+	rm $TULIO/data/keys/$hash
 else
 	exit "$E_NOTEXIST"
 fi

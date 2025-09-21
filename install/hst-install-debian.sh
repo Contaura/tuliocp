@@ -18,7 +18,7 @@ export DEBIAN_FRONTEND=noninteractive
 RHOST='apt.tuliocp.com'
 VERSION='debian'
 # Using Tulio package paths temporarily until TulioCP packages are available
-HESTIA_ROOT='/usr/local/tulio'
+TULIO_ROOT='/usr/local/tulio'
 TULIO='/usr/local/tulio'
 LOG="/root/hst_install_backups/hst_install-$(date +%d%m%Y%H%M).log"
 memory=$(grep 'MemTotal' /proc/meminfo | tr ' ' '\n' | grep [0-9])
@@ -28,14 +28,14 @@ os='debian'
 release="$(cat /etc/debian_version | tr "." "\n" | head -n1)"
 codename="$(cat /etc/os-release | grep VERSION= | cut -f 2 -d \( | cut -f 1 -d \))"
 architecture="$(arch)"
-HESTIA_INSTALL_DIR="$HESTIA_ROOT/install/deb"
-HESTIA_COMMON_DIR="$HESTIA_ROOT/install/common"
-TULIO_INSTALL_DIR="$HESTIA_INSTALL_DIR"
-TULIO_COMMON_DIR="$HESTIA_COMMON_DIR"
+TULIO_INSTALL_DIR="$TULIO_ROOT/install/deb"
+TULIO_COMMON_DIR="$TULIO_ROOT/install/common"
+TULIO_INSTALL_DIR="$TULIO_INSTALL_DIR"
+TULIO_COMMON_DIR="$TULIO_COMMON_DIR"
 VERBOSE='no'
 
 # Define software versions
-HESTIA_INSTALL_VER='1.10.0~alpha'
+TULIO_INSTALL_VER='1.10.0~alpha'
 # Supported PHP versions
 multiphp_v=("5.6" "7.0" "7.1" "7.2" "7.3" "7.4" "8.0" "8.1" "8.2" "8.3" "8.4")
 # One of the following PHP versions is required for Roundcube / phpmyadmin
@@ -150,37 +150,37 @@ set_default_value() {
 
 # Defining function to set default language value
 set_default_lang() {
-        if [ -z "$lang" ]; then
-                eval lang=$1
-        fi
-        lang_list="ar az bg bn bs ca cs da de el en es fa fi fr hr hu id it ja ka ku ko nl no pl pt pt-br ro ru sk sq sr sv th tr uk ur vi zh-cn zh-tw"
-        if ! (echo $lang_list | grep -w $lang > /dev/null 2>&1); then
-                eval lang=$1
-        fi
+	if [ -z "$lang" ]; then
+		eval lang=$1
+	fi
+	lang_list="ar az bg bn bs ca cs da de el en es fa fi fr hr hu id it ja ka ku ko nl no pl pt pt-br ro ru sk sq sr sv th tr uk ur vi zh-cn zh-tw"
+	if ! (echo $lang_list | grep -w $lang > /dev/null 2>&1); then
+		eval lang=$1
+	fi
 }
 
 # Safely prompt for user input even when the installer is executed via a pipe
 prompt_input() {
-        local __prompt="$1"
-        local __var_name="$2"
-        local __read_opts="${3:--r}"
-        local __input
+	local __prompt="$1"
+	local __var_name="$2"
+	local __read_opts="${3:--r}"
+	local __input
 
-        if [ -t 0 ]; then
-                read $__read_opts -p "$__prompt" __input
-        elif [ -r /dev/tty ]; then
-                read $__read_opts -p "$__prompt" __input < /dev/tty
-        else
-                return 1
-        fi
+	if [ -t 0 ]; then
+		read $__read_opts -p "$__prompt" __input
+	elif [ -r /dev/tty ]; then
+		read $__read_opts -p "$__prompt" __input < /dev/tty
+	else
+		return 1
+	fi
 
-        local __status=$?
-        if [ $__status -ne 0 ]; then
-                return $__status
-        fi
+	local __status=$?
+	if [ $__status -ne 0 ]; then
+		return $__status
+	fi
 
-        printf -v "$__var_name" '%s' "$__input"
-        return 0
+	printf -v "$__var_name" '%s' "$__input"
+	return 0
 }
 
 # Define the default backend port
@@ -523,15 +523,15 @@ if [ -n "$conflicts" ] && [ -z "$force" ]; then
 	echo
 	echo '!!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!! !!!'
 	echo
-        if ! prompt_input 'Would you like to remove the conflicting packages? [y/N] ' answer; then
-                check_result 1 "Unable to read user input from terminal."
-        fi
-        if [ "$answer" = 'y' ] || [ "$answer" = 'Y' ]; then
-                apt-get -qq purge $conflicts -y
-                check_result $? 'apt-get remove failed'
-                unset $answer
-        else
-	check_result 1 "TulioCP should be installed on a clean server."
+	if ! prompt_input 'Would you like to remove the conflicting packages? [y/N] ' answer; then
+		check_result 1 "Unable to read user input from terminal."
+	fi
+	if [ "$answer" = 'y' ] || [ "$answer" = 'Y' ]; then
+		apt-get -qq purge $conflicts -y
+		check_result $? 'apt-get remove failed'
+		unset $answer
+	else
+		check_result 1 "TulioCP should be installed on a clean server."
 	fi
 fi
 
@@ -590,17 +590,17 @@ esac
 #----------------------------------------------------------#
 
 install_welcome_message() {
-	DISPLAY_VER=$(echo $HESTIA_INSTALL_VER | sed "s|~alpha||g" | sed "s|~beta||g")
+	DISPLAY_VER=$(echo $TULIO_INSTALL_VER | sed "s|~alpha||g" | sed "s|~beta||g")
 	echo
 	echo "========================================================================"
 	echo "                                                                        "
 	echo "                              TulioCP                                   "
 	echo "                      Web Server Control Panel                         "
 	echo "                                                                        "
-	if [[ "$HESTIA_INSTALL_VER" =~ "beta" ]]; then
+	if [[ "$TULIO_INSTALL_VER" =~ "beta" ]]; then
 		echo "                              BETA RELEASE                          "
 	fi
-	if [[ "$HESTIA_INSTALL_VER" =~ "alpha" ]]; then
+	if [[ "$TULIO_INSTALL_VER" =~ "alpha" ]]; then
 		echo "                          DEVELOPMENT SNAPSHOT                      "
 		echo "                    NOT INTENDED FOR PRODUCTION USE                 "
 		echo "                          USE AT YOUR OWN RISK                      "
@@ -703,41 +703,41 @@ echo -e "\n"
 
 # Asking for confirmation to proceed
 if [ "$interactive" = 'yes' ]; then
-        if ! prompt_input 'Would you like to continue with the installation? [y/N]: ' answer; then
-                echo 'Error: unable to read user input. If you are running non-interactively, re-run the installer with --interactive no and supply the required options.'
-                exit 1
-        fi
-        if [ "$answer" != 'y' ] && [ "$answer" != 'Y' ]; then
-                echo 'Goodbye'
-                exit 1
-        fi
+	if ! prompt_input 'Would you like to continue with the installation? [y/N]: ' answer; then
+		echo 'Error: unable to read user input. If you are running non-interactively, re-run the installer with --interactive no and supply the required options.'
+		exit 1
+	fi
+	if [ "$answer" != 'y' ] && [ "$answer" != 'Y' ]; then
+		echo 'Goodbye'
+		exit 1
+	fi
 fi
 
 # Validate Username / Password / Email / Hostname even when interactive = no
 if [ -z "$username" ]; then
 	while validate_username; do
-                if ! prompt_input 'Please enter administrator username: ' username; then
-                        echo 'Error: unable to read administrator username from terminal input.'
-                        exit 1
-                fi
-        done
+		if ! prompt_input 'Please enter administrator username: ' username; then
+			echo 'Error: unable to read administrator username from terminal input.'
+			exit 1
+		fi
+	done
 else
-        if validate_username; then
-                exit 1
-        fi
+	if validate_username; then
+		exit 1
+	fi
 fi
 
 # Ask for password
 if [ -z "$vpass" ]; then
-        while validate_password; do
-                if ! prompt_input 'Please enter administrator password: ' vpass; then
-                        echo 'Error: unable to read administrator password from terminal input.'
-                        exit 1
-                fi
-        done
+	while validate_password; do
+		if ! prompt_input 'Please enter administrator password: ' vpass; then
+			echo 'Error: unable to read administrator password from terminal input.'
+			exit 1
+		fi
+	done
 else
-        if validate_password; then
-                echo "Please use a valid password"
+	if validate_password; then
+		echo "Please use a valid password"
 		exit 1
 	fi
 fi
@@ -746,15 +746,15 @@ fi
 # Asking for contact email
 if [ -z "$email" ]; then
 	while validate_email; do
-                echo -e "\nPlease use a valid emailadress (ex. info@domain.tld)."
-                if ! prompt_input 'Please enter admin email address: ' email; then
-                        echo 'Error: unable to read admin email address from terminal input.'
-                        exit 1
-                fi
-        done
+		echo -e "\nPlease use a valid emailadress (ex. info@domain.tld)."
+		if ! prompt_input 'Please enter admin email address: ' email; then
+			echo 'Error: unable to read admin email address from terminal input.'
+			exit 1
+		fi
+	done
 else
-        if validate_email; then
-                echo "Please use a valid emailadress (ex. info@domain.tld)."
+	if validate_email; then
+		echo "Please use a valid emailadress (ex. info@domain.tld)."
 		exit 1
 	fi
 fi
@@ -762,10 +762,10 @@ fi
 # Asking to set FQDN hostname
 if [ -z "$servername" ]; then
 	# Ask and validate FQDN hostname.
-        if ! prompt_input "Please enter FQDN hostname [$(hostname -f)]: " servername; then
-                echo 'Error: unable to read server hostname from terminal input.'
-                exit 1
-        fi
+	if ! prompt_input "Please enter FQDN hostname [$(hostname -f)]: " servername; then
+		echo 'Error: unable to read server hostname from terminal input.'
+		exit 1
+	fi
 
 	# Set hostname if it wasn't set
 	if [ -z "$servername" ]; then
@@ -775,10 +775,10 @@ if [ -z "$servername" ]; then
 	# Validate Hostname, go to loop if the validation fails.
 	while validate_hostname; do
 		echo -e "\nPlease use a valid hostname according to RFC1178 (ex. hostname.domain.tld)."
-                if ! prompt_input "Please enter FQDN hostname [$(hostname -f)]: " servername; then
-                        echo 'Error: unable to read server hostname from terminal input.'
-                        exit 1
-                fi
+		if ! prompt_input "Please enter FQDN hostname [$(hostname -f)]: " servername; then
+			echo 'Error: unable to read server hostname from terminal input.'
+			exit 1
+		fi
 	done
 else
 	# Validate FQDN hostname if it is preset
@@ -1112,7 +1112,7 @@ if [ -d "$withdebs" ]; then
 	software=$(echo "$software" | sed -e "s/tulio-nginx//")
 	software=$(echo "$software" | sed -e "s/tulio-php//")
 	software=$(echo "$software" | sed -e "s/tulio-web-terminal//")
-	software=$(echo "$software" | sed -e "s/tuliocp=${HESTIA_INSTALL_VER}//")
+	software=$(echo "$software" | sed -e "s/tuliocp=${TULIO_INSTALL_VER}//")
 fi
 
 #----------------------------------------------------------#
@@ -1191,9 +1191,9 @@ if [ ! -d "$TULIO" ]; then
 	# Create TulioCP base directory
 	mkdir -p "$TULIO"
 	# Link Tulio installation files to TulioCP paths
-	if [ -d "$HESTIA_ROOT" ]; then
+	if [ -d "$TULIO_ROOT" ]; then
 		# Copy Tulio files to TulioCP directory
-		cp -r "$HESTIA_ROOT/"* "$TULIO/"
+		cp -r "$TULIO_ROOT/"* "$TULIO/"
 		echo "Tulio files copied to TulioCP directory"
 	fi
 fi
@@ -1297,7 +1297,7 @@ chmod 440 /etc/sudoers.d/tulioweb
 # Add Tulio global config
 mkdir -p /etc/tuliocp
 if [[ ! -e /etc/tuliocp/tulio.conf ]]; then
-        cat <<EOF > /etc/tuliocp/tulio.conf
+	cat << EOF > /etc/tuliocp/tulio.conf
 # Do not edit this file, will get overwritten on next upgrade, use /etc/tuliocp/local.conf instead
 
 export TULIO='$TULIO'
@@ -1305,15 +1305,15 @@ export TULIO='$TULIO'
 [[ -f /etc/tuliocp/local.conf ]] && source /etc/tuliocp/local.conf
 EOF
 else
-        if grep -q '^export HESTIA=' /etc/tuliocp/tulio.conf; then
-                sed -i "/^export HESTIA=/d" /etc/tuliocp/tulio.conf
-        fi
-        if ! grep -q '^export TULIO=' /etc/tuliocp/tulio.conf; then
-                echo "export TULIO='$TULIO'" >> /etc/tuliocp/tulio.conf
-        fi
-        if ! grep -q 'source /etc/tuliocp/local.conf' /etc/tuliocp/tulio.conf; then
-                echo "[[ -f /etc/tuliocp/local.conf ]] && source /etc/tuliocp/local.conf" >> /etc/tuliocp/tulio.conf
-        fi
+	if grep -q '^export TULIO=' /etc/tuliocp/tulio.conf; then
+		sed -i "/^export TULIO=/d" /etc/tuliocp/tulio.conf
+	fi
+	if ! grep -q '^export TULIO=' /etc/tuliocp/tulio.conf; then
+		echo "export TULIO='$TULIO'" >> /etc/tuliocp/tulio.conf
+	fi
+	if ! grep -q 'source /etc/tuliocp/local.conf' /etc/tuliocp/tulio.conf; then
+		echo "[[ -f /etc/tuliocp/local.conf ]] && source /etc/tuliocp/local.conf" >> /etc/tuliocp/tulio.conf
+	fi
 fi
 
 # Configuring system env
@@ -1472,7 +1472,7 @@ write_config_value "THEME" "dark"
 write_config_value "INACTIVE_SESSION_TIMEOUT" "60"
 
 # Version & Release Branch
-write_config_value "VERSION" "${HESTIA_INSTALL_VER}"
+write_config_value "VERSION" "${TULIO_INSTALL_VER}"
 write_config_value "RELEASE_BRANCH" "release"
 
 # Email notifications after upgrade
@@ -2445,10 +2445,10 @@ echo
 
 # Ensure Tulio service init script and systemd unit are available
 if [ ! -f "/etc/init.d/tulio" ]; then
-        if [ -f "$TULIO/install/deb/nginx/tulio" ]; then
-                cp -f "$TULIO/install/deb/nginx/tulio" /etc/init.d/tulio
-        else
-                cat <<'EOF' > /etc/init.d/tulio
+	if [ -f "$TULIO/install/deb/nginx/tulio" ]; then
+		cp -f "$TULIO/install/deb/nginx/tulio" /etc/init.d/tulio
+	else
+		cat << 'EOF' > /etc/init.d/tulio
 #!/bin/sh
 
 ### BEGIN INIT INFO
@@ -2652,12 +2652,12 @@ esac
 
 exit 0
 EOF
-        fi
-        chmod 755 /etc/init.d/tulio
+	fi
+	chmod 755 /etc/init.d/tulio
 fi
 
 if [ ! -f "/lib/systemd/system/tulio.service" ]; then
-        cat <<'EOF' > /lib/systemd/system/tulio.service
+	cat << 'EOF' > /lib/systemd/system/tulio.service
 [Unit]
 Description=Tulio Control Panel
 After=network.target
@@ -2672,8 +2672,8 @@ RemainAfterExit=yes
 [Install]
 WantedBy=multi-user.target
 EOF
-        chmod 644 /lib/systemd/system/tulio.service
-        systemctl daemon-reload > /dev/null 2>&1
+	chmod 644 /lib/systemd/system/tulio.service
+	systemctl daemon-reload > /dev/null 2>&1
 fi
 
 # Starting Tulio service

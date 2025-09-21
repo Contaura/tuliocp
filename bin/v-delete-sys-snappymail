@@ -12,13 +12,12 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 # upgrade config file
-source "$HESTIA/install/upgrade/upgrade.conf"
+source "$TULIO/install/upgrade/upgrade.conf"
 
 # Folder paths
 SM_INSTALL_DIR="/var/lib/snappymail"
@@ -35,12 +34,12 @@ if [ "x$(id -u)" != 'x0' ]; then
 	exit 10
 fi
 
-# Ensure that $HESTIA (/usr/local/tulio/) and other variables are valid.
-if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/tulio"
+# Ensure that $TULIO (/usr/local/tulio/) and other variables are valid.
+if [ -z "$TULIO" ]; then
+	TULIO="/usr/local/tulio"
 fi
 
-if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_INSTALL_DIR" ]; then
+if [ -z "$HOMEDIR" ] || [ -z "$TULIO_INSTALL_DIR" ]; then
 	echo "ERROR: Environment variables not present, uninstallation aborted."
 	exit 2
 fi

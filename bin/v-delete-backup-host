@@ -17,11 +17,10 @@ type=$1
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -43,7 +42,7 @@ check_tulio_demo_mode
 #----------------------------------------------------------#
 
 # Deleting host config
-rm -f $HESTIA/conf/$type.backup.conf
+rm -f $TULIO/conf/$type.backup.conf
 
 #----------------------------------------------------------#
 #                       TulioCP                            #
@@ -55,7 +54,7 @@ bckp=$(echo "$BACKUP_SYSTEM" \
 	| sed "s/^$type$//" \
 	| sed "/^$/d" \
 	| sed ':a;N;$!ba;s/\n/,/g')
-sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $HESTIA/conf/tulio.conf
+sed -i "s/BACKUP_SYSTEM=.*/BACKUP_SYSTEM='$bckp'/g" $TULIO/conf/tulio.conf
 
 # Logging
 $BIN/v-log-action "system" "Info" "Backup" "Removed remote backup host (Host: $host, Type: $type)."

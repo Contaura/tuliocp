@@ -60,11 +60,13 @@ TulioCP provides an official APT repository for easy installation and updates. O
 ### 🎯 Quick Installation
 
 **Method 1: One-Line Installation (Recommended)**
+
 ```bash
 curl -sSL https://apt.tuliocp.com/setup.sh | sudo bash
 ```
 
 **Method 2: Direct Installer**
+
 ```bash
 wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh
 sudo bash hst-install.sh
@@ -73,9 +75,9 @@ sudo bash hst-install.sh
 ### 📋 Available Packages
 
 - **tuliocp** - Main control panel package (1.8MB) - **Available Now**
-- **tulio-nginx** - Custom Nginx build optimized for TulioCP - *Coming Soon*
-- **tulio-php** - Custom PHP-FPM build with enhanced performance - *Coming Soon*
-- **tulio-web-terminal** - Browser-based terminal interface - *Coming Soon*
+- **tulio-nginx** - Custom Nginx build optimized for TulioCP - _Coming Soon_
+- **tulio-php** - Custom PHP-FPM build with enhanced performance - _Coming Soon_
+- **tulio-web-terminal** - Browser-based terminal interface - _Coming Soon_
 
 ### 🔧 Manual Repository Setup
 
@@ -97,7 +99,7 @@ sudo apt install --allow-unauthenticated tuliocp
 ### 🏗️ System Requirements
 
 - **Operating Systems**: Debian 10/11/12, Ubuntu 20.04/22.04/24.04 LTS
-- **Architecture**: amd64 (x86_64) - *arm64 coming soon*
+- **Architecture**: amd64 (x86*64) - \_arm64 coming soon*
 - **Memory**: Minimum 1GB RAM (2GB+ recommended)
 - **Storage**: 10GB+ available disk space
 - **Network**: Internet connection for package installation
@@ -111,18 +113,21 @@ sudo apt install --allow-unauthenticated tuliocp
 Our automated build system provides:
 
 #### 📦 **Package Building**
+
 - **Trigger**: Every push to `main` branch
 - **Build Server**: Self-hosted runner with TulioCP dependencies
 - **Process**: Automated DEB package compilation
 - **Output**: Production-ready `tuliocp_1.10.0~alpha_amd64.deb` packages
 
 #### 🔒 **Secure Deployment**
+
 - **Webhook**: HTTPS webhook handler (port 8443)
 - **Authentication**: GitHub token-based secure deployment
 - **Target**: GitHub Pages with custom domain
 - **Structure**: Full Debian APT repository format
 
 #### 🌐 **Live Repository Features**
+
 - **Custom Domain**: https://apt.tuliocp.com (via CNAME to contaura.github.io)
 - **Modern Interface**: Professional repository page with copy-to-clipboard commands
 - **Package Metadata**: Complete `Packages.gz` and `Release` files
@@ -142,11 +147,13 @@ Our automated build system provides:
 ### 🚀 Quick Installation
 
 **Method 1: One-Line Installation (Recommended)**
+
 ```bash
 curl -sSL https://apt.tuliocp.com/setup.sh | sudo bash
 ```
 
 **Method 2: Direct Installation**
+
 ```bash
 # Download and run installer
 wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh
@@ -154,6 +161,7 @@ sudo bash hst-install.sh
 ```
 
 **Method 3: Manual APT Repository Setup**
+
 ```bash
 # Manual repository configuration
 echo "deb https://apt.tuliocp.com stable main" | sudo tee /etc/apt/sources.list.d/tuliocp.list
@@ -164,11 +172,13 @@ sudo apt install --allow-unauthenticated tuliocp
 ### 🔧 Connection Methods
 
 **Local Console:**
+
 ```bash
 sudo bash hst-install.sh
 ```
 
 **Remote SSH:**
+
 ```bash
 ssh root@your.server
 wget https://raw.githubusercontent.com/contaura/tuliocp/main/install/hst-install.sh
@@ -176,6 +186,7 @@ bash hst-install.sh
 ```
 
 **SSL Certificate Issues:**
+
 ```bash
 # If download fails due to SSL validation
 sudo apt update && sudo apt install ca-certificates
@@ -197,6 +208,7 @@ bash hst-install.sh -h
 ```
 
 Common options:
+
 - `--interactive` - Interactive installation with prompts
 - `--force` - Skip compatibility checks
 - `--hostname` - Set custom hostname
@@ -213,12 +225,14 @@ Common options:
 ### 🔧 Manual Updates
 
 **Via APT (Recommended):**
+
 ```bash
 # Update package lists and upgrade TulioCP
 sudo apt update && sudo apt upgrade tuliocp
 ```
 
 **Traditional Method:**
+
 ```bash
 # System-wide updates (includes TulioCP)
 sudo apt update && sudo apt upgrade
@@ -229,11 +243,13 @@ sudo apt update && sudo apt upgrade
 ### 🚀 Quick Development Setup
 
 **Prerequisites:**
+
 - Node.js 18+ (tested with v22.19.0)
 - Git
 - macOS/Linux development environment
 
 **One-Command Setup:**
+
 ```bash
 # Clone repository and setup development environment
 git clone https://github.com/contaura/tuliocp.git
@@ -254,11 +270,13 @@ The development environment provides:
 ### 📦 Frontend Asset Building
 
 **Build all assets:**
+
 ```bash
 npm run build
 ```
 
 **Build outputs:**
+
 - `web/js/dist/main.min.js` - Main application bundle
 - `web/js/dist/*.min.js` - External packages (Alpine.js, Chart.js, xterm, etc.)
 - `web/css/themes/*.min.css` - CSS themes with source maps
@@ -311,11 +329,13 @@ After running `./dev-installer.sh`, you get convenient shortcuts:
 ### 🔍 Environment Debugging
 
 **Verify setup:**
+
 ```bash
 ./debug-installer.sh
 ```
 
 **Check build status:**
+
 ```bash
 ~/.local/share/tuliocp-dev/status.sh
 ```
@@ -323,18 +343,21 @@ After running `./dev-installer.sh`, you get convenient shortcuts:
 ### 🏗️ Frontend Architecture
 
 **JavaScript Build:**
+
 - **Tool**: esbuild for fast bundling and minification
 - **Entry**: `web/js/src/index.js`
 - **Output**: Bundled main.min.js + separate external packages
 - **Features**: Source maps, tree shaking, ES modules
 
 **CSS Build:**
+
 - **Tool**: Lightning CSS for processing and optimization
 - **Source**: `web/css/src/themes/*.css`
 - **Output**: Minified themes with browser targeting
 - **Features**: CSS nesting, custom media queries, autoprefixer
 
 **Key Dependencies:**
+
 - **Frontend**: Alpine.js (reactive), Chart.js (statistics), xterm.js (terminal)
 - **Build**: esbuild (JS), Lightning CSS (CSS), Browserslist (targets)
 - **Quality**: Biome (JS linting), Stylelint (CSS), Prettier (formatting)
@@ -342,13 +365,15 @@ After running `./dev-installer.sh`, you get convenient shortcuts:
 ### 🔄 Development vs Production
 
 **Development Mode** (macOS/Linux):
+
 - Use `dev-installer.sh` for local development
 - Frontend asset building and live reloading
 - Code quality tools and git hooks
 - Documentation development server
 
 **Production Mode** (Ubuntu/Debian):
-- Use `hst-install.sh` for server deployment  
+
+- Use `hst-install.sh` for server deployment
 - Full system installation with services
 - Web server configuration (Apache + Nginx)
 - Database, mail, and DNS server setup
@@ -356,6 +381,7 @@ After running `./dev-installer.sh`, you get convenient shortcuts:
 ### 🧪 Testing & Quality
 
 **Linting Tools:**
+
 - **JavaScript**: Biome for fast linting and formatting
 - **CSS**: Stylelint with standard configuration
 - **PHP**: Prettier with PHP plugin
@@ -363,10 +389,12 @@ After running `./dev-installer.sh`, you get convenient shortcuts:
 - **Markdown**: Markdownlint for documentation
 
 **Git Hooks:**
+
 - **Pre-commit**: Runs linting and formatting on staged files
 - **Pre-push**: Additional validation (configurable)
 
 **Quality Standards:**
+
 - All code must pass linting before commit
 - Automatic formatting applied on staged files
 - Documentation linting for README and docs
@@ -377,7 +405,7 @@ After running `./dev-installer.sh`, you get convenient shortcuts:
 For detailed installation guides, configuration instructions, and troubleshooting:
 
 - 📚 [Installation Guide](#installing-tulio-control-panel) - See above for quick start
-- 🔧 [Configuration Reference](docs/) - Detailed setup and configuration guides  
+- 🔧 [Configuration Reference](docs/) - Detailed setup and configuration guides
 - 🐛 [Troubleshooting](docs/troubleshooting.md) - Common issues and solutions
 - 🚀 [Quick Start Examples](#custom-installation) - Command line installation options
 - 💻 [Development Setup](#development-environment) - Local development environment
@@ -416,4 +444,3 @@ If you would like to contribute to the project, please [read our Contribution Gu
 ## License
 
 Tulio Control Panel is licensed under [GPL v3](https://github.com/contaura/tuliocp/blob/main/LICENSE) license.
-
