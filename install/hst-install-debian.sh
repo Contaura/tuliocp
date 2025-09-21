@@ -2443,6 +2443,133 @@ apt-get -y upgrade >> $LOG &
 BACK_PID=$!
 echo
 
+# Ensure Tulio service init script and systemd unit are available
+if [ ! -f "/etc/init.d/tulio" ]; then
+        if [ -f "$TULIO/install/deb/nginx/tulio" ]; then
+                cp -f "$TULIO/install/deb/nginx/tulio" /etc/init.d/tulio
+        else
+                cat <<'EOF' > /etc/init.d/tulio
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:       tulio
+#                 internal nginx
+#                 internal php-fpm
+# Required-Start:    $local_fs $remote_fs $network $syslog
+# Required-Stop:     $local_fs $remote_fs $network $syslog
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: starts the tulio control panel
+# Description:       starts nginx and php-fpm using start-stop-daemon
+### END INIT INFO
+
+PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
+NGINX_DAEMON=/usr/local/tulio/nginx/sbin/tulio-nginx
+NGINX_NAME=tulio-nginx
+NGINX_DESC=tulio-nginx
+NGINX_PID=/run/tulio-nginx.pid
+NGINX_CONF=/usr/local/tulio/nginx/conf/nginx.conf
+
+PHP_DAEMON=/usr/local/tulio/php/sbin/tulio-php
+PHP_NAME=tulio-php
+PHP_DESC=tulio-php
+PHP_PID=/run/tulio-php.pid
+PHP_CONF=/usr/local/tulio/php/etc/php-fpm.conf
+
+set -e
+
+. /lib/lsb/init-functions
+
+. /etc/profile.d/tulio.sh
+
+start_nginx() {
+        start-stop-daemon --start --quiet --pidfile $NGINX_PID \
+                --retry 5 --exec $NGINX_DAEMON --oknodo
+}
+
+start_php() {
+        start-stop-daemon --start --quiet --pidfile $PHP_PID \
+                --retry 5 --exec $PHP_DAEMON --oknodo
+}
+
+stop_nginx() {
+        start-stop-daemon --stop --quiet --pidfile $NGINX_PID \
+                --retry 5 --oknodo --exec $NGINX_DAEMON
+}
+
+stop_php() {
+        start-stop-daemon --stop --quiet --pidfile $PHP_PID \
+                --retry 5 --oknodo --exec $PHP_DAEMON
+}
+
+case "$1" in
+        start)
+                log_daemon_msg "Starting $NGINX_DESC" "$NGINX_NAME"
+                start_nginx
+                log_end_msg $?
+                log_daemon_msg "Starting $PHP_DESC" "$PHP_NAME"
+                start_php
+                log_end_msg $?
+                ;;
+
+        stop)
+                log_daemon_msg "Stopping $NGINX_DESC" "$NGINX_NAME"
+                stop_nginx
+                log_end_msg $?
+                log_daemon_msg "Stopping $PHP_DESC" "$PHP_NAME"
+                stop_php
+                log_end_msg $?
+                ;;
+
+        restart | force-reload | reload | configtest | testconfig)
+                log_daemon_msg "Restarting $NGINX_DESC" "$NGINX_NAME"
+                stop_nginx
+                stop_php
+                sleep 1
+                start_nginx
+                log_end_msg $?
+                log_daemon_msg "Restarting $PHP_DESC" "$PHP_NAME"
+                start_php
+                log_end_msg $?
+                ;;
+
+        status)
+                status_of_proc -p $NGINX_PID "$NGINX_DAEMON" tulio-nginx
+                status_of_proc -p $PHP_PID "$PHP_DAEMON" tulio-php
+                ;;
+
+        *)
+                echo "Usage: tulio {start|stop|restart|status}" >&2
+                exit 1
+                ;;
+esac
+
+exit 0
+EOF
+        fi
+        chmod 755 /etc/init.d/tulio
+fi
+
+if [ ! -f "/lib/systemd/system/tulio.service" ]; then
+        cat <<'EOF' > /lib/systemd/system/tulio.service
+[Unit]
+Description=Tulio Control Panel
+After=network.target
+
+[Service]
+Type=forking
+ExecStart=/etc/init.d/tulio start
+ExecReload=/etc/init.d/tulio restart
+ExecStop=/etc/init.d/tulio stop
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
+EOF
+        chmod 644 /lib/systemd/system/tulio.service
+        systemctl daemon-reload > /dev/null 2>&1
+fi
+
 # Starting Tulio service
 update-rc.d tulio defaults
 systemctl start tulio
