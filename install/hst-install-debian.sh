@@ -2464,17 +2464,93 @@ if [ ! -f "/etc/init.d/tulio" ]; then
 ### END INIT INFO
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
-NGINX_DAEMON=/usr/local/tulio/nginx/sbin/tulio-nginx
+
+NGINX_DEFAULT_DAEMON=/usr/local/tulio/nginx/sbin/tulio-nginx
+NGINX_DEFAULT_PID=/run/tulio-nginx.pid
+NGINX_DEFAULT_CONF=/usr/local/tulio/nginx/conf/nginx.conf
+
+NGINX_DAEMON=$NGINX_DEFAULT_DAEMON
 NGINX_NAME=tulio-nginx
 NGINX_DESC=tulio-nginx
-NGINX_PID=/run/tulio-nginx.pid
-NGINX_CONF=/usr/local/tulio/nginx/conf/nginx.conf
+NGINX_PID=$NGINX_DEFAULT_PID
+NGINX_CONF=$NGINX_DEFAULT_CONF
+NGINX_EXTRA_ARGS=""
 
-PHP_DAEMON=/usr/local/tulio/php/sbin/tulio-php
+if [ ! -x "$NGINX_DAEMON" ]; then
+        NGINX_DAEMON=""
+        if command -v tulio-nginx >/dev/null 2>&1; then
+                NGINX_DAEMON=$(command -v tulio-nginx)
+        elif command -v nginx >/dev/null 2>&1; then
+                NGINX_DAEMON=$(command -v nginx)
+        fi
+
+        if [ -n "$NGINX_DAEMON" ]; then
+                NGINX_NAME=$(basename "$NGINX_DAEMON")
+                NGINX_DESC=$NGINX_NAME
+                nginx_details=$("$NGINX_DAEMON" -V 2>&1)
+                NGINX_PID=$(echo "$nginx_details" | sed -n 's/.*--pid-path=\([^ ]*\).*/\1/p' | head -n 1)
+                if [ -z "$NGINX_PID" ]; then
+                        NGINX_PID=/run/nginx.pid
+                fi
+                NGINX_CONF=$(echo "$nginx_details" | sed -n 's/.*--conf-path=\([^ ]*\).*/\1/p' | head -n 1)
+                if [ -z "$NGINX_CONF" ]; then
+                        NGINX_CONF=/etc/nginx/nginx.conf
+                fi
+                if [ -f "$NGINX_CONF" ]; then
+                        NGINX_EXTRA_ARGS="-c $NGINX_CONF"
+                else
+                        NGINX_EXTRA_ARGS=""
+                fi
+        else
+                NGINX_DAEMON=$NGINX_DEFAULT_DAEMON
+        fi
+fi
+
+PHP_DEFAULT_DAEMON=/usr/local/tulio/php/sbin/tulio-php
+PHP_DEFAULT_PID=/run/tulio-php.pid
+PHP_DEFAULT_CONF=/usr/local/tulio/php/etc/php-fpm.conf
+
+PHP_DAEMON=$PHP_DEFAULT_DAEMON
 PHP_NAME=tulio-php
 PHP_DESC=tulio-php
-PHP_PID=/run/tulio-php.pid
-PHP_CONF=/usr/local/tulio/php/etc/php-fpm.conf
+PHP_PID=$PHP_DEFAULT_PID
+PHP_CONF=$PHP_DEFAULT_CONF
+PHP_EXTRA_ARGS=""
+
+if [ ! -x "$PHP_DAEMON" ]; then
+        PHP_DAEMON=""
+        for candidate in tulio-php php-fpm php-fpm8.4 php-fpm8.3 php-fpm8.2 php-fpm8.1 php-fpm8.0 php-fpm7.4 php-fpm7.3 php-fpm7.2 php-fpm7.1 php-fpm7.0 php-fpm5.6; do
+                if command -v "$candidate" >/dev/null 2>&1; then
+                        PHP_DAEMON=$(command -v "$candidate")
+                        break
+                fi
+        done
+
+        if [ -n "$PHP_DAEMON" ]; then
+                PHP_NAME=$(basename "$PHP_DAEMON")
+                PHP_DESC=$PHP_NAME
+                PHP_CONF=""
+                for conf in /usr/local/tulio/php/etc/php-fpm.conf /etc/php/*/fpm/php-fpm.conf /etc/php-fpm.conf /etc/php/php-fpm.conf; do
+                        if [ -f "$conf" ]; then
+                                PHP_CONF="$conf"
+                                break
+                        fi
+                done
+                if [ -n "$PHP_CONF" ] && [ -f "$PHP_CONF" ]; then
+                        PHP_EXTRA_ARGS="--fpm-config $PHP_CONF"
+                        PHP_PID=$(grep -E '^[[:space:]]*pid[[:space:]]*=' "$PHP_CONF" | grep -v '^[[:space:]]*;' | tail -n 1 | cut -d= -f2- | tr -d '[:space:]')
+                        if [ -z "$PHP_PID" ]; then
+                                PHP_PID=/run/php/php-fpm.pid
+                        fi
+                else
+                        PHP_CONF=$PHP_DEFAULT_CONF
+                        PHP_PID=/run/php/php-fpm.pid
+                        PHP_EXTRA_ARGS=""
+                fi
+        else
+                PHP_DAEMON=$PHP_DEFAULT_DAEMON
+        fi
+fi
 
 set -e
 
@@ -2483,21 +2559,43 @@ set -e
 . /etc/profile.d/tulio.sh
 
 start_nginx() {
-        start-stop-daemon --start --quiet --pidfile $NGINX_PID \
-                --retry 5 --exec $NGINX_DAEMON --oknodo
+        if [ ! -x "$NGINX_DAEMON" ]; then
+                return 1
+        fi
+        if [ -n "$NGINX_EXTRA_ARGS" ]; then
+                start-stop-daemon --start --quiet --pidfile $NGINX_PID \
+                        --retry 5 --exec $NGINX_DAEMON --oknodo -- $NGINX_EXTRA_ARGS
+        else
+                start-stop-daemon --start --quiet --pidfile $NGINX_PID \
+                        --retry 5 --exec $NGINX_DAEMON --oknodo
+        fi
 }
 
 start_php() {
-        start-stop-daemon --start --quiet --pidfile $PHP_PID \
-                --retry 5 --exec $PHP_DAEMON --oknodo
+        if [ ! -x "$PHP_DAEMON" ]; then
+                return 1
+        fi
+        if [ -n "$PHP_EXTRA_ARGS" ]; then
+                start-stop-daemon --start --quiet --pidfile $PHP_PID \
+                        --retry 5 --exec $PHP_DAEMON --oknodo -- $PHP_EXTRA_ARGS
+        else
+                start-stop-daemon --start --quiet --pidfile $PHP_PID \
+                        --retry 5 --exec $PHP_DAEMON --oknodo
+        fi
 }
 
 stop_nginx() {
+        if [ ! -x "$NGINX_DAEMON" ]; then
+                return 0
+        fi
         start-stop-daemon --stop --quiet --pidfile $NGINX_PID \
                 --retry 5 --oknodo --exec $NGINX_DAEMON
 }
 
 stop_php() {
+        if [ ! -x "$PHP_DAEMON" ]; then
+                return 0
+        fi
         start-stop-daemon --stop --quiet --pidfile $PHP_PID \
                 --retry 5 --oknodo --exec $PHP_DAEMON
 }
@@ -2534,8 +2632,16 @@ case "$1" in
                 ;;
 
         status)
-                status_of_proc -p $NGINX_PID "$NGINX_DAEMON" tulio-nginx
-                status_of_proc -p $PHP_PID "$PHP_DAEMON" tulio-php
+                if [ -x "$NGINX_DAEMON" ]; then
+                        status_of_proc -p $NGINX_PID "$NGINX_DAEMON" "$NGINX_NAME"
+                else
+                        echo "$NGINX_NAME is not installed"
+                fi
+                if [ -x "$PHP_DAEMON" ]; then
+                        status_of_proc -p $PHP_PID "$PHP_DAEMON" "$PHP_NAME"
+                else
+                        echo "$PHP_NAME is not installed"
+                fi
                 ;;
 
         *)
