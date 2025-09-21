@@ -23,15 +23,14 @@ restart=$3
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Additional argument formatting
 format_domain
@@ -103,7 +102,7 @@ fi
 
 # Deleting web stats
 if [ -n "$STATS" ] && [ "$STATS" != 'no' ]; then
-	sed -i "/ $domain$/d" $HESTIA/data/queue/webstats.pipe
+	sed -i "/ $domain$/d" $TULIO/data/queue/webstats.pipe
 	rm -f $HOMEDIR/$user/conf/web/$domain/$STATS.conf
 	rm -f /etc/awstats/$STATS.$domain.conf
 fi

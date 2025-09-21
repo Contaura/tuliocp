@@ -40,7 +40,7 @@ if (!empty($_POST["file"])) {
 if ($action == "restore") {
 	if (!empty($web)) {
 		exec(
-			HESTIA_CMD .
+			TULIO_CMD .
 				"v-schedule-user-restore-restic " .
 				$user .
 				" " .
@@ -55,7 +55,7 @@ if ($action == "restore") {
 	}
 	if (!empty($dns)) {
 		exec(
-			HESTIA_CMD .
+			TULIO_CMD .
 				"v-schedule-user-restore-restic " .
 				$user .
 				" " .
@@ -70,7 +70,7 @@ if ($action == "restore") {
 	}
 	if (!empty($mail)) {
 		exec(
-			HESTIA_CMD .
+			TULIO_CMD .
 				"v-schedule-user-restore-restic " .
 				$user .
 				" " .
@@ -84,7 +84,7 @@ if ($action == "restore") {
 		);
 		if (!empty($dns)) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-schedule-user-restore-restic " .
 					$user .
 					" " .
@@ -100,7 +100,7 @@ if ($action == "restore") {
 	}
 	if (!empty($cron)) {
 		exec(
-			HESTIA_CMD . "v-schedule-user-restore-restic " . $user . " " . $snapshot . " " . "cron",
+			TULIO_CMD . "v-schedule-user-restore-restic " . $user . " " . $snapshot . " " . "cron",
 			$output,
 			$return_var,
 		);
@@ -108,7 +108,7 @@ if ($action == "restore") {
 
 	if (!empty($file)) {
 		exec(
-			HESTIA_CMD .
+			TULIO_CMD .
 				"v-schedule-user-restore-restic " .
 				$user .
 				" " .

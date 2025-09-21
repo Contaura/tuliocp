@@ -4,7 +4,7 @@
 #
 # example: v-generate-api-key
 #
-# This function creates a key file in $HESTIA/data/keys/
+# This function creates a key file in $TULIO/data/keys/
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -14,11 +14,10 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 keygen() {
 	tr < /dev/urandom -dc _A-Z-a-z-0-9 | head -c 32
@@ -33,19 +32,19 @@ check_tulio_demo_mode
 #                       Action                             #
 #----------------------------------------------------------#
 
-if [ ! -d "$HESTIA/data/keys/" ]; then
-	mkdir -p $HESTIA/data/keys/
-	chown tulioweb:root $HESTIA/data/keys/
-	chmod 750 $HESTIA/data/keys/
+if [ ! -d "$TULIO/data/keys/" ]; then
+	mkdir -p $TULIO/data/keys/
+	chown tulioweb:root $TULIO/data/keys/
+	chmod 750 $TULIO/data/keys/
 fi
 
-if [[ -e "$HESTIA/data/keys/$HASH" ]]; then
-	while [[ -e "$HESTIA/data/keys/$HASH" ]]; do
+if [[ -e "$TULIO/data/keys/$HASH" ]]; then
+	while [[ -e "$TULIO/data/keys/$HASH" ]]; do
 		HASH=$(keygen)
 	done
 fi
 
-touch $HESTIA/data/keys/$HASH
+touch $TULIO/data/keys/$HASH
 echo "$HASH"
 
 #----------------------------------------------------------#

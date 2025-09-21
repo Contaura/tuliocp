@@ -18,13 +18,12 @@ iptables='/sbin/iptables'
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source "$HESTIA/func/main.sh"
+source "$TULIO/func/main.sh"
 # shellcheck source=/usr/local/tulio/func/firewall.sh
-source "$HESTIA/func/firewall.sh"
+source "$TULIO/func/firewall.sh"
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -45,8 +44,8 @@ check_tulio_demo_mode
 heal_iptables_links
 
 # Deleting chain
-chains="$HESTIA/data/firewall/chains.conf"
-banlist="$HESTIA/data/firewall/banlist.conf"
+chains="$TULIO/data/firewall/chains.conf"
+banlist="$TULIO/data/firewall/banlist.conf"
 chain_param=""
 [ -f "$chains" ] && chain_param=$(grep "CHAIN='$chain'" "$chains")
 if [ -n "$chain_param" ]; then

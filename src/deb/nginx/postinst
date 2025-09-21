@@ -20,7 +20,7 @@ fi
 update-rc.d tulio defaults > /dev/null
 invoke-rc.d tulio start || true
 
-# Adapt Port Listing in HESTIA NGINX Backend
+# Adapt Port Listing in TULIO NGINX Backend
 source /usr/local/tulio/func/syshealth.sh # Load syshealth functions
 
 # Check if the function syshealth_adapt_tulio_nginx_listen_ports exists

@@ -17,11 +17,10 @@ version=$1
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -44,7 +43,7 @@ if [[ ! $version =~ ^[0-9]\.[0-9]+ ]]; then
 fi
 
 # Remove backend template
-[ -f $HESTIA/data/templates/web/php-fpm/PHP-${version/\./_}.tpl ] && rm -f $HESTIA/data/templates/web/php-fpm/PHP-${version/\./_}.tpl
+[ -f $TULIO/data/templates/web/php-fpm/PHP-${version/\./_}.tpl ] && rm -f $TULIO/data/templates/web/php-fpm/PHP-${version/\./_}.tpl
 
 # Check if php version exists
 version_check=$($BIN/v-list-sys-php plain | grep "$version")
@@ -103,7 +102,7 @@ if [ "$WEB_BACKEND" = "php-fpm" ]; then
 	if [ -z "$conf" ]; then
 		# If not grab the "last php version
 		last=$($BIN/v-list-sys-php "shell" | tail -n1)
-		cp -f $HESTIA/install/deb/php-fpm/www.conf /etc/php/$last/fpm/pool.d/www.conf
+		cp -f $TULIO/install/deb/php-fpm/www.conf /etc/php/$last/fpm/pool.d/www.conf
 		$BIN/v-restart-web-backend
 	fi
 fi

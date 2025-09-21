@@ -16,8 +16,8 @@ This happens when:
 
 The templates can be found in `/usr/local/tulio/data/templates/web/`.
 
-| Service                 | Location                                              |
-| ----------------------- | ----------------------------------------------------- |
+| Service                 | Location                                             |
+| ----------------------- | ---------------------------------------------------- |
 | Nginx (Proxy)           | /usr/local/tulio/data/templates/web/nginx/           |
 | Nginx - PHP FPM         | /usr/local/tulio/data/templates/web/nginx/php-fpm/   |
 | Apache2 (Legacy/modphp) | /usr/local/tulio/data/templates/web/apache2/         |
@@ -41,25 +41,25 @@ After modifying an existing template, you need to rebuild the user configuration
 
 ### Available variables
 
-| Name                 | Description                                           | Example                                    |
-| -------------------- | ----------------------------------------------------- | ------------------------------------------ |
-| `%ip%`               | IP Address of Server                                  | `123.123.123.123`                          |
-| `%proxy_port%`       | Port of Proxy                                         | `80`                                       |
-| `%proxy_ssl_port%`   | Port of Proxy (SSL)                                   | `443`                                      |
-| `%web_port%`         | Port of Webserver                                     | `8080`                                     |
-| `%web_ssl_port%`     | Port of Webserver (SSL)                               | `8443`                                     |
-| `%domain%`           | Domain                                                | `domain.tld`                               |
-| `%domain_idn%`       | Domain (Internationalised)                            | `domain.tld`                               |
-| `%alias_idn%`        | Alias Domain (Internationalised)                      | `alias.domain.tld`                         |
-| `%docroot%`          | Document root of domain                               | `/home/username/web/public_html/`          |
-| `%sdocroot%`         | Private root of domain                                | `/home/username/web/public_shtml/`         |
+| Name                 | Description                                           | Example                                   |
+| -------------------- | ----------------------------------------------------- | ----------------------------------------- |
+| `%ip%`               | IP Address of Server                                  | `123.123.123.123`                         |
+| `%proxy_port%`       | Port of Proxy                                         | `80`                                      |
+| `%proxy_ssl_port%`   | Port of Proxy (SSL)                                   | `443`                                     |
+| `%web_port%`         | Port of Webserver                                     | `8080`                                    |
+| `%web_ssl_port%`     | Port of Webserver (SSL)                               | `8443`                                    |
+| `%domain%`           | Domain                                                | `domain.tld`                              |
+| `%domain_idn%`       | Domain (Internationalised)                            | `domain.tld`                              |
+| `%alias_idn%`        | Alias Domain (Internationalised)                      | `alias.domain.tld`                        |
+| `%docroot%`          | Document root of domain                               | `/home/username/web/public_html/`         |
+| `%sdocroot%`         | Private root of domain                                | `/home/username/web/public_shtml/`        |
 | `%ssl_pem%`          | Location of SSL Certificate                           | `/usr/local/tulio/data/user/username/ssl` |
 | `%ssl_key%`          | Location of SSL Key                                   | `/usr/local/tulio/data/user/username/ssl` |
-| `%web_system%`       | Software used as web server                           | `Nginx`                                    |
-| `%home%`             | Default home directory                                | `/home`                                    |
-| `%user%`             | Username of current user                              | `username`                                 |
-| `%backend_lsnr%`     | Your default FPM Server                               | `proxy:fcgi://127.0.0.1:9000`              |
-| `%proxy_extentions%` | Extensions that should be handled by the proxy server | A list of extensions                       |
+| `%web_system%`       | Software used as web server                           | `Nginx`                                   |
+| `%home%`             | Default home directory                                | `/home`                                   |
+| `%user%`             | Username of current user                              | `username`                                |
+| `%backend_lsnr%`     | Your default FPM Server                               | `proxy:fcgi://127.0.0.1:9000`             |
+| `%proxy_extentions%` | Extensions that should be handled by the proxy server | A list of extensions                      |
 
 ::: tip
 `%sdocroot%` can also be set to `%docroot%` with settings

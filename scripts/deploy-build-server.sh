@@ -9,8 +9,8 @@ echo "================================"
 
 # Check if running on supported OS
 if ! grep -E "Ubuntu|Debian" /etc/os-release; then
-    echo "❌ This script requires Ubuntu or Debian"
-    exit 1
+	echo "❌ This script requires Ubuntu or Debian"
+	exit 1
 fi
 
 # Update system
@@ -20,22 +20,22 @@ sudo apt update && sudo apt upgrade -y
 # Install build dependencies
 echo "🔧 Installing build dependencies..."
 sudo apt install -y \
-    build-essential \
-    dpkg-dev \
-    git \
-    curl \
-    wget \
-    nodejs \
-    npm \
-    libssl-dev \
-    zlib1g-dev \
-    libpcre3-dev \
-    libxml2-dev \
-    libxslt1-dev \
-    libgd-dev \
-    libgeoip-dev \
-    libzip-dev \
-    lsb-release
+	build-essential \
+	dpkg-dev \
+	git \
+	curl \
+	wget \
+	nodejs \
+	npm \
+	libssl-dev \
+	zlib1g-dev \
+	libpcre3-dev \
+	libxml2-dev \
+	libxslt1-dev \
+	libgd-dev \
+	libgeoip-dev \
+	libzip-dev \
+	lsb-release
 
 # Create build directory
 echo "📁 Setting up build environment..."
@@ -46,11 +46,11 @@ cd /opt/tuliocp-build
 # Clone TulioCP repository
 echo "📥 Cloning TulioCP repository..."
 if [ -d "tuliocp" ]; then
-    cd tuliocp
-    git pull origin main
+	cd tuliocp
+	git pull origin main
 else
-    git clone https://github.com/Contaura/tuliocp.git
-    cd tuliocp
+	git clone https://github.com/Contaura/tuliocp.git
+	cd tuliocp
 fi
 
 # Install Node.js dependencies
@@ -61,10 +61,10 @@ npm ci --ignore-scripts || echo "⚠️  Node dependencies failed, continuing...
 echo "🧪 Testing package build..."
 chmod +x src/build-minimal-package.sh
 if ./src/build-minimal-package.sh; then
-    echo "✅ Package build successful!"
-    ls -la /tmp/*.deb 2>/dev/null || echo "No .deb files found"
+	echo "✅ Package build successful!"
+	ls -la /tmp/*.deb 2> /dev/null || echo "No .deb files found"
 else
-    echo "❌ Package build failed, but server is ready for debugging"
+	echo "❌ Package build failed, but server is ready for debugging"
 fi
 
 # Create automated build script

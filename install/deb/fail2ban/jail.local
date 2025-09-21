@@ -34,7 +34,7 @@ maxretry = 5
 [tulio-iptables]
 enabled  = true
 filter   = tulio
-action   = tulio[name=HESTIA]
+action   = tulio[name=TULIO]
 logpath  = /var/log/tulio/auth.log
 maxretry = 5
 

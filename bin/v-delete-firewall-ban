@@ -21,13 +21,12 @@ iptables="/sbin/iptables"
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/firewall.sh
-source $HESTIA/func/firewall.sh
+source $TULIO/func/firewall.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -47,7 +46,7 @@ check_tulio_demo_mode
 # Self heal iptables links
 heal_iptables_links
 
-conf="$HESTIA/data/firewall/banlist.conf"
+conf="$TULIO/data/firewall/banlist.conf"
 if [ "$chain" == "ALL" ]; then
 	check_ip=$(grep "IP='$ipv4_cidr' CHAIN='*'" $conf)
 	if [ -z "$check_ip" ]; then

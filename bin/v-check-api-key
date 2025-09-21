@@ -4,7 +4,7 @@
 #
 # example: v-check-api-key random_key 127.0.0.1
 #
-# This function checks a key file in $HESTIA/data/keys/
+# This function checks a key file in $TULIO/data/keys/
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -14,17 +14,16 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 new_timestamp
 
 abort_missmatch() {
 	echo "Error: key missmatch"
-	echo "$date $time api $ip failed to login" >> $HESTIA/log/auth.log
+	echo "$date $time api $ip failed to login" >> $TULIO/log/auth.log
 	exit "$E_PASSWORD"
 }
 
@@ -46,19 +45,19 @@ key="$(basename "$1")"
 [[ -z $key || ${#key} -lt 16 ]] && abort_missmatch
 
 # Key file must exist
-maybe_key_path="$(readlink -e "${HESTIA}/data/keys/${key}")"
+maybe_key_path="$(readlink -e "${TULIO}/data/keys/${key}")"
 [[ -z $maybe_key_path ]] && abort_missmatch
 
 # Key file cannot be the key store
-[[ $maybe_key_path == "${HESTIA}/data/keys" ]] && abort_missmatch
+[[ $maybe_key_path == "${TULIO}/data/keys" ]] && abort_missmatch
 
 # Key file must be in the key store
-[[ $maybe_key_path == "${HESTIA}/data/keys/"* ]] || abort_missmatch
+[[ $maybe_key_path == "${TULIO}/data/keys/"* ]] || abort_missmatch
 
 #----------------------------------------------------------#
 #                       TulioCP                            #
 #----------------------------------------------------------#
 
-echo "$date $time api $ip successfully launched" >> $HESTIA/log/auth.log
+echo "$date $time api $ip successfully launched" >> $TULIO/log/auth.log
 
 exit

@@ -18,11 +18,10 @@ update_users=$2
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 is_language_valid() {
 	# English is always allowed
@@ -32,7 +31,7 @@ is_language_valid() {
 			log_event "$E_INVALID" "$ARGUMENTS"
 			exit $E_INVALID
 		fi
-		if [ ! -d "$HESTIA/web/locale/$1" ]; then
+		if [ ! -d "$TULIO/web/locale/$1" ]; then
 			echo "Error: language $1 doesn't exist"
 			log_event "$E_NOTEXIST" "$ARGUMENTS"
 			exit $E_NOTEXIST
@@ -56,10 +55,10 @@ check_tulio_demo_mode
 #----------------------------------------------------------#
 
 # Change language
-if [ -z "$(grep LANGUAGE $HESTIA/conf/tulio.conf)" ]; then
-	echo "LANGUAGE='$language'" >> $HESTIA/conf/tulio.conf
+if [ -z "$(grep LANGUAGE $TULIO/conf/tulio.conf)" ]; then
+	echo "LANGUAGE='$language'" >> $TULIO/conf/tulio.conf
 else
-	sed -i "s/LANGUAGE=.*/LANGUAGE='$language'/g" $HESTIA/conf/tulio.conf
+	sed -i "s/LANGUAGE=.*/LANGUAGE='$language'/g" $TULIO/conf/tulio.conf
 fi
 
 # Update language for all existing users if specified

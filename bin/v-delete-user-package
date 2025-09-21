@@ -20,15 +20,14 @@ package=$1
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Functions
 is_package_in_use() {
-	check_package=$(grep "PACKAGE='$package" $HESTIA/data/users/*/user.conf | cut -d'/' -f7)
+	check_package=$(grep "PACKAGE='$package" $TULIO/data/users/*/user.conf | cut -d'/' -f7)
 	if [ -n "$check_package" ]; then
 		for user in $check_package; do
 			$BIN/v-change-user-package "$user" 'default'
@@ -53,7 +52,7 @@ check_tulio_demo_mode
 #----------------------------------------------------------#
 
 # Deleting user package
-rm -f "$HESTIA/data/packages/$package.pkg"
+rm -f "$TULIO/data/packages/$package.pkg"
 
 #----------------------------------------------------------#
 #                       TulioCP                            #

@@ -20,19 +20,18 @@ notify=${4-no}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # shellcheck source=/usr/local/tulio/func/rebuild.sh
-source $HESTIA/func/rebuild.sh
+source $TULIO/func/rebuild.sh
 # shellcheck source=/usr/local/tulio/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+source $TULIO/func/syshealth.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -43,7 +42,7 @@ check_args '3' "$#" "$args_usage"
 is_format_valid 'user'
 is_object_valid 'user' 'USER' "$user"
 
-source_conf $HESTIA/conf/restic.conf
+source_conf $TULIO/conf/restic.conf
 
 #----------------------------------------------------------#
 #                       Action                             #
@@ -74,7 +73,7 @@ for domain in $domains; do
 				rm -rf $tmpdir
 				error="$domain belongs to another user"
 				echo "$error" | $SENDMAIL -s "$subj" "$email" "$notify"
-				sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+				sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 				check_result "$E_PARSING" "$error"
 			fi
 		fi
@@ -131,7 +130,7 @@ for domain in $domains; do
 		# Updating dns-cluster queue
 		if [ -n "$DNS_CLUSTER" ]; then
 			cmd="$BIN/v-add-remote-dns-domain $user $domain yes"
-			echo "$cmd" >> $HESTIA/data/queue/dns-cluster.pipe
+			echo "$cmd" >> $TULIO/data/queue/dns-cluster.pipe
 		fi
 
 	fi
@@ -147,7 +146,7 @@ $BIN/v-update-user-counters $user
 $BIN/v-update-user-counters admin
 $BIN/v-update-sys-ip-counters
 
-sed -i "/v-restore-dns-domain-restic '$user' '$snapshot' '$dns' /d" $HESTIA/data/queue/backup.pipe
+sed -i "/v-restore-dns-domain-restic '$user' '$snapshot' '$dns' /d" $TULIO/data/queue/backup.pipe
 
 # Logging
 $BIN/v-log-action "system" "Info" "Backup" "DNS Domain successfully restored (User: $user, Snapshot: $snapshot, Databse: $database)."

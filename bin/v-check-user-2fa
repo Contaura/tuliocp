@@ -18,11 +18,10 @@ token=$2
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -46,7 +45,7 @@ if [ -z "$TWOFA" ]; then
 fi
 
 # Check if token is valid
-result=$($HESTIA_PHP $HESTIA/web/inc/2fa/check.php "$TWOFA" "$token")
+result=$($TULIO_PHP $TULIO/web/inc/2fa/check.php "$TWOFA" "$token")
 if [ "$result" != "ok" ]; then
 	echo "Error: Authentication token mismatch."
 	exit 9

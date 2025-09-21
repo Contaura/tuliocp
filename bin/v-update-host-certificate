@@ -24,13 +24,12 @@ hostname=$2
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -59,8 +58,8 @@ check_tulio_demo_mode
 #----------------------------------------------------------#
 
 # Copy hostnames certificates from user dir
-cp /home/$user/conf/web/$hostname/ssl/$hostname.pem $HESTIA/ssl/certificate.crt
-cp /home/$user/conf/web/$hostname/ssl/$hostname.key $HESTIA/ssl/certificate.key
+cp /home/$user/conf/web/$hostname/ssl/$hostname.pem $TULIO/ssl/certificate.crt
+cp /home/$user/conf/web/$hostname/ssl/$hostname.key $TULIO/ssl/certificate.key
 
 # Enable fallback support for mail domains that do not support SSL
 if [[ "$MAIL_SYSTEM" =~ exim ]]; then
@@ -72,13 +71,13 @@ if [[ "$MAIL_SYSTEM" =~ exim ]]; then
 	fi
 
 	# Assign exim permissions to certificate
-	chown $exim_user:mail $HESTIA/ssl/certificate.crt
-	chown $exim_user:mail $HESTIA/ssl/certificate.key
+	chown $exim_user:mail $TULIO/ssl/certificate.crt
+	chown $exim_user:mail $TULIO/ssl/certificate.key
 fi
 
 # Add UPDATE_HOSTNAME_SSL if not exist
 if [ -z "$UPDATE_HOSTNAME_SSL" ]; then
-	echo "UPDATE_HOSTNAME_SSL='yes'" >> "$HESTIA/conf/tulio.conf"
+	echo "UPDATE_HOSTNAME_SSL='yes'" >> "$TULIO/conf/tulio.conf"
 fi
 
 # Restart services

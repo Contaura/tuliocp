@@ -17,11 +17,10 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Perform verification if read-only mode is enabled
 check_tulio_demo_mode
@@ -76,7 +75,7 @@ download_file() {
 	fi
 
 	if [ ! -f "$ARCHIVE_DIR/$filename" ]; then
-		[ "$HESTIA_DEBUG" ] && echo >&2 DEBUG: wget $url -q $dstopt --show-progress --progress=bar:force --limit-rate=3m
+		[ "$TULIO_DEBUG" ] && echo >&2 DEBUG: wget $url -q $dstopt --show-progress --progress=bar:force --limit-rate=3m
 		wget $url -q $dstopt --show-progress --progress=bar:force --limit-rate=3m
 		if [ $? -ne 0 ]; then
 			echo >&2 "[!] Archive $ARCHIVE_DIR/$filename is corrupted and exit script"
@@ -97,13 +96,13 @@ download_file() {
 get_branch_file() {
 	local filename=$1
 	local destination=$2
-	[ "$HESTIA_DEBUG" ] && echo >&2 DEBUG: Get branch file "$filename" to "$destination"
+	[ "$TULIO_DEBUG" ] && echo >&2 DEBUG: Get branch file "$filename" to "$destination"
 	if [ "$use_src_folder" == 'true' ]; then
 		if [ -z "$destination" ]; then
-			[ "$HESTIA_DEBUG" ] && echo >&2 DEBUG: cp -f "$SRC_DIR/$filename" ./
+			[ "$TULIO_DEBUG" ] && echo >&2 DEBUG: cp -f "$SRC_DIR/$filename" ./
 			cp -f "$SRC_DIR/$filename" ./
 		else
-			[ "$HESTIA_DEBUG" ] && echo >&2 DEBUG: cp -f "$SRC_DIR/$filename" "$destination"
+			[ "$TULIO_DEBUG" ] && echo >&2 DEBUG: cp -f "$SRC_DIR/$filename" "$destination"
 			cp -f "$SRC_DIR/$filename" "$destination"
 		fi
 	else
@@ -138,7 +137,7 @@ fi
 
 # Set Version for compiling
 BUILD_VER=$(curl -s https://raw.githubusercontent.com/$fork/tuliocp/$branch/src/deb/tulio/control | grep "Version:" | cut -d' ' -f2)
-HESTIA_V="${BUILD_VER}_${BUILD_ARCH}"
+TULIO_V="${BUILD_VER}_${BUILD_ARCH}"
 
 # Create build directories
 rm -rf $BUILD_DIR
@@ -244,37 +243,37 @@ fi
 GIT_REP='https://raw.githubusercontent.com/'$REPO'/'$branch'/src/deb'
 
 # Generate Links for sourcecode
-HESTIA_ARCHIVE_LINK='https://github.com/'$REPO'/archive/'$branch'.tar.gz'
-echo $HESTIA_ARCHIVE_LINK
+TULIO_ARCHIVE_LINK='https://github.com/'$REPO'/archive/'$branch'.tar.gz'
+echo $TULIO_ARCHIVE_LINK
 
 echo "Building Tulio Control Panel package..."
 
-BUILD_DIR_HESTIA=$BUILD_DIR/tulio_$HESTIA_V
+BUILD_DIR_TULIO=$BUILD_DIR/tulio_$TULIO_V
 
 # Change to build directory
 cd $BUILD_DIR
 
-if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_HESTIA" ]; then
+if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_TULIO" ]; then
 	# Check if target directory exist
-	if [ -d $BUILD_DIR_HESTIA ]; then
-		rm -r $BUILD_DIR_HESTIA
+	if [ -d $BUILD_DIR_TULIO ]; then
+		rm -r $BUILD_DIR_TULIO
 	fi
 
 	# Create directory
-	mkdir -p $BUILD_DIR_HESTIA
+	mkdir -p $BUILD_DIR_TULIO
 fi
 
 cd $BUILD_DIR
 rm -rf $BUILD_DIR/tuliocp-$branch_dash
 # Download and unpack source files
 if [ "$use_src_folder" == 'true' ]; then
-	[ "$HESTIA_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
+	[ "$TULIO_DEBUG" ] && echo DEBUG: cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
 	cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
 elif [ -d $SRC_DIR ]; then
-	download_file $HESTIA_ARCHIVE_LINK '-' 'fresh' | tar xz
+	download_file $TULIO_ARCHIVE_LINK '-' 'fresh' | tar xz
 fi
 
-mkdir -p $BUILD_DIR_HESTIA/usr/local/tulio
+mkdir -p $BUILD_DIR_TULIO/usr/local/tulio
 
 # Move needed directories
 cd $BUILD_DIR/tuliocp-$branch_dash
@@ -282,37 +281,37 @@ cd $BUILD_DIR/tuliocp-$branch_dash
 npm ci
 npm run build
 
-cp -rf bin func install web $BUILD_DIR_HESTIA/usr/local/tulio/
+cp -rf bin func install web $BUILD_DIR_TULIO/usr/local/tulio/
 
 # Set permissions
-find $BUILD_DIR_HESTIA/usr/local/tulio/ -type f -exec chmod -x {} \;
+find $BUILD_DIR_TULIO/usr/local/tulio/ -type f -exec chmod -x {} \;
 
 # Allow send email via /usr/local/tulio/web/inc/mail-wrapper.php via cli
-chmod +x $BUILD_DIR_HESTIA/usr/local/tulio/web/inc/mail-wrapper.php
+chmod +x $BUILD_DIR_TULIO/usr/local/tulio/web/inc/mail-wrapper.php
 # Allow the executable to be executed
-chmod +x $BUILD_DIR_HESTIA/usr/local/tulio/bin/*
-find $BUILD_DIR_HESTIA/usr/local/tulio/install/ \( -name '*.sh' \) -exec chmod +x {} \;
-chmod -x $BUILD_DIR_HESTIA/usr/local/tulio/install/*.sh
-chown -R root:root $BUILD_DIR_HESTIA
+chmod +x $BUILD_DIR_TULIO/usr/local/tulio/bin/*
+find $BUILD_DIR_TULIO/usr/local/tulio/install/ \( -name '*.sh' \) -exec chmod +x {} \;
+chmod -x $BUILD_DIR_TULIO/usr/local/tulio/install/*.sh
+chown -R root:root $BUILD_DIR_TULIO
 
 # Get Debian package files
-mkdir -p $BUILD_DIR_HESTIA/DEBIAN
-get_branch_file 'src/deb/tulio/control' "$BUILD_DIR_HESTIA/DEBIAN/control"
+mkdir -p $BUILD_DIR_TULIO/DEBIAN
+get_branch_file 'src/deb/tulio/control' "$BUILD_DIR_TULIO/DEBIAN/control"
 if [ "$BUILD_ARCH" != "amd64" ]; then
-	sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_HESTIA/DEBIAN/control"
+	sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_TULIO/DEBIAN/control"
 fi
-get_branch_file 'src/deb/tulio/copyright' "$BUILD_DIR_HESTIA/DEBIAN/copyright"
-get_branch_file 'src/deb/tulio/preinst' "$BUILD_DIR_HESTIA/DEBIAN/preinst"
-get_branch_file 'src/deb/tulio/postinst' "$BUILD_DIR_HESTIA/DEBIAN/postinst"
-chmod +x $BUILD_DIR_HESTIA/DEBIAN/postinst
-chmod +x $BUILD_DIR_HESTIA/DEBIAN/preinst
+get_branch_file 'src/deb/tulio/copyright' "$BUILD_DIR_TULIO/DEBIAN/copyright"
+get_branch_file 'src/deb/tulio/preinst' "$BUILD_DIR_TULIO/DEBIAN/preinst"
+get_branch_file 'src/deb/tulio/postinst' "$BUILD_DIR_TULIO/DEBIAN/postinst"
+chmod +x $BUILD_DIR_TULIO/DEBIAN/postinst
+chmod +x $BUILD_DIR_TULIO/DEBIAN/preinst
 
 echo Building Tulio DEB
-dpkg-deb -Zxz --build $BUILD_DIR_HESTIA $DEB_DIR
+dpkg-deb -Zxz --build $BUILD_DIR_TULIO $DEB_DIR
 
 # clear up the source folder
 if [ "$KEEPBUILD" != 'true' ]; then
-	rm -r $BUILD_DIR_HESTIA
+	rm -r $BUILD_DIR_TULIO
 	rm -rf tuliocp-$branch_dash
 fi
 cd $BUILD_DIR/tuliocp-$branch_dash

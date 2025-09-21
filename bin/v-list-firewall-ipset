@@ -17,13 +17,12 @@ format=${1-shell}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio.conf/tulio.conf
-source $HESTIA/conf/tulio.conf
+source $TULIO/conf/tulio.conf
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -39,7 +38,7 @@ is_system_enabled "$FIREWALL_SYSTEM" 'FIREWALL_SYSTEM'
 json_list() {
 	IFS=$'\n'
 	i=1
-	objects=$(grep LISTNAME $HESTIA/data/firewall/ipset.conf | wc -l)
+	objects=$(grep LISTNAME $TULIO/data/firewall/ipset.conf | wc -l)
 	echo "{"
 	while read str; do
 		[[ -z "$str" ]] && continue
@@ -54,7 +53,7 @@ json_list() {
     }'
 		[[ "$i" -lt "$objects" ]] && echo ',' || echo
 		((i++))
-	done < <(cat $HESTIA/data/firewall/ipset.conf)
+	done < <(cat $TULIO/data/firewall/ipset.conf)
 	echo '}'
 }
 
@@ -67,7 +66,7 @@ shell_list() {
 		[[ -z "$str" ]] && continue
 		parse_object_kv_list "$str"
 		echo "$LISTNAME^$IP_VERSION^$AUTOUPDATE^$SUSPENDED^$SOURCE^$TIME^$DATE"
-	done < <(cat $HESTIA/data/firewall/ipset.conf)
+	done < <(cat $TULIO/data/firewall/ipset.conf)
 }
 
 # PLAIN list function
@@ -78,7 +77,7 @@ plain_list() {
 		parse_object_kv_list "$str"
 		echo -ne "$LISTNAME\t$IP_VERSION\t$AUTOUPDATE\t$SUSPENDED\t$SOURCE\t"
 		echo -e "$TIME\t$DATE"
-	done < <(cat $HESTIA/data/firewall/ipset.conf)
+	done < <(cat $TULIO/data/firewall/ipset.conf)
 }
 
 # CSV list function
@@ -90,10 +89,10 @@ csv_list() {
 		parse_object_kv_list "$str"
 		echo -n "$LISTNAME,$IP_VERSION,$AUTOUPDATE,$SUSPENDED,\"$SOURCE\","
 		echo "$TIME,$DATE"
-	done < <(cat $HESTIA/data/firewall/ipset.conf)
+	done < <(cat $TULIO/data/firewall/ipset.conf)
 }
 
-[ ! -f "$HESTIA/data/firewall/ipset.conf" ] && touch "$HESTIA/data/firewall/ipset.conf"
+[ ! -f "$TULIO/data/firewall/ipset.conf" ] && touch "$TULIO/data/firewall/ipset.conf"
 
 # Listing data
 case $format in

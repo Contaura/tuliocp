@@ -5,7 +5,7 @@
 # example: v-add-access-key admin v-purge-nginx-cache,v-list-mail-accounts comment json
 #
 # The "PERMISSIONS" argument is optional for the admin user only.
-# This function creates a key file in $HESTIA/data/access-keys/
+# This function creates a key file in $TULIO/data/access-keys/
 
 #----------------------------------------------------------#
 #                Variables & Functions                     #
@@ -21,11 +21,10 @@ format=${4-shell}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 keygen() {
 	local LENGTH=${1:-20}
@@ -71,29 +70,29 @@ is_key_permissions_format_valid "$permissions" "$user"
 #                       Action                             #
 #----------------------------------------------------------#
 
-if [ ! -d "$HESTIA/data/access-keys/" ]; then
-	mkdir -p $HESTIA/data/access-keys/
-	chown root:root $HESTIA/data/access-keys/
-	chmod 750 $HESTIA/data/access-keys/
+if [ ! -d "$TULIO/data/access-keys/" ]; then
+	mkdir -p $TULIO/data/access-keys/
+	chown root:root $TULIO/data/access-keys/
+	chmod 750 $TULIO/data/access-keys/
 fi
 
-if [[ -e "$HESTIA/data/access-keys/${access_key_id}" ]]; then
-	while [[ -e "$HESTIA/data/access-keys/${access_key_id}" ]]; do
+if [[ -e "$TULIO/data/access-keys/${access_key_id}" ]]; then
+	while [[ -e "$TULIO/data/access-keys/${access_key_id}" ]]; do
 		access_key_id=$(keygen)
 	done
 fi
 
-echo "SECRET_ACCESS_KEY='$secret_access_key'" > "$HESTIA/data/access-keys/${access_key_id}"
-echo "USER='$user'" >> "$HESTIA/data/access-keys/${access_key_id}"
-echo "PERMISSIONS='$permissions'" >> "$HESTIA/data/access-keys/${access_key_id}"
-echo "COMMENT='$comment'" >> "$HESTIA/data/access-keys/${access_key_id}"
-echo "TIME='$time'" >> "$HESTIA/data/access-keys/${access_key_id}"
-echo "DATE='$date'" >> "$HESTIA/data/access-keys/${access_key_id}"
+echo "SECRET_ACCESS_KEY='$secret_access_key'" > "$TULIO/data/access-keys/${access_key_id}"
+echo "USER='$user'" >> "$TULIO/data/access-keys/${access_key_id}"
+echo "PERMISSIONS='$permissions'" >> "$TULIO/data/access-keys/${access_key_id}"
+echo "COMMENT='$comment'" >> "$TULIO/data/access-keys/${access_key_id}"
+echo "TIME='$time'" >> "$TULIO/data/access-keys/${access_key_id}"
+echo "DATE='$date'" >> "$TULIO/data/access-keys/${access_key_id}"
 # TODO Index reserved for future implementation
-echo "EXPIRES_IN=''" >> "$HESTIA/data/access-keys/${access_key_id}"
-echo "IP=''" >> "$HESTIA/data/access-keys/${access_key_id}"
+echo "EXPIRES_IN=''" >> "$TULIO/data/access-keys/${access_key_id}"
+echo "IP=''" >> "$TULIO/data/access-keys/${access_key_id}"
 
-chmod 640 "$HESTIA/data/access-keys/${access_key_id}"
+chmod 640 "$TULIO/data/access-keys/${access_key_id}"
 
 $BIN/v-list-access-key "$access_key_id" "$format"
 

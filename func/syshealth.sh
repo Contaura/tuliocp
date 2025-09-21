@@ -596,7 +596,7 @@ function syshealth_repair_system_cronjobs() {
 	echo "41 4 * * * sudo /usr/local/tulio/bin/v-update-sys-tulio-all" >> /var/spool/cron/crontabs/tulioweb
 }
 
-# Adapt Port Listing in HESTIA NGINX Backend
+# Adapt Port Listing in TULIO NGINX Backend
 # Activates or deactivates port listing on IPV4 or/and IPV6 network interfaces
 function syshealth_adapt_tulio_nginx_listen_ports() {
 	# Detect "physical" NICs only (virtual NICs created by Docker, WireGuard etc. are excluded)

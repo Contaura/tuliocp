@@ -17,44 +17,44 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 print_status() {
-    echo -e "${BLUE}[INFO]${NC} $1"
+	echo -e "${BLUE}[INFO]${NC} $1"
 }
 
 print_success() {
-    echo -e "${GREEN}[SUCCESS]${NC} $1"
+	echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 
 print_warning() {
-    echo -e "${YELLOW}[WARNING]${NC} $1"
+	echo -e "${YELLOW}[WARNING]${NC} $1"
 }
 
 print_error() {
-    echo -e "${RED}[ERROR]${NC} $1"
+	echo -e "${RED}[ERROR]${NC} $1"
 }
 
 # Function to run command and capture output
 run_test() {
-    local test_name="$1"
-    local command="$2"
-    local required="${3:-false}"
-    
-    print_status "Running: $test_name"
-    echo "Command: $command"
-    echo "----------------------------------------"
-    
-    if eval "$command"; then
-        print_success "$test_name - PASSED"
-        return 0
-    else
-        if [[ "$required" == "true" ]]; then
-            print_error "$test_name - FAILED (CRITICAL)"
-            return 1
-        else
-            print_warning "$test_name - FAILED (NON-CRITICAL)"
-            return 0
-        fi
-    fi
-    echo ""
+	local test_name="$1"
+	local command="$2"
+	local required="${3:-false}"
+
+	print_status "Running: $test_name"
+	echo "Command: $command"
+	echo "----------------------------------------"
+
+	if eval "$command"; then
+		print_success "$test_name - PASSED"
+		return 0
+	else
+		if [[ "$required" == "true" ]]; then
+			print_error "$test_name - FAILED (CRITICAL)"
+			return 1
+		else
+			print_warning "$test_name - FAILED (NON-CRITICAL)"
+			return 0
+		fi
+	fi
+	echo ""
 }
 
 # Test 1: Environment Check
@@ -107,27 +107,27 @@ print_status "Running package build test..."
 cd /opt/tuliocp-build/tuliocp
 
 if ./src/build-minimal-package.sh; then
-    print_success "Package build completed successfully!"
-    
-    # Check for created packages
-    if ls /tmp/*.deb 1> /dev/null 2>&1; then
-        print_success "Package files found:"
-        ls -la /tmp/*.deb
-        
-        # Show package details
-        for deb in /tmp/*.deb; do
-            echo ""
-            print_status "Package info for $(basename $deb):"
-            dpkg-deb --info "$deb" | head -15
-            echo "Package contents:"
-            dpkg-deb --contents "$deb" | head -10
-            echo "..."
-        done
-    else
-        print_error "No package files found in /tmp/"
-    fi
+	print_success "Package build completed successfully!"
+
+	# Check for created packages
+	if ls /tmp/*.deb 1> /dev/null 2>&1; then
+		print_success "Package files found:"
+		ls -la /tmp/*.deb
+
+		# Show package details
+		for deb in /tmp/*.deb; do
+			echo ""
+			print_status "Package info for $(basename $deb):"
+			dpkg-deb --info "$deb" | head -15
+			echo "Package contents:"
+			dpkg-deb --contents "$deb" | head -10
+			echo "..."
+		done
+	else
+		print_error "No package files found in /tmp/"
+	fi
 else
-    print_error "Package build FAILED!"
+	print_error "Package build FAILED!"
 fi
 
 echo ""
@@ -136,29 +136,29 @@ echo ""
 print_status "=== STEP 5: REPOSITORY DEPLOYMENT TEST ==="
 
 if [[ -f "/opt/tuliocp-build/deploy-to-repo.sh" ]]; then
-    print_status "Testing repository deployment script..."
-    if /opt/tuliocp-build/deploy-to-repo.sh; then
-        print_success "Repository deployment test completed!"
-        
-        # Check repository structure
-        if [[ -d "/tmp/tuliocp-repo" ]]; then
-            print_status "Repository structure created:"
-            find /tmp/tuliocp-repo -type f | head -20
-            
-            print_status "Packages file content:"
-            if [[ -f "/tmp/tuliocp-repo/dists/stable/main/binary-amd64/Packages" ]]; then
-                cat /tmp/tuliocp-repo/dists/stable/main/binary-amd64/Packages
-            else
-                print_warning "Packages file not found"
-            fi
-        else
-            print_error "Repository directory not created"
-        fi
-    else
-        print_error "Repository deployment script failed!"
-    fi
+	print_status "Testing repository deployment script..."
+	if /opt/tuliocp-build/deploy-to-repo.sh; then
+		print_success "Repository deployment test completed!"
+
+		# Check repository structure
+		if [[ -d "/tmp/tuliocp-repo" ]]; then
+			print_status "Repository structure created:"
+			find /tmp/tuliocp-repo -type f | head -20
+
+			print_status "Packages file content:"
+			if [[ -f "/tmp/tuliocp-repo/dists/stable/main/binary-amd64/Packages" ]]; then
+				cat /tmp/tuliocp-repo/dists/stable/main/binary-amd64/Packages
+			else
+				print_warning "Packages file not found"
+			fi
+		else
+			print_error "Repository directory not created"
+		fi
+	else
+		print_error "Repository deployment script failed!"
+	fi
 else
-    print_warning "Repository deployment script not found"
+	print_warning "Repository deployment script not found"
 fi
 
 echo ""
@@ -167,15 +167,15 @@ echo ""
 print_status "=== STEP 6: GITHUB ACTIONS RUNNER STATUS ==="
 
 if [[ -d "$HOME/actions-runner" ]]; then
-    run_test "Check runner installation" "ls -la $HOME/actions-runner/"
-    
-    run_test "Check runner service status" "cd $HOME/actions-runner && sudo ./svc.sh status || ./svc.sh status || echo 'Service not running'"
-    
-    if [[ -d "$HOME/actions-runner/_diag" ]]; then
-        run_test "Check recent runner logs" "cd $HOME/actions-runner && ls -la _diag/ && tail -20 _diag/Runner_*.log 2>/dev/null || echo 'No recent logs'"
-    fi
+	run_test "Check runner installation" "ls -la $HOME/actions-runner/"
+
+	run_test "Check runner service status" "cd $HOME/actions-runner && sudo ./svc.sh status || ./svc.sh status || echo 'Service not running'"
+
+	if [[ -d "$HOME/actions-runner/_diag" ]]; then
+		run_test "Check recent runner logs" "cd $HOME/actions-runner && ls -la _diag/ && tail -20 _diag/Runner_*.log 2>/dev/null || echo 'No recent logs'"
+	fi
 else
-    print_warning "GitHub Actions runner not installed in $HOME/actions-runner"
+	print_warning "GitHub Actions runner not installed in $HOME/actions-runner"
 fi
 
 echo ""
@@ -197,27 +197,27 @@ echo ""
 print_status "=== STEP 8: WEBHOOK HANDLER TEST ==="
 
 if [[ -f "/opt/tuliocp-build/webhook-handler.py" ]]; then
-    print_status "Webhook handler found, testing Python requirements..."
-    run_test "Test Python HTTP server" "python3 -c 'from http.server import HTTPServer, BaseHTTPRequestHandler; print(\"HTTP server module available\")'"
-    
-    print_status "Starting webhook handler test (5 second timeout)..."
-    # Start webhook handler in background and test it
-    cd /opt/tuliocp-build
-    timeout 5s python3 webhook-handler.py &
-    WEBHOOK_PID=$!
-    sleep 2
-    
-    # Test webhook endpoint
-    if curl -X POST http://localhost:8080/build 2>/dev/null; then
-        print_success "Webhook handler responds to requests"
-    else
-        print_warning "Webhook handler test failed or timed out"
-    fi
-    
-    # Kill webhook handler
-    kill $WEBHOOK_PID 2>/dev/null || true
+	print_status "Webhook handler found, testing Python requirements..."
+	run_test "Test Python HTTP server" "python3 -c 'from http.server import HTTPServer, BaseHTTPRequestHandler; print(\"HTTP server module available\")'"
+
+	print_status "Starting webhook handler test (5 second timeout)..."
+	# Start webhook handler in background and test it
+	cd /opt/tuliocp-build
+	timeout 5s python3 webhook-handler.py &
+	WEBHOOK_PID=$!
+	sleep 2
+
+	# Test webhook endpoint
+	if curl -X POST http://localhost:8080/build 2> /dev/null; then
+		print_success "Webhook handler responds to requests"
+	else
+		print_warning "Webhook handler test failed or timed out"
+	fi
+
+	# Kill webhook handler
+	kill $WEBHOOK_PID 2> /dev/null || true
 else
-    print_warning "Webhook handler not found"
+	print_warning "Webhook handler not found"
 fi
 
 echo ""
@@ -250,10 +250,10 @@ echo "Test completed at: $(date)"
 echo ""
 
 print_status "Key findings:"
-echo "- Build environment: $(ls -d /opt/tuliocp-build 2>/dev/null && echo 'EXISTS' || echo 'MISSING')"
-echo "- Package files: $(ls /tmp/*.deb 2>/dev/null | wc -l) .deb files found"
-echo "- Repository structure: $(ls -d /tmp/tuliocp-repo 2>/dev/null && echo 'CREATED' || echo 'NOT CREATED')"
-echo "- GitHub runner: $(ls -d $HOME/actions-runner 2>/dev/null && echo 'INSTALLED' || echo 'NOT INSTALLED')"
+echo "- Build environment: $(ls -d /opt/tuliocp-build 2> /dev/null && echo 'EXISTS' || echo 'MISSING')"
+echo "- Package files: $(ls /tmp/*.deb 2> /dev/null | wc -l) .deb files found"
+echo "- Repository structure: $(ls -d /tmp/tuliocp-repo 2> /dev/null && echo 'CREATED' || echo 'NOT CREATED')"
+echo "- GitHub runner: $(ls -d $HOME/actions-runner 2> /dev/null && echo 'INSTALLED' || echo 'NOT INSTALLED')"
 echo ""
 
 print_status "Next steps based on results:"

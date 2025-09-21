@@ -14,13 +14,12 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+source $TULIO/func/syshealth.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Perform verification if read-only mode is enabled
 check_tulio_demo_mode
@@ -40,7 +39,7 @@ fi
 
 # Checking user certificates
 for user in $("$BIN/v-list-users" list); do
-	USER_DATA=$HESTIA/data/users/$user
+	USER_DATA=$TULIO/data/users/$user
 
 	for domain in $(search_objects 'web' 'LETSENCRYPT' 'yes' 'DOMAIN'); do
 		# Clear any keys related to web domains

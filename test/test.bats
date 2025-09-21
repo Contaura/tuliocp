@@ -1728,11 +1728,11 @@ function check_ip_not_banned(){
     assert_success
     refute_output
 
-    run grep "RECORD='_domainkey'" "${HESTIA}/data/users/${user}/dns/${domain}.conf"
+    run grep "RECORD='_domainkey'" "${TULIO}/data/users/${user}/dns/${domain}.conf"
     assert_failure
     refute_output
 
-    run grep "RECORD='mail._domainkey'" "${HESTIA}/data/users/${user}/dns/${domain}.conf"
+    run grep "RECORD='mail._domainkey'" "${TULIO}/data/users/${user}/dns/${domain}.conf"
     assert_failure
     refute_output
 }
@@ -1742,11 +1742,11 @@ function check_ip_not_banned(){
     assert_success
     refute_output
 
-    run grep "RECORD='_domainkey'" "${HESTIA}/data/users/${user}/dns/${domain}.conf"
+    run grep "RECORD='_domainkey'" "${TULIO}/data/users/${user}/dns/${domain}.conf"
     assert_success
     assert_output --partial "RECORD='_domainkey' TYPE='TXT'"
 
-    run grep "RECORD='mail._domainkey'" "${HESTIA}/data/users/${user}/dns/${domain}.conf"
+    run grep "RECORD='mail._domainkey'" "${TULIO}/data/users/${user}/dns/${domain}.conf"
     assert_success
     assert_output  --partial "RECORD='mail._domainkey' TYPE='TXT'"
 }
@@ -1760,7 +1760,7 @@ function check_ip_not_banned(){
     assert_success
     refute_output
 
-    run grep "RECORD='k2._domainkey'" "${HESTIA}/data/users/${user}/dns/${domain}.conf"
+    run grep "RECORD='k2._domainkey'" "${TULIO}/data/users/${user}/dns/${domain}.conf"
     assert_success
     assert_output --partial "RECORD='k2._domainkey' TYPE='TXT'"
 }
@@ -2059,43 +2059,43 @@ function check_ip_not_banned(){
 #----------------------------------------------------------#
 
 @test "Firewall: Add ip to banlist" {
-  run v-add-firewall-ban '1.2.3.4' 'HESTIA'
+  run v-add-firewall-ban '1.2.3.4' 'TULIO'
   assert_success
   refute_output
 
-  check_ip_banned '1.2.3.4' 'HESTIA'
+  check_ip_banned '1.2.3.4' 'TULIO'
 }
 
 @test "Firewall: Delete ip to banlist" {
-  run v-delete-firewall-ban '1.2.3.4' 'HESTIA'
+  run v-delete-firewall-ban '1.2.3.4' 'TULIO'
   assert_success
   refute_output
-  check_ip_not_banned '1.2.3.4' 'HESTIA'
+  check_ip_not_banned '1.2.3.4' 'TULIO'
 }
 
 @test "Firewall: Add ip to banlist for ALL" {
-  run v-add-firewall-ban '1.2.3.4' 'HESTIA'
+  run v-add-firewall-ban '1.2.3.4' 'TULIO'
   assert_success
   refute_output
   run v-add-firewall-ban '1.2.3.4' 'MAIL'
   assert_success
   refute_output
-  check_ip_banned '1.2.3.4' 'HESTIA'
+  check_ip_banned '1.2.3.4' 'TULIO'
 }
 
 @test "Firewall: Delete ip to banlist CHAIN = ALL" {
   run v-delete-firewall-ban '1.2.3.4' 'ALL'
   assert_success
   refute_output
-  check_ip_not_banned '1.2.3.4' 'HESTIA'
+  check_ip_not_banned '1.2.3.4' 'TULIO'
 }
 
 @test "Test Whitelist Fail2ban" {
 
 echo   "1.2.3.4" >> $TULIO/data/firewall/excludes.conf
-  run v-add-firewall-ban '1.2.3.4' 'HESTIA'
+  run v-add-firewall-ban '1.2.3.4' 'TULIO'
   rm $TULIO/data/firewall/excludes.conf
-  check_ip_not_banned '1.2.3.4' 'HESTIA'
+  check_ip_not_banned '1.2.3.4' 'TULIO'
 }
 
 @test "Test create ipset" {

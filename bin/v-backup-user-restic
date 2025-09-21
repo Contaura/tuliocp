@@ -17,17 +17,16 @@ notify=${2-no}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/db.sh
-source $HESTIA/func/db.sh
+source $TULIO/func/db.sh
 # shellcheck source=/usr/local/tulio/func/backup.sh
-source $HESTIA/func/backup.sh
+source $TULIO/func/backup.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -49,9 +48,9 @@ check_tulio_demo_mode
 
 # Set notification email and subject
 subj="$user → backup failed"
-email=$(grep CONTACT "$HESTIA/data/users/$ROOT_USER/user.conf" | cut -f 2 -d \')
+email=$(grep CONTACT "$TULIO/data/users/$ROOT_USER/user.conf" | cut -f 2 -d \')
 
-source_conf $HESTIA/conf/restic.conf
+source_conf $TULIO/conf/restic.conf
 
 if [ ! -f "$USER_DATA/restic.conf" ]; then
 	password=$(generate_password '' '32')
@@ -109,7 +108,7 @@ if [ -e "$BACKUP/$user.log" ] && [ "$notify" = "yes" ]; then
 fi
 
 # Deleting task from queue
-sed -i "/v-backup-user-restic $user /d" $HESTIA/data/queue/backup.pipe
+sed -i "/v-backup-user-restic $user /d" $TULIO/data/queue/backup.pipe
 
 # Logging
 $BIN/v-log-action "$user" "Info" "Backup" "Backup created."

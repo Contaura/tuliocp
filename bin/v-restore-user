@@ -31,23 +31,22 @@ fi
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/backup.sh
-source $HESTIA/func/backup.sh
+source $TULIO/func/backup.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # shellcheck source=/usr/local/tulio/func/db.sh
-source $HESTIA/func/db.sh
+source $TULIO/func/db.sh
 # shellcheck source=/usr/local/tulio/func/rebuild.sh
-source $HESTIA/func/rebuild.sh
+source $TULIO/func/rebuild.sh
 # shellcheck source=/usr/local/tulio/func/syshealth.sh
-source $HESTIA/func/syshealth.sh
+source $TULIO/func/syshealth.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -104,14 +103,14 @@ if [ -z "$check_user" ]; then
 	email=$(get_user_value '$CONTACT')
 else
 	create_user="yes"
-	email=$(grep CONTACT "$HESTIA/data/users/$ROOT_USER/user.conf" | cut -f2 -d \')
+	email=$(grep CONTACT "$TULIO/data/users/$ROOT_USER/user.conf" | cut -f2 -d \')
 fi
 
 # Checking available disk space
 disk_usage=$(df $BACKUP | tail -n1 | tr ' ' '\n' | grep % | cut -f 1 -d %)
 if [ "$disk_usage" -ge "$BACKUP_DISK_LIMIT" ]; then
 	echo "Error: Not enough disk space" | $SENDMAIL -s "$subj" $email $notify
-	sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+	sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 	check_result "$E_DISK" "Not enough disk space"
 fi
 
@@ -124,7 +123,7 @@ while [ "$la" -ge "$BACKUP_LA_LIMIT" ]; do
 	if [ "$i" -ge "15" ]; then
 		la_error="LoadAverage $la is above threshold"
 		echo "Error: $la_error" | $SENDMAIL -s "$subj" $email $notify
-		sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+		sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 		check_result "$E_LA" "$la_error"
 	fi
 	la=$(cat /proc/loadavg | cut -f 1 -d ' ' | cut -f 1 -d '.')
@@ -139,7 +138,7 @@ fi
 tmpdir=$(mktemp -p $BACKUP_TEMP -d)
 if [ "$?" -ne 0 ]; then
 	echo "Can't create tmp dir $tmpdir" | $SENDMAIL -s "$subj" $email $notify
-	sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+	sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 	check_result "$E_NOTEXIST" "Can't create tmp dir"
 fi
 
@@ -173,7 +172,7 @@ if [ "$create_user" = 'yes' ]; then
 	if [ "$?" -ne 0 ]; then
 		rm -rf $tmpdir
 		echo "Can't unpack user container" | $SENDMAIL -s "$subj" $email $notify
-		sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+		sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 		check_result "$E_PARSING" "Can't unpack user container"
 	fi
 
@@ -193,7 +192,7 @@ tar xf $BACKUP/$backup -C $tmpdir ./pam
 if [ "$?" -ne 0 ]; then
 	rm -rf $tmpdir
 	echo "Can't unpack PAM container" | $SENDMAIL -s "$subj" $email $notify
-	sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+	sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 	check_result "$E_PARSING" "Can't unpack PAM container"
 fi
 old_user=$(cut -f 1 -d : $tmpdir/pam/passwd)
@@ -234,7 +233,7 @@ if [ "$web" != 'no' ] && [ -n "$WEB_SYSTEM" ]; then
 				rm -rf $tmpdir
 				error="$domain belongs to another user"
 				echo "$error" | $SENDMAIL -s "$subj" $email $notify
-				sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+				sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 				check_result "$E_PARSING" "$error"
 			fi
 		fi
@@ -245,7 +244,7 @@ if [ "$web" != 'no' ] && [ -n "$WEB_SYSTEM" ]; then
 			rm -rf $tmpdir
 			error="Can't unpack $domain web container"
 			echo "$error" | $SENDMAIL -s "$subj" $email $notify
-			sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+			sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 			check_result "$E_PARSING" "$error"
 		fi
 
@@ -386,7 +385,7 @@ if [ "$web" != 'no' ] && [ -n "$WEB_SYSTEM" ]; then
 			rm -rf $tmpdir
 			error="Can't unpack $domain data tarball"
 			echo "$error" | $SENDMAIL -s "$subj" $email $notify
-			sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+			sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 			check_result "$E_PARSING" "$error"
 		fi
 
@@ -401,8 +400,8 @@ if [ "$web" != 'no' ] && [ -n "$WEB_SYSTEM" ]; then
 	done
 
 	# Adding user to traffic queue
-	sed -i "/ $user /d" $HESTIA/data/queue/traffic.pipe
-	echo "$BIN/v-update-web-domains-traff $user" >> $HESTIA/data/queue/traffic.pipe
+	sed -i "/ $user /d" $TULIO/data/queue/traffic.pipe
+	echo "$BIN/v-update-web-domains-traff $user" >> $TULIO/data/queue/traffic.pipe
 
 	# Restarting web server
 	$BIN/v-restart-web
@@ -443,7 +442,7 @@ if [ "$dns" != 'no' ] && [ -n "$DNS_SYSTEM" ]; then
 				rm -rf $tmpdir
 				error="$domain belongs to another user"
 				echo "$error" | $SENDMAIL -s "$subj" $email $notify
-				sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+				sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 				check_result "$E_PARSING" "$error"
 			fi
 		fi
@@ -454,7 +453,7 @@ if [ "$dns" != 'no' ] && [ -n "$DNS_SYSTEM" ]; then
 			rm -rf $tmpdir
 			error="Can't unpack $domain dns container"
 			echo "$error" | $SENDMAIL -s "$subj" $email $notify
-			sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+			sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 			check_result "$E_PARSING" "$error"
 		fi
 
@@ -507,7 +506,7 @@ if [ "$dns" != 'no' ] && [ -n "$DNS_SYSTEM" ]; then
 		# Updating dns-cluster queue
 		if [ -n "$DNS_CLUSTER" ]; then
 			cmd="$BIN/v-add-remote-dns-domain $user $domain yes"
-			echo "$cmd" >> $HESTIA/data/queue/dns-cluster.pipe
+			echo "$cmd" >> $TULIO/data/queue/dns-cluster.pipe
 		fi
 	done
 
@@ -550,7 +549,7 @@ if [ "$mail" != 'no' ] && [ -n "$MAIL_SYSTEM" ]; then
 				rm -rf $tmpdir
 				error="$domain belongs to another user"
 				echo "$error" | $SENDMAIL -s "$subj" $email $notify
-				sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+				sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 				check_result "$E_PARSING" "$error"
 			fi
 		fi
@@ -562,7 +561,7 @@ if [ "$mail" != 'no' ] && [ -n "$MAIL_SYSTEM" ]; then
 			rm -rf $tmpdir
 			error="Can't unpack $domain mail container"
 			echo "$error" | $SENDMAIL -s "$subj" $email $notify
-			sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+			sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 			check_result "$E_PARSING" "$error"
 		fi
 
@@ -580,8 +579,8 @@ if [ "$mail" != 'no' ] && [ -n "$MAIL_SYSTEM" ]; then
 		# Restore SSL
 		check_config=$(grep "DOMAIN='$domain'" $USER_DATA/mail.conf | grep -o "SSL='yes'")
 		if [ -n "$check_config" ]; then
-			if [ ! -e "$HESTIA/data/users/$user/ssl/" ]; then
-				mkdir -p $HESTIA/data/users/$user/ssl/
+			if [ ! -e "$TULIO/data/users/$user/ssl/" ]; then
+				mkdir -p $TULIO/data/users/$user/ssl/
 			fi
 
 			if [ ! -e "$HOMEDIR/$user/conf/mail/$domain/ssl/" ]; then
@@ -677,7 +676,7 @@ if [ "$mail" != 'no' ] && [ -n "$MAIL_SYSTEM" ]; then
 					rm -rf $tmpdir
 					error="Can't unpack $domain mail account container"
 					echo "$error" | $SENDMAIL -s "$subj" $email $notify
-					sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+					sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 					check_result "$E_PARSING" "$error"
 				fi
 
@@ -692,7 +691,7 @@ if [ "$mail" != 'no' ] && [ -n "$MAIL_SYSTEM" ]; then
 					rm -rf $tmpdir
 					error="Can't unpack $domain mail account container"
 					echo "$error" | $SENDMAIL -s "$subj" $email $notify
-					sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+					sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 					check_result "$E_PARSING" "$error"
 				fi
 
@@ -751,7 +750,7 @@ if [ "$db" != 'no' ] && [ -n "$DB_SYSTEM" ]; then
 			rm -rf $tmpdir
 			error="Can't unpack $database database container"
 			echo "$error" | $SENDMAIL -s "$subj" $email $notify
-			sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+			sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 			check_result "$E_PARSING" "$error"
 		fi
 
@@ -810,7 +809,7 @@ if [ "$cron" != 'no' ] && [ -n "$CRON_SYSTEM" ]; then
 		rm -rf $tmpdir
 		error="Can't unpack cron container"
 		echo "$error" | $SENDMAIL -s "$subj" $email $notify
-		sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+		sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 		check_result "$E_PARSING" "$error"
 	fi
 
@@ -874,7 +873,7 @@ if [ "$udir" != 'no' ]; then
 				rm -rf $tmpdir
 				error="Can't unpack $user_dir user dir container"
 				echo "$error" | $SENDMAIL -s "$subj" $email $notify
-				sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+				sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 				check_result "$E_PARSING" "$error"
 			fi
 
@@ -892,7 +891,7 @@ if [ "$udir" != 'no' ]; then
 				rm -rf $tmpdir
 				error="Can't unpack $user_dir user dir container"
 				echo "$error" | $SENDMAIL -s "$subj" $email $notify
-				sed -i "/ $user /d" $HESTIA/data/queue/backup.pipe
+				sed -i "/ $user /d" $TULIO/data/queue/backup.pipe
 				check_result "$E_PARSING" "$error"
 			fi
 
@@ -924,7 +923,7 @@ $BIN/v-add-user-notification "$user" "Backup restored successfully" "<p><span cl
 rm -rf $tmpdir
 
 # Cleaning restore queue
-sed -i "/v-restore-user $user /d" $HESTIA/data/queue/backup.pipe
+sed -i "/v-restore-user $user /d" $TULIO/data/queue/backup.pipe
 
 #----------------------------------------------------------#
 #                       TulioCP                            #

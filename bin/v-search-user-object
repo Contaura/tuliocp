@@ -19,11 +19,10 @@ format=${3-shell}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Perform verification if read-only mode is enabled
 check_tulio_demo_mode
@@ -96,13 +95,13 @@ IFS=$'\n'
 
 # Search query
 search=$(grep "$object" \
-	$HESTIA/data/users/$user/web.conf \
-	$HESTIA/data/users/$user/dns.conf \
-	$HESTIA/data/users/$user/dns/*.conf \
-	$HESTIA/data/users/$user/mail.conf \
-	$HESTIA/data/users/$user/mail/*.conf \
-	$HESTIA/data/users/$user/db.conf \
-	$HESTIA/data/users/$user/cron.conf 2> /dev/null)
+	$TULIO/data/users/$user/web.conf \
+	$TULIO/data/users/$user/dns.conf \
+	$TULIO/data/users/$user/dns/*.conf \
+	$TULIO/data/users/$user/mail.conf \
+	$TULIO/data/users/$user/mail/*.conf \
+	$TULIO/data/users/$user/db.conf \
+	$TULIO/data/users/$user/cron.conf 2> /dev/null)
 
 for row in $search; do
 	# Initialise variable

@@ -12,14 +12,13 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
-source $HESTIA/func/db.sh
+source $TULIO/func/main.sh
+source $TULIO/func/db.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 # upgrade config file
-source "$HESTIA/install/upgrade/upgrade.conf"
+source "$TULIO/install/upgrade/upgrade.conf"
 
 MODE=$2
 UPDATE="no"
@@ -44,12 +43,12 @@ if [ "x$(id -u)" != 'x0' ]; then
 	exit 10
 fi
 
-# Ensure that $HESTIA (/usr/local/tulio/) and other variables are valid.
-if [ -z "$HESTIA" ]; then
-	HESTIA="/usr/local/tulio"
+# Ensure that $TULIO (/usr/local/tulio/) and other variables are valid.
+if [ -z "$TULIO" ]; then
+	TULIO="/usr/local/tulio"
 fi
 
-if [ -z "$HOMEDIR" ] || [ -z "$HESTIA_COMMON_DIR" ]; then
+if [ -z "$HOMEDIR" ] || [ -z "$TULIO_COMMON_DIR" ]; then
 	echo "ERROR: Environment variables not present, installation aborted."
 	exit 2
 fi
@@ -100,21 +99,21 @@ if [ "$UPDATE" == "no" ]; then
 	rm -f -r $RC_INSTALL_DIR/config/
 	ln -s $RC_CONFIG_DIR/ ./config
 	# Replace with Tulio config
-	cp -f $HESTIA_COMMON_DIR/roundcube/main.inc.php $RC_CONFIG_DIR/config.inc.php
-	cp -f $HESTIA_COMMON_DIR/roundcube/mimetypes.php $RC_CONFIG_DIR/mimetypes.php
+	cp -f $TULIO_COMMON_DIR/roundcube/main.inc.php $RC_CONFIG_DIR/config.inc.php
+	cp -f $TULIO_COMMON_DIR/roundcube/mimetypes.php $RC_CONFIG_DIR/mimetypes.php
 	chmod 644 $RC_CONFIG_DIR/*.php
 
-	cp -f $HESTIA_COMMON_DIR/roundcube/tulio.php $RC_INSTALL_DIR/plugins/password/drivers/
+	cp -f $TULIO_COMMON_DIR/roundcube/tulio.php $RC_INSTALL_DIR/plugins/password/drivers/
 	mkdir -p $RC_CONFIG_DIR/plugins/password
 	mkdir -p $RC_CONFIG_DIR/plugins/newmail_notifier
 	mkdir -p $RC_CONFIG_DIR/plugins/zipdownload
 
 	# Allow changes to the respective config / Create symlinks to /etc/roundcube/
-	cp -f $HESTIA_COMMON_DIR/roundcube/config.inc.php $RC_CONFIG_DIR/plugins/password/config.inc.php
+	cp -f $TULIO_COMMON_DIR/roundcube/config.inc.php $RC_CONFIG_DIR/plugins/password/config.inc.php
 	ln -s $RC_CONFIG_DIR/plugins/password/config.inc.php ./plugins/password/config.inc.php
-	cp -f $HESTIA_COMMON_DIR/roundcube/plugins/config_newmail_notifier.inc.php $RC_CONFIG_DIR/plugins/newmail_notifier/config.inc.php
+	cp -f $TULIO_COMMON_DIR/roundcube/plugins/config_newmail_notifier.inc.php $RC_CONFIG_DIR/plugins/newmail_notifier/config.inc.php
 	ln -s $RC_CONFIG_DIR/plugins/newmail_notifier/config.inc.php ./plugins/newmail_notifier/config.inc.php
-	cp -f $HESTIA_COMMON_DIR/roundcube/plugins/config_zipdownload.inc.php $RC_CONFIG_DIR/plugins/zipdownload/config.inc.php
+	cp -f $TULIO_COMMON_DIR/roundcube/plugins/config_zipdownload.inc.php $RC_CONFIG_DIR/plugins/zipdownload/config.inc.php
 	ln -s $RC_CONFIG_DIR/plugins/zipdownload/config.inc.php ./plugins/zipdownload/config.inc.php
 
 	# Set up correct permissions roundcube
@@ -168,7 +167,7 @@ if [ "$UPDATE" == "no" ]; then
 	rm -f -r $RC_INSTALL_DIR/$RC_EXTRACT
 
 	# Updating tulio.conf
-	if [ -z "$(grep WEBMAIL_SYSTEM $HESTIA/conf/tulio.conf)" ]; then
+	if [ -z "$(grep WEBMAIL_SYSTEM $TULIO/conf/tulio.conf)" ]; then
 		$BIN/v-change-sys-config-value 'WEBMAIL_SYSTEM' 'roundcube'
 	else
 		if [ -z "$(echo "$WEBMAIL_SYSTEM" | grep -w 'roundcube')" ]; then

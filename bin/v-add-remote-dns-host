@@ -35,13 +35,12 @@ DNS_USER=$dns_user
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/remote.sh
-source $HESTIA/func/remote.sh
+source $TULIO/func/remote.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -91,14 +90,14 @@ else
 fi
 
 # Adding host to dns-cluster.conf
-echo "$str" >> $HESTIA/conf/dns-cluster.conf
-chmod 660 $HESTIA/conf/dns-cluster.conf
+echo "$str" >> $TULIO/conf/dns-cluster.conf
+chmod 660 $TULIO/conf/dns-cluster.conf
 
 # Enabling DNS_CLUSTER
-if [ -z "$(grep DNS_CLUSTER= $HESTIA/conf/tulio.conf)" ]; then
-	sed -i "s/^STATS_/DNS_CLUSTER='yes'\nSTATS_/g" $HESTIA/conf/tulio.conf
+if [ -z "$(grep DNS_CLUSTER= $TULIO/conf/tulio.conf)" ]; then
+	sed -i "s/^STATS_/DNS_CLUSTER='yes'\nSTATS_/g" $TULIO/conf/tulio.conf
 else
-	sed -i "s/DNS_CLUSTER=.*/DNS_CLUSTER='yes'/g" $HESTIA/conf/tulio.conf
+	sed -i "s/DNS_CLUSTER=.*/DNS_CLUSTER='yes'/g" $TULIO/conf/tulio.conf
 fi
 
 # Enabling remote dns-cluster queue

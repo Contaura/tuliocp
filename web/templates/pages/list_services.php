@@ -63,7 +63,7 @@
 						<?php } else { ?>
 							<i class="fas fa-flask icon-red" title="<?= $sys["sysinfo"]["RELEASE"] ?>"></i>
 						<?php } ?>
-						v<?= $sys["sysinfo"]["HESTIA"] ?>
+						v<?= $sys["sysinfo"]["TULIO"] ?>
 					</span>
 				</li>
 				<li class="server-summary-item">

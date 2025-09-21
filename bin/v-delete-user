@@ -19,17 +19,16 @@ restart=$2
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/db.sh
-source $HESTIA/func/db.sh
+source $TULIO/func/db.sh
 # shellcheck source=/usr/local/tulio/func/ip.sh
-source $HESTIA/func/ip.sh
+source $TULIO/func/ip.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -85,8 +84,8 @@ $BIN/v-delete-user-ips "$user"
 check_result "$?" "user ip release failed"
 
 # Deleteing user pipes
-sed -i "/ $user$/d" "$HESTIA/data/queue/disk.pipe"
-sed -i "/ $user$/d" "$HESTIA/data/queue/traffic.pipe"
+sed -i "/ $user$/d" "$TULIO/data/queue/disk.pipe"
+sed -i "/ $user$/d" "$TULIO/data/queue/traffic.pipe"
 
 # Deleting sftp jail
 $BIN/v-delete-user-sftp-jail "$user"

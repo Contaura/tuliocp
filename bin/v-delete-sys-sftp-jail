@@ -14,11 +14,10 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -57,7 +56,7 @@ fi
 # Validating opensshd config
 if [ "$restart" = 'yes' ]; then
 	subj="OpenSSH restart failed"
-	email=$(grep CONTACT "$HESTIA/data/users/$ROOT_USER/user.conf" | cut -f 2 -d \')
+	email=$(grep CONTACT "$TULIO/data/users/$ROOT_USER/user.conf" | cut -f 2 -d \')
 	/usr/sbin/sshd -t > /dev/null 2>&1
 	if [ "$?" -ne 0 ]; then
 		mail_text="OpenSSH can not be restarted. Please check config:

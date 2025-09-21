@@ -18,11 +18,10 @@ shell=$2
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio.conf/tulio.conf
-source $HESTIA/conf/tulio.conf
+source $TULIO/conf/tulio.conf
 
 #----------------------------------------------------------#
 #                    Verifications                         #

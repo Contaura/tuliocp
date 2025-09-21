@@ -15,7 +15,7 @@ if (empty($_GET["object"])) {
 
 if (empty($_GET["type"])) {
 	exec(
-		HESTIA_CMD . "v-schedule-user-restore-restic " . $user . " " . $snapshot,
+		TULIO_CMD . "v-schedule-user-restore-restic " . $user . " " . $snapshot,
 		$output,
 		$return_var,
 	);
@@ -36,7 +36,7 @@ if (empty($_GET["type"])) {
 	}
 } else {
 	exec(
-		HESTIA_CMD .
+		TULIO_CMD .
 			"v-schedule-user-restore-restic " .
 			$user .
 			" " .

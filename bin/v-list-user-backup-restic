@@ -18,17 +18,16 @@ format=${3-plain}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # shellcheck source=/usr/local/tulio/func/db.sh
-source $HESTIA/func/db.sh
+source $TULIO/func/db.sh
 # shellcheck source=/usr/local/tulio/func/backup.sh
-source $HESTIA/func/backup.sh
+source $TULIO/func/backup.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -86,7 +85,7 @@ plain_list() {
 	echo -e "$UDIR\t$RUNTIME\t$TIME\t$DATE"
 }
 
-source_conf $HESTIA/conf/restic.conf
+source_conf $TULIO/conf/restic.conf
 
 restic --repo "$REPO$user" --password-file $USER_DATA/restic.conf --json dump $snapshot /home/$user/backup/backup.conf > /home/$user/tmp/backup.conf
 

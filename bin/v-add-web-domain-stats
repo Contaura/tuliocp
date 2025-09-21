@@ -23,13 +23,12 @@ type=$3
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/domain.sh
-source $HESTIA/func/domain.sh
+source $TULIO/func/domain.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Additional argument formatting
 format_domain
@@ -96,7 +95,7 @@ fi
 #----------------------------------------------------------#
 
 # Schedule statistic processing
-echo "$BIN/v-update-web-domain-stat $user $domain" >> $HESTIA/data/queue/webstats.pipe
+echo "$BIN/v-update-web-domain-stat $user $domain" >> $TULIO/data/queue/webstats.pipe
 
 # Update config
 update_object_value 'web' 'DOMAIN' "$domain" '$STATS' "$type"

@@ -2884,7 +2884,7 @@ msgid "SSH"
 msgstr ""
 
 #: ../../web/templates/pages/add_firewall_banlist.php:42
-msgid "HESTIA"
+msgid "TULIO"
 msgstr ""
 
 #: ../../web/templates/pages/list_server_info.php:19

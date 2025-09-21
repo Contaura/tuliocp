@@ -23,7 +23,7 @@ fi
 FORCE_INSTALL=false
 for arg in "$@"; do
 	case $arg in
-		--force|-f)
+		--force | -f)
 			FORCE_INSTALL=true
 			;;
 	esac
@@ -33,7 +33,7 @@ done
 if [ ! -z "$(grep ^admin: /etc/passwd)" ]; then
 	if [ "$FORCE_INSTALL" = "true" ]; then
 		echo "[ * ] Removing existing admin user (--force enabled)..."
-		userdel admin 2>/dev/null || true
+		userdel admin 2> /dev/null || true
 	else
 		echo "Error: user admin exists"
 		echo
@@ -48,7 +48,7 @@ fi
 if [ ! -z "$(grep ^admin: /etc/group)" ]; then
 	if [ "$FORCE_INSTALL" = "true" ]; then
 		echo "[ * ] Removing existing admin group (--force enabled)..."
-		groupdel admin 2>/dev/null || true
+		groupdel admin 2> /dev/null || true
 	else
 		echo "Error: group admin exists"
 		echo

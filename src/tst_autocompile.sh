@@ -128,7 +128,7 @@ for i in $*; do
 			NGINX_B='true'
 			PHP_B='true'
 			WEB_TERMINAL_B='true'
-			HESTIA_B='true'
+			TULIO_B='true'
 			;;
 		--nginx)
 			NGINX_B='true'
@@ -140,10 +140,10 @@ for i in $*; do
 			WEB_TERMINAL_B='true'
 			;;
 		--tulio)
-			HESTIA_B='true'
+			TULIO_B='true'
 			;;
 		--debug)
-			HESTIA_DEBUG='true'
+			TULIO_DEBUG='true'
 			;;
 		--install | Y)
 			install='true'
@@ -216,7 +216,7 @@ fi
 
 echo "Build version $BUILD_VER, with Nginx version $NGINX_V, PHP version $PHP_V and Web Terminal version $WEB_TERMINAL_V"
 
-HESTIA_V="${BUILD_VER}_${BUILD_ARCH}"
+TULIO_V="${BUILD_VER}_${BUILD_ARCH}"
 OPENSSL_V='3.4.0'
 PCRE_V='10.44'
 ZLIB_V='1.3.1'
@@ -288,7 +288,7 @@ if [ "$TULIO_DEBUG" ]; then
 fi
 
 # Generate Links for sourcecode
-HESTIA_ARCHIVE_LINK='https://github.com/contaura/tuliocp/archive/'$branch'.tar.gz'
+TULIO_ARCHIVE_LINK='https://github.com/contaura/tuliocp/archive/'$branch'.tar.gz'
 if [[ $NGINX_V =~ - ]]; then
 	NGINX='https://nginx.org/download/nginx-'$(echo $NGINX_V | cut -d"-" -f1)'.tar.gz'
 else
@@ -324,22 +324,22 @@ if [ "$NGINX_B" = true ]; then
 	# Change to build directory
 	cd $BUILD_DIR
 
-	BUILD_DIR_HESTIANGINX=$BUILD_DIR/tulio-nginx_$NGINX_V
+	BUILD_DIR_TULIO_NGINX=$BUILD_DIR/tulio-nginx_$NGINX_V
 	if [[ $NGINX_V =~ - ]]; then
 		BUILD_DIR_NGINX=$BUILD_DIR/nginx-$(echo $NGINX_V | cut -d"-" -f1)
 	else
 		BUILD_DIR_NGINX=$BUILD_DIR/nginx-$(echo $NGINX_V | cut -d"~" -f1)
 	fi
 
-	if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_HESTIANGINX" ]; then
+	if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_TULIO_NGINX" ]; then
 		# Check if target directory exist
-		if [ -d "$BUILD_DIR_HESTIANGINX" ]; then
+		if [ -d "$BUILD_DIR_TULIO_NGINX" ]; then
 			#mv $BUILD_DIR/tulio-nginx_$NGINX_V $BUILD_DIR/tulio-nginx_$NGINX_V-$(timestamp)
-			rm -r "$BUILD_DIR_HESTIANGINX"
+			rm -r "$BUILD_DIR_TULIO_NGINX"
 		fi
 
 		# Create directory
-		mkdir -p $BUILD_DIR_HESTIANGINX
+		mkdir -p $BUILD_DIR_TULIO_NGINX
 
 		# Download and unpack source files
 		download_file $NGINX '-' | tar xz
@@ -384,45 +384,45 @@ if [ "$NGINX_B" = true ]; then
 	if [ "$KEEPBUILD" != 'true' ]; then
 		rm -r $BUILD_DIR_NGINX $BUILD_DIR/openssl-$OPENSSL_V $BUILD_DIR/pcre2-$PCRE_V $BUILD_DIR/zlib-$ZLIB_V
 	fi
-	cd $BUILD_DIR_HESTIANGINX
+	cd $BUILD_DIR_TULIO_NGINX
 
 	# Move nginx directory
-	mkdir -p $BUILD_DIR_HESTIANGINX/usr/local/tulio
-	rm -rf $BUILD_DIR_HESTIANGINX/usr/local/tulio/nginx
-	mv $BUILD_DIR/usr/local/tulio/nginx $BUILD_DIR_HESTIANGINX/usr/local/tulio/
+	mkdir -p $BUILD_DIR_TULIO_NGINX/usr/local/tulio
+	rm -rf $BUILD_DIR_TULIO_NGINX/usr/local/tulio/nginx
+	mv $BUILD_DIR/usr/local/tulio/nginx $BUILD_DIR_TULIO_NGINX/usr/local/tulio/
 
 	# Remove original nginx.conf (will use custom)
-	rm -f $BUILD_DIR_HESTIANGINX/usr/local/tulio/nginx/conf/nginx.conf
+	rm -f $BUILD_DIR_TULIO_NGINX/usr/local/tulio/nginx/conf/nginx.conf
 
 	# copy binary
-	mv $BUILD_DIR_HESTIANGINX/usr/local/tulio/nginx/sbin/nginx $BUILD_DIR_HESTIANGINX/usr/local/tulio/nginx/sbin/tulio-nginx
+	mv $BUILD_DIR_TULIO_NGINX/usr/local/tulio/nginx/sbin/nginx $BUILD_DIR_TULIO_NGINX/usr/local/tulio/nginx/sbin/tulio-nginx
 
 	# change permission and build the package
 	cd $BUILD_DIR
-	chown -R root:root $BUILD_DIR_HESTIANGINX
+	chown -R root:root $BUILD_DIR_TULIO_NGINX
 	# Get Debian package files
-	mkdir -p $BUILD_DIR_HESTIANGINX/DEBIAN
-	get_branch_file 'src/deb/nginx/control' "$BUILD_DIR_HESTIANGINX/DEBIAN/control"
+	mkdir -p $BUILD_DIR_TULIO_NGINX/DEBIAN
+	get_branch_file 'src/deb/nginx/control' "$BUILD_DIR_TULIO_NGINX/DEBIAN/control"
 	if [ "$BUILD_ARCH" != "amd64" ]; then
-		sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_HESTIANGINX/DEBIAN/control"
+		sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_TULIO_NGINX/DEBIAN/control"
 	fi
-	get_branch_file 'src/deb/nginx/copyright' "$BUILD_DIR_HESTIANGINX/DEBIAN/copyright"
-	get_branch_file 'src/deb/nginx/postinst' "$BUILD_DIR_HESTIANGINX/DEBIAN/postinst"
-	get_branch_file 'src/deb/nginx/postrm' "$BUILD_DIR_HESTIANGINX/DEBIAN/portrm"
-	chmod +x "$BUILD_DIR_HESTIANGINX/DEBIAN/postinst"
-	chmod +x "$BUILD_DIR_HESTIANGINX/DEBIAN/portrm"
+	get_branch_file 'src/deb/nginx/copyright' "$BUILD_DIR_TULIO_NGINX/DEBIAN/copyright"
+	get_branch_file 'src/deb/nginx/postinst' "$BUILD_DIR_TULIO_NGINX/DEBIAN/postinst"
+	get_branch_file 'src/deb/nginx/postrm' "$BUILD_DIR_TULIO_NGINX/DEBIAN/portrm"
+	chmod +x "$BUILD_DIR_TULIO_NGINX/DEBIAN/postinst"
+	chmod +x "$BUILD_DIR_TULIO_NGINX/DEBIAN/portrm"
 
 	# Init file
-	mkdir -p $BUILD_DIR_HESTIANGINX/etc/init.d
-	get_branch_file 'src/deb/nginx/tulio' "$BUILD_DIR_HESTIANGINX/etc/init.d/tulio"
-	chmod +x "$BUILD_DIR_HESTIANGINX/etc/init.d/tulio"
+	mkdir -p $BUILD_DIR_TULIO_NGINX/etc/init.d
+	get_branch_file 'src/deb/nginx/tulio' "$BUILD_DIR_TULIO_NGINX/etc/init.d/tulio"
+	chmod +x "$BUILD_DIR_TULIO_NGINX/etc/init.d/tulio"
 
 	# Custom config
-	get_branch_file 'src/deb/nginx/nginx.conf' "${BUILD_DIR_HESTIANGINX}/usr/local/tulio/nginx/conf/nginx.conf"
+	get_branch_file 'src/deb/nginx/nginx.conf' "${BUILD_DIR_TULIO_NGINX}/usr/local/tulio/nginx/conf/nginx.conf"
 
 	# Build the package
 	echo Building Nginx DEB
-	dpkg-deb -Zxz --build $BUILD_DIR_HESTIANGINX $DEB_DIR
+	dpkg-deb -Zxz --build $BUILD_DIR_TULIO_NGINX $DEB_DIR
 
 	rm -r $BUILD_DIR/usr
 
@@ -450,7 +450,7 @@ if [ "$PHP_B" = true ]; then
 
 	echo "Building tulio-php package..."
 
-	BUILD_DIR_HESTIAPHP=$BUILD_DIR/tulio-php_$PHP_V
+	BUILD_DIR_TULIO_PHP=$BUILD_DIR/tulio-php_$PHP_V
 
 	BUILD_DIR_PHP=$BUILD_DIR/php-$(echo $PHP_V | cut -d"~" -f1)
 
@@ -460,14 +460,14 @@ if [ "$PHP_B" = true ]; then
 		BUILD_DIR_PHP=$BUILD_DIR/php-$(echo $PHP_V | cut -d"~" -f1)
 	fi
 
-	if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_HESTIAPHP" ]; then
+	if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_TULIO_PHP" ]; then
 		# Check if target directory exist
-		if [ -d $BUILD_DIR_HESTIAPHP ]; then
-			rm -r $BUILD_DIR_HESTIAPHP
+		if [ -d $BUILD_DIR_TULIO_PHP ]; then
+			rm -r $BUILD_DIR_TULIO_PHP
 		fi
 
 		# Create directory
-		mkdir -p $BUILD_DIR_HESTIAPHP
+		mkdir -p $BUILD_DIR_TULIO_PHP
 
 		# Download and unpack source files
 		cd $BUILD_DIR
@@ -500,60 +500,60 @@ if [ "$PHP_B" = true ]; then
 		cp -rf "$SRC_DIR/" $BUILD_DIR/tuliocp-$branch_dash
 	fi
 	# Move php directory
-	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_HESTIAPHP/usr/local/tulio
-	mkdir -p $BUILD_DIR_HESTIAPHP/usr/local/tulio
+	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_TULIO_PHP/usr/local/tulio
+	mkdir -p $BUILD_DIR_TULIO_PHP/usr/local/tulio
 
-	[ "$TULIO_DEBUG" ] && echo DEBUG: rm -r $BUILD_DIR_HESTIAPHP/usr/local/tulio/php
-	if [ -d $BUILD_DIR_HESTIAPHP/usr/local/tulio/php ]; then
-		rm -r $BUILD_DIR_HESTIAPHP/usr/local/tulio/php
+	[ "$TULIO_DEBUG" ] && echo DEBUG: rm -r $BUILD_DIR_TULIO_PHP/usr/local/tulio/php
+	if [ -d $BUILD_DIR_TULIO_PHP/usr/local/tulio/php ]; then
+		rm -r $BUILD_DIR_TULIO_PHP/usr/local/tulio/php
 	fi
 
-	[ "$TULIO_DEBUG" ] && echo DEBUG: mv ${BUILD_DIR}/usr/local/tulio/php ${BUILD_DIR_HESTIAPHP}/usr/local/tulio/
-	mv ${BUILD_DIR}/usr/local/tulio/php ${BUILD_DIR_HESTIAPHP}/usr/local/tulio/
+	[ "$TULIO_DEBUG" ] && echo DEBUG: mv ${BUILD_DIR}/usr/local/tulio/php ${BUILD_DIR_TULIO_PHP}/usr/local/tulio/
+	mv ${BUILD_DIR}/usr/local/tulio/php ${BUILD_DIR_TULIO_PHP}/usr/local/tulio/
 
 	# copy binary
-	[ "$TULIO_DEBUG" ] && echo DEBUG: cp $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/php-fpm $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/tulio-php
-	cp $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/php-fpm $BUILD_DIR_HESTIAPHP/usr/local/tulio/php/sbin/tulio-php
+	[ "$TULIO_DEBUG" ] && echo DEBUG: cp $BUILD_DIR_TULIO_PHP/usr/local/tulio/php/sbin/php-fpm $BUILD_DIR_TULIO_PHP/usr/local/tulio/php/sbin/tulio-php
+	cp $BUILD_DIR_TULIO_PHP/usr/local/tulio/php/sbin/php-fpm $BUILD_DIR_TULIO_PHP/usr/local/tulio/php/sbin/tulio-php
 
 	# Change permissions and build the package
-	chown -R root:root $BUILD_DIR_HESTIAPHP
+	chown -R root:root $BUILD_DIR_TULIO_PHP
 	# Get Debian package files
-	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_HESTIAPHP/DEBIAN
-	mkdir -p $BUILD_DIR_HESTIAPHP/DEBIAN
-	get_branch_file 'src/deb/php/control' "$BUILD_DIR_HESTIAPHP/DEBIAN/control"
+	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_TULIO_PHP/DEBIAN
+	mkdir -p $BUILD_DIR_TULIO_PHP/DEBIAN
+	get_branch_file 'src/deb/php/control' "$BUILD_DIR_TULIO_PHP/DEBIAN/control"
 	if [ "$BUILD_ARCH" != "amd64" ]; then
-		sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_HESTIAPHP/DEBIAN/control"
+		sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_TULIO_PHP/DEBIAN/control"
 	fi
 
 	os=$(lsb_release -is)
 	release=$(lsb_release -rs)
 	if [[ "$os" = "Ubuntu" ]] && [[ "$release" = "20.04" ]]; then
-		sed -i "/Conflicts: libzip5/d" "$BUILD_DIR_HESTIAPHP/DEBIAN/control"
-		sed -i "s/libzip4/libzip5/g" "$BUILD_DIR_HESTIAPHP/DEBIAN/control"
+		sed -i "/Conflicts: libzip5/d" "$BUILD_DIR_TULIO_PHP/DEBIAN/control"
+		sed -i "s/libzip4/libzip5/g" "$BUILD_DIR_TULIO_PHP/DEBIAN/control"
 	fi
 	if [[ "$os" = "Ubuntu" ]] && [[ "$release" = "24.04" ]]; then
-		sed -i "/Conflicts: libzip5/d" "$BUILD_DIR_HESTIAPHP/DEBIAN/control"
-		sed -i "s/libzip4/libzip4t64/g" "$BUILD_DIR_HESTIAPHP/DEBIAN/control"
+		sed -i "/Conflicts: libzip5/d" "$BUILD_DIR_TULIO_PHP/DEBIAN/control"
+		sed -i "s/libzip4/libzip4t64/g" "$BUILD_DIR_TULIO_PHP/DEBIAN/control"
 	fi
 
-	get_branch_file 'src/deb/php/copyright' "$BUILD_DIR_HESTIAPHP/DEBIAN/copyright"
-	get_branch_file 'src/deb/php/postinst' "$BUILD_DIR_HESTIAPHP/DEBIAN/postinst"
-	chmod +x $BUILD_DIR_HESTIAPHP/DEBIAN/postinst
+	get_branch_file 'src/deb/php/copyright' "$BUILD_DIR_TULIO_PHP/DEBIAN/copyright"
+	get_branch_file 'src/deb/php/postinst' "$BUILD_DIR_TULIO_PHP/DEBIAN/postinst"
+	chmod +x $BUILD_DIR_TULIO_PHP/DEBIAN/postinst
 	# Get custom config
-	get_branch_file 'src/deb/php/php-fpm.conf' "${BUILD_DIR_HESTIAPHP}/usr/local/tulio/php/etc/php-fpm.conf"
-	get_branch_file 'src/deb/php/php.ini' "${BUILD_DIR_HESTIAPHP}/usr/local/tulio/php/lib/php.ini"
+	get_branch_file 'src/deb/php/php-fpm.conf' "${BUILD_DIR_TULIO_PHP}/usr/local/tulio/php/etc/php-fpm.conf"
+	get_branch_file 'src/deb/php/php.ini' "${BUILD_DIR_TULIO_PHP}/usr/local/tulio/php/lib/php.ini"
 
 	# Build the package
 	echo Building PHP DEB
-	[ "$TULIO_DEBUG" ] && echo DEBUG: dpkg-deb -Zxz --build $BUILD_DIR_HESTIAPHP $DEB_DIR
-	dpkg-deb -Zxz --build $BUILD_DIR_HESTIAPHP $DEB_DIR
+	[ "$TULIO_DEBUG" ] && echo DEBUG: dpkg-deb -Zxz --build $BUILD_DIR_TULIO_PHP $DEB_DIR
+	dpkg-deb -Zxz --build $BUILD_DIR_TULIO_PHP $DEB_DIR
 
 	rm -r $BUILD_DIR/usr
 
 	# clear up the source folder
 	if [ "$KEEPBUILD" != 'true' ]; then
 		rm -r $BUILD_DIR/php-$(echo $PHP_V | cut -d"~" -f1)
-		rm -r $BUILD_DIR_HESTIAPHP
+		rm -r $BUILD_DIR_TULIO_PHP
 		if [ "$use_src_folder" == 'true' ] && [ -d $BUILD_DIR/tuliocp-$branch_dash ]; then
 			rm -r $BUILD_DIR/tuliocp-$branch_dash
 		fi
@@ -574,53 +574,53 @@ if [ "$WEB_TERMINAL_B" = true ]; then
 
 	echo "Building tulio-web-terminal package..."
 
-	BUILD_DIR_HESTIA_TERMINAL=$BUILD_DIR/tulio-web-terminal_$WEB_TERMINAL_V
+	BUILD_DIR_TULIO_TERMINAL=$BUILD_DIR/tulio-web-terminal_$WEB_TERMINAL_V
 
 	# Check if target directory exist
-	if [ -d $BUILD_DIR_HESTIA_TERMINAL ]; then
-		rm -r $BUILD_DIR_HESTIA_TERMINAL
+	if [ -d $BUILD_DIR_TULIO_TERMINAL ]; then
+		rm -r $BUILD_DIR_TULIO_TERMINAL
 	fi
 
 	# Create directory
-	mkdir -p $BUILD_DIR_HESTIA_TERMINAL
-	chown -R root:root $BUILD_DIR_HESTIA_TERMINAL
+	mkdir -p $BUILD_DIR_TULIO_TERMINAL
+	chown -R root:root $BUILD_DIR_TULIO_TERMINAL
 
 	# Get Debian package files
-	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_HESTIA_TERMINAL/DEBIAN
-	mkdir -p $BUILD_DIR_HESTIA_TERMINAL/DEBIAN
-	get_branch_file 'src/deb/web-terminal/control' "$BUILD_DIR_HESTIA_TERMINAL/DEBIAN/control"
+	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_TULIO_TERMINAL/DEBIAN
+	mkdir -p $BUILD_DIR_TULIO_TERMINAL/DEBIAN
+	get_branch_file 'src/deb/web-terminal/control' "$BUILD_DIR_TULIO_TERMINAL/DEBIAN/control"
 	if [ "$BUILD_ARCH" != "amd64" ]; then
-		sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_HESTIA_TERMINAL/DEBIAN/control"
+		sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_TULIO_TERMINAL/DEBIAN/control"
 	fi
 
-	get_branch_file 'src/deb/web-terminal/copyright' "$BUILD_DIR_HESTIA_TERMINAL/DEBIAN/copyright"
-	get_branch_file 'src/deb/web-terminal/postinst' "$BUILD_DIR_HESTIA_TERMINAL/DEBIAN/postinst"
-	chmod +x $BUILD_DIR_HESTIA_TERMINAL/DEBIAN/postinst
+	get_branch_file 'src/deb/web-terminal/copyright' "$BUILD_DIR_TULIO_TERMINAL/DEBIAN/copyright"
+	get_branch_file 'src/deb/web-terminal/postinst' "$BUILD_DIR_TULIO_TERMINAL/DEBIAN/postinst"
+	chmod +x $BUILD_DIR_TULIO_TERMINAL/DEBIAN/postinst
 
 	# Get server files
-	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/tulio/web-terminal"
-	mkdir -p "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/tulio/web-terminal"
-	get_branch_file 'src/deb/web-terminal/package.json' "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/tulio/web-terminal/package.json"
-	get_branch_file 'src/deb/web-terminal/package-lock.json' "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/tulio/web-terminal/package-lock.json"
-	get_branch_file 'src/deb/web-terminal/server.js' "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/tulio/web-terminal/server.js"
-	chmod +x "${BUILD_DIR_HESTIA_TERMINAL}/usr/local/tulio/web-terminal/server.js"
+	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p "${BUILD_DIR_TULIO_TERMINAL}/usr/local/tulio/web-terminal"
+	mkdir -p "${BUILD_DIR_TULIO_TERMINAL}/usr/local/tulio/web-terminal"
+	get_branch_file 'src/deb/web-terminal/package.json' "${BUILD_DIR_TULIO_TERMINAL}/usr/local/tulio/web-terminal/package.json"
+	get_branch_file 'src/deb/web-terminal/package-lock.json' "${BUILD_DIR_TULIO_TERMINAL}/usr/local/tulio/web-terminal/package-lock.json"
+	get_branch_file 'src/deb/web-terminal/server.js' "${BUILD_DIR_TULIO_TERMINAL}/usr/local/tulio/web-terminal/server.js"
+	chmod +x "${BUILD_DIR_TULIO_TERMINAL}/usr/local/tulio/web-terminal/server.js"
 
-	cd $BUILD_DIR_HESTIA_TERMINAL/usr/local/tulio/web-terminal
+	cd $BUILD_DIR_TULIO_TERMINAL/usr/local/tulio/web-terminal
 	npm ci --omit=dev
 
 	# Systemd service
-	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system
-	mkdir -p $BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system
-	get_branch_file 'src/deb/web-terminal/tulio-web-terminal.service' "$BUILD_DIR_HESTIA_TERMINAL/etc/systemd/system/tulio-web-terminal.service"
+	[ "$TULIO_DEBUG" ] && echo DEBUG: mkdir -p $BUILD_DIR_TULIO_TERMINAL/etc/systemd/system
+	mkdir -p $BUILD_DIR_TULIO_TERMINAL/etc/systemd/system
+	get_branch_file 'src/deb/web-terminal/tulio-web-terminal.service' "$BUILD_DIR_TULIO_TERMINAL/etc/systemd/system/tulio-web-terminal.service"
 
 	# Build the package
 	echo Building Web Terminal DEB
-	[ "$TULIO_DEBUG" ] && echo DEBUG: dpkg-deb -Zxz --build $BUILD_DIR_HESTIA_TERMINAL $DEB_DIR
-	dpkg-deb -Zxz --build $BUILD_DIR_HESTIA_TERMINAL $DEB_DIR
+	[ "$TULIO_DEBUG" ] && echo DEBUG: dpkg-deb -Zxz --build $BUILD_DIR_TULIO_TERMINAL $DEB_DIR
+	dpkg-deb -Zxz --build $BUILD_DIR_TULIO_TERMINAL $DEB_DIR
 
 	# clear up the source folder
 	if [ "$KEEPBUILD" != 'true' ]; then
-		rm -r $BUILD_DIR_HESTIA_TERMINAL
+		rm -r $BUILD_DIR_TULIO_TERMINAL
 		if [ "$use_src_folder" == 'true' ] && [ -d $BUILD_DIR/tuliocp-$branch_dash ]; then
 			rm -r $BUILD_DIR/tuliocp-$branch_dash
 		fi
@@ -647,14 +647,14 @@ if [ "$TULIO_B" = true ]; then
 		# Change to build directory
 		cd $BUILD_DIR
 
-		if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_HESTIA" ]; then
+		if [ "$KEEPBUILD" != 'true' ] || [ ! -d "$BUILD_DIR_TULIO" ]; then
 			# Check if target directory exist
-			if [ -d $BUILD_DIR_HESTIA ]; then
-				rm -r $BUILD_DIR_HESTIA
+			if [ -d $BUILD_DIR_TULIO ]; then
+				rm -r $BUILD_DIR_TULIO
 			fi
 
 			# Create directory
-			mkdir -p $BUILD_DIR_HESTIA
+			mkdir -p $BUILD_DIR_TULIO
 		fi
 
 		cd $BUILD_DIR
@@ -667,42 +667,42 @@ if [ "$TULIO_B" = true ]; then
 			download_file $TULIO_ARCHIVE_LINK '-' 'fresh' | tar xz
 		fi
 
-		mkdir -p $BUILD_DIR_HESTIA/usr/local/tulio
+		mkdir -p $BUILD_DIR_TULIO/usr/local/tulio
 
 		# Build web and move needed directories
 		cd $BUILD_DIR/tuliocp-$branch_dash
 		npm ci --ignore-scripts
 		npm run build
-		cp -rf bin func install web $BUILD_DIR_HESTIA/usr/local/tulio/
+		cp -rf bin func install web $BUILD_DIR_TULIO/usr/local/tulio/
 
 		# Set permissions
-		find $BUILD_DIR_HESTIA/usr/local/tulio/ -type f -exec chmod -x {} \;
+		find $BUILD_DIR_TULIO/usr/local/tulio/ -type f -exec chmod -x {} \;
 
 		# Allow send email via /usr/local/tulio/web/inc/mail-wrapper.php via cli
-		chmod +x $BUILD_DIR_HESTIA/usr/local/tulio/web/inc/mail-wrapper.php
+		chmod +x $BUILD_DIR_TULIO/usr/local/tulio/web/inc/mail-wrapper.php
 		# Allow the executable to be executed
-		chmod +x $BUILD_DIR_HESTIA/usr/local/tulio/bin/*
-		find $BUILD_DIR_HESTIA/usr/local/tulio/install/ \( -name '*.sh' \) -exec chmod +x {} \;
-		chmod -x $BUILD_DIR_HESTIA/usr/local/tulio/install/*.sh
-		chown -R root:root $BUILD_DIR_HESTIA
+		chmod +x $BUILD_DIR_TULIO/usr/local/tulio/bin/*
+		find $BUILD_DIR_TULIO/usr/local/tulio/install/ \( -name '*.sh' \) -exec chmod +x {} \;
+		chmod -x $BUILD_DIR_TULIO/usr/local/tulio/install/*.sh
+		chown -R root:root $BUILD_DIR_TULIO
 		# Get Debian package files
-		mkdir -p $BUILD_DIR_HESTIA/DEBIAN
-		get_branch_file 'src/deb/tulio/control' "$BUILD_DIR_HESTIA/DEBIAN/control"
+		mkdir -p $BUILD_DIR_TULIO/DEBIAN
+		get_branch_file 'src/deb/tulio/control' "$BUILD_DIR_TULIO/DEBIAN/control"
 		if [ "$BUILD_ARCH" != "amd64" ]; then
-			sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_HESTIA/DEBIAN/control"
+			sed -i "s/amd64/${BUILD_ARCH}/g" "$BUILD_DIR_TULIO/DEBIAN/control"
 		fi
-		get_branch_file 'src/deb/tulio/copyright' "$BUILD_DIR_HESTIA/DEBIAN/copyright"
-		get_branch_file 'src/deb/tulio/preinst' "$BUILD_DIR_HESTIA/DEBIAN/preinst"
-		get_branch_file 'src/deb/tulio/postinst' "$BUILD_DIR_HESTIA/DEBIAN/postinst"
-		chmod +x $BUILD_DIR_HESTIA/DEBIAN/postinst
-		chmod +x $BUILD_DIR_HESTIA/DEBIAN/preinst
+		get_branch_file 'src/deb/tulio/copyright' "$BUILD_DIR_TULIO/DEBIAN/copyright"
+		get_branch_file 'src/deb/tulio/preinst' "$BUILD_DIR_TULIO/DEBIAN/preinst"
+		get_branch_file 'src/deb/tulio/postinst' "$BUILD_DIR_TULIO/DEBIAN/postinst"
+		chmod +x $BUILD_DIR_TULIO/DEBIAN/postinst
+		chmod +x $BUILD_DIR_TULIO/DEBIAN/preinst
 
 		echo Building Tulio DEB
-		dpkg-deb -Zxz --build $BUILD_DIR_HESTIA $DEB_DIR
+		dpkg-deb -Zxz --build $BUILD_DIR_TULIO $DEB_DIR
 
 		# clear up the source folder
 		if [ "$KEEPBUILD" != 'true' ]; then
-			rm -r $BUILD_DIR_HESTIA
+			rm -r $BUILD_DIR_TULIO
 			rm -rf tuliocp-$branch_dash
 		fi
 		cd $BUILD_DIR/tuliocp-$branch_dash

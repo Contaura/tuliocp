@@ -14,16 +14,15 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 send_email_report() {
 	local mail_service="$1"
 	journalctl --no-pager --reverse --since=-1m --unit "$mail_service" >> "$tmpfile" 2>&1
-	email=$(grep CONTACT "$HESTIA/data/users/$ROOT_USER/user.conf")
+	email=$(grep CONTACT "$TULIO/data/users/$ROOT_USER/user.conf")
 	email=$(echo "$email" | cut -f 2 -d "'")
 	subj="$(hostname): $mail_service restart failed"
 	cat "$tmpfile" | $SENDMAIL -s "$subj" $email
@@ -51,8 +50,8 @@ fi
 
 # Schedule restart
 if [ "$1" = 'scheduled' ] || [ -z "$1" -a "$SCHEDULED_RESTART" = 'yes' ]; then
-	sed -i "/\/$SCRIPT now/d" $HESTIA/data/queue/restart.pipe
-	echo "$BIN/$SCRIPT now" >> $HESTIA/data/queue/restart.pipe
+	sed -i "/\/$SCRIPT now/d" $TULIO/data/queue/restart.pipe
+	echo "$BIN/$SCRIPT now" >> $TULIO/data/queue/restart.pipe
 	exit
 fi
 
@@ -74,8 +73,8 @@ if [ $? -ne 0 ]; then
 fi
 
 # Update restart queue
-if [ -e "$HESTIA/data/queue/restart.pipe" ]; then
-	sed -i "/\/$SCRIPT now/d" $HESTIA/data/queue/restart.pipe
+if [ -e "$TULIO/data/queue/restart.pipe" ]; then
+	sed -i "/\/$SCRIPT now/d" $TULIO/data/queue/restart.pipe
 fi
 
 #----------------------------------------------------------#

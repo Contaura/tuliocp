@@ -14,11 +14,10 @@
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # Perform verification if read-only mode is enabled
 check_tulio_demo_mode
@@ -35,14 +34,14 @@ if [ "$BACKUP_INCREMENTAL" != "yes" ]; then
 fi
 
 for user in $($BIN/v-list-sys-users plain); do
-	check_suspend=$(grep "SUSPENDED='no'" $HESTIA/data/users/$user/user.conf)
-	log=$HESTIA/log/backup.log
-	if [ ! -f "$HESTIA/data/users/$user/user.conf" ]; then
+	check_suspend=$(grep "SUSPENDED='no'" $TULIO/data/users/$user/user.conf)
+	log=$TULIO/log/backup.log
+	if [ ! -f "$TULIO/data/users/$user/user.conf" ]; then
 		continue
 	fi
 	check_backup_conditions
-	check_suspend=$(grep "SUSPENDED='no'" $HESTIA/data/users/$user/user.conf)
-	log=$HESTIA/log/backup.log
+	check_suspend=$(grep "SUSPENDED='no'" $TULIO/data/users/$user/user.conf)
+	log=$TULIO/log/backup.log
 	if [ -n "$check_suspend" ]; then
 		echo -e "================================" >> $log
 		echo -e "$user" >> $log

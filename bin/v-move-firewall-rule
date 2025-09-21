@@ -25,11 +25,10 @@ direction=$(echo $2 | tr '[:lower:]' '[:upper:]')
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 get_rule_id() {
 	local old_rule_no=$1
@@ -45,10 +44,10 @@ get_rule_id() {
 
 # Sort function
 sort_fw_rules() {
-	cat $HESTIA/data/firewall/rules.conf \
-		| sort -n -k 2 -t \' > $HESTIA/data/firewall/rules.conf.tmp
-	mv -f $HESTIA/data/firewall/rules.conf.tmp \
-		$HESTIA/data/firewall/rules.conf
+	cat $TULIO/data/firewall/rules.conf \
+		| sort -n -k 2 -t \' > $TULIO/data/firewall/rules.conf.tmp
+	mv -f $TULIO/data/firewall/rules.conf.tmp \
+		$TULIO/data/firewall/rules.conf
 }
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -74,7 +73,7 @@ if [[ "$direction" == "UP" && "$source_rule" -eq 1 ]]; then
 	exit 1
 fi
 # Check if the rule can be moved down (if it's not the last rule)
-last_rule=$(tail -n 1 $HESTIA/data/firewall/rules.conf | cut -d "'" -f 2)
+last_rule=$(tail -n 1 $TULIO/data/firewall/rules.conf | cut -d "'" -f 2)
 if [[ "$direction" == "DOWN" && "$source_rule" -eq "$last_rule" ]]; then
 	echo "Cannot move rule down. It's already the last rule."
 	exit 1
@@ -90,7 +89,7 @@ check_tulio_demo_mode
 target_rule=$(get_rule_id "$source_rule" "$direction")
 
 # Get the rule that will be moved
-parse_object_kv_list $(grep "RULE='$source_rule'" $HESTIA/data/firewall/rules.conf)
+parse_object_kv_list $(grep "RULE='$source_rule'" $TULIO/data/firewall/rules.conf)
 
 # Generating timestamp
 time_n_date=$(date +'%T %F')
@@ -103,9 +102,9 @@ source_str="$source_str IP='$IP' COMMENT='$COMMENT' SUSPENDED='$SUSPENDED'"
 source_str="$source_str TIME='$time' DATE='$date'"
 
 # Deleting old source rule
-sed -i "/RULE='$source_rule' /d" $HESTIA/data/firewall/rules.conf
+sed -i "/RULE='$source_rule' /d" $TULIO/data/firewall/rules.conf
 
-parse_object_kv_list $(grep "RULE='$target_rule'" $HESTIA/data/firewall/rules.conf)
+parse_object_kv_list $(grep "RULE='$target_rule'" $TULIO/data/firewall/rules.conf)
 
 # Generating timestamp
 time_n_date=$(date +'%T %F')
@@ -118,11 +117,11 @@ target_str="$target_str IP='$IP' COMMENT='$COMMENT' SUSPENDED='$SUSPENDED'"
 target_str="$target_str TIME='$time' DATE='$date'"
 
 # Deleting old target rule
-sed -i "/RULE='$target_rule' /d" $HESTIA/data/firewall/rules.conf
+sed -i "/RULE='$target_rule' /d" $TULIO/data/firewall/rules.conf
 
 # Adding new source and target rules
-echo "$source_str" >> $HESTIA/data/firewall/rules.conf
-echo "$target_str" >> $HESTIA/data/firewall/rules.conf
+echo "$source_str" >> $TULIO/data/firewall/rules.conf
+echo "$target_str" >> $TULIO/data/firewall/rules.conf
 
 # Sorting firewall rules by id number
 sort_fw_rules

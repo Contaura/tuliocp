@@ -13,13 +13,12 @@
 # - It doesn't update DKIM
 
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 if [ $# -lt 1 ]; then
 	echo "usage: bash $0 cpanel-backup.tar.gz"
@@ -90,7 +89,7 @@ main_domain1=$(grep main_domain userdata/main | cut -d " " -f2)
 new_user=$(grep "^user:" userdata/${main_domain1} | cut -d " " -f2)
 echo "Get User: $new_user"
 check_sysuser=$(cut -f 1 -d : /etc/passwd | grep "^$new_user$")
-if [ -n "$check_sysuser" ] || [ -e "$HESTIA/data/users/$new_user" ]; then
+if [ -n "$check_sysuser" ] || [ -e "$TULIO/data/users/$new_user" ]; then
 	check_result "$E_EXISTS" "user $new_user exists"
 	echo "User allready exists"
 	exit 2
@@ -248,21 +247,21 @@ PHP_VERSION_LINE=$(grep -r "phpversion:" userdata/$main_domain1)
 CPANEL_PHP_VERSION=${PHP_VERSION_LINE#*: }
 if [ -n "$CPANEL_PHP_VERSION" ]; then
 	CPANEL_PHP_VERSION=$(echo $CPANEL_PHP_VERSION | grep -oP '(?<=php)\d+')
-	HESTIA_PHP_VERSION="PHP-${CPANEL_PHP_VERSION:0:1}_${CPANEL_PHP_VERSION:1}"
+	TULIO_PHP_VERSION="PHP-${CPANEL_PHP_VERSION:0:1}_${CPANEL_PHP_VERSION:1}"
 
-	if $BIN/v-list-web-templates-backend | grep -qw "$HESTIA_PHP_VERSION"; then
-		echo "Setting PHP version to $HESTIA_PHP_VERSION for $main_domain1 under user $new_user"
-		$BIN/v-change-web-domain-backend-tpl $new_user $main_domain1 $HESTIA_PHP_VERSION
+	if $BIN/v-list-web-templates-backend | grep -qw "$TULIO_PHP_VERSION"; then
+		echo "Setting PHP version to $TULIO_PHP_VERSION for $main_domain1 under user $new_user"
+		$BIN/v-change-web-domain-backend-tpl $new_user $main_domain1 $TULIO_PHP_VERSION
 		if [ $? -ne 0 ]; then
 			tput setaf 1
 			echo "ERROR!! Failed to set same PHP version for $main_domain1 setting default, please check this to avoid errors."
 			tput sgr0
 		else
-			echo "PHP version for $main_domain1 set to $HESTIA_PHP_VERSION"
+			echo "PHP version for $main_domain1 set to $TULIO_PHP_VERSION"
 		fi
 	else
 		tput setaf 1
-		echo "PHP version $HESTIA_PHP_VERSION is not installed on TulioCP."
+		echo "PHP version $TULIO_PHP_VERSION is not installed on TulioCP."
 		echo "Please install and set it to avoid errors in website."
 		echo "The restoration will continue but the website may not work as expected"
 		tput sgr0
@@ -396,7 +395,7 @@ if [ "$mx" = 'yes' ]; then
 	cd $main_dir/dnszones
 	for domain in $($BIN/v-list-mail-domains $new_user plain | awk '{ print  $1 }'); do
 		echo "Replace MX record for $domain"
-		mx_id=$(grep MX $HESTIA/data/users/${new_user}/dns/${domain}.conf | tr "'" " " | cut -d " " -f 2)
+		mx_id=$(grep MX $TULIO/data/users/${new_user}/dns/${domain}.conf | tr "'" " " | cut -d " " -f 2)
 		$BIN/v-delete-dns-record $new_user $domain $mx_id
 		grep MX ${domain}.db | awk '{for(sk=NF;sk>=1;sk--) printf "%s ", $sk;print ""}' | while read value pri ns rest; do
 			if [ "$ns" = "MX" ]; then

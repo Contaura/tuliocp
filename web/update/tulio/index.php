@@ -11,7 +11,7 @@ verify_csrf($_GET);
 if ($_SESSION["userContext"] === "admin") {
 	if (!empty($_GET["pkg"])) {
 		$v_pkg = quoteshellarg($_GET["pkg"]);
-		exec(HESTIA_CMD . "v-update-sys-tulio " . $v_pkg, $output, $return_var);
+		exec(TULIO_CMD . "v-update-sys-tulio " . $v_pkg, $output, $return_var);
 	}
 
 	if ($return_var != 0) {

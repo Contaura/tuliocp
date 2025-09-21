@@ -16,16 +16,16 @@ if ($_SESSION["userContext"] != "admin") {
 $v_hostname = exec("hostname");
 
 // List available timezones and get current one
-exec(HESTIA_CMD . "v-get-sys-timezone", $output, $return_var);
+exec(TULIO_CMD . "v-get-sys-timezone", $output, $return_var);
 $v_timezone = $output[0];
 unset($output);
 
-exec(HESTIA_CMD . "v-get-sys-timezones json", $output, $return_var);
+exec(TULIO_CMD . "v-get-sys-timezones json", $output, $return_var);
 $v_timezones = json_decode(implode("", $output), true);
 unset($output);
 
 // List supported php versions
-exec(HESTIA_CMD . "v-list-web-templates-backend json", $output, $return_var);
+exec(TULIO_CMD . "v-list-web-templates-backend json", $output, $return_var);
 $backend_templates = json_decode(implode("", $output), true);
 unset($output);
 
@@ -92,7 +92,7 @@ $v_php_versions = array_map(function ($php_version) use ($backend_templates, $ba
 }, $v_php_versions);
 
 // List languages
-exec(HESTIA_CMD . "v-list-sys-languages json", $output, $return_var);
+exec(TULIO_CMD . "v-list-sys-languages json", $output, $return_var);
 $language = json_decode(implode("", $output), true);
 foreach ($language as $lang) {
 	$languages[$lang] = translate_json($lang);
@@ -101,12 +101,12 @@ asort($languages);
 unset($output);
 
 // List themes
-exec(HESTIA_CMD . "v-list-sys-themes json", $output, $return_var);
+exec(TULIO_CMD . "v-list-sys-themes json", $output, $return_var);
 $theme = json_decode(implode("", $output), true);
 unset($output);
 
 // List dns cluster hosts
-exec(HESTIA_CMD . "v-list-remote-dns-hosts json", $output, $return_var);
+exec(TULIO_CMD . "v-list-remote-dns-hosts json", $output, $return_var);
 $dns_cluster = json_decode(implode("", $output), true);
 unset($output);
 if (is_array($dns_cluster)) {
@@ -149,7 +149,7 @@ if (empty($_POST["v_policy_user_view_suspended"])) {
 }
 
 // List Database hosts
-exec(HESTIA_CMD . "v-list-database-hosts json", $output, $return_var);
+exec(TULIO_CMD . "v-list-database-hosts json", $output, $return_var);
 $db_hosts = json_decode(implode("", $output), true);
 unset($output);
 $v_mysql_hosts = array_values(
@@ -185,7 +185,7 @@ foreach ($backup_types as $backup_type) {
 		$v_backup = "yes";
 	} else {
 		exec(
-			HESTIA_CMD . "v-list-backup-host " . quoteshellarg($backup_type) . " json",
+			TULIO_CMD . "v-list-backup-host " . quoteshellarg($backup_type) . " json",
 			$output,
 			$return_var,
 		);
@@ -255,7 +255,7 @@ if (empty($v_rclone_path)) {
 }
 
 if ($_SESSION["BACKUP_INCREMENTAL"] == "yes") {
-	exec(HESTIA_CMD . "v-list-backup-host-restic json", $output, $return_var);
+	exec(TULIO_CMD . "v-list-backup-host-restic json", $output, $return_var);
 	$v_backup_incremental = "yes";
 	$v_incremental_backups = json_decode(implode("", $output), true);
 	unset($output);
@@ -277,19 +277,19 @@ if ($_SESSION["BACKUP_INCREMENTAL"] == "yes") {
 }
 
 // List ssl certificate info
-exec(HESTIA_CMD . "v-list-sys-tulio-ssl json", $output, $return_var);
+exec(TULIO_CMD . "v-list-sys-tulio-ssl json", $output, $return_var);
 $ssl_str = json_decode(implode("", $output), true);
 unset($output);
-$v_ssl_crt = $ssl_str["HESTIA"]["CRT"];
-$v_ssl_key = $ssl_str["HESTIA"]["KEY"];
-$v_ssl_ca = $ssl_str["HESTIA"]["CA"];
-$v_ssl_subject = $ssl_str["HESTIA"]["SUBJECT"];
-$v_ssl_aliases = $ssl_str["HESTIA"]["ALIASES"];
-$v_ssl_not_before = $ssl_str["HESTIA"]["NOT_BEFORE"];
-$v_ssl_not_after = $ssl_str["HESTIA"]["NOT_AFTER"];
-$v_ssl_signature = $ssl_str["HESTIA"]["SIGNATURE"];
-$v_ssl_pub_key = $ssl_str["HESTIA"]["PUB_KEY"];
-$v_ssl_issuer = $ssl_str["HESTIA"]["ISSUER"];
+$v_ssl_crt = $ssl_str["TULIO"]["CRT"];
+$v_ssl_key = $ssl_str["TULIO"]["KEY"];
+$v_ssl_ca = $ssl_str["TULIO"]["CA"];
+$v_ssl_subject = $ssl_str["TULIO"]["SUBJECT"];
+$v_ssl_aliases = $ssl_str["TULIO"]["ALIASES"];
+$v_ssl_not_before = $ssl_str["TULIO"]["NOT_BEFORE"];
+$v_ssl_not_after = $ssl_str["TULIO"]["NOT_AFTER"];
+$v_ssl_signature = $ssl_str["TULIO"]["SIGNATURE"];
+$v_ssl_pub_key = $ssl_str["TULIO"]["PUB_KEY"];
+$v_ssl_issuer = $ssl_str["TULIO"]["ISSUER"];
 
 // Check POST request
 if (!empty($_POST["save"])) {
@@ -300,7 +300,7 @@ if (!empty($_POST["save"])) {
 	// Change hostname
 	if (!empty($_POST["v_hostname"]) && $v_hostname != $_POST["v_hostname"]) {
 		exec(
-			HESTIA_CMD . "v-change-sys-hostname " . quoteshellarg($_POST["v_hostname"]),
+			TULIO_CMD . "v-change-sys-hostname " . quoteshellarg($_POST["v_hostname"]),
 			$output,
 			$return_var,
 		);
@@ -323,9 +323,7 @@ if (!empty($_POST["save"])) {
 					if (array_key_exists($php_version->tpl, $post_php)) {
 						if (!$php_version->installed) {
 							exec(
-								HESTIA_CMD .
-									"v-add-web-php " .
-									quoteshellarg($php_version->version),
+								TULIO_CMD . "v-add-web-php " . quoteshellarg($php_version->version),
 								$output,
 								$return_var,
 							);
@@ -338,7 +336,7 @@ if (!empty($_POST["save"])) {
 					} else {
 						if ($php_version->installed && !$php_version->protected) {
 							exec(
-								HESTIA_CMD .
+								TULIO_CMD .
 									"v-delete-web-php " .
 									quoteshellarg($php_version->version),
 								$output,
@@ -360,7 +358,7 @@ if (!empty($_POST["save"])) {
 		if (empty($_SESSION["error_msg"])) {
 			if ("php-" . $_POST["v_php_default_version"] != DEFAULT_PHP_VERSION) {
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-change-sys-php " .
 						quoteshellarg($_POST["v_php_default_version"]),
 					$output,
@@ -379,7 +377,7 @@ if (!empty($_POST["save"])) {
 		if (!empty($_POST["v_timezone"])) {
 			if ($v_timezone != $_POST["v_timezone"]) {
 				exec(
-					HESTIA_CMD . "v-change-sys-timezone " . quoteshellarg($_POST["v_timezone"]),
+					TULIO_CMD . "v-change-sys-timezone " . quoteshellarg($_POST["v_timezone"]),
 					$output,
 					$return_var,
 				);
@@ -397,7 +395,7 @@ if (!empty($_POST["save"])) {
 		if (!empty($_POST["v_language"]) && $_SESSION["LANGUAGE"] != $_POST["v_language"]) {
 			if (isset($_POST["v_language_update"])) {
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-change-sys-language " .
 						quoteshellarg($_POST["v_language"]) .
 						" yes",
@@ -409,7 +407,7 @@ if (!empty($_POST["save"])) {
 				}
 			}
 			exec(
-				HESTIA_CMD . "v-change-sys-language " . quoteshellarg($_POST["v_language"]),
+				TULIO_CMD . "v-change-sys-language " . quoteshellarg($_POST["v_language"]),
 				$output,
 				$return_var,
 			);
@@ -425,7 +423,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_theme"] != $_SESSION["THEME"]) {
 			exec(
-				HESTIA_CMD . "v-change-sys-config-value THEME " . quoteshellarg($_POST["v_theme"]),
+				TULIO_CMD . "v-change-sys-config-value THEME " . quoteshellarg($_POST["v_theme"]),
 				$output,
 				$return_var,
 			);
@@ -448,7 +446,7 @@ if (!empty($_POST["save"])) {
 
 		if ($_POST["v_debug_mode"] != $_SESSION["DEBUG_MODE"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value DEBUG_MODE " .
 					quoteshellarg($_POST["v_debug_mode"]),
 				$output,
@@ -469,7 +467,7 @@ if (!empty($_POST["save"])) {
 				$_POST["v_plugin_app_installer"] = "false";
 			}
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value PLUGIN_APP_INSTALLER " .
 					quoteshellarg($_POST["v_plugin_app_installer"]),
 				$output,
@@ -492,7 +490,7 @@ if (!empty($_POST["save"])) {
 		}
 		if ($_POST["v_experimental_features"] != $_SESSION["POLICY_SYSTEM_ENABLE_BACON"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_SYSTEM_ENABLE_BACON " .
 					quoteshellarg($_POST["v_experimental_features"]),
 				$output,
@@ -508,7 +506,7 @@ if (!empty($_POST["save"])) {
 		) {
 			//disable preview mode
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_USER_VIEW_SUSPENDED " .
 					quoteshellarg($_POST["v_policy_user_view_suspended"]),
 				$output,
@@ -526,14 +524,14 @@ if (!empty($_POST["save"])) {
 			$_SESSION["FILE_MANAGER"] != $_POST["v_filemanager"]
 		) {
 			if ($_POST["v_filemanager"] == "true") {
-				exec(HESTIA_CMD . "v-add-sys-filemanager", $output, $return_var);
+				exec(TULIO_CMD . "v-add-sys-filemanager", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
 					$_SESSION["FILE_MANAGER"] = "true";
 				}
 			} else {
-				exec(HESTIA_CMD . "v-delete-sys-filemanager", $output, $return_var);
+				exec(TULIO_CMD . "v-delete-sys-filemanager", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
@@ -549,14 +547,14 @@ if (!empty($_POST["save"])) {
 			$_SESSION["WEB_TERMINAL"] != $_POST["v_web_terminal"]
 		) {
 			if ($_POST["v_web_terminal"] == "true") {
-				exec(HESTIA_CMD . "v-add-sys-web-terminal", $output, $return_var);
+				exec(TULIO_CMD . "v-add-sys-web-terminal", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
 					$_SESSION["WEB_TERMINAL"] = "true";
 				}
 			} else {
-				exec(HESTIA_CMD . "v-delete-sys-web-terminal", $output, $return_var);
+				exec(TULIO_CMD . "v-delete-sys-web-terminal", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
@@ -569,14 +567,14 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if (!empty($_POST["v_phpmyadmin_key"])) {
 			if ($_POST["v_phpmyadmin_key"] == "yes" && $_SESSION["PHPMYADMIN_KEY"] == "") {
-				exec(HESTIA_CMD . "v-add-sys-pma-sso quiet", $output, $return_var);
+				exec(TULIO_CMD . "v-add-sys-pma-sso quiet", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
 					$_SESSION["PHPMYADMIN_KEY"] != "";
 				}
 			} elseif ($_POST["v_phpmyadmin_key"] == "no" && $_SESSION["PHPMYADMIN_KEY"] != "") {
-				exec(HESTIA_CMD . "v-delete-sys-pma-sso quiet", $output, $return_var);
+				exec(TULIO_CMD . "v-delete-sys-pma-sso quiet", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
@@ -590,14 +588,14 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if (!empty($_POST["v_quota"]) && $_SESSION["DISK_QUOTA"] != $_POST["v_quota"]) {
 			if ($_POST["v_quota"] == "yes") {
-				exec(HESTIA_CMD . "v-add-sys-quota", $output, $return_var);
+				exec(TULIO_CMD . "v-add-sys-quota", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
 					$_SESSION["DISK_QUOTA"] = "yes";
 				}
 			} else {
-				exec(HESTIA_CMD . "v-delete-sys-quota", $output, $return_var);
+				exec(TULIO_CMD . "v-delete-sys-quota", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
@@ -614,14 +612,14 @@ if (!empty($_POST["save"])) {
 			$_SESSION["RESOURCES_LIMIT"] != $_POST["v_resources_limit"]
 		) {
 			if ($_POST["v_resources_limit"] == "yes") {
-				exec(HESTIA_CMD . "v-add-sys-cgroups", $output, $return_var);
+				exec(TULIO_CMD . "v-add-sys-cgroups", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
 					$_SESSION["RESOURCES_LIMIT"] = "yes";
 				}
 			} else {
-				exec(HESTIA_CMD . "v-delete-sys-cgroups", $output, $return_var);
+				exec(TULIO_CMD . "v-delete-sys-cgroups", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
@@ -641,14 +639,14 @@ if (!empty($_POST["save"])) {
 		}
 		if (!empty($_POST["v_firewall"]) && $v_firewall != $_POST["v_firewall"]) {
 			if ($_POST["v_firewall"] == "yes") {
-				exec(HESTIA_CMD . "v-add-sys-firewall", $output, $return_var);
+				exec(TULIO_CMD . "v-add-sys-firewall", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
 					$_SESSION["FIREWALL_SYSTEM"] = "iptables";
 				}
 			} else {
-				exec(HESTIA_CMD . "v-delete-sys-firewall", $output, $return_var);
+				exec(TULIO_CMD . "v-delete-sys-firewall", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 				if (empty($_SESSION["error_msg"])) {
@@ -662,7 +660,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if (!empty($_POST["v_mysql_password"])) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-database-host-password mysql localhost root " .
 					quoteshellarg($_POST["v_mysql_password"]),
 				$output,
@@ -679,7 +677,7 @@ if (!empty($_POST["save"])) {
 			if ($_SESSION["WEBMAIL_SYSTEM"] != "") {
 				if ($_POST["v_webmail_alias"] != $_SESSION["WEBMAIL_ALIAS"]) {
 					exec(
-						HESTIA_CMD .
+						TULIO_CMD .
 							"v-change-sys-webmail " .
 							quoteshellarg($_POST["v_webmail_alias"]),
 						$output,
@@ -712,7 +710,7 @@ if (!empty($_POST["save"])) {
 					$v_smtp_relay_port = "587";
 				}
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-add-sys-smtp-relay " .
 						$v_smtp_relay_host .
 						" " .
@@ -731,7 +729,7 @@ if (!empty($_POST["save"])) {
 		if (!isset($_POST["v_smtp_relay"]) && $v_smtp_relay == true) {
 			$v_smtp_relay = false;
 			$v_smtp_relay_host = $v_smtp_relay_user = $v_smtp_relay_pass = $v_smtp_relay_port = "";
-			exec(HESTIA_CMD . "v-delete-sys-smtp-relay", $output, $return_var);
+			exec(TULIO_CMD . "v-delete-sys-smtp-relay", $output, $return_var);
 			check_return_code($return_var, $output);
 			unset($output);
 		}
@@ -741,7 +739,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_mysql_url"] != $_SESSION["DB_PMA_ALIAS"]) {
 			exec(
-				HESTIA_CMD . "v-change-sys-db-alias pma " . quoteshellarg($_POST["v_mysql_url"]),
+				TULIO_CMD . "v-change-sys-db-alias pma " . quoteshellarg($_POST["v_mysql_url"]),
 				$output,
 				$return_var,
 			);
@@ -758,7 +756,7 @@ if (!empty($_POST["save"])) {
 		}
 		if ($_POST["v_pgsql_url"] != $_SESSION["DB_PGA_ALIAS"]) {
 			exec(
-				HESTIA_CMD . "v-change-sys-db-alias pga " . quoteshellarg($_POST["v_pgsql_url"]),
+				TULIO_CMD . "v-change-sys-db-alias pga " . quoteshellarg($_POST["v_pgsql_url"]),
 				$output,
 				$return_var,
 			);
@@ -786,7 +784,7 @@ if (!empty($_POST["save"])) {
 				$_POST["v_upgrade_send_notification_email"] = "false";
 			}
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value UPGRADE_SEND_EMAIL " .
 					quoteshellarg($_POST["v_upgrade_send_notification_email"]),
 				$output,
@@ -815,7 +813,7 @@ if (!empty($_POST["save"])) {
 				$_POST["v_upgrade_send_email_log"] = "false";
 			}
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value UPGRADE_SEND_EMAIL_LOG " .
 					quoteshellarg($_POST["v_upgrade_send_email_log"]),
 				$output,
@@ -830,7 +828,7 @@ if (!empty($_POST["save"])) {
 	// Disable local backup
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_backup"] == "no" && $v_backup == "yes") {
-			exec(HESTIA_CMD . "v-delete-backup-host local", $output, $return_var);
+			exec(TULIO_CMD . "v-delete-backup-host local", $output, $return_var);
 			check_return_code($return_var, $output);
 			unset($output);
 			if (empty($_SESSION["error_msg"])) {
@@ -843,7 +841,7 @@ if (!empty($_POST["save"])) {
 	// Enable local backups
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_backup"] == "yes" && $v_backup != "yes") {
-			exec(HESTIA_CMD . "v-add-backup-host local", $output, $return_var);
+			exec(TULIO_CMD . "v-add-backup-host local", $output, $return_var);
 			check_return_code($return_var, $output);
 			unset($output);
 			if (empty($_SESSION["error_msg"])) {
@@ -860,7 +858,7 @@ if (!empty($_POST["save"])) {
 				$_POST["v_backup_gzip"] = 9;
 			}
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value BACKUP_GZIP " .
 					quoteshellarg($_POST["v_backup_gzip"]),
 				$output,
@@ -879,7 +877,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_backup_mode"] != $v_backup_mode) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value BACKUP_MODE " .
 					quoteshellarg($_POST["v_backup_mode"]),
 				$output,
@@ -897,7 +895,7 @@ if (!empty($_POST["save"])) {
 					$v_backup_gzip = $_POST["v_backup_gzip"];
 				}
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-change-sys-config-value BACKUP_GZIP " .
 						quoteshellarg($_POST["v_backup_gzip"]),
 					$output,
@@ -915,7 +913,7 @@ if (!empty($_POST["save"])) {
 		if ($_POST["v_backup_dir"] != $v_backup_dir) {
 			/*
 				See #1655
-				exec (HESTIA_CMD."v-change-sys-config-value BACKUP ".quoteshellarg($_POST['v_backup_dir']), $output, $return_var);
+				exec (TULIO_CMD."v-change-sys-config-value BACKUP ".quoteshellarg($_POST['v_backup_dir']), $output, $return_var);
 				check_return_code($return_var,$output);
 				unset($output);
 				*/
@@ -941,7 +939,7 @@ if (!empty($_POST["save"])) {
 				$v_backup_password = quoteshellarg($_POST["v_backup_password"]);
 				$v_backup_bpath = quoteshellarg($_POST["v_backup_bpath"]);
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-add-backup-host " .
 						$v_backup_type .
 						" " .
@@ -986,7 +984,7 @@ if (!empty($_POST["save"])) {
 				$v_backup_application_id = quoteshellarg($_POST["v_backup_application_id"]);
 				$v_backup_application_key = quoteshellarg($_POST["v_backup_application_key"]);
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-add-backup-host " .
 						$v_backup_type .
 						" " .
@@ -1023,7 +1021,7 @@ if (!empty($_POST["save"])) {
 			$v_backup_type = quoteshellarg($_POST["v_backup_type"]);
 			$v_rclone_path = quoteshellarg($_POST["v_rclone_path"]);
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-add-backup-host " .
 					$v_backup_type .
 					" " .
@@ -1049,7 +1047,7 @@ if (!empty($_POST["save"])) {
 			$v_backup_type != ""
 		) {
 			exec(
-				HESTIA_CMD . "v-delete-backup-host " . quoteshellarg($v_backup_type),
+				TULIO_CMD . "v-delete-backup-host " . quoteshellarg($v_backup_type),
 				$output,
 				$return_var,
 			);
@@ -1062,7 +1060,7 @@ if (!empty($_POST["save"])) {
 				$v_backup_password = quoteshellarg($_POST["v_backup_password"]);
 				$v_backup_bpath = quoteshellarg($_POST["v_backup_bpath"]);
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-add-backup-host " .
 						$v_backup_type .
 						" " .
@@ -1105,7 +1103,7 @@ if (!empty($_POST["save"])) {
 				$v_backup_application_id = quoteshellarg($_POST["v_backup_application_id"]);
 				$v_backup_application_key = quoteshellarg($_POST["v_backup_application_key"]);
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-add-backup-host " .
 						$v_backup_type .
 						" " .
@@ -1153,7 +1151,7 @@ if (!empty($_POST["save"])) {
 					$v_backup_password = quoteshellarg($_POST["v_backup_password"]);
 					$v_backup_bpath = quoteshellarg($_POST["v_backup_bpath"]);
 					exec(
-						HESTIA_CMD .
+						TULIO_CMD .
 							"v-add-backup-host " .
 							$v_backup_type .
 							" " .
@@ -1203,7 +1201,7 @@ if (!empty($_POST["save"])) {
 					$v_backup_application_id = quoteshellarg($_POST["v_backup_application_id"]);
 					$v_backup_application_key = quoteshellarg($_POST["v_backup_application_key"]);
 					exec(
-						HESTIA_CMD .
+						TULIO_CMD .
 							"v-add-backup-host " .
 							$v_backup_type .
 							" " .
@@ -1239,7 +1237,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if (empty($_POST["v_backup_remote_adv"]) && $v_backup_remote_adv != "") {
 			exec(
-				HESTIA_CMD . "v-delete-backup-host " . quoteshellarg($v_backup_type),
+				TULIO_CMD . "v-delete-backup-host " . quoteshellarg($v_backup_type),
 				$output,
 				$return_var,
 			);
@@ -1288,7 +1286,7 @@ if (!empty($_POST["save"])) {
 				$keep_yearly = quoteshellarg($_POST["v_keep_yearly"]);
 
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-add-backup-host-restic " .
 						$repo .
 						" " .
@@ -1318,7 +1316,7 @@ if (!empty($_POST["save"])) {
 	}
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_backup_incremental"] !== "yes" && $_SESSION["BACKUP_INCREMENTAL"] === "yes") {
-			exec(HESTIA_CMD . "v-delete-backup-host-restic ", $output, $return);
+			exec(TULIO_CMD . "v-delete-backup-host-restic ", $output, $return);
 			check_return_code($return_var, $output);
 			unset($output);
 			$v_backup_incremental = "";
@@ -1332,7 +1330,7 @@ if (!empty($_POST["save"])) {
 	}
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_backup_incremental"] === "yes" && $_SESSION["BACKUP_INCREMENTAL"] === "yes") {
-			exec(HESTIA_CMD . "v-delete-backup-host-restic ", $output, $return);
+			exec(TULIO_CMD . "v-delete-backup-host-restic ", $output, $return);
 			check_return_code($return_var, $output);
 			unset($output);
 			$repo = quoteshellarg($_POST["v_repo"]);
@@ -1343,7 +1341,7 @@ if (!empty($_POST["save"])) {
 			$keep_yearly = quoteshellarg($_POST["v_keep_yearly"]);
 
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-add-backup-host-restic " .
 					$repo .
 					" " .
@@ -1377,7 +1375,7 @@ if (!empty($_POST["save"])) {
 				$_SESSION["error_msg"] = _("Inactive session timeout can not lower than 1 minute.");
 			} else {
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-change-sys-config-value INACTIVE_SESSION_TIMEOUT " .
 						quoteshellarg($_POST["v_inactive_session_timeout"]),
 					$output,
@@ -1397,7 +1395,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_policy_csrf_strictness"] != $_SESSION["POLICY_CSRF_STRICTNESS"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_CSRF_STRICTNESS " .
 					quoteshellarg($_POST["v_policy_csrf_strictness"]),
 				$output,
@@ -1416,7 +1414,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_enforce_subdomain_ownership"] != $_SESSION["ENFORCE_SUBDOMAIN_OWNERSHIP"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value ENFORCE_SUBDOMAIN_OWNERSHIP " .
 					quoteshellarg($_POST["v_enforce_subdomain_ownership"]),
 				$output,
@@ -1435,7 +1433,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_policy_user_edit_details"] != $_SESSION["POLICY_USER_EDIT_DETAILS"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_USER_EDIT_DETAILS " .
 					quoteshellarg($_POST["v_policy_user_edit_details"]),
 				$output,
@@ -1457,7 +1455,7 @@ if (!empty($_POST["save"])) {
 			$_SESSION["POLICY_USER_EDIT_WEB_TEMPLATES"]
 		) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_USER_EDIT_WEB_TEMPLATES " .
 					quoteshellarg($_POST["v_policy_user_edit_web_templates"]),
 				$output,
@@ -1479,7 +1477,7 @@ if (!empty($_POST["save"])) {
 			$_SESSION["POLICY_USER_EDIT_DNS_TEMPLATES"]
 		) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_USER_EDIT_DNS_TEMPLATES " .
 					quoteshellarg($_POST["v_policy_user_edit_dns_templates"]),
 				$output,
@@ -1501,7 +1499,7 @@ if (!empty($_POST["save"])) {
 	) {
 		if (empty($_SESSION["error_msg"])) {
 			if ($_POST["v_api"] == "no" && $_POST["v_api_system"] === 0) {
-				exec(HESTIA_CMD . "v-change-sys-api 'disable'", $output, $return_var);
+				exec(TULIO_CMD . "v-change-sys-api 'disable'", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 			}
@@ -1511,7 +1509,7 @@ if (!empty($_POST["save"])) {
 					$_POST["v_api_system"] != $_SESSION["API_SYSTEM"]) ||
 				$_POST["v_api"] != $_SESSION["API"]
 			) {
-				exec(HESTIA_CMD . "v-change-sys-api 'enable'", $output, $return_var);
+				exec(TULIO_CMD . "v-change-sys-api 'enable'", $output, $return_var);
 				check_return_code($return_var, $output);
 				unset($output);
 			}
@@ -1519,7 +1517,7 @@ if (!empty($_POST["save"])) {
 		if (empty($_SESSION["error_msg"])) {
 			if ($_POST["v_api_system"] != $_SESSION["API_SYSTEM"]) {
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-change-sys-config-value API_SYSTEM " .
 						quoteshellarg($_POST["v_api_system"]),
 					$output,
@@ -1542,7 +1540,7 @@ if (!empty($_POST["save"])) {
 					$api_status = "yes";
 				}
 				exec(
-					HESTIA_CMD . "v-change-sys-config-value API " . quoteshellarg($api_status),
+					TULIO_CMD . "v-change-sys-config-value API " . quoteshellarg($api_status),
 					$output,
 					$return_var,
 				);
@@ -1570,7 +1568,7 @@ if (!empty($_POST["save"])) {
 				}
 				if (implode(",", $ips) != $_SESSION["API_ALLOWED_IP"]) {
 					exec(
-						HESTIA_CMD .
+						TULIO_CMD .
 							"v-change-sys-config-value API_ALLOWED_IP " .
 							quoteshellarg(implode(",", $ips)),
 						$output,
@@ -1591,7 +1589,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_policy_user_view_logs"] != $_SESSION["POLICY_USER_VIEW_LOGS"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_USER_VIEW_LOGS " .
 					quoteshellarg($_POST["v_policy_user_view_logs"]),
 				$output,
@@ -1610,7 +1608,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_policy_user_delete_logs"] != $_SESSION["POLICY_USER_DELETE_LOGS"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_USER_DELETE_LOGS " .
 					quoteshellarg($_POST["v_policy_user_delete_logs"]),
 				$output,
@@ -1629,7 +1627,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_policy_system_password_reset"] != $_SESSION["POLICY_SYSTEM_PASSWORD_RESET"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_SYSTEM_PASSWORD_RESET " .
 					quoteshellarg($_POST["v_policy_system_password_reset"]),
 				$output,
@@ -1652,7 +1650,7 @@ if (!empty($_POST["save"])) {
 				$_SESSION["POLICY_SYSTEM_PROTECTED_ADMIN"]
 			) {
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-change-sys-config-value POLICY_SYSTEM_PROTECTED_ADMIN " .
 						quoteshellarg($_POST["v_policy_system_protected_admin"]),
 					$output,
@@ -1676,7 +1674,7 @@ if (!empty($_POST["save"])) {
 				!empty($_SESSION["POLICY_USER_VIEW_SUSPENDED"])
 			) {
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-change-sys-config-value POLICY_USER_VIEW_SUSPENDED " .
 						quoteshellarg($_POST["v_policy_user_view_suspended"]),
 					$output,
@@ -1704,7 +1702,7 @@ if (!empty($_POST["save"])) {
 		}
 		if ($_POST["v_policy_user_change_theme"] != $_SESSION["POLICY_USER_CHANGE_THEME"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_USER_CHANGE_THEME " .
 					quoteshellarg($_POST["v_policy_user_change_theme"]),
 				$output,
@@ -1727,7 +1725,7 @@ if (!empty($_POST["save"])) {
 		if (!empty($_POST["v_policy_system_hide_admin"])) {
 			if ($_POST["v_policy_system_hide_admin"] != $_SESSION["POLICY_SYSTEM_HIDE_ADMIN"]) {
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-change-sys-config-value POLICY_SYSTEM_HIDE_ADMIN " .
 						quoteshellarg($_POST["v_policy_system_hide_admin"]),
 					$output,
@@ -1750,7 +1748,7 @@ if (!empty($_POST["save"])) {
 				$_POST["v_policy_system_hide_services"] != $_SESSION["POLICY_SYSTEM_HIDE_SERVICES"]
 			) {
 				exec(
-					HESTIA_CMD .
+					TULIO_CMD .
 						"v-change-sys-config-value POLICY_SYSTEM_HIDE_SERVICES " .
 						quoteshellarg($_POST["v_policy_system_hide_services"]),
 					$output,
@@ -1771,7 +1769,7 @@ if (!empty($_POST["save"])) {
 			$_POST["v_policy_backup_suspended_users"] != $_SESSION["POLICY_BACKUP_SUSPENDED_USERS"]
 		) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_BACKUP_SUSPENDED_USERS " .
 					quoteshellarg($_POST["v_policy_backup_suspended_users"]),
 				$output,
@@ -1789,7 +1787,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_policy_sync_error_documents"] != $_SESSION["POLICY_SYNC_ERROR_DOCUMENTS"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_SYNC_ERROR_DOCUMENTS " .
 					quoteshellarg($_POST["v_policy_sync_error_documents"]),
 				$output,
@@ -1806,7 +1804,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_policy_sync_skeleton"] != $_SESSION["POLICY_SYNC_SKELETON"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value POLICY_SYNC_SKELETON " .
 					quoteshellarg($_POST["v_policy_sync_skeleton"]),
 				$output,
@@ -1825,7 +1823,7 @@ if (!empty($_POST["save"])) {
 	if (empty($_SESSION["error_msg"])) {
 		if ($_POST["v_login_style"] != $_SESSION["LOGIN_STYLE"]) {
 			exec(
-				HESTIA_CMD .
+				TULIO_CMD .
 					"v-change-sys-config-value LOGIN_STYLE " .
 					quoteshellarg($_POST["v_login_style"]),
 				$output,
@@ -1865,24 +1863,24 @@ if (!empty($_POST["save"])) {
 				fclose($fp);
 			}
 
-			exec(HESTIA_CMD . "v-change-sys-tulio-ssl " . $tmpdir, $output, $return_var);
+			exec(TULIO_CMD . "v-change-sys-tulio-ssl " . $tmpdir, $output, $return_var);
 			check_return_code($return_var, $output);
 			unset($output);
 
 			// List ssl certificate info
-			exec(HESTIA_CMD . "v-list-sys-tulio-ssl json", $output, $return_var);
+			exec(TULIO_CMD . "v-list-sys-tulio-ssl json", $output, $return_var);
 			$ssl_str = json_decode(implode("", $output), true);
 			unset($output);
-			$v_ssl_crt = $ssl_str["HESTIA"]["CRT"];
-			$v_ssl_key = $ssl_str["HESTIA"]["KEY"];
-			$v_ssl_ca = $ssl_str["HESTIA"]["CA"];
-			$v_ssl_subject = $ssl_str["HESTIA"]["SUBJECT"];
-			$v_ssl_aliases = $ssl_str["HESTIA"]["ALIASES"];
-			$v_ssl_not_before = $ssl_str["HESTIA"]["NOT_BEFORE"];
-			$v_ssl_not_after = $ssl_str["HESTIA"]["NOT_AFTER"];
-			$v_ssl_signature = $ssl_str["HESTIA"]["SIGNATURE"];
-			$v_ssl_pub_key = $ssl_str["HESTIA"]["PUB_KEY"];
-			$v_ssl_issuer = $ssl_str["HESTIA"]["ISSUER"];
+			$v_ssl_crt = $ssl_str["TULIO"]["CRT"];
+			$v_ssl_key = $ssl_str["TULIO"]["KEY"];
+			$v_ssl_ca = $ssl_str["TULIO"]["CA"];
+			$v_ssl_subject = $ssl_str["TULIO"]["SUBJECT"];
+			$v_ssl_aliases = $ssl_str["TULIO"]["ALIASES"];
+			$v_ssl_not_before = $ssl_str["TULIO"]["NOT_BEFORE"];
+			$v_ssl_not_after = $ssl_str["TULIO"]["NOT_AFTER"];
+			$v_ssl_signature = $ssl_str["TULIO"]["SIGNATURE"];
+			$v_ssl_pub_key = $ssl_str["TULIO"]["PUB_KEY"];
+			$v_ssl_issuer = $ssl_str["TULIO"]["ISSUER"];
 
 			// Cleanup certificate tempfiles
 			if (file_exists($tmpdir . "/certificate.crt")) {
@@ -1908,7 +1906,7 @@ if (!empty($_POST["save"])) {
 }
 
 // Check system configuration
-exec(HESTIA_CMD . "v-list-sys-config json", $output, $return_var);
+exec(TULIO_CMD . "v-list-sys-config json", $output, $return_var);
 $data = json_decode(implode("", $output), true);
 unset($output);
 

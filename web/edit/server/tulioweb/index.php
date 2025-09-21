@@ -23,10 +23,7 @@ if (!empty($_POST["save"])) {
 		}
 		fwrite($fp, $config);
 		exec(
-			HESTIA_CMD .
-				"v-change-sys-service-config " .
-				quoteshellarg($new_conf) .
-				" tulioweb yes",
+			TULIO_CMD . "v-change-sys-service-config " . quoteshellarg($new_conf) . " tulioweb yes",
 			$output,
 			$return_var,
 		);
@@ -40,7 +37,7 @@ $v_config_path = "/var/spool/cron/crontabs/tulioweb";
 $v_service_name = _("Panel Cronjobs");
 
 // Read config
-$v_config = shell_exec(HESTIA_CMD . "v-open-fs-config " . $v_config_path);
+$v_config = shell_exec(TULIO_CMD . "v-open-fs-config " . $v_config_path);
 
 // Render page
 render_page($user, $TAB, "edit_server_service");

@@ -30,7 +30,7 @@ switch ($action) {
 
 foreach ($backup as $value) {
 	$value = quoteshellarg($value);
-	exec(HESTIA_CMD . $cmd . " " . $user . " " . $value, $output, $return_var);
+	exec(TULIO_CMD . $cmd . " " . $user . " " . $value, $output, $return_var);
 	if ($return_var != 0) {
 		$_SESSION["error_msg"] = implode("<br>", $output);
 		if (empty($_SESSION["error_msg"])) {

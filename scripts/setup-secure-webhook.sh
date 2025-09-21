@@ -8,36 +8,36 @@ echo "=========================================="
 
 # Check if running on build server
 if [ ! -d "/opt/tuliocp-build" ]; then
-    echo "❌ This script must be run on the build server"
-    echo "Build directory not found: /opt/tuliocp-build"
-    exit 1
+	echo "❌ This script must be run on the build server"
+	echo "Build directory not found: /opt/tuliocp-build"
+	exit 1
 fi
 
 # Generate a secure webhook secret
 if [ -z "$WEBHOOK_SECRET" ]; then
-    echo "🔑 Generating secure webhook secret..."
-    WEBHOOK_SECRET=$(openssl rand -hex 32)
-    echo "Generated secret: $WEBHOOK_SECRET"
-    echo ""
-    echo "⚠️  IMPORTANT: Save this secret! You'll need it for GitHub webhook configuration."
-    echo "Add this to your environment: export WEBHOOK_SECRET='$WEBHOOK_SECRET'"
-    echo ""
+	echo "🔑 Generating secure webhook secret..."
+	WEBHOOK_SECRET=$(openssl rand -hex 32)
+	echo "Generated secret: $WEBHOOK_SECRET"
+	echo ""
+	echo "⚠️  IMPORTANT: Save this secret! You'll need it for GitHub webhook configuration."
+	echo "Add this to your environment: export WEBHOOK_SECRET='$WEBHOOK_SECRET'"
+	echo ""
 fi
 
 # Download and install secure webhook handler
 echo "📋 Installing secure webhook handler..."
-if command -v curl >/dev/null 2>&1; then
-    curl -s -o /opt/tuliocp-build/secure-webhook-handler.py https://raw.githubusercontent.com/Contaura/tuliocp/main/scripts/secure-webhook-handler.py
-elif command -v wget >/dev/null 2>&1; then
-    wget -O /opt/tuliocp-build/secure-webhook-handler.py https://raw.githubusercontent.com/Contaura/tuliocp/main/scripts/secure-webhook-handler.py
+if command -v curl > /dev/null 2>&1; then
+	curl -s -o /opt/tuliocp-build/secure-webhook-handler.py https://raw.githubusercontent.com/Contaura/tuliocp/main/scripts/secure-webhook-handler.py
+elif command -v wget > /dev/null 2>&1; then
+	wget -O /opt/tuliocp-build/secure-webhook-handler.py https://raw.githubusercontent.com/Contaura/tuliocp/main/scripts/secure-webhook-handler.py
 else
-    echo "❌ Neither curl nor wget found. Please install one of them."
-    exit 1
+	echo "❌ Neither curl nor wget found. Please install one of them."
+	exit 1
 fi
 
 if [ ! -f "/opt/tuliocp-build/secure-webhook-handler.py" ]; then
-    echo "❌ Failed to download secure webhook handler"
-    exit 1
+	echo "❌ Failed to download secure webhook handler"
+	exit 1
 fi
 
 chmod +x /opt/tuliocp-build/secure-webhook-handler.py
@@ -85,11 +85,11 @@ EOF
 
 # Set up firewall rule
 echo "🛡️  Setting up firewall..."
-if command -v ufw >/dev/null 2>&1; then
-    sudo ufw allow 8443/tcp comment "TulioCP Webhook HTTPS"
-    echo "Firewall rule added for port 8443"
+if command -v ufw > /dev/null 2>&1; then
+	sudo ufw allow 8443/tcp comment "TulioCP Webhook HTTPS"
+	echo "Firewall rule added for port 8443"
 else
-    echo "⚠️  UFW not found. Manually configure firewall to allow port 8443"
+	echo "⚠️  UFW not found. Manually configure firewall to allow port 8443"
 fi
 
 # Install and start service
@@ -103,19 +103,19 @@ sleep 3
 
 # Check service status
 if sudo systemctl is-active --quiet tuliocp-webhook; then
-    echo "✅ Webhook service started successfully"
-    
-    # Test health endpoint
-    sleep 2
-    if curl -k -s https://localhost:8443/health > /dev/null; then
-        echo "✅ HTTPS health check passed"
-    else
-        echo "⚠️  HTTPS health check failed (this may be normal with self-signed certs)"
-    fi
+	echo "✅ Webhook service started successfully"
+
+	# Test health endpoint
+	sleep 2
+	if curl -k -s https://localhost:8443/health > /dev/null; then
+		echo "✅ HTTPS health check passed"
+	else
+		echo "⚠️  HTTPS health check failed (this may be normal with self-signed certs)"
+	fi
 else
-    echo "❌ Webhook service failed to start"
-    echo "Check logs: sudo journalctl -u tuliocp-webhook -f"
-    exit 1
+	echo "❌ Webhook service failed to start"
+	echo "Check logs: sudo journalctl -u tuliocp-webhook -f"
+	exit 1
 fi
 
 echo ""

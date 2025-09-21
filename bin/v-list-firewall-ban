@@ -17,17 +17,16 @@ format=${1-shell}
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 # JSON list function
 json_list() {
 	IFS=$'\n'
 	i=1
-	objects=$(grep IP $HESTIA/data/firewall/banlist.conf | wc -l)
+	objects=$(grep IP $TULIO/data/firewall/banlist.conf | wc -l)
 	echo "{"
 	while read str; do
 		parse_object_kv_list "$str"
@@ -43,7 +42,7 @@ json_list() {
 			echo
 		fi
 		((i++))
-	done < <(cat $HESTIA/data/firewall/banlist.conf)
+	done < <(cat $TULIO/data/firewall/banlist.conf)
 	echo '}'
 }
 
@@ -55,7 +54,7 @@ shell_list() {
 	while read str; do
 		parse_object_kv_list "$str"
 		echo "$IP $CHAIN $TIME $DATE"
-	done < <(cat $HESTIA/data/firewall/banlist.conf)
+	done < <(cat $TULIO/data/firewall/banlist.conf)
 }
 
 # PLAIN list function
@@ -64,7 +63,7 @@ plain_list() {
 	while read str; do
 		parse_object_kv_list "$str"
 		echo -e "$IP\t$CHAIN\t$TIME\t$DATE"
-	done < <(cat $HESTIA/data/firewall/banlist.conf)
+	done < <(cat $TULIO/data/firewall/banlist.conf)
 }
 
 # CSV list function
@@ -74,7 +73,7 @@ csv_list() {
 	while read str; do
 		parse_object_kv_list "$str"
 		echo "$IP,$CHAIN,$TIME,$DATE"
-	done < <(cat $HESTIA/data/firewall/banlist.conf)
+	done < <(cat $TULIO/data/firewall/banlist.conf)
 }
 
 #----------------------------------------------------------#

@@ -23,13 +23,12 @@ compression=$4
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/db.sh
-source $HESTIA/func/db.sh
+source $TULIO/func/db.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 check_args '2' "$#" 'USER DATABASE [OUTPUT] [COMPRESSION]'
 is_format_valid 'user' 'database'
@@ -48,7 +47,7 @@ check_tulio_demo_mode
 timestamp=$(date +'%G-%m-%d_%H-%M-%S')
 
 # Check db existence
-db_data=$(grep "DB='$database'" $HESTIA/data/users/$user/db.conf)
+db_data=$(grep "DB='$database'" $TULIO/data/users/$user/db.conf)
 if [ -z "$db_data" ]; then
 	echo "Error: database $database doesn't exist"
 	log_event "$E_NOTEXIST" "$ARGUMENTS"

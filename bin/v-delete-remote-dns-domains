@@ -15,13 +15,12 @@ host=$1
 # shellcheck source=/etc/tuliocp/tulio.conf
 source /etc/tuliocp/tulio.conf
 : "${TULIO:=/usr/local/tulio}"
-: "${HESTIA:=$TULIO}"
 # shellcheck source=/usr/local/tulio/func/main.sh
-source $HESTIA/func/main.sh
+source $TULIO/func/main.sh
 # shellcheck source=/usr/local/tulio/func/remote.sh
-source $HESTIA/func/remote.sh
+source $TULIO/func/remote.sh
 # load config file
-source_conf "$HESTIA/conf/tulio.conf"
+source_conf "$TULIO/conf/tulio.conf"
 
 #----------------------------------------------------------#
 #                    Verifications                         #
@@ -42,9 +41,9 @@ check_tulio_demo_mode
 IFS=$'\n'
 
 if [ -z $host ]; then
-	hosts=$(cat "$HESTIA/conf/dns-cluster.conf")
+	hosts=$(cat "$TULIO/conf/dns-cluster.conf")
 else
-	hosts=$(grep "HOST='$host'" "$HESTIA/conf/dns-cluster.conf")
+	hosts=$(grep "HOST='$host'" "$TULIO/conf/dns-cluster.conf")
 fi
 
 # Starting cluster loop
@@ -71,7 +70,7 @@ done
 #----------------------------------------------------------#
 
 # Updating pipe
-pipe="$HESTIA/data/queue/dns-cluster.pipe"
+pipe="$TULIO/data/queue/dns-cluster.pipe"
 str=$(grep -n "$SCRIPT $1 $2$" $pipe | cut -f1 -d: | head -n1)
 if [ -n "$str" ]; then
 	sed -i "$str d" $pipe

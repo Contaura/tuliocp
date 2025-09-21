@@ -7,8 +7,8 @@ echo "========================================"
 
 # Check if we're on the build server
 if [ ! -d "/opt/tuliocp-build" ]; then
-    echo "⚠️  This should be run on your build server, not locally"
-    echo "But we can still generate the correct commands for you..."
+	echo "⚠️  This should be run on your build server, not locally"
+	echo "But we can still generate the correct commands for you..."
 fi
 
 echo ""
